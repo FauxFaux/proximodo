@@ -50,16 +50,11 @@ public:
     // in output too (wrt HTTP standard).
     bool filter(string& header);
 
-    string& getHeaderName();
-
-private:
-    // Data specific to header filters
+    // Name of processed header (in lowercase)
     string headerName;
 
-    // Shall we check the URL at data feed reset?
-    bool checkUrl;
-    
-    // Content of header
+private:
+    // Content of header or URL
     string content;
 
     // URL matcher

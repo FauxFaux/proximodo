@@ -28,31 +28,26 @@
 
 #include <wx/frame.h>
 #include <wx/sizer.h>
+#include <wx/event.h>
 #include "descriptor.h"
 #include "controls.h"
 
-/* This class creates the main Proximodo window, with toolbar and status bar.
- * The controls displayed within the window are created and managed by a
- * sizer attributed to the main window.
+/* This is a test window, for testing a filter upon some sample html code.
  */
 class CTestFrame : public wxFrame {
 
 public:
-    CTestFrame(CFilterDescriptor& d, CTestFrame** p);
+    CTestFrame(CFilterDescriptor* desc);
     ~CTestFrame();
-    
+    void setCurrent(CFilterDescriptor* desc);
 
 private:
     // Event functions
     void OnClose(wxCloseEvent& event);
     void OnCommand(wxCommandEvent& event);
     
-    // Filter to use
-    CFilterDescriptor& desc;
-    
-    // Address that we'll set to NULL when the frame is destroyed
-    CTestFrame** pointer;
-    
+    // Filter to test
+    CFilterDescriptor* current;
     
     // Controls
 	pmTextCtrl *resultMemo;
@@ -62,7 +57,6 @@ private:
     enum {
         // Buttons
         ID_TEST = 1500,
-        ID_TESTCLOSE,
         ID_TESTTEXT
     };
 

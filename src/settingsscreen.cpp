@@ -382,8 +382,8 @@ void CSettingsScreen::revert(bool confirm) {
 
     // Populate configuration list
     configDropdown->Clear();
-    for (map<string, vector<string> >::iterator it = settings.config.begin();
-             it != settings.config.end(); it++) {
+    for (map<string, set<int> >::iterator it = settings.configs.begin();
+             it != settings.configs.end(); it++) {
         configDropdown->Append(it->first.c_str());
     }
     configDropdown->SetValue(currentConfig.c_str());
@@ -398,7 +398,7 @@ void CSettingsScreen::revert(bool confirm) {
 
     // Populate language list
     languageDropDown->Clear();
-    wxString f = wxFindFirstFile("./*.lng");
+    wxString f = wxFindFirstFile("*.lng");
     while ( !f.IsEmpty() ) {
         languageDropDown->Append(f.SubString(2, f.Length() - 5));
         f = wxFindNextFile();
@@ -423,9 +423,8 @@ void CSettingsScreen::revert(bool confirm) {
  */
 void CSettingsScreen::apply(bool confirm) {
 
-    if (!hasChanged()) {
-        if (!confirm) return;
-    } else if (confirm) {
+    if (!hasChanged()) return;
+    if (confirm) {
         // Ask user before proceeding
         int ret = wxMessageBox(settings.getMessage("APPLY_SETTINGS").c_str(),
                                APP_NAME, wxYES_NO);
@@ -494,6 +493,7 @@ void CSettingsScreen::OnCommand(wxCommandEvent& event) {
         showOnStartup = showCheckbox->GetValue(); break;
 
     case ID_APPLYBUTTON:
+        settings.proxyPort.clear(); // (to force apply, in case list files were edited)
         apply(false); break;
 
     case ID_REVERTBUTTON:
@@ -629,8 +629,8 @@ void CSettingsScreen::OnCommand(wxCommandEvent& event) {
         {
             wxFileDialog fd(window,
                   settings.getMessage("OPEN_LISTFILE_QUESTION").c_str(),
-                  "./lists", "",
-                  "Text files (*.txt)|*.txt|All files (*.*)|*.*", wxOPEN);
+                  "Lists", // This is the directory name
+                  "", "Text files (*.txt)|*.txt|All files (*.*)|*.*", wxOPEN);
             if (fd.ShowModal() != wxID_OK) break;
             listFileText->SetValue(fd.GetPath());
             // No break here, we'll do following tests

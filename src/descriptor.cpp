@@ -34,10 +34,7 @@ using namespace std;
 /* Constructor
  */
 CFilterDescriptor::CFilterDescriptor() {
-    filterType = TEXT;
-    multipleMatches = false;
-    windowWidth = 256;
-    defaultFilter = 0;
+    clear();
 }
 
 
@@ -92,22 +89,31 @@ bool CFilterDescriptor::isValid() const {
  */
 void CFilterDescriptor::clear() {
 
-    title = version = author = comment = category = headerName = "";
+    title = version = author = comment = headerName = "";
     boundsPattern = urlPattern = matchPattern = replacePattern = "";
     filterType = TEXT;
     multipleMatches = false;
     windowWidth = 256;
     defaultFilter = 0;
+    priority = 999;
+    id = -1;
+    folder = 0;
 }
 
 
-/* Export to a string.
+/* Export the filter to a string.
+ * folders is needed to write the folder path as a string.
+ * root can be used to write a relative folder path.
  */
-string CFilterDescriptor::exportFilter() const {
+string CFilterDescriptor::exportFilter(const map<int,CFolder>& folders,
+                int root) const {
 
     stringstream out;
     
     out << "[" << title << "]" << endl;
+    out << "ID=" << id << endl;
+    out << "Priority=" << priority << endl;
+
     if (filterType == TEXT) {
         out << "Type=text" << endl;
         out << "Multiple=" << (multipleMatches?"yes":"no") << endl;
@@ -118,14 +124,18 @@ string CFilterDescriptor::exportFilter() const {
         out << "Type=in" << endl;
     }
     
-    if (!category.empty())       out << "Category=" << category   << endl;
-    if (!title.empty())          out << "Title="    << title      << endl;
-    if (!version.empty())        out << "Version="  << version    << endl;
-    if (!author.empty())         out << "Author="   << author     << endl;
-    if (!headerName.empty())     out << "Header="   << headerName << endl;
+    if (!version.empty())    out << "Version="       << version       << endl;
+    if (!author.empty())     out << "Author="        << author        << endl;
+    if (!headerName.empty()) out << "Header="        << headerName    << endl;
+    if (defaultFilter)       out << "DefaultFilter=" << defaultFilter << endl;
 
-    if (defaultFilter) out << "DefaultFilter=" << defaultFilter << endl;
-
+    if (folder != 0 && folder != root) {
+        string path;
+        for (int i=folder; i != 0 && i != root; i = folders.find(i)->second.parent)
+            path = CUtil::quote(folders.find(i)->second.name) + "/" + path;
+        out << "Folder=" << path << endl;
+    }
+        
     if (!comment.empty())
         out << "Comment=" << CUtil::replaceAll(comment,       "\n","\n_") << endl;
     if (!urlPattern.empty())
@@ -141,11 +151,26 @@ string CFilterDescriptor::exportFilter() const {
 }
 
 
-/* Import filters from a string to a map. 
+/* Export an entire map of filters to a string
+ */
+string CFilterDescriptor::exportFilters(const map<int,CFolder>& folders,
+            const map<int,CFilterDescriptor>& filters) {
+
+    stringstream out;
+    for (map<int,CFilterDescriptor>::const_iterator it = filters.begin();
+                it != filters.end(); it++) {
+        out << it->second.exportFilter(folders);
+    }
+    return out.str();
+}
+
+
+/* Import filters from a string to a map.
  * Returns the number of filters imported.
  */
 int CFilterDescriptor::importFilters(const string& text,
-                            map<string,CFilterDescriptor>& bank) {
+                map<int,CFolder>& folders,
+                map<int,CFilterDescriptor>& filters, int root) {
 
     // Process text: lines will be terminated by \n (even from Mac text files)
     // and multiline values will have \r for inner newlines. The text will end
@@ -156,6 +181,7 @@ int CFilterDescriptor::importFilters(const string& text,
     str = CUtil::replaceAll(str, "\n_",  "\r");
     
     CFilterDescriptor d;
+    d.folder = root;
     unsigned int i = 0, max = str.size(), count = 0;
     while (i < max) {
         unsigned int j = str.find("\n", i);
@@ -163,12 +189,14 @@ int CFilterDescriptor::importFilters(const string& text,
         unsigned int eq = line.find('=');
         if (!line.empty() && line[0] == '[') {
             if (d.isValid()) {
-                while (bank.find(d.title) != bank.end())
-                    CUtil::increment(d.title);
-                bank[d.title] = d;
+                if (d.id == -1 || filters.find(d.id) != filters.end())
+                    d.id = (filters.empty() ? 1 : filters.rbegin()->second.id + 1);
+                filters[d.id] = d;
                 count++;
             }
             d.clear();
+            d.folder = root;
+            d.title = line.substr(1, line.size()-2);
         } else if (eq != string::npos) {
             string label = line.substr(0, eq);
             CUtil::trim(label);
@@ -186,17 +214,45 @@ int CFilterDescriptor::importFilters(const string& text,
                 stringstream ss;
                 ss << CUtil::trim(value);
                 ss >> d.windowWidth;
+            } else if (label == "PRIORITY") {
+                stringstream ss;
+                ss << CUtil::trim(value);
+                ss >> d.priority;
+            } else if (label == "ID") {
+                stringstream ss;
+                ss << CUtil::trim(value);
+                ss >> d.id;
             }
-            else if (label == "DEFAULTFILTER" ) {
+            else if (label == "DEFAULTFILTER") {
                 stringstream ss;
                 ss << CUtil::trim(value);
                 ss >> d.defaultFilter;
             }
-            else if (label == "TITLE"   ) CUtil::trim(d.title = value);
+            else if (label == "FOLDER" || label == "CATEGORY") {
+                string name;
+                int slash = -1;
+                do {
+                    slash = CUtil::getQuoted(value, name, slash, '/');
+                    if (!name.empty()) {
+                        set<int>& children = folders[d.folder].children;
+                        set<int>::iterator it;
+                        for (it = children.begin(); it != children.end(); it++) {
+                            if (folders[*it].name == name) break;
+                        }
+                        if (it != children.end()) {
+                            d.folder = *it;
+                        } else {
+                            int n = folders.rbegin()->first + 1;
+                            folders[n] = CFolder(n, name, d.folder);
+                            folders[d.folder].children.insert(n);
+                            d.folder = n;
+                        }
+                    }
+                } while (slash >= 0);
+            }
             else if (label == "VERSION" ) CUtil::trim(d.version = value);
             else if (label == "AUTHOR"  ) CUtil::trim(d.author = value);
             else if (label == "COMMENT" ) CUtil::trim(d.comment = value);
-            else if (label == "CATEGORY") CUtil::trim(d.category = value);
             else if (label == "HEADER"  ) CUtil::trim(d.headerName = value);
             else if (label == "URL"     ) d.urlPattern = value;
             else if (label == "BOUNDS"  ) d.boundsPattern = value;
@@ -209,24 +265,12 @@ int CFilterDescriptor::importFilters(const string& text,
 }
 
 
-/* Export a map to a string
- */
-string CFilterDescriptor::exportFilters(const map<string,CFilterDescriptor>& bank) {
-
-    stringstream out;
-    for (map<string,CFilterDescriptor>::const_iterator it = bank.begin();
-                it != bank.end(); it++) {
-        out << it->second.exportFilter();
-    }
-    return out.str();
-}
-
-
 /* Import Proxomitron filters from a string to a map.
  * Returns the number of filters imported.
  */
 int CFilterDescriptor::importProxomitron(const string& text,
-                            map<string,CFilterDescriptor>& bank) {
+                map<int,CFolder>& folders,
+                map<int,CFilterDescriptor>& filters, int root) {
 
     // Process text: lines will be terminated by \n (even from Mac text files)
     // and multiline values will have \r for inner newlines. The text will end
@@ -236,22 +280,24 @@ int CFilterDescriptor::importProxomitron(const string& text,
     str = CUtil::replaceAll(str, "\r",   "\n");
     str = CUtil::replaceAll(str, "\"\n        \"",  "\r");
     str = CUtil::replaceAll(str, "\"\n          \"",  "\r");
+    int priority = 999;
 
     CFilterDescriptor d;
+    d.folder = root;
     unsigned int i = 0, max = str.size(), count = 0;
     while (i < max) {
         unsigned int j = str.find("\n", i);
         string line = str.substr(i, j - i);
         unsigned int eq = line.find('=');
         if (line.empty()) {
-            d.category = CSettings::ref().getMessage("PROXOMITRON_CATEGORY");
             if (d.isValid()) {
-                while (bank.find(d.title) != bank.end())
-                    CUtil::increment(d.title);
-                bank[d.title] = d;
+                d.priority = priority--;
+                d.id = (filters.empty() ? 1 : filters.rbegin()->second.id + 1);
+                filters[d.id] = d;
                 count++;
             }
             d.clear();
+            d.folder = root;
         } else if (eq != string::npos) {
             string label = line.substr(0, eq);
             CUtil::trim(label);
@@ -297,23 +343,48 @@ int CFilterDescriptor::importProxomitron(const string& text,
 }
 
 
+/* Compare two filters for sorting by decreasing priority
+ */
+bool CFilterDescriptor::operator<(const CFilterDescriptor& d) const {
+    if (filterType != d.filterType)
+        return filterType < d.filterType;
+    if (priority != d.priority)
+        return priority > d.priority;
+    return title < d.title;
+}
+
+
 /* Compare two filter descriptions
  */
 bool CFilterDescriptor::operator ==(const CFilterDescriptor& d) const {
     return (
-        title == d.title &&
-        version == d.version &&
-        author == d.author &&
-        comment == d.comment &&
-        category == d.category &&
-        filterType == d.filterType &&
-        headerName == d.headerName &&
+        id              == d.id              &&
+        folder          == d.folder          &&
+        title           == d.title           &&
+        version         == d.version         &&
+        author          == d.author          &&
+        comment         == d.comment         &&
+        filterType      == d.filterType      &&
+        headerName      == d.headerName      &&
         multipleMatches == d.multipleMatches &&
-        windowWidth == d.windowWidth &&
-        boundsPattern == d.boundsPattern &&
-        urlPattern == d.urlPattern &&
-        matchPattern == d.matchPattern &&
-        replacePattern == d.replacePattern &&
-        defaultFilter == d.defaultFilter );
+        windowWidth     == d.windowWidth     &&
+        boundsPattern   == d.boundsPattern   &&
+        urlPattern      == d.urlPattern      &&
+        priority        == d.priority        &&
+        matchPattern    == d.matchPattern    &&
+        replacePattern  == d.replacePattern  &&
+        defaultFilter   == d.defaultFilter   );
 }
 
+
+/* Convenient function for getting the type name
+ */
+string CFilterDescriptor::typeName() const {
+
+    if (filterType == HEADOUT)
+        return CSettings::ref().getMessage("CONFIG_TYPE_OUT");
+    else if (filterType == HEADIN)
+        return CSettings::ref().getMessage("CONFIG_TYPE_IN");
+    else
+        return CSettings::ref().getMessage("CONFIG_TYPE_TEXT");
+}

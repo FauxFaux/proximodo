@@ -26,10 +26,10 @@
 #include "proxy.h"
 #include <wx/url.h>
 #include <wx/stream.h>
-#include "log.h"
 #include "util.h"
 #include "settings.h"
 #include "events.h"
+#include "log.h"
 
 using namespace std;
 
@@ -40,7 +40,7 @@ enum {
 
 
 BEGIN_EVENT_TABLE(CProxy, wxEvtHandler)
-  EVT_SOCKET(SERVER_ID, CProxy::OnServerEvent)
+    EVT_SOCKET(SERVER_ID, CProxy::OnServerEvent)
 END_EVENT_TABLE()
 
 
@@ -170,8 +170,8 @@ bool CProxy::openProxyPort() {
     
     // Setup the event handler and subscribe to connection events
     server->SetEventHandler(*this, SERVER_ID);
-    server->SetNotify(wxSOCKET_CONNECTION_FLAG | wxSOCKET_LOST);
-    server->Notify(TRUE);
+    server->SetNotify(wxSOCKET_CONNECTION_FLAG | wxSOCKET_LOST_FLAG);
+    server->Notify(true);
     accepting = true;
     wxIPV4address addr;
     server->GetLocal(addr);
@@ -231,22 +231,23 @@ void CProxy::refreshManagers() {
  */
 void CProxy::OnServerEvent(wxSocketEvent& event) {
 
+
     if (event.GetSocketEvent() == wxSOCKET_LOST) {
         // Error: the server socket closed
         closeProxyPort();
         return;
     }
-
+    
     CSettings& settings = CSettings::ref();
 
     // Create a socket for the new connection
     wxSocketBase *sock;
-    sock = server->Accept(FALSE);
+    sock = server->Accept(false);
     if (!sock) {
-        // Error: couldn't technically accept a new connection
+        // No connection to accept
         return;
     }
-
+    
     // Read the connection properties
     wxIPV4address local, peer;
     sock->GetLocal(local);
@@ -267,9 +268,11 @@ void CProxy::OnServerEvent(wxSocketEvent& event) {
     }
     
     // Log accepted connection
+    ++CLog::ref().numOpenSockets;
     CLog::ref().logProxyEvent(pmEVT_PROXY_TYPE_ACCEPT, peer);
+    CLog::ref().logProxyEvent(pmEVT_PROXY_TYPE_NEWSOCK, peer);
 
-    // Replace obsolete & unused managers
+    // Delete obsolete & unused managers
     vector<CRequestManager*>::iterator itm = managers.begin();
     while (itm != managers.end()) {
         if ((*itm)->available && !(*itm)->valid) {
@@ -301,7 +304,6 @@ void CProxy::OnServerEvent(wxSocketEvent& event) {
     if (itm!=managers.end()) {
         // Reuse an existing available manager
         manager = *itm;
-        manager->available = false;
     } else {
         // Create and record a new manager
         manager = new CRequestManager();

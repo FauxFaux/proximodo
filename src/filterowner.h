@@ -33,11 +33,6 @@
 
 using namespace std;
 
-struct SHeader {
-    string name;
-    string content;
-};
-
 /* class CFilterOwner
  * This class only contains and implements what is common to
  * filter owners (such as CRequestManager and filter tester window).
@@ -65,8 +60,8 @@ public:
 
     map<string,string> variables;       // variables for $SET and $GET
 
-    vector<SHeader>    outHeaders;      // Outgoing headers
-    vector<SHeader>    inHeaders;       // Incoming headers
+    map<string,string> outHeaders;      // Outgoing headers
+    map<string,string> inHeaders;       // Incoming headers
     
     string fileType;                    // useable by $TYPE
 

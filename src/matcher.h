@@ -68,6 +68,9 @@ public:
 
     // Filter the contains memory stack and table
     CFilter& filter;
+    
+    // Tells if pattern is * or \0-9
+    bool isStar();
 
 private:
     // Text string on which the matcher will operate

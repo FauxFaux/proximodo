@@ -34,6 +34,7 @@
 #include <wx/listctrl.h>
 #include <wx/checkbox.h>
 #include <wx/bmpbuttn.h>
+#include <wx/treectrl.h>
 #include <wx/button.h>
 #include <wx/event.h>
 #include <string>
@@ -190,6 +191,26 @@ public:
     void OnEraseEvent(wxEraseEvent& event) { }
 
 private:
+    DECLARE_EVENT_TABLE()
+};
+
+
+/* This class adds status help and icon click detection to the tree control
+ */
+class pmTreeCtrl : public wxTreeCtrl {
+
+public:
+    pmTreeCtrl( wxWindow* parent, wxWindowID id,
+                const wxPoint& pos = wxDefaultPosition,
+                const wxSize& size = wxDefaultSize,
+                long style = wxTR_HAS_BUTTONS );
+    virtual ~pmTreeCtrl() { }
+    void OnMouseEvent(wxMouseEvent& event);
+    virtual void SetHelpText(const wxString& text) { helpText = text.c_str(); }
+    virtual wxString GetHelpText() const { return helpText.c_str(); }
+
+private:
+    string helpText;
     DECLARE_EVENT_TABLE()
 };
 

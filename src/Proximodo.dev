@@ -61,20 +61,20 @@ BuildCmd=
 
 [VersionInfo]
 Major=0
-Minor=1
+Minor=2
 Release=0
 Build=0
 LanguageID=1033
 CharsetID=1252
 CompanyName=(c) Antony Boucher
-FileVersion=0.1
+FileVersion=0.2
 FileDescription=Proximodo Project
 InternalName=
-LegalCopyright=To be distributed under GNU GPL
+LegalCopyright=Distributed under GNU GPL
 LegalTrademarks=
 OriginalFilename=
 ProductName=Proximodo
-ProductVersion=0.1
+ProductVersion=0.2
 AutoIncBuildNr=0
 
 [Unit4]

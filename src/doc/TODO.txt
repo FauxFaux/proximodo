@@ -1,27 +1,31 @@
-Distributing:
-
-- Write the English HTML help pages
-- Write the French HTML help pages
-- Make an installer (NSIS?)
-- Design a simple website
-- Put project on Sourceforge
-- Design a nice website
-
 GUI:
 
+- Menu option to import a whole Proxomitron configuration (filters, config, lists, proxies, options)
+- Move filtering checkboxes and active config dropdown to welcome screen
+- Add 'Abort' button and proxy status info on welcome screen
+- Button to come back to welcome screen
 - Design an "Add to List" dialog
 - Use this dialog in tray icon, and for $ADDLSTBOX()
 - Make very minor changes in code so that it compiles and runs smoothly on Mac, Linux or Unix platforms
+- Generate .PAC files for easy proxy changes in browsers
+- Stealth mode for use on public computers (or password on tray icon usage? must be secure)
+- Additional test window with Pattern field, for testing some expression instead of current filter
 
 Engine:
 
 - Estimate and improve performance and stability
+- Some syntax for commenting inside a pattern
+- Command for inserting application-defined variables in replace pattern (ex: filter name, listening port....)
 - \x and URL commands will not be implemented (they are called 'vestigial' by Scott)
+- \d macro for [0-9]
+- New commands: $INC(var[,num]) $DEC(var) $ADD(var,pattern) $MUL(var,pattern)
 
 Proxy:
 
+- Find why some images don't load (best example: Images section on Altavista -> no image loads at all)
 - Next proxy login/password settings
-- Support 206 response code
+- Persistent connections should expire after n seconds
+- Support for 206 response code
 - Fix gzip/deflate output, that seems to be corrupted after a few KB (use another zlib version?)
 - HTML debug info
 - maximum HTTP 1.1 compliance
@@ -29,3 +33,11 @@ Proxy:
 - SSL support (https)
 - Let FTP through (currently, only works when HTTP request is redirected to next proxy)
 - Act as a real proxy when not forwarding to a next proxy
+- Add more %%name%% variables for html error page
+- Add a way to have specific filters be the only ones to act on specific URLs (e.g if the URL
+  matches the 'Specific URL' pattern of 1+ filters, all other non-matching filters are bypassed)
+
+Distributing:
+
+- Write the French and Japanese HTML help pages
+- Design a nice website

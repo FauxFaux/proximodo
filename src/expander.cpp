@@ -277,10 +277,10 @@ string CExpander::expand(const string& pattern, CFilter& filter) {
                     CUtil::trim(content);
                     CUtil::lower(content);
                     if (content == "true") {
-                        filter.owner.bypassBody = true;
+                        filter.owner.bypassBody = false;
                         filter.owner.bypassBodyForced = true;
                     } else if (content == "false") {
-                        filter.owner.bypassBody = false;
+                        filter.owner.bypassBody = true;
                         filter.owner.bypassBodyForced = true;
                     }
 
@@ -386,45 +386,31 @@ string CExpander::expand(const string& pattern, CFilter& filter) {
 
                 } else if (command == "IHDR") {
 
-                    bool ret = false;
+                    int end, reached;
                     unsigned int colon = content.find(':');
                     if (colon == string::npos) { pos=0; content = ":"; }
-                    string value = content.substr(colon + 1);
+                    string pattern = content.substr(colon + 1);
                     string name = content.substr(0, colon);
                     CUtil::trim(name);
                     CUtil::lower(name);
-                    vector<SHeader>::iterator it;
-                    for (it = filter.owner.inHeaders.begin();
-                                it != filter.owner.inHeaders.end(); it++) {
-                        if (it->name == name) {
-                            int end, reached;
-                            ret = CMatcher::match(it->content, value, filter,
-                                         0, it->content.size(), end, reached);
-                            break;
-                        }
-                    }
-                    if (!ret) index = size;
+                    string value = filter.owner.inHeaders[name];
+                    if (!CMatcher::match(value, pattern, filter, 0,
+                                         value.size(), end, reached))
+                        index = size;
 
                 } else if (command == "OHDR") {
 
-                    bool ret = false;
+                    int end, reached;
                     unsigned int colon = content.find(':');
                     if (colon == string::npos) { pos=0; content = ":"; }
-                    string value = content.substr(colon + 1);
+                    string pattern = content.substr(colon + 1);
                     string name = content.substr(0, colon);
                     CUtil::trim(name);
                     CUtil::lower(name);
-                    vector<SHeader>::iterator it;
-                    for (it = filter.owner.outHeaders.begin();
-                                it != filter.owner.outHeaders.end(); it++) {
-                        if (it->name == name) {
-                            int end, reached;
-                            ret = CMatcher::match(it->content, value, filter,
-                                         0, it->content.size(), end, reached);
-                            break;
-                        }
-                    }
-                    if (!ret) index = size;
+                    string value = filter.owner.outHeaders[name];
+                    if (!CMatcher::match(value, pattern, filter, 0,
+                                         value.size(), end, reached))
+                        index = size;
 
                 } else if (command == "DTM") {
 

@@ -23,6 +23,10 @@
 //------------------------------------------------------------------
 
 
+#include "util.h"
+
+
+
 #include "controls.h"
 #include "events.h"
 
@@ -198,4 +202,35 @@ pmStaticText::pmStaticText( wxWindow* parent, wxWindowID id,
         wxStaticText(parent, id, label, pos, size, style) {
 }
 
+
+/* Custom tree control
+ */
+BEGIN_EVENT_TABLE(pmTreeCtrl, wxTreeCtrl)
+    EVT_ENTER_WINDOW(pmTreeCtrl::OnMouseEvent)
+    EVT_LEAVE_WINDOW(pmTreeCtrl::OnMouseEvent)
+    EVT_LEFT_DOWN(pmTreeCtrl::OnMouseEvent)
+END_EVENT_TABLE()
+
+pmTreeCtrl::pmTreeCtrl( wxWindow* parent, wxWindowID id, const wxPoint& pos,
+                        const wxSize& size, long style ) :
+        wxTreeCtrl(parent, id, pos, size, style) {
+}
+
+void pmTreeCtrl::OnMouseEvent(wxMouseEvent& event) {
+
+    event.Skip();   // (let the base class receive the event too)
+    if (event.GetEventType() == wxEVT_LEFT_DOWN) {
+        int flags;
+        wxTreeItemId id = HitTest(event.GetPosition(), flags);
+        if (id.IsOk() && (flags & wxTREE_HITTEST_ONITEMICON)) {
+            wxTreeEvent ev(wxEVT_COMMAND_TREE_STATE_IMAGE_CLICK, GetId());
+            ev.SetItem(id);
+            ProcessEvent(ev);
+        }
+    } else {
+        if (helpText.empty()) return;
+        CStatusEvent ev( event.Entering() ? helpText : string("") );
+        ProcessEvent(ev);
+    }
+}
 

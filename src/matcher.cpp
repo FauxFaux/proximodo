@@ -49,7 +49,14 @@ CMatcher::CMatcher(const string& text, const string& pattern, CFilter& filter)
     int pos = 0;
 
     root = NULL;
-    root = expr(pattern, pos, pattern.size()); // (this call may throw an exception)
+    if (!pattern.empty() && pattern[0] == '^') {
+        // special case: inverted pattern
+        root = new CNode_Negate(this->text, reached,
+                       expr(pattern, ++pos, pattern.size()));
+    } else {
+        // (this call may throw an exception)
+        root = expr(pattern, pos, pattern.size()); 
+    }
     root->setNextNode();
 
     // another reason to throw : the pattern was not completely
@@ -65,6 +72,13 @@ CMatcher::CMatcher(const string& text, const string& pattern, CFilter& filter)
 CMatcher::~CMatcher() {
 
     if (root) delete root;
+}
+
+
+/* Tells if pattern is * or \0-9
+ */
+bool CMatcher::isStar() {
+    return (root && (root->id() == CNode::STAR || root->id() == CNode::MEMSTAR));
 }
 
 
@@ -444,7 +458,33 @@ CNode* CMatcher::code(const string& pattern, int& pos, int stop) {
             CNode_Chars *node = new CNode_Chars(text, reached, "", allow);
             for (; pos < stop && (token = pattern[pos]) != ']'; ++pos) {
 
-                if (token == '\\' && pos+1 < stop) {
+                if (token == '%' && pos+2 < stop) {
+
+                    // %xx notation (case-sensitive)
+                    char c1 = toupper(pattern[pos+1]);
+                    char c2 = toupper(pattern[pos+2]);
+                    int ascii;
+                    if (c1 >= '0' && c1 <= '9') {
+                        ascii = (c1 - '0') * 16;
+                    } else if (c1 >= 'A' && c1 <= 'F') {
+                        ascii = (c1 - 'A' + 10) * 16;
+                    } else {
+                        node->add(token);
+                        continue;
+                    }
+                    if (c2 >= '0' && c2 <= '9') {
+                        ascii += (c2 - '0');
+                    } else if (c2 >= 'A' && c2 <= 'F') {
+                        ascii += (c2 - 'A' + 10);
+                    } else {
+                        node->add(token);
+                        continue;
+                    }
+                    node->add(ascii);
+                    pos += 2;
+                    
+                } else if (token == '\\' && pos+1 < stop) {
+
                     // escaped characters must be decoded
                     token = pattern[++pos];
                     switch (token) {
@@ -454,16 +494,24 @@ CNode* CMatcher::code(const string& pattern, int& pos, int stop) {
                         // Only those three are not to be taken as is
                     }
                     node->add(token);
+                    
                 } else if (pos+2 < stop && pattern[pos+1] == '-') {
+
                     // range of characters a-z
                     // we add each character in the range
                     unsigned char i = tolower(token);
                     unsigned char j = tolower(pattern[pos+2]);
-                    for (; i<=j; i++) node->add(i);
+                    for (; i<=j; i++) {
+                        node->add(i);
+                        node->add(toupper(i));
+                    }
                     pos += 2;
+                    
                 } else {
+
                     // normal character
-                    node->add(token);
+                    node->add(tolower(token));
+                    node->add(toupper(token));
                 }
             }
             // Check if the [] is closed

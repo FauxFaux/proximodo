@@ -44,8 +44,7 @@ private:
     // IDs
     enum {
         // Menu items
-        ID_OPEN = 1200,
-        ID_LOG,
+        ID_LOG = 1200,
         ID_EXIT,
         ID_USEPROXY,
         ID_FILTERNONE,

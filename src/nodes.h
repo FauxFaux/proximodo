@@ -213,7 +213,7 @@ private:
 public:
     CNode_Chars(const string& text, int& reached, string c, bool allow=true);
     ~CNode_Chars() { }
-    void add(char c);
+    void add(unsigned char c);
     int consume();
     bool mayMatch(bool* tab);
     NODE_ID(CHARS)

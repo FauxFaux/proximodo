@@ -24,11 +24,15 @@
 
 
 #include "managerthread.h"
+#include "log.h"
+#include "events.h"
 
 /* Constructor
  */
 CManagerThread::CManagerThread(wxSocketBase* sock, CRequestManager* manager) :
         wxThread(wxTHREAD_JOINABLE), sock(sock), manager(manager) {
+
+    manager->available = false;
 }
 
 
@@ -38,7 +42,9 @@ CManagerThread::CManagerThread(wxSocketBase* sock, CRequestManager* manager) :
  * triggering the data processing.
  */
 wxThread::ExitCode CManagerThread::Entry() {
+
     manager->manage(sock);
+    manager->available = true;
     return 0;
 }
 

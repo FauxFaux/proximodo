@@ -40,6 +40,12 @@
 using namespace std;
 
 
+/* Structures for request/response lines
+ */
+struct SRequestLine { string method, url, ver; };
+struct SResponseLine { string ver, code, msg; };
+
+
 /* The request manager is the proxy by itself: it reads the browser's request
  * on the acquired socket, processes OUT headers, connects to the requested
  * website, filters IN headers and html data, and sends it back to the browser.
@@ -105,7 +111,7 @@ private:
     STEP   outStep;
     int    outSize;
     bool   outChunked;
-    string requestLine;
+    SRequestLine requestLine;
 
     bool   receiveOut();
     string recvOutBuf;
@@ -130,7 +136,7 @@ private:
     STEP   inStep;
     int    inSize;
     bool   inChunked;
-    string responseLine;
+    SResponseLine responseLine;
 
     bool   receiveIn();
     string recvInBuf;

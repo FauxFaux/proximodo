@@ -225,7 +225,8 @@ string CUtil::replaceAll(const string& str, string s1, string s2) {
 // Get the content of a binary file
 string CUtil::getFile(string filename) {
     trim(filename);
-    replaceAll(filename, "\\\\", "/");
+    replaceAll(filename, "\\\\", "/");  // for correctly decoding $FILE()
+    filename = CUtil::makePath(filename);
     wxFile file;
     int size;
     if (wxFile::Exists(filename.c_str())
@@ -346,13 +347,10 @@ void CUtil::openBrowser(const string& path) {
 
     wxFileType* type = wxTheMimeTypesManager->GetFileTypeFromExtension( "html");
     if (!type) return;
-    wxFileName fn(path.c_str());
+    wxFileName fn(CUtil::makePath(path).c_str());
     fn.MakeAbsolute();
-    string url = "file://" + CUtil::replaceAll(fn.GetFullPath().c_str(), "\\", "/");
     wxString command;
-    if (!type->GetOpenCommand(&command, wxString(url.c_str()))) return;
-    if (CUtil::noCaseBeginsWith("file://", command.c_str()))
-        command.Remove(0, 7);
+    if (!type->GetOpenCommand(&command, fn.GetFullPath())) return;
     wxExecute(command, wxEXEC_ASYNC);
 }
 
@@ -362,12 +360,10 @@ void CUtil::openNotepad(const string& path) {
 
     wxFileType* type = wxTheMimeTypesManager->GetFileTypeFromExtension( "txt");
     if (!type) return;
-    wxFileName fn(path.c_str());
+    wxFileName fn(CUtil::makePath(path).c_str());
     fn.MakeAbsolute();
     wxString command;
     if (!type->GetOpenCommand(&command, fn.GetFullPath())) return;
-    if (CUtil::noCaseBeginsWith("file://", command.c_str()))
-        command.Remove(0, 7);
     wxExecute(command, wxEXEC_ASYNC);
 }
 
@@ -419,5 +415,75 @@ void CUtil::thaw(wxWindow* window) {
         }
         node = node->GetNext();
     }
+}
+
+
+// Converts / to the platform's path separator
+string CUtil::makePath(const string& str) {
+
+    unsigned int len = str.length();
+    if (!len) return str;
+    stringstream sep;
+    sep << wxFileName::GetPathSeparator();
+    return replaceAll(str, "/", sep.str());
+}
+
+
+// Converts platform's path separators to /
+string CUtil::unmakePath(const string& str) {
+
+    unsigned int len = str.length();
+    if (!len) return str;
+    stringstream sep;
+    sep << wxFileName::GetPathSeparator();
+    return replaceAll(str, sep.str(), "/");
+}
+
+
+// Quote a string if it contains quotes or special characters
+string CUtil::quote(string str, string codes) {
+
+    trim(str);
+    if (   str.find("\"") == string::npos
+        || str.find_first_of(codes) == string::npos )
+        return str;
+    else
+        return "\"" + replaceAll(str, "\"", "\"\"") + "\"";
+}
+
+
+// Reverse of quote()
+string CUtil::unquote(string str) {
+
+    trim(str);
+    unsigned int size = str.length();
+    if (size < 2 || str[0] != '\"' || str[size-1] != '\"') return str;
+    str = replaceAll(str.substr(1, size-2), "\"\"", "\"");
+    return trim(str);
+}
+
+
+// Find the end of the possibly-quoted substring and get the unquoted value
+int CUtil::getQuoted(const string& str, string& out, int start, char token) {
+    // use start=-1 for first attempt, then start, stop when start<0
+
+    if (start < -1) {
+        out.clear();
+        return start;
+    }
+    start++;
+    unsigned int quote = str.find('\"', start);
+    unsigned int stop = str.find(token, start);
+    if (quote < stop) {
+        unsigned int size = str.length();
+        stop = str.find('\"', quote+1);
+        while (stop != string::npos && stop+1 < size && str[stop+1] == '\"')
+            stop = str.find('\"', stop+2);
+        if (stop != string::npos) stop++;
+        out = unquote(str.substr(start, stop-start));
+    } else {
+        trim(out = str.substr(start, stop-start));
+    }
+    return stop == string::npos ? -2 : (int)stop;
 }
 

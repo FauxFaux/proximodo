@@ -27,7 +27,7 @@
 
 /* Functions to log event
  */
-void CLog::logProxyEvent(pmEVT_PROXY_TYPE type, wxIPV4address& addr) {
+void CLog::logProxyEvent(pmEVT_PROXY_TYPE type, const wxIPV4address& addr) {
 
     if (proxyListeners.empty()) return;
     CProxyEvent event(type, addr);
@@ -36,8 +36,8 @@ void CLog::logProxyEvent(pmEVT_PROXY_TYPE type, wxIPV4address& addr) {
         (*it)->AddPendingEvent(event);
 }
 
-void CLog::logHttpEvent(pmEVT_HTTP_TYPE type, wxIPV4address& addr,
-                          int req, string& text) {
+void CLog::logHttpEvent(pmEVT_HTTP_TYPE type, const wxIPV4address& addr,
+                          int req, const string& text) {
 
     if (httpListeners.empty()) return;
     CHttpEvent event(type, addr, req, text);
@@ -47,7 +47,7 @@ void CLog::logHttpEvent(pmEVT_HTTP_TYPE type, wxIPV4address& addr,
 }
 
 void CLog::logFilterEvent(pmEVT_FILTER_TYPE type, int req,
-                            string& title, string& text) {
+                            const string& title, const string& text) {
 
     if (filterListeners.empty()) return;
     CFilterEvent event(type, req, title, text);

@@ -103,6 +103,45 @@ void CSettings::init() {
 }
 
 
+/* Remove inexistant filter ids from configs
+ */
+void CSettings::cleanConfigs() {
+
+    for (map<string, set<int> >::iterator itm = configs.begin();
+                itm != configs.end(); itm++) {
+        set<int> ids;
+        for (set<int>::iterator its = itm->second.begin();
+                    its != itm->second.end(); its++) {
+            if (filters.find(*its) != filters.end()) {
+                ids.insert(*its);
+            }
+        }
+        itm->second = ids;
+    }
+}
+
+
+/* Rebuild tree structure in folders
+ */
+void CSettings::cleanFolders() {
+
+    folders[0] = CFolder(0, "root", 0);
+    for (map<int, CFolder>::iterator it = folders.begin();
+                it != folders.end(); it++) {
+        it->second.children.clear();
+        if (folders.find(it->second.parent) == folders.end()) {
+            it->second.parent = 0;
+        }
+    }
+    for (map<int, CFolder>::iterator it = folders.begin();
+                it != folders.end(); it++) {
+        if (it->first != 0) {
+            folders[it->second.parent].children.insert(it->first);
+        }
+    }
+}
+
+
 /* Checks if settings have been saved, or asks the user.
  */
 void CSettings::save(bool prompt) {
@@ -218,18 +257,32 @@ void CSettings::saveSettings() {
     addLine (f, "[Lists]");
     for (map<string,string>::iterator it = listNames.begin();
                 it != listNames.end(); it++) {
-        addLine (f, "List = " + it->first + ", " + it->second);
+        addLine (f, "List = " + CUtil::quote(it->first)
+                       + ", " + CUtil::quote(it->second));
     }
-    for (map<string, vector<string> >::iterator it1 = config.begin();
-                it1 != config.end(); it1++) {
-        addLine (f, "");
-        addLine (f, "[" + it1->first + "]");
-        for (vector<string>::iterator it2 = it1->second.begin();
+    addLine (f, "");
+    addLine (f, "[Folders]");
+    for (map<int,CFolder>::iterator it = folders.begin();
+                it != folders.end(); it++) {
+        stringstream ss;
+        ss << "Folder = " << CUtil::quote(it->second.name);
+        ss << ", " << it->first;
+        ss << ", " << it->second.parent;
+        if (it->second.defaultFolder) ss << ", " << it->second.defaultFolder;
+        if (it->first) addLine (f, ss.str());
+    }
+    addLine (f, "");
+    addLine (f, "[Configurations]");
+    for (map<string, set<int> >::iterator it1 = configs.begin();
+                it1 != configs.end(); it1++) {
+        stringstream ss;
+        ss << "Config = " << CUtil::quote(it1->first);
+        for (set<int>::iterator it2 = it1->second.begin();
                 it2 != it1->second.end(); it2++) {
-            addLine (f, "Config = " + it1->first + ", " + *it2);
+            ss << ", " << *it2;
         }
+        addLine (f, ss.str());
     }
-    
     f.Write();
     f.Close();
 }
@@ -239,10 +292,10 @@ void CSettings::saveSettings() {
  */
 void CSettings::loadSettings() {
 
-    config.clear();
+    configs.clear();
     proxies.clear();
     listNames.clear();
-    
+
     wxTextFile f(FILE_SETTINGS);
     if (!f.Open()) return;
     while (f.GetCurrentLine() < f.GetLineCount()) {
@@ -282,29 +335,47 @@ void CSettings::loadSettings() {
         }
         else if (label == "CURRENTCONFIG") {
             currentConfig = value;
-            config[value];
+            configs[value];
         }
         else if (label == "LIST") {
-            unsigned int comma = value.find(",");
-            if (comma == string::npos) continue;
-            string name = value.substr(0, comma);
-            string path = value.substr(comma + 1);
-            CUtil::trim(name);
-            CUtil::trim(path);
-            if (name.empty() || path.empty()) continue;
+            string name, path;
+            int comma = CUtil::getQuoted(value, name, -1, ',');
+            if (name.empty()) continue;
+            comma = CUtil::getQuoted(value, path, comma, ',');
+            if (path.empty()) continue;
             listNames[name] = path;
         }
         else if (label == "CONFIG") {
-            unsigned int comma = value.find(",");
-            if (comma == string::npos) continue;
-            string name = value.substr(0, comma);
-            string title = value.substr(comma + 1);
-            CUtil::trim(name);
-            CUtil::trim(title);
-            if (name.empty() || title.empty()) continue;
-            config[name].push_back(title);
+            string name, param;
+            int comma = CUtil::getQuoted(value, name, -1, ',');
+            if (name.empty()) continue;
+            set<int>& ids = configs[name];
+            while (comma >= 0) {
+                comma = CUtil::getQuoted(value, param, comma, ',');
+                stringstream ss(param);
+                int id = -1;
+                ss >> id;
+                ids.insert(id);
+            }
+        }
+        else if (label == "FOLDER") {
+            string s1, s2, s3, s4;
+            stringstream ss2, ss3, ss4;
+            int id2 = 0, id3 = 0, id4 = 0;
+            int comma = -1;
+            comma = CUtil::getQuoted(value, s1, comma, ',');
+            if (s1.empty()) continue;
+            comma = CUtil::getQuoted(value, s2, comma, ',');
+            ss2 << s2; ss2 >> id2;
+            if (id2 == 0) continue;
+            comma = CUtil::getQuoted(value, s3, comma, ',');
+            ss3 << s3; ss3 >> id3;
+            comma = CUtil::getQuoted(value, s4, comma, ',');
+            ss4 << s4; ss4 >> id4;
+            folders[id2] = CFolder(id2, s1, id3, id4);
         }
     }
+    cleanFolders();
     f.Close();
 }
 
@@ -443,7 +514,7 @@ void CSettings::saveFilters() {
 
     wxFile f(FILE_FILTERS, wxFile::write);
     if (f.IsOpened()) {
-        f.Write(CFilterDescriptor::exportFilters(filterbank).c_str());
+        f.Write(CFilterDescriptor::exportFilters(folders, filters).c_str());
     }
 }
 
@@ -463,50 +534,40 @@ void CSettings::loadFilters() {
         }
     }
 
-    // Decode filters into a temporary filter bank
-    map<string, CFilterDescriptor> bank;
-    CFilterDescriptor::importFilters(text.str(), bank);
+    // Decode filters into the filter bank
+    filters.clear();
+    CFilterDescriptor::importFilters(text.str(), folders, filters);
 
-    // Transfer them one by one into settings' filter bank
-    filterbank.clear();
-    for (map<string, CFilterDescriptor>::iterator it = bank.begin();
-                it != bank.end(); it++) {
+    // Apply language's default filters' descriptions
+    for (map<int,CFilterDescriptor>::iterator it = filters.begin();
+                it != filters.end(); it++) {
 
-        // Change titles, comments and categories of (unmodified) default filters
-        // according to language file
-        string oldTitle = it->second.title;
+        // Change titles, comments and categories of (unmodified)
+        // default filters according to language file
         if (it->second.defaultFilter) {
             stringstream prefix;
             prefix << "FILTER_" << it->second.defaultFilter << "_";
-            string mess;
-            mess = getMessage(prefix.str() + "TITLE");
-            if (mess != prefix.str() + "TITLE")
-                it->second.title = mess;
-            mess = getMessage(prefix.str() + "CATEGORY");
-            if (mess != prefix.str() + "CATEGORY")
-                it->second.category = mess;
-            mess = getMessage(prefix.str() + "COMMENT");
-            if (mess != prefix.str() + "COMMENT")
-                it->second.comment = mess;
-        }
-
-        // Ensure new titles do not cause overrides
-        while (filterbank.find(it->second.title) != filterbank.end())
-            CUtil::increment(it->second.title);
-
-        // Insert into filterbank
-        filterbank[it->second.title] = it->second;
-
-        // Update title in configurations
-        if (oldTitle != it->second.title) {
-            for (map<string, vector<string> >::iterator itm = config.begin();
-                    itm != config.end(); itm++) {
-                for (vector<string>::iterator itv = itm->second.begin();
-                        itv != itm->second.end(); itv++) {
-                    if (*itv == oldTitle) *itv = it->second.title;
-                }
-            }
+            string mess, text;
+            mess = prefix.str() + "TITLE";
+            text = getMessage(mess);
+            if (text != mess) it->second.title = text;
+            mess = prefix.str() + "COMMENT";
+            text = getMessage(mess);
+            if (text != mess) it->second.comment = text;
         }
     }
+    
+    // Apply language's default folders' names
+    for (map<int,CFolder>::iterator it = folders.begin();
+                it != folders.end(); it++) {
+        if (it->second.defaultFolder) {
+            stringstream mess;
+            mess << "FOLDER_" << it->second.defaultFolder << "_NAME";
+            string text = getMessage(mess.str());
+            if (text != mess.str()) it->second.name = text;
+        }
+    }
+
+    cleanConfigs();
 }
 

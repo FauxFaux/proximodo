@@ -38,6 +38,7 @@ using namespace std;
  */
 BEGIN_EVENT_TABLE(CLogFrame, wxFrame)
     EVT_CLOSE  (CLogFrame::OnClose)
+    EVT_SHOW   (CLogFrame::OnShow)
     EVT_BUTTON (ID_CLEARBUTTON, CLogFrame::OnCommand)
     EVT_BUTTON (ID_STARTBUTTON, CLogFrame::OnCommand)
     EVT_PROXY  (CLogFrame::OnProxyEvent)
@@ -140,6 +141,15 @@ void CLogFrame::OnClose(wxCloseEvent& event) {
         startButton->SetLabel(settings.getMessage("LOG_BUTTON_START").c_str());
         active = false;
     }
+}
+
+
+/* Turn on the display when the window appears
+ */
+void CLogFrame::OnShow(wxShowEvent& event) {
+
+    startButton->SetLabel(settings.getMessage("LOG_BUTTON_STOP").c_str());
+    active = true;
 }
 
 

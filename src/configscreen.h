@@ -33,8 +33,21 @@
 #include <vector>
 #include "controls.h"
 #include "windowcontent.h"
+#include "editscreen.h"
 
 using namespace std;
+
+/* Tree item data
+ */
+class CItemData : public wxTreeItemData {
+public:
+    CItemData(int id, bool folder, int state = 0) :
+                id(id), folder(folder), state(state) {}
+    int id;
+    bool folder;
+    int state;    // 0 unchecked, 1 checked, 2 some children checked
+};
+
 
 /* This class creates a box sizer to be set as the main frame sizer.
  * It display the filter bank list and an editable configuration.
@@ -48,56 +61,79 @@ public:
 private:
     // Variable management functions
     void revert(bool confirm);
-    void apply(bool confirm);
+    void apply (bool confirm);
     bool hasChanged();
-    void sortList(int numcol);
-    void displayConfig();
-    void selectItem(long index);
+    void checkSelection();
+    void refreshEditWindow();
+    void simplifySelection();
+    string exportSelection();
+    wxTreeItemId getSelectionId();
+    int  populate        (wxTreeItemId id);
+    void showStates      (wxTreeItemId id);
+    void showParentStates(wxTreeItemId id);
+    void unselectFolder  (wxTreeItemId id);
+    void setStates       (wxTreeItemId id, int state);
+    void deleteItem      (wxTreeItemId id, bool update);
+    void exportItem      (wxTreeItemId id, int root, stringstream& out);
+    void deleteSelection(bool update = true);
     string makeNewName(string oldname, string newname);
+    void importFilters(const string& text, bool proxo = false);
 
     // Managed variables
-    map<string, vector<string> > config;   // name, list of filter titles
+    map<string, set<int> > configs;
+    map<int, CFilterDescriptor> filters;
+    map<int, CFolder> folders;
 
     // GUI variables
-    int sortedColumn;
-    int sortedDirection;
     string newActiveConfig;
     string editedConfigName;
-    vector<string> editedConfig;
-    map<string, string> categories;        // title, category
-    map<string, string> types;             // title, filter type
+    wxTreeItemId rootId;
+    wxTreeItemId currentId;
+    wxTreeItemId selectionId;
+    wxArrayTreeItemIds dragNDrop;
+
+    // Non-modal edit window
+    CEditScreen* editWindow;
+    CFilterDescriptor blank;
 
     // Controls
 	pmComboBox *nameEdit;
-	pmListCtrl *allList;
-	pmListCtrl *okList;
+	pmTreeCtrl *tree;
 	pmTextCtrl *commentText;
 
-    // Event handling function
+    // Event handling functions
     void OnCommand(wxCommandEvent& event);
-    void OnListEvent(wxListEvent& event);
+    void OnTreeEvent(wxTreeEvent& event);
 
     // IDs
     enum {
         // Controls' ID
-        ID_ALLLIST = 1600,
-        ID_OKLIST,
-        ID_DOWNBUTTON,
-        ID_UPBUTTON,
-        ID_REMOVEBUTTON,
-        ID_ADDBUTTON,
+        ID_COMMENTTEXT = 1600,
+        ID_TREE,
         ID_NAMEEDIT,
-        ID_COMMENTTEXT,
         // Menu's ID
         ID_CONFIGNEW,
         ID_CONFIGDUPLICATE,
         ID_CONFIGDELETE,
         ID_CONFIGREVERT,
         ID_CONFIGAPPLY,
-        ID_CONFIGADD,
-        ID_CONFIGREMOVE,
-        ID_CONFIGMOVEUP,
-        ID_CONFIGMOVEDOWN
+        ID_FOLDERSNEW,
+        ID_FILTERSNEW,
+        ID_FILTERSDELETE,
+        ID_FILTERSEDIT,
+        ID_FILTERSCHECK,
+        ID_FILTERSEXPORT,
+        ID_FILTERSIMPORT,
+        ID_FILTERSPROXOMITRON,
+        ID_FILTERSENCODE,
+        ID_FILTERSDECODE,
+        // Buttons' ID
+        ID_ADDFOLDBUTTON,
+        ID_ADDFILTBUTTON,
+        ID_TRASHBUTTON,
+        ID_EDITBUTTON,
+        ID_REVERTBUTTON,
+        ID_APPLYBUTTON
     };
 
     // Event table

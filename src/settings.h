@@ -59,7 +59,7 @@ using namespace std;
  * - Exiting application: closeProxyPort(), abortConnections()
  * - loadSettings(): closeProxyPort(), refreshManagers(), openProxyPort()
  * - Changing proxyPort: closeProxyPort(), openProxyPort()
- * - loadFilters(), changing currentConfig / config / filters used in current
+ * - loadFilters(), changing currentConfig / configs / filters used in current
  *   config: refreshManagers()
  */
 class CSettings {
@@ -88,15 +88,22 @@ public:
     bool           settingsChanged;// set to true when settings are modified
     bool           modified;       // set to true when settings/filters are modified
 
-    map<string, vector<string> >   config;     // config name, list of filter titles
-    map<string, CFilterDescriptor> filterbank; // filter name, description
-    map<string, string>            listNames;  // list name, file path
-    map<string, vector<string> >   lists;      // list name, content
+    map<int, CFilterDescriptor>  filters;    // filter name, description
+    map<int, CFolder>            folders;    // folder id, folder data
+    map<string, set<int> >       configs;    // config name, set of filter titles
+    map<string, string>          listNames;  // list name, file path
+    map<string, vector<string> > lists;      // list name, content
+    
+    // Remove inexistant filter ids from config
+    void cleanConfigs();
+    
+    // Rebuild tree structure in folders
+    void cleanFolders();
 
     // Save settings and filters.
     // If prompt is true, we only save if settings changed AND user agrees
     void save(bool prompt = false);
-
+    
     // Load settings and filters.
     void load();
 

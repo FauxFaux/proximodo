@@ -41,13 +41,11 @@
 
 #include "welcomescreen.h"
 #include "settingsscreen.h"
-#include "editscreen.h"
 #include "configscreen.h"
 #include "logframe.h"
 
 #include "images/btn_settings.xpm"
 #include "images/btn_log.xpm"
-#include "images/btn_filters.xpm"
 #include "images/btn_config.xpm"
 #include "images/btn_help.xpm"
 #include "images/btn_quit.xpm"
@@ -108,22 +106,18 @@ CMainFrame::CMainFrame(const wxPoint& position)
 
     // Toolbar
     wxToolBar* toolbar = CreateToolBar(wxTB_TEXT);
-    toolbar->AddTool(ID_SETTINGS,
-        settings.getMessage("BUTTON_SETTINGS").c_str(), btn_settings_xpm);
-    toolbar->SetToolLongHelp(ID_SETTINGS,
-        settings.getMessage("BUTTON_SETTINGS_TIP").c_str());
     toolbar->AddTool(ID_LOG,
         settings.getMessage("BUTTON_LOG").c_str(), btn_log_xpm);
     toolbar->SetToolLongHelp(ID_LOG,
         settings.getMessage("BUTTON_LOG_TIP").c_str());
-    toolbar->AddTool(ID_FILTERS,
-        settings.getMessage("BUTTON_FILTERS").c_str(), btn_filters_xpm);
-    toolbar->SetToolLongHelp(ID_FILTERS,
-        settings.getMessage("BUTTON_FILTERS_TIP").c_str());
     toolbar->AddTool(ID_CONFIG,
         settings.getMessage("BUTTON_CONFIG").c_str(), btn_config_xpm);
     toolbar->SetToolLongHelp(ID_CONFIG,
         settings.getMessage("BUTTON_CONFIG_TIP").c_str());
+    toolbar->AddTool(ID_SETTINGS,
+        settings.getMessage("BUTTON_SETTINGS").c_str(), btn_settings_xpm);
+    toolbar->SetToolLongHelp(ID_SETTINGS,
+        settings.getMessage("BUTTON_SETTINGS_TIP").c_str());
     toolbar->AddTool(ID_HELP,
         settings.getMessage("BUTTON_HELP").c_str(), btn_help_xpm);
     toolbar->SetToolLongHelp(ID_HELP,
@@ -151,9 +145,6 @@ CMainFrame::CMainFrame(const wxPoint& position)
     menuTools->Append(ID_TOOLSCONFIG,
         settings.getMessage("MENU_TOOLSCONFIG").c_str(),
         settings.getMessage("MENU_TOOLSCONFIG_TIP").c_str());
-    menuTools->Append(ID_TOOLSFILTERS,
-        settings.getMessage("MENU_TOOLSFILTERS").c_str(),
-        settings.getMessage("MENU_TOOLSFILTERS_TIP").c_str());
     menuTools->Append(ID_TOOLSLOG,
         settings.getMessage("MENU_TOOLSLOG").c_str(),
         settings.getMessage("MENU_TOOLSLOG_TIP").c_str());
@@ -261,12 +252,7 @@ void CMainFrame::OnStatusEvent(CStatusEvent& event) {
  */
 void CMainFrame::OnProxyEvent(CProxyEvent& event) {
 
-    if (   event.type == pmEVT_PROXY_TYPE_NEWREQ
-        || event.type == pmEVT_PROXY_TYPE_ENDREQ ) {
-
-        updateStatusBar();
-    }
-    event.Skip();
+    updateStatusBar();
 }
 
 
@@ -276,7 +262,8 @@ void CMainFrame::updateStatusBar() {
 
     int num = CLog::ref().numActiveRequests;
     string text = (num>1 ? "STAT_ACTIVE_REQS" : "STAT_ACTIVE_REQ");
-    text = CSettings::ref().getMessage(text, num);
+    stringstream ss; ss << num << "/" << CLog::ref().numOpenSockets;
+    text = CSettings::ref().getMessage(text, ss.str());
     statusbar->SetStatusText(text.c_str(), 2);
 }
 
@@ -297,19 +284,11 @@ void CMainFrame::OnCommand(wxCommandEvent& event) {
         CUtil::thaw(area);
         break;
 
-    case ID_FILTERS:
-    case ID_TOOLSFILTERS:
-        CUtil::freeze(area);
-        content = new CEditScreen(this, area);
-        computeSize();
-        CUtil::thaw(area);
-        break;
-
     case ID_CONFIG:
     case ID_TOOLSCONFIG:
         CUtil::freeze(area);
         content = new CConfigScreen(this, area);
-        computeSize();
+        computeSize(true);
         CUtil::thaw(area);
         break;
 

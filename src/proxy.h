@@ -32,6 +32,7 @@
 #include "requestmanager.h"
 #include "managerthread.h"
 
+
 using namespace std;
 
 class CProxy : public wxEvtHandler {
@@ -75,9 +76,6 @@ public:
     // CSettings::refreshProxy
     void refreshManagers();
     
-    // Called by server socket's event manager
-    void OnServerEvent(wxSocketEvent& event);
-
 protected:
     CProxy();
     ~CProxy();
@@ -85,6 +83,9 @@ protected:
 private:
     // Singleton instance
     static CProxy* instance;
+
+    // Called by server socket's event manager
+    void OnServerEvent(wxSocketEvent& event);
 
     // Proxy server socket
     wxSocketServer *server;

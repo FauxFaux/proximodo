@@ -25,6 +25,7 @@
 
 #include "trayicon.h"
 #include <wx/menu.h>
+#include <wx/icon.h>
 #include <vector>
 #include <map>
 #include <string>
@@ -40,7 +41,7 @@ using namespace std;
 
 BEGIN_EVENT_TABLE(CTrayIcon, wxTaskBarIcon)
     EVT_TASKBAR_LEFT_DOWN (CTrayIcon::OnClick)
-    EVT_MENU_RANGE (ID_OPEN, ID_OPEN+200, CTrayIcon::OnCommand)
+    EVT_MENU_RANGE (ID_LOG, ID_LOG+200, CTrayIcon::OnCommand)
 END_EVENT_TABLE()
 
 
@@ -74,10 +75,6 @@ void CTrayIcon::OnCommand(wxCommandEvent& event) {
     CSettings& settings = CSettings::ref();
 
     switch (event.GetId()) {
-    case ID_OPEN:
-        CUtil::show(mainFrame);
-        break;
-
     case ID_LOG:
         CUtil::show(CLog::ref().logFrame);
         break;
@@ -124,8 +121,8 @@ void CTrayIcon::OnCommand(wxCommandEvent& event) {
     default: // (a configuration)
         {
             int num = event.GetId() - ID_CONFIG;
-            if (num < 0 || num >= (int)settings.config.size()) break;
-            map<string,vector<string> >::iterator it = settings.config.begin();
+            if (num < 0 || num >= (int)settings.configs.size()) break;
+            map<string,set<int> >::iterator it = settings.configs.begin();
             while (num--) it++;
             string name = it->first;
             if (name == settings.currentConfig) break;
@@ -146,8 +143,8 @@ wxMenu* CTrayIcon::CreatePopupMenu() {
     menuConfig->Append(wxID_ANY, settings.currentConfig.c_str());
     menuConfig->AppendSeparator();
     int num = ID_CONFIG;
-    for (map<string,vector<string> >::iterator it = settings.config.begin();
-                it != settings.config.end(); it++) {
+    for (map<string,set<int> >::iterator it = settings.configs.begin();
+                it != settings.configs.end(); it++) {
         if (it->first != settings.currentConfig)
             menuConfig->Append(num, it->first.c_str());
         num++;
@@ -182,12 +179,10 @@ wxMenu* CTrayIcon::CreatePopupMenu() {
             settings.getMessage("TRAY_USEPROXY").c_str());
         if (settings.useNextProxy) menu->Check(ID_USEPROXY, true);
     }
-    menu->Append(ID_EXIT,
-        settings.getMessage("TRAY_EXIT").c_str());
     menu->Append(ID_LOG,
         settings.getMessage("TRAY_LOG").c_str());
-    menu->Append(ID_OPEN,
-        settings.getMessage("TRAY_OPEN").c_str());
+    menu->Append(ID_EXIT,
+        settings.getMessage("TRAY_EXIT").c_str());
     return menu;
 }
 

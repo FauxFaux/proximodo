@@ -41,19 +41,20 @@ public:
     CUrl(const string& str);
     void parseUrl(const string& str);
     
-    inline const string& getUrl()      const { return url;      }
-    inline const string& getProtocol() const { return protocol; }
-    inline const string& getFromHost() const { return fromhost; }
-    inline const string& getHost()     const { return host;     }
-    inline const string& getPath()     const { return path;     }
-    inline const string& getQuery()    const { return query;    }
-    inline const string& getAnchor()   const { return anchor;   }
-    inline const string& getHostPort() const { return hostport; }
+    inline const string& getUrl()       const { return url;       }
+    inline const string& getProtocol()  const { return protocol;  }
+    inline const string& getFromHost()  const { return fromhost;  }
+    inline const string& getHost()      const { return host;      }
+    inline const string& getAfterHost() const { return afterhost; }
+    inline const string& getPath()      const { return path;      }
+    inline const string& getQuery()     const { return query;     }
+    inline const string& getAnchor()    const { return anchor;    }
+    inline const string& getHostPort()  const { return hostport;  }
 
 private:
     // fromhost is the URL without http://
     // hostport is host:port
-    string url, protocol, fromhost, host, path, query, anchor, hostport;
+    string url, protocol, fromhost, host, afterhost, path, query, anchor, hostport;
 };
 
 #endif

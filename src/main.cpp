@@ -56,7 +56,7 @@ bool ProximodoApp::OnInit(){
     // Start proxy server
     wxSocketBase::Initialize();
     CProxy::ref().openProxyPort();
-    
+
     // Open welcome html page on first run
     if (CSettings::ref().firstRun) {
         CSettings::ref().save(); // (get rid of firstRun)
@@ -65,6 +65,7 @@ bool ProximodoApp::OnInit(){
 
     // Create main frame
     CMainFrame* mf = new CMainFrame(wxDefaultPosition);
+    mf->Centre(wxBOTH | wxCENTRE_ON_SCREEN);
     if (CSettings::ref().showOnStartup) mf->Show();
     
     return true;

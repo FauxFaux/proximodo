@@ -28,8 +28,33 @@
 
 #include <string>
 #include <map>
+#include <set>
 
 using namespace std;
+
+
+/* This class is used to represent a folder
+ */
+class CFolder {
+
+public:
+    int id;
+    string name;
+    int parent;
+    int defaultFolder;
+    set<int> children;
+    bool operator==(const CFolder& d) const {
+        return id == d.id &&
+               name == d.name &&
+               parent == d.parent &&
+               defaultFolder == d.defaultFolder &&
+               children == d.children;
+    }
+    CFolder() { }
+    CFolder(int id, string name, int parent, int defaultFolder = 0) :
+            id(id), name(name), parent(parent), defaultFolder(defaultFolder) { }
+};
+
 
 /* class CFilterDescriptor
  * Describes a filter.
@@ -46,11 +71,12 @@ public:
     CFilterDescriptor();
 
     // The following data is used for organizing/editing filters
+    int id;             // Unique ID of the filter
     string title;       // Title of the filter
     string version;     // Version number
     string author;      // Name of author
     string comment;     // Comment (such as description of what the filter does)
-    string category;    // Example: "Ad Removal" or "My Custom Filters"
+    int folder;         // parent folder's id
 
     // Type of filter
     enum TYPE { HEADOUT, HEADIN, TEXT };
@@ -68,6 +94,7 @@ public:
     string urlPattern;
     string matchPattern;
     string replacePattern;
+    int    priority;
     
     // Default filter number (set to 0 for new/modified filters)
     int defaultFilter;
@@ -77,24 +104,33 @@ public:
     bool isValid(string& errmsg) const;
     
     // Compare filters
-    bool operator ==(const CFilterDescriptor& d) const;
+    bool operator<(const CFilterDescriptor& d) const;
+    bool operator==(const CFilterDescriptor& d) const;
 
     // Clear all content
     void clear();
     
-    // Export to a string
-    string exportFilter() const;
-    
-    // Export a map to a string
-    static string exportFilters(const map<string,CFilterDescriptor>& bank);
-    
-    // Import from a string to a map
-    static int importFilters(const string& text,
-                    map<string,CFilterDescriptor>& bank);
+    // Convenient function for getting the type name
+    string typeName() const;
 
-    // Import Proxomitron filters
+    // Export the filter to a string
+    string exportFilter(const map<int,CFolder>& folders, int root = 0) const;
+    
+    // Export an entire map of filters to a string
+    static string exportFilters(const map<int,CFolder>& folders,
+                                const map<int,CFilterDescriptor>& filters);
+    
+    // Import filters from a string to a map
+    static int importFilters(const string& text,
+                    map<int,CFolder>& folders,
+                    map<int,CFilterDescriptor>& filters,
+                    int root = 0);
+
+    // Import Proxomitron filters from a string to a map
     static int importProxomitron(const string& text,
-                    map<string,CFilterDescriptor>& bank);
+                    map<int,CFolder>& folders,
+                    map<int,CFilterDescriptor>& filters,
+                    int root = 0);
 };
 
 #endif

@@ -152,6 +152,18 @@ public:
 
     // Function to thaw and redraw a window
     static void thaw(wxWindow* window);
+    
+    // Converts / to the platform's path separator
+    static string makePath(const string& str);
+    
+    // Converts platform's path separators to /
+    static string unmakePath(const string& str);
+    
+    // Quote a string if it contains quotes or special characters
+    static string quote(string str, string codes = "/,");
+    static string unquote(string str);
+    static int getQuoted(const string& str, string& out,
+                         int start = -1, char token = '\0');
 
 private:
     // Case-insensitive compare binary function

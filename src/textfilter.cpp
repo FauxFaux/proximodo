@@ -161,7 +161,6 @@ void CTextFilter::process(const string& data, bool feeding) {
         if (!buffer.empty()) {
             // buffer has not yet been emptied
             nextFilter->dataFeed(buffer);
-            needed = CTF_THRESHOLD2;
             buffer = "";
         }
         // directly send data to next filter

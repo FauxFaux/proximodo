@@ -39,17 +39,20 @@ CHeaderFilter::CHeaderFilter(const CFilterDescriptor& desc, CFilterOwner& owner)
                 throw (parsing_exception) : CFilter(owner) {
 
     headerName = desc.headerName;
+    CUtil::lower(headerName);
     title = desc.title;
-    checkUrl = !desc.urlPattern.empty();
     urlMatcher = textMatcher = NULL;
     replacePattern = desc.replacePattern;
-    try {
-        urlMatcher = new CMatcher(owner.url.getFromHost(), desc.urlPattern, *this);
-        textMatcher = new CMatcher(content, desc.matchPattern, *this);
-    } catch (parsing_exception e) {
-        if (urlMatcher) delete urlMatcher;
-        if (textMatcher) delete textMatcher;
-        throw e;
+    if (!desc.urlPattern.empty()) {
+        urlMatcher = new CMatcher(content, desc.urlPattern, *this);
+    }
+    if (!desc.matchPattern.empty()) {
+        try {
+            textMatcher = new CMatcher(content, desc.matchPattern, *this);
+        } catch (parsing_exception e) {
+            if (urlMatcher) delete urlMatcher;
+            throw e;
+        }
     }
 }
 
@@ -63,43 +66,40 @@ CHeaderFilter::~CHeaderFilter() {
 }
 
 
-/* Provides the header name
- */
-string& CHeaderFilter::getHeaderName() {
-
-    return headerName;
-}
-
-
 /* Transform header according to filter description
  */
 bool CHeaderFilter::filter(string& content) {
 
-    if (!active) return false;
-    this->content = content;
+    if (!active || content.empty() && textMatcher && textMatcher->isStar())
+        return false;
 
     // clear memory
     clearMemory();
 
     // check if URL matches
-    int end, reached;
-    if (checkUrl && !urlMatcher->match(0, owner.url.getFromHost().size(),
-                        end, reached)) {
+    if (urlMatcher) {
+        int end, reached;
+        bool ret;
+        this->content = owner.url.getFromHost();
+        ret = urlMatcher->match(0, content.size(), end, reached);
         unlock();
-        return false;
+        if (!ret) return false;
     }
-    unlock();
 
     // Check if content matches
-    if (!textMatcher->match(0, content.size(), end, reached)) {
+    if (textMatcher) {
+        int end, reached;
+        bool ret;
+        this->content = content;
+        ret = textMatcher->match(0, content.size(), end, reached);
         unlock();
-        return false;
+        if (!ret) return false;
     }
-    unlock();
 
     // Log match event
     CLog::ref().logFilterEvent(pmEVT_FILTER_TYPE_HEADERMATCH,
                                owner.reqNumber, title, content);
+                               
     // Compute new header content
     content = CExpander::expand(replacePattern, *this);
     unlock();

@@ -37,28 +37,24 @@ CUrl::CUrl(const string& str) {
  */
 void CUrl::parseUrl(const string& str) {
 
-    unsigned int pos1, pos2;
-    url = str;
-    pos1 = str.find("://", 0);
-    if (pos1 == string::npos) {
-        protocol = "";
-        pos1 = 0;
-    } else {
-        protocol = str.substr(0, pos1);
-        pos1 += 3;
-    }
-    fromhost = url.substr(pos1);
-    pos2 = url.find_first_of("/?#", pos1);
-    if (pos2 == string::npos) pos2 = url.length();
-    host   = url.substr(pos1, pos2 - pos1);
-    pos1 = url.find_first_of("?#",  pos2);
-    if (pos1 == string::npos) pos1 = url.length();
-    path   = url.substr(pos2, pos1 - pos2);
-    pos2 = url.find_first_of("#",   pos1);
-    if (pos2 == string::npos) pos2 = url.length();
-    query  = url.substr(pos1, pos2 - pos1);
-    anchor = url.substr(pos2);
-    hostport = host;
+    unsigned int pos1 = str.find("://");
+    if (pos1 == string::npos) pos1 = 0; else pos1 +=3;
+    unsigned int pos2 = str.find_first_of("/?#", pos1);
+    if (pos2 == string::npos) pos2 = str.length();
+    unsigned int pos3 = str.find_first_of("?#", pos2);
+    if (pos3 == string::npos) pos3 = str.length();
+    unsigned int pos4 = str.find_first_of("#", pos3);
+    if (pos4 == string::npos) pos4 = str.length();
+
+    url       = str;
+    protocol  = (pos1 ? str.substr(0, pos1-3) : string(""));
+    fromhost  = str.substr(pos1);
+    afterhost = str.substr(pos2);
+    host      = str.substr(pos1, pos2 - pos1);
+    path      = str.substr(pos2, pos3 - pos2);
+    query     = str.substr(pos3, pos4 - pos3);
+    anchor    = str.substr(pos4);
+    hostport  = host;
     if (hostport.find(":") == string::npos)
         hostport += ':' + protocol;
 }

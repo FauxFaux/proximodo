@@ -389,15 +389,13 @@ CNode_Chars::CNode_Chars(const string& text, int& reached, string s, bool allow)
     unsigned int i;
     for (i=0; i<256; i++) byte[i] = !allow;
     for (string::iterator it = s.begin(); it != s.end(); it++) {
-        byte[(unsigned char)toupper(*it)] = allow;
-        byte[(unsigned char)tolower(*it)] = allow;
+        byte[(unsigned char)(*it)] = allow;
     }
 }
 
-void CNode_Chars::add(char c) {
+void CNode_Chars::add(unsigned char c) {
     // We can add characters to the list after the construction
-    byte[(unsigned char)toupper(c)] = allow;
-    byte[(unsigned char)tolower(c)] = allow;
+    byte[c] = allow;
 }
 
 int CNode_Chars::consume() {
@@ -634,7 +632,9 @@ int CNode_Repeat::consume() {
         do {
             // Try one more match
             node->reset(pos, stop);
-            pos = node->match();
+            int pos2 = node->match();
+            if (pos2 == pos) { rcount = rmax; break; } // infinite-loop protection
+            pos = pos2;
             rcount++;
             // Rule: {,}
         // and if we did not reach the lower limit yet, try again and again
@@ -652,6 +652,7 @@ int CNode_Repeat::consume() {
             node->reset(pos, stop);
             int pos2 = node->match();
             if (pos2 < 0) break;
+            if (pos2 == pos) { rcount = rmax; break; } // infinite-loop protection
             pos = pos2;
             rcount++;
         }
@@ -961,27 +962,13 @@ int CNode_Command::consume() {
 
     case CMD_IHDR:
         retry = false;
-        for (vector<SHeader>::iterator it = owner.inHeaders.begin();
-                    it != owner.inHeaders.end(); it++) {
-            if (it->name == name) {
-                toMatch = it->content;
-                return (matcher->match(0, toMatch.size(),
-                        end, reached) ? start : -1);
-            }
-        }
-        return -1;
+        toMatch = owner.inHeaders[name];
+        return (matcher->match(0, toMatch.size(), end, reached) ? start : -1);
 
     case CMD_OHDR:
         retry = false;
-        for (vector<SHeader>::iterator it = owner.outHeaders.begin();
-                    it != owner.outHeaders.end(); it++) {
-            if (it->name == name) {
-                toMatch = it->content;
-                return (matcher->match(0, toMatch.size(),
-                        end, reached) ? start : -1);
-            }
-        }
-        return -1;
+        toMatch = owner.outHeaders[name];
+        return (matcher->match(0, toMatch.size(), end, reached) ? start : -1);
 
     case CMD_RESP:
         retry = false;
@@ -1092,7 +1079,7 @@ int CNode_Command::consume() {
         break;
 
     case CMD_FILTER:
-        owner.bypassBody = (content[0]=='t');
+        owner.bypassBody = (content[0]!='t');
         owner.bypassBodyForced = true;
         break;
 

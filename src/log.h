@@ -75,11 +75,11 @@ public:
     int numOpenSockets;
 
     // Functions to log event
-    void logProxyEvent(pmEVT_PROXY_TYPE type, wxIPV4address& addr);
-    void logHttpEvent(pmEVT_HTTP_TYPE type, wxIPV4address& addr,
-                      int req, string& text);
+    void logProxyEvent(pmEVT_PROXY_TYPE type, const wxIPV4address& addr);
+    void logHttpEvent(pmEVT_HTTP_TYPE type, const wxIPV4address& addr,
+                      int req, const string& text);
     void logFilterEvent(pmEVT_FILTER_TYPE type, int req,
-                        string& title, string& text);
+                        const string& title, const string& text);
 
     // Handlers wishing to receive log events
     set<wxEvtHandler*> proxyListeners;

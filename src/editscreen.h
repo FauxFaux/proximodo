@@ -28,51 +28,34 @@
 
 #include <wx/sizer.h>
 #include <wx/event.h>
+#include <wx/frame.h>
 #include <string>
 #include <map>
 #include "controls.h"
 #include "descriptor.h"
 #include "testframe.h"
-#include "windowcontent.h"
 
 using namespace std;
 
-/* This class creates a box sizer to be set as the main frame sizer.
- * It display the filter bank list and fields to edit a filter.
+/* This is the non-modal filter edition window.
  */
-class CEditScreen : public CWindowContent {
+class CEditScreen : public wxFrame {
 
 public:
-    CEditScreen(wxFrame* frame, wxWindow* window);
+    CEditScreen(CFilterDescriptor* desc);
     ~CEditScreen();
+    void setCurrent(CFilterDescriptor* desc);
     
 private:
-    // Non-modal test window
-    CTestFrame* testFrame;
-
-    // Variable management functions
-    void revert(bool confirm);
-    void apply(bool confirm);
-    bool hasChanged();
-    void updateDesc();
-    void updateBank();
-    void sortList(int numcol);
-    void selectItem(long index);
-    void rebuildList();
-
-    // Managed variables
-    map<string,CFilterDescriptor> bank;
-
-    // GUI variables
-    int sortedColumn;
-    int sortedDirection;
-    CFilterDescriptor current;               // edited filter
-    string title;                            // original title of edited filter
-    map<string, vector<string> > newConfig;  // to remove/rename filters in configs
+    // Edited filter
+    CFilterDescriptor* current;
+    
+    void enableFields();
+    void OnClose(wxCloseEvent& event);
+    CTestFrame* testWindow;
 
     // Controls
     pmCheckBox *multiCheckBox;
-    pmComboBox *categComboBox;
     pmComboBox *typeComboBox;
     pmStaticText *boundsLabel;
     pmStaticText *headerLabel;
@@ -85,13 +68,13 @@ private:
     pmTextCtrl *urlEdit;
     pmTextCtrl *versionEdit;
     pmTextCtrl *widthEdit;
+    pmTextCtrl *priorityEdit;
     pmTextCtrl *matchMemo;
     pmTextCtrl *replaceMemo;
     pmListCtrl *listCtrl;
 
     // Event handling function
     void OnCommand(wxCommandEvent& event);
-    void OnListEvent(wxListEvent& event);
 
     // IDs
     enum {
@@ -100,6 +83,7 @@ private:
         ID_AUTHOREDIT,
         ID_COMMENTEDIT,
         ID_VERSIONEDIT,
+        ID_PRIORITYEDIT,
         ID_URLEDIT,
         ID_WIDTHEDIT,
         ID_BOUNDSEDIT,
@@ -107,21 +91,14 @@ private:
         ID_MATCHMEMO,
         ID_REPLACEMEMO,
         ID_MULTICHECKBOX,
-        ID_CATEGCOMBOBOX,
         ID_TYPECOMBOBOX,
         ID_LISTCTRL,
-        // Menu's ID
-        ID_FILTERSNEW,
-        ID_FILTERSDUPLICATE,
-        ID_FILTERSTEST,
-        ID_FILTERSREVERT,
-        ID_FILTERSEXPORT,
-        ID_FILTERSIMPORT,
-        ID_FILTERSPROXOMITRON,
-        ID_FILTERSDELETE,
+        // Menu items
         ID_FILTERSENCODE,
         ID_FILTERSDECODE,
-        ID_FILTERSAPPLY
+        ID_FILTERSTEST,
+        ID_HELPFILTERS,
+        ID_HELPSYNTAX
     };
 
     // Event table

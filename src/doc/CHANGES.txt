@@ -1,7 +1,35 @@
+--------------------------------------------------------------------------------
+Version 0.2 (Nov 28th, 2004)
+-----------
 
+GUI
+- Turned config list into a tree with checkable items
+- Made the filter edition screen a non-modal window accessible from config screen
+- Reorganized items on Filters window, to make the window fit in 800x600 desktop
+- Added 'priority' as a filter property
 
+Proxy
+- Reordered proxy code to improve stability (still some images are randomly broken in IE)
+- Headers now get reordered (in HTTP RFC recommended order)
 
+Engine
+- Fixed $FILTER command ('true' and 'false' were inverted)
+- Header filters with "*" and "\digit" pattern will not match an empty header
+- Filters are now executed in 'Priority" order, instead of display order
+- Recognizes ^ notation at beginning of pattern
+- Added infinite-loop protection in "+" notation
+- Added [%nn] notation (case-sensitive)
 
+Config files
+- Filters now have an ID and Folder ID (both invisible in GUI) to retain config structure
+- Folders are recorded in settings.txt using Folders= lines
+- Configs are now recorded using filters' IDs
+- Changed 'Lists' to 'lists' in settings.txt to be case-consistent with folder
+- Title= no more needed in filters.txt
+
+Other
+- Made filenames respect OS directory separator char
+- A #include was missing in trayicon.cpp
 
 --------------------------------------------------------------------------------
 Version 0.1 (Nov 8th, 2004)
