@@ -44,8 +44,14 @@ Page custom proxyPage
 ; Instfiles page
 !insertmacro MUI_PAGE_INSTFILES
 ; Finish page
-!define MUI_FINISHPAGE_RUN "$INSTDIR\Proximodo.exe"
+!define MUI_FINISHPAGE_RUN
+!define MUI_FINISHPAGE_RUN_FUNCTION RunApp
 !insertmacro MUI_PAGE_FINISH
+
+Function RunApp
+	SetOutPath -
+	Exec 'Proximodo.exe'
+FunctionEnd
 
 ; Uninstaller pages
 !insertmacro MUI_UNPAGE_INSTFILES
@@ -54,6 +60,7 @@ Page custom proxyPage
 !insertmacro MUI_LANGUAGE "English"
 !insertmacro MUI_LANGUAGE "French"
 !insertmacro MUI_LANGUAGE "Japanese"
+!insertmacro MUI_LANGUAGE "Italian"
 
 ; Reserve files
 !insertmacro MUI_RESERVEFILE_INSTALLOPTIONS
@@ -85,6 +92,12 @@ Function .onInit
     !insertmacro MUI_INSTALLOPTIONS_EXTRACT_AS "jp\donotsetproxy.ini" "donotsetproxy.ini"
     Goto done
   notJapanese:
+  IntCmp $LANGUAGE ${LANG_ITALIAN} isItalian notItalian notItalian
+  isItalian:
+    !insertmacro MUI_INSTALLOPTIONS_EXTRACT_AS "it\setproxy.ini"      "setproxy.ini"
+    !insertmacro MUI_INSTALLOPTIONS_EXTRACT_AS "it\donotsetproxy.ini" "donotsetproxy.ini"
+    Goto done
+  notItalian:
     ; Give up and use English
     !insertmacro MUI_INSTALLOPTIONS_EXTRACT_AS "en\setproxy.ini"      "setproxy.ini"
     !insertmacro MUI_INSTALLOPTIONS_EXTRACT_AS "en\donotsetproxy.ini" "donotsetproxy.ini"
@@ -95,10 +108,12 @@ FunctionEnd
 ; Header strings for proxy pages
 LangString PROXY_TITLE    ${LANG_ENGLISH}  "Browser Configuration"
 LangString PROXY_SUBTITLE ${LANG_ENGLISH}  "Configuring your browser to use Proximodo"
-LangString PROXY_TITLE    ${LANG_FRENCH}   "Browser Configuration"
-LangString PROXY_SUBTITLE ${LANG_FRENCH}   "Configuring your browser to use Proximodo"
+LangString PROXY_TITLE    ${LANG_FRENCH}   "Configuration du navigateur"
+LangString PROXY_SUBTITLE ${LANG_FRENCH}   "Configuration de votre navigateur pour utiliser Proximodo"
 LangString PROXY_TITLE    ${LANG_JAPANESE} "Browser Configuration"
 LangString PROXY_SUBTITLE ${LANG_JAPANESE} "Configuring your browser to use Proximodo"
+LangString PROXY_TITLE    ${LANG_ITALIAN}  "Browser Configuration"
+LangString PROXY_SUBTITLE ${LANG_ITALIAN}  "Configuring your browser to use Proximodo"
 
 Function proxyPage
   ; Set header
@@ -120,9 +135,14 @@ FunctionEnd
 
 Section -ProximodoFiles
   SetOutPath "$INSTDIR"
-  File "..\bin\english.lng"
+  File "..\bin\Proximodo.exe"
+  File "..\bin\libz.dll"
+  File "..\bin\settings.txt"
   File "..\bin\filters.txt"
+  File "..\bin\english.lng"
   File "..\bin\francais.lng"
+  File "..\bin\japanese.lng"
+  File "..\bin\Italiano.lng"
   SetOutPath "$INSTDIR\help\en"
   File "..\bin\help\en\bg1.jpg"
   File "..\bin\help\en\bg2.jpg"
@@ -167,8 +187,6 @@ Section -ProximodoFiles
   File "..\bin\html\killed.html"
   File "..\bin\html\logo200.png"
   File "..\bin\html\WindowOpen.js"
-  SetOutPath "$INSTDIR"
-  File "..\bin\japanese.lng"
   SetOutPath "$INSTDIR\lists"
   File "..\bin\lists\AllowCookies.txt"
   File "..\bin\lists\Bypass List.txt"
@@ -177,9 +195,6 @@ Section -ProximodoFiles
   File "..\bin\lists\MIME Fix List.txt"
   File "..\bin\lists\URL Alias List.txt"
   File "..\bin\lists\URL Killfile.txt"
-  SetOutPath "$INSTDIR"
-  File "..\bin\Proximodo.exe"
-  File "..\bin\settings.txt"
 
 ; Shortcuts
   !insertmacro MUI_STARTMENU_WRITE_BEGIN Application
@@ -235,8 +250,14 @@ Section Uninstall
   !insertmacro MUI_STARTMENU_GETFOLDER "Application" $ICONS_GROUP
   Delete "$INSTDIR\${PRODUCT_NAME}.url"
   Delete "$INSTDIR\uninst.exe"
-  Delete "$INSTDIR\settings.txt"
   Delete "$INSTDIR\Proximodo.exe"
+  Delete "$INSTDIR\libz.dll"
+  Delete "$INSTDIR\settings.txt"
+  Delete "$INSTDIR\filters.txt"
+  Delete "$INSTDIR\english.lng"
+  Delete "$INSTDIR\francais.lng"
+  Delete "$INSTDIR\japanese.lng"
+  Delete "$INSTDIR\Italiano.lng"
   Delete "$INSTDIR\lists\URL Killfile.txt"
   Delete "$INSTDIR\lists\URL Alias List.txt"
   Delete "$INSTDIR\lists\MIME Fix List.txt"
@@ -244,7 +265,6 @@ Section Uninstall
   Delete "$INSTDIR\lists\Keyword list.txt"
   Delete "$INSTDIR\lists\Bypass List.txt"
   Delete "$INSTDIR\lists\AllowCookies.txt"
-  Delete "$INSTDIR\japanese.lng"
   Delete "$INSTDIR\html\WindowOpen.js"
   Delete "$INSTDIR\html\logo200.png"
   Delete "$INSTDIR\html\killed.html"
@@ -287,9 +307,6 @@ Section Uninstall
   Delete "$INSTDIR\help\en\bg3.jpg"
   Delete "$INSTDIR\help\en\bg2.jpg"
   Delete "$INSTDIR\help\en\bg1.jpg"
-  Delete "$INSTDIR\francais.lng"
-  Delete "$INSTDIR\filters.txt"
-  Delete "$INSTDIR\english.lng"
 
   Delete "$SMPROGRAMS\$ICONS_GROUP\Uninstall.lnk"
   Delete "$SMPROGRAMS\$ICONS_GROUP\Website.lnk"
@@ -300,6 +317,7 @@ Section Uninstall
   RMDir "$INSTDIR\lists"
   RMDir "$INSTDIR\html"
   RMDir "$INSTDIR\help\en"
+  RMDir "$INSTDIR\help"
   RMDir "$INSTDIR"
   
   ReadRegDWORD $0 ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "ResetProxy"
