@@ -1,7 +1,8 @@
 //------------------------------------------------------------------
 //
 //this file is part of Proximodo
-//Copyright (C) 2004 Antony BOUCHER ( kuruden@users.sourceforge.net )
+//Copyright (C) 2004-2005 Antony BOUCHER ( kuruden@users.sourceforge.net )
+//                        Paul Rupe      ( prupe@users.sourceforgen.net )
 //
 //This program is free software; you can redistribute it and/or
 //modify it under the terms of the GNU General Public License
@@ -223,8 +224,10 @@ void CMainFrame::OnClose(wxCloseEvent& event) {
  */
 void CMainFrame::OnIconize(wxIconizeEvent& event) {
 
-    content->apply(true);
-    Hide();
+    if (event.Iconized()) {
+        content->apply(true);
+        Hide();
+    }
 }
 
 
