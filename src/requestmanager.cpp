@@ -170,7 +170,8 @@ void CRequestManager::manage(wxSocketBase* browser) {
                     if (outStep != STEP_START) {
                         if (stopTime) stopTime = 0;
                     } else {
-                        if (!stopTime) stopTime = clock() + SOCKET_EXPIRATION * CLK_TCK;
+                        if (!stopTime) stopTime = clock() + SOCKET_EXPIRATION *
+                                                  CLOCKS_PER_SEC;
                         if (!valid || clock() > stopTime) browser->Close();
                     }
                     wxThread::Sleep(5);
@@ -201,7 +202,8 @@ void CRequestManager::manage(wxSocketBase* browser) {
             if (outStep != STEP_START) {
                 if (stopTime) stopTime = 0;
             } else {
-                if (!stopTime) stopTime = clock() + SOCKET_EXPIRATION * CLK_TCK;
+                if (!stopTime) stopTime = clock() + SOCKET_EXPIRATION *
+                                          CLOCKS_PER_SEC;
                 if (!valid || clock() > stopTime) browser->Close();
             }
             wxThread::Sleep(50);
