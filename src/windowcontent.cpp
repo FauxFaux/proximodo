@@ -28,11 +28,10 @@
 
 /* Constructor
  */
-CWindowContent::CWindowContent(wxFrame* frame, wxWindow* window, int orient) :
-                    wxBoxSizer(orient), window(window), frame(frame),
-                    settings(CSettings::ref()) {
+CWindowContent::CWindowContent(wxFrame* frame, int orient) :
+            wxBoxSizer(orient), frame(frame), settings(CSettings::ref()) {
 
-    window->SetSizer(this);
+    frame->SetSizer(this);
 }
 
 
@@ -43,6 +42,10 @@ void CWindowContent::makeSizer() {
 
     revert(false);
     frame->PushEventHandler(this);  // (to get menu events from menubar)
+    wxSizer* frameSizer = frame->GetSizer();
+    frame->SetSizeHints(frameSizer->GetMinSize() + frame->GetSize() - frame->GetClientSize());
+    frame->SetSize(frameSizer->GetMinSize() + frame->GetSize() - frame->GetClientSize());
+    frame->Layout();
 }
 
 
@@ -63,7 +66,7 @@ void CWindowContent::commitText() {
 
     wxWindow* focused = wxWindow::FindFocus();
     if (!focused) return;
-    wxWindow temp(window,wxID_ANY, wxDefaultPosition, wxSize(0,0));
+    wxWindow temp(frame, wxID_ANY, wxDefaultPosition, wxSize(0,0));
     temp.SetFocus();
     focused->SetFocus();
 }

@@ -173,6 +173,7 @@ void pmButton::OnMouseEvent(wxMouseEvent& event) {
 BEGIN_EVENT_TABLE(pmBitmapButton, wxBitmapButton)
     EVT_ENTER_WINDOW(pmBitmapButton::OnMouseEvent)
     EVT_LEAVE_WINDOW(pmBitmapButton::OnMouseEvent)
+    EVT_ERASE_BACKGROUND(pmBitmapButton::OnEraseEvent)
 END_EVENT_TABLE()
 
 pmBitmapButton::pmBitmapButton( wxWindow* parent, wxWindowID id,

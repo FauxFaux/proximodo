@@ -55,7 +55,7 @@ public:
 class CConfigScreen : public CWindowContent {
 
 public:
-    CConfigScreen(wxFrame* frame, wxWindow* window);
+    CConfigScreen(wxFrame* frame);
     ~CConfigScreen();
 
 private:

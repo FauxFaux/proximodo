@@ -46,7 +46,6 @@ private:
     // Event handling functions
     void OnClose(wxCloseEvent& event);
     void OnShow(wxShowEvent& event);
-    void OnSize(wxSizeEvent& event);
     void OnIconize(wxIconizeEvent& event);
     void OnCommand(wxCommandEvent& event);
     void OnProxyEvent(CProxyEvent& event);
@@ -57,11 +56,9 @@ private:
     wxStatusBar* statusbar;
     CWindowContent* content;  // destroyed with SetSizer(NULL) or
                               // by creating another CWindowContent
-    wxWindow* area;           // 'content' container, between toolbar and statusbar
 
     // Functions
     void updateStatusBar();
-    void computeSize(bool minSize = false);
     
     // IDs
     enum {

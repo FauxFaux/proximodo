@@ -5,19 +5,19 @@
 #define PROXIMODO_PRIVATE_H
 
 /* VERSION DEFINITIONS */
-#define VER_STRING	"0.2.1.0"
+#define VER_STRING	"0.2.3.0"
 #define VER_MAJOR	0
 #define VER_MINOR	2
-#define VER_RELEASE	1
+#define VER_RELEASE	3
 #define VER_BUILD	0
 #define COMPANY_NAME	"(c) Antony Boucher"
-#define FILE_VERSION	"0.2.1"
+#define FILE_VERSION	"0.2.3"
 #define FILE_DESCRIPTION	"Proximodo Project"
 #define INTERNAL_NAME	""
 #define LEGAL_COPYRIGHT	"Distributed under GNU GPL"
 #define LEGAL_TRADEMARKS	""
 #define ORIGINAL_FILENAME	""
 #define PRODUCT_NAME	"Proximodo"
-#define PRODUCT_VERSION	"0.2.1"
+#define PRODUCT_VERSION	"0.2.3"
 
 #endif /*PROXIMODO_PRIVATE_H*/

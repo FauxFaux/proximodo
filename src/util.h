@@ -158,12 +158,6 @@ public:
     // Function to show and raise a top-level window
     static void show(wxTopLevelWindow* window);
 
-    // Function to freeze a window
-    static void freeze(wxWindow* window);
-
-    // Function to thaw and redraw a window
-    static void thaw(wxWindow* window);
-    
     // Converts / to the platform's path separator
     static string makePath(const string& str);
     

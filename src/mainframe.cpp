@@ -56,7 +56,6 @@
 /* Event table
  */
 BEGIN_EVENT_TABLE(CMainFrame, wxFrame)
-    EVT_SIZE      (CMainFrame::OnSize)
     EVT_SHOW      (CMainFrame::OnShow)
     EVT_CLOSE     (CMainFrame::OnClose)
     EVT_ICONIZE   (CMainFrame::OnIconize)
@@ -67,31 +66,6 @@ BEGIN_EVENT_TABLE(CMainFrame, wxFrame)
 END_EVENT_TABLE()
 
 
-/* Window resize event handling
- */
-void CMainFrame::OnSize(wxSizeEvent& event) {
-
-    Layout();
-    if (area) area->Layout();
-}
-
-
-/* Set window size hints and layout
- */
-void CMainFrame::computeSize(bool minSize) {
-
-    wxSizer* frameSizer = GetSizer();
-    wxSizer* areaSizer = area->GetSizer();
-    area->SetSizeHints(areaSizer->GetMinSize() + area->GetSize() - area->GetClientSize());
-    SetSizeHints(frameSizer->GetMinSize() + GetSize() - GetClientSize());
-    frameSizer->FitInside(this);
-    wxSize newSize = (minSize ? frameSizer->GetMinSize() : frameSizer->GetSize());
-    SetSize(newSize + GetSize() - GetClientSize());
-    Layout();
-    area->Layout();
-}
-
-
 /* Constructor
  */
 CMainFrame::CMainFrame(const wxPoint& position)
@@ -99,11 +73,10 @@ CMainFrame::CMainFrame(const wxPoint& position)
                  position, wxDefaultSize,
                  wxDEFAULT_FRAME_STYLE |
                  wxTAB_TRAVERSAL |
-                 wxNO_FULL_REPAINT_ON_RESIZE |
                  wxCLIP_CHILDREN ) {
 
-    area = NULL;
     SetIcon(wxIcon(icon32_xpm));
+    SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_BTNFACE));
     CSettings& settings = CSettings::ref();
 
     // Toolbar
@@ -193,15 +166,7 @@ CMainFrame::CMainFrame(const wxPoint& position)
 
     // Display welcome screen and tray icon
     trayIcon = new CTrayIcon(this);
-    wxBoxSizer* bgSizer = new wxBoxSizer(wxHORIZONTAL);
-    SetSizer(bgSizer);
-    area = new wxWindow(this, wxID_ANY, wxDefaultPosition, wxDefaultSize,
-                        wxTAB_TRAVERSAL | wxSUNKEN_BORDER |
-                        wxNO_FULL_REPAINT_ON_RESIZE | wxCLIP_CHILDREN );
-    area->SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_BTNFACE));
-    bgSizer->Add(area, 1, wxGROW, 0);
-    content = new CWelcomeScreen(this, area);
-    computeSize(true);
+    content = new CWelcomeScreen(this);
 }
 
 
@@ -214,7 +179,7 @@ CMainFrame::~CMainFrame() {
     while (wxTheApp->Pending()) wxTheApp->Dispatch();
     CSettings::ref().save(true);
     CLog::ref().proxyListeners.erase(this);
-    area->SetSizer(NULL);
+    SetSizer(NULL);
     CProxy::destroy();
     CLog::destroy();
 }
@@ -289,27 +254,15 @@ void CMainFrame::OnCommand(wxCommandEvent& event) {
 
     case ID_MONITOR:
     case ID_TOOLSMONITOR:
-        CUtil::freeze(area);
-        content = new CWelcomeScreen(this, area);
-        computeSize(true);
-        CUtil::thaw(area);
-        break;
+        content = new CWelcomeScreen(this); break;
 
     case ID_SETTINGS:
     case ID_TOOLSSETTINGS:
-        CUtil::freeze(area);
-        content = new CSettingsScreen(this, area);
-        computeSize(true);
-        CUtil::thaw(area);
-        break;
+        content = new CSettingsScreen(this); break;
 
     case ID_CONFIG:
     case ID_TOOLSCONFIG:
-        CUtil::freeze(area);
-        content = new CConfigScreen(this, area);
-        computeSize(true);
-        CUtil::thaw(area);
-        break;
+        content = new CConfigScreen(this); break;
 
     case ID_LOG:
     case ID_TOOLSLOG:

@@ -172,6 +172,7 @@ public:
     void OnMouseEvent(wxMouseEvent& event);
     virtual void SetHelpText(const wxString& text) { helpText = text.c_str(); }
     virtual wxString GetHelpText() const { return helpText.c_str(); }
+    void OnEraseEvent(wxEraseEvent& event) { }
 
 private:
     string helpText;

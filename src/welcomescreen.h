@@ -36,7 +36,7 @@
 class CWelcomeScreen : public CWindowContent {
 
 public:
-    CWelcomeScreen(wxFrame* frame, wxWindow* window);
+    CWelcomeScreen(wxFrame* frame);
     ~CWelcomeScreen();
 
 private:

@@ -69,7 +69,7 @@ CEditScreen::CEditScreen(CFilterDescriptor* desc) :
                 CSettings::ref().getMessage("EDIT_WINDOW_TITLE").c_str(),
                 wxDefaultPosition, wxDefaultSize,
                 wxDEFAULT_FRAME_STYLE | wxTAB_TRAVERSAL |
-                wxNO_FULL_REPAINT_ON_RESIZE | wxCLIP_CHILDREN) {
+                wxCLIP_CHILDREN) {
 
     SetIcon(wxIcon(icon32_xpm));
     CSettings& settings = CSettings::ref();

@@ -36,7 +36,6 @@ class ProximodoApp : public wxApp {
 public:
     virtual bool OnInit();
     virtual int OnExit();
-    ~ProximodoApp();
 
 private:
     wxSingleInstanceChecker* sic;
@@ -89,12 +88,7 @@ bool ProximodoApp::OnInit() {
 
 int ProximodoApp::OnExit() {
 
+    CSettings::destroy();
     delete sic;
     return 0;
-}
-
-
-ProximodoApp::~ProximodoApp() {
-
-    CSettings::destroy();
 }

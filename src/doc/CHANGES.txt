@@ -13,6 +13,8 @@ GUI
 - Created a monitoring screen, with checkboxes, statistics and abort button
 - Can run any external program when Proximodo starts
 - Opening default browser on start-up should now work fine under Linux
+- Compatibility with wxWidgets 2.5.4
+- Changed colors and font in Log window
 
 Other
 - Invalid filters are now loaded too

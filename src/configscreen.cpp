@@ -73,19 +73,19 @@ END_EVENT_TABLE()
 
 /* Constructor
  */
-CConfigScreen::CConfigScreen(wxFrame* frame, wxWindow* window) :
-                                CWindowContent(frame, window, wxVERTICAL) {
+CConfigScreen::CConfigScreen(wxFrame* frame) :
+                                CWindowContent(frame, wxVERTICAL) {
 
     wxBoxSizer* nameSizer = new wxBoxSizer(wxHORIZONTAL);
     Add(nameSizer,0,wxGROW | wxALL,0);
 
-    pmStaticText* nameLabel =  new pmStaticText(window, wxID_ANY ,
+    pmStaticText* nameLabel =  new pmStaticText(frame, wxID_ANY ,
         settings.getMessage("LB_CONFIG_NAME").c_str(),
         wxDefaultPosition, wxDefaultSize  );
     nameSizer->Add(nameLabel,0,wxALIGN_CENTER_VERTICAL | wxALL,5);
 
     wxArrayString choices;
-    nameEdit =  new pmComboBox(window, ID_NAMEEDIT , "",
+    nameEdit =  new pmComboBox(frame, ID_NAMEEDIT , "",
         wxDefaultPosition, wxDefaultSize, choices,
         wxCB_DROPDOWN | wxCB_SORT );
     nameEdit->SetHelpText(settings.getMessage("CONFIG_NAME_TIP").c_str());
@@ -97,42 +97,42 @@ CConfigScreen::CConfigScreen(wxFrame* frame, wxWindow* window) :
     wxBoxSizer* buttonBox = new wxBoxSizer(wxVERTICAL);
     centerBox->Add(buttonBox, 0, wxALIGN_TOP | wxALL, 0);
 
-    pmBitmapButton* addfoldButton =  new pmBitmapButton(window, ID_ADDFOLDBUTTON,
+    pmBitmapButton* addfoldButton =  new pmBitmapButton(frame, ID_ADDFOLDBUTTON,
         wxBitmap(btn_addfold32_xpm) );
     addfoldButton->SetHelpText(settings.getMessage("MENU_FOLDERSNEW_TIP").c_str());
     buttonBox->Add(addfoldButton,0,wxALIGN_CENTER_HORIZONTAL | wxBOTTOM, 5);
 
-    pmBitmapButton* addfiltButton =  new pmBitmapButton(window, ID_ADDFILTBUTTON,
+    pmBitmapButton* addfiltButton =  new pmBitmapButton(frame, ID_ADDFILTBUTTON,
         wxBitmap(btn_addfilt32_xpm) );
     addfiltButton->SetHelpText(settings.getMessage("MENU_FILTERSNEW_TIP").c_str());
     buttonBox->Add(addfiltButton,0,wxALIGN_CENTER_HORIZONTAL | wxBOTTOM, 5);
 
-    pmBitmapButton* editButton =  new pmBitmapButton(window, ID_EDITBUTTON,
+    pmBitmapButton* editButton =  new pmBitmapButton(frame, ID_EDITBUTTON,
         wxBitmap(btn_edit32_xpm) );
     editButton->SetHelpText(settings.getMessage("MENU_FILTERSEDIT_TIP").c_str());
     buttonBox->Add(editButton,0,wxALIGN_CENTER_HORIZONTAL | wxBOTTOM, 5);
 
-    pmBitmapButton* trashButton =  new pmBitmapButton(window, ID_TRASHBUTTON,
+    pmBitmapButton* trashButton =  new pmBitmapButton(frame, ID_TRASHBUTTON,
         wxBitmap(btn_trash32_xpm) );
     trashButton->SetHelpText(settings.getMessage("MENU_FILTERSDELETE_TIP").c_str());
     buttonBox->Add(trashButton,0,wxALIGN_CENTER_HORIZONTAL | wxBOTTOM, 5);
 
-    pmBitmapButton* applyButton =  new pmBitmapButton(window, ID_APPLYBUTTON,
+    pmBitmapButton* applyButton =  new pmBitmapButton(frame, ID_APPLYBUTTON,
         wxBitmap(btn_ok32_xpm) );
     applyButton->SetHelpText(settings.getMessage("MENU_CONFIGAPPLY_TIP").c_str());
     buttonBox->Add(applyButton,0,wxALIGN_CENTER_HORIZONTAL | wxBOTTOM, 5);
 
-    pmBitmapButton* revertButton =  new pmBitmapButton(window, ID_REVERTBUTTON,
+    pmBitmapButton* revertButton =  new pmBitmapButton(frame, ID_REVERTBUTTON,
         wxBitmap(btn_undo32_xpm) );
     revertButton->SetHelpText(settings.getMessage("MENU_CONFIGREVERT_TIP").c_str());
     buttonBox->Add(revertButton,0,wxALIGN_CENTER_HORIZONTAL | wxBOTTOM, 0);
 
-    tree = new pmTreeCtrl(window, ID_TREE, wxDefaultPosition, wxSize(350, 250),
+    tree = new pmTreeCtrl(frame, ID_TREE, wxDefaultPosition, wxSize(350, 250),
         wxTR_EDIT_LABELS | wxTR_HAS_BUTTONS | wxTR_HIDE_ROOT |
         wxTR_MULTIPLE | wxTR_EXTENDED | wxTR_LINES_AT_ROOT );
     centerBox->Add(tree,1,wxGROW | wxLEFT,5);
 
-    commentText =  new pmTextCtrl(window, ID_COMMENTTEXT, "" ,
+    commentText =  new pmTextCtrl(frame, ID_COMMENTTEXT, "" ,
         wxDefaultPosition, wxSize(100,60), wxTE_MULTILINE | wxTE_READONLY );
     commentText->SetHelpText(settings.getMessage("CONFIG_COMMENT_TIP").c_str());
     Add(commentText, 0,wxGROW | wxALIGN_CENTER_VERTICAL | wxALL,5);

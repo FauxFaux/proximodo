@@ -39,7 +39,7 @@ using namespace std;
 class CSettingsScreen : public CWindowContent {
 
 public:
-    CSettingsScreen(wxFrame* frame, wxWindow* window);
+    CSettingsScreen(wxFrame* frame);
     ~CSettingsScreen();
 
 private:

@@ -33,6 +33,21 @@
 #include "images/icon32.xpm"
 #include "util.h"
 
+#define  LOG_COLOR_BACKGROUND  255, 255, 255
+#define  LOG_COLOR_DEFAULT     150, 150, 150
+#define  LOG_COLOR_FILTER      150, 150, 150
+#define  LOG_COLOR_REQUEST     240, 100,   0
+#define  LOG_COLOR_RESPONSE      0, 200,   0
+#define  LOG_COLOR_PROXY         0,   0,   0
+#define  LOG_COLOR_R           255,   0,   0
+#define  LOG_COLOR_W             0,   0,   0
+#define  LOG_COLOR_B             0,   0, 255
+#define  LOG_COLOR_G            50, 150,   0
+#define  LOG_COLOR_C             0, 200, 200
+#define  LOG_COLOR_w           150, 150, 150
+#define  LOG_COLOR_Y           230, 200,   0
+#define  LOG_COLOR_V           150,   0, 150
+
 using namespace std;
 
 /* Events
@@ -56,7 +71,6 @@ CLogFrame::CLogFrame()
                  wxDefaultPosition, wxDefaultSize,
                  wxDEFAULT_FRAME_STYLE |
                  wxTAB_TRAVERSAL |
-                 wxNO_FULL_REPAINT_ON_RESIZE |
                  wxCLIP_CHILDREN ),
          settings(CSettings::ref()) {
 
@@ -70,9 +84,10 @@ CLogFrame::CLogFrame()
     logText =  new pmTextCtrl(this, wxID_ANY, "" ,
         wxDefaultPosition, wxSize(500,250),
         wxTE_READONLY | wxTE_RICH |  wxTE_MULTILINE | wxTE_DONTWRAP );
-    logText->SetBackgroundColour(wxColour(*wxBLACK));
-    logText->SetDefaultStyle(wxTextAttr(*wxLIGHT_GREY, *wxBLACK,
-        wxFont(8, wxDEFAULT, wxNORMAL, wxBOLD)));
+    logText->SetBackgroundColour(wxColour(LOG_COLOR_BACKGROUND));
+    logText->SetDefaultStyle(wxTextAttr(wxColour(LOG_COLOR_DEFAULT),
+                                        wxColour(LOG_COLOR_BACKGROUND),
+                                        wxFont(10, wxROMAN, wxNORMAL, wxBOLD)));
     vertSizer->Add(logText,1,wxGROW | wxALL,5);
 
     wxBoxSizer* lowerSizer = new wxBoxSizer(wxHORIZONTAL);
@@ -185,8 +200,7 @@ void CLogFrame::OnProxyEvent(CProxyEvent& evt) {
     // Exclude unwanted events
     if (!active || !proxyCheckbox->GetValue()) return;
     
-    // Proxy events are grey
-    logText->SetDefaultStyle(wxTextAttr(*wxLIGHT_GREY));
+    logText->SetDefaultStyle(wxTextAttr(wxColour(LOG_COLOR_PROXY)));
 
     stringstream port;
     port << evt.addr.Service();
@@ -242,11 +256,11 @@ void CLogFrame::OnHttpEvent(CHttpEvent& evt) {
                || evt.type == pmEVT_HTTP_TYPE_SENDIN)   )
         return;
 
-    // Outgoing HTTP events are red, Incoming are green
+    // Colors depends on Outgoing or Incoming
     if (evt.type == pmEVT_HTTP_TYPE_RECVIN || evt.type == pmEVT_HTTP_TYPE_SENDIN)
-        logText->SetDefaultStyle(wxTextAttr(*wxGREEN));
+        logText->SetDefaultStyle(wxTextAttr(wxColour(LOG_COLOR_RESPONSE)));
     else
-        logText->SetDefaultStyle(wxTextAttr(*wxRED));
+        logText->SetDefaultStyle(wxTextAttr(wxColour(LOG_COLOR_REQUEST)));
 
     stringstream port;
     port << evt.addr.Service();
@@ -302,22 +316,23 @@ void CLogFrame::OnFilterEvent(CFilterEvent& evt) {
         stringstream req;
         req << evt.req;
 
-        // The first line is yellow
-        logText->SetDefaultStyle(wxTextAttr(wxColour(255,255,0)));
+        // The first line is always the same color
+        logText->SetDefaultStyle(wxTextAttr(wxColour(LOG_COLOR_FILTER)));
+        
         logText->AppendText(settings.getMessage("EVT_FILTER_LOG", req.str(),
                                                 evt.title).c_str());
         logText->AppendText("\n");
         
         // The second line's color depends on the first character
         switch (evt.text[0]) {
-            case 'R': logText->SetDefaultStyle(*wxRED);   break;
-            case 'W': logText->SetDefaultStyle(*wxWHITE); break;
-            case 'B': logText->SetDefaultStyle(*wxBLUE);  break;
-            case 'G': logText->SetDefaultStyle(*wxGREEN); break;
-            case 'C': logText->SetDefaultStyle(*wxCYAN);  break;
-            case 'w': logText->SetDefaultStyle(*wxLIGHT_GREY); break;
-            case 'Y': logText->SetDefaultStyle(wxTextAttr(wxColour(255,255,0))); break;
-            case 'V': logText->SetDefaultStyle(wxTextAttr(wxColour(255,0,255))); break;
+        case 'R': logText->SetDefaultStyle(wxTextAttr(wxColour(LOG_COLOR_R))); break;
+        case 'W': logText->SetDefaultStyle(wxTextAttr(wxColour(LOG_COLOR_W))); break;
+        case 'B': logText->SetDefaultStyle(wxTextAttr(wxColour(LOG_COLOR_B))); break;
+        case 'G': logText->SetDefaultStyle(wxTextAttr(wxColour(LOG_COLOR_G))); break;
+        case 'C': logText->SetDefaultStyle(wxTextAttr(wxColour(LOG_COLOR_C))); break;
+        case 'w': logText->SetDefaultStyle(wxTextAttr(wxColour(LOG_COLOR_w))); break;
+        case 'Y': logText->SetDefaultStyle(wxTextAttr(wxColour(LOG_COLOR_Y))); break;
+        case 'V': logText->SetDefaultStyle(wxTextAttr(wxColour(LOG_COLOR_V))); break;
         }
         logText->AppendText(evt.text.substr(1).c_str());
         logText->AppendText("\n");
@@ -328,8 +343,7 @@ void CLogFrame::OnFilterEvent(CFilterEvent& evt) {
         // Exclude unwanted events
         if (!active || !filterCheckbox->GetValue()) return;
 
-        // Filter events are yellow
-        logText->SetDefaultStyle(wxTextAttr(wxColour(255,255,0)));
+        logText->SetDefaultStyle(wxTextAttr(wxColour(LOG_COLOR_FILTER)));
 
         stringstream req;
         req << evt.req;

@@ -58,7 +58,6 @@ CTestFrame::CTestFrame(CFilterDescriptor* desc)
                  wxDefaultPosition, wxDefaultSize,
                  wxDEFAULT_FRAME_STYLE |
                  wxTAB_TRAVERSAL |
-                 wxNO_FULL_REPAINT_ON_RESIZE |
                  wxCLIP_CHILDREN ),
          current(desc) {
 

@@ -45,12 +45,11 @@ public:
     virtual ~CWindowContent();
 
 protected:
-    CWindowContent(wxFrame* frame, wxWindow* window, int orient = wxHORIZONTAL);
+    CWindowContent(wxFrame* frame, int orient = wxHORIZONTAL);
     void makeSizer();
     void commitText();
 
-    wxWindow* window;        // The sizer's container
-    wxFrame* frame;          // The frame (mainly for manipulating the menubar)
+    wxFrame* frame;          // The parent frame
     CSettings& settings;
 };
 

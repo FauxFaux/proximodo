@@ -420,41 +420,6 @@ void CUtil::show(wxTopLevelWindow* window) {
 }
 
 
-// Function to freeze a window
-void CUtil::freeze(wxWindow* window) {
-    window->Freeze();
-}
-
-
-// Function to thaw and redraw a window
-void CUtil::thaw(wxWindow* window) {
-    window->Thaw();
-    window->Refresh(false);
-
-    // Refreshing the window does not refresh its children, which don't
-    // redraw if window has wxCLIP_CHILDREN. So I refresh them one by one.
-    wxWindowListNode* node = window->GetChildren().GetFirst();
-    while (node) {
-        wxWindow* child = node->GetData();
-        // win->Refresh(false) does not seem to work: scrollbars and borders
-        // are not redrawn! So I hide/show the control to force full redrawing.
-        if (child->IsShown()) {
-            if (child->GetChildren().GetFirst()) {
-                // Recursive call for embedded windows
-                freeze(child);
-                thaw(child);
-            } else {
-                child->Freeze();
-                child->Hide();
-                child->Thaw();
-                child->Show();
-            }
-        }
-        node = node->GetNext();
-    }
-}
-
-
 // Converts / to the platform's path separator
 string CUtil::makePath(const string& str) {
 
