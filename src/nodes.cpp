@@ -1054,6 +1054,7 @@ int CNode_Command::consume() {
         return (tmp == wxYES ? start : -1);
 
     case CMD_TYPE:
+        retry = false;
         return (content == owner.fileType ? start : -1);
 
     case CMD_STOP:

@@ -170,8 +170,8 @@ void CTestFrame::OnCommand(wxCommandEvent& event) {
                 int done = 0;
                 int start = 0;
                 int lastEnd = -1;
-                while (start < size && !filter.bypassed && !filter.killed) {
-                    if (!okayChars[(unsigned char)text[start]]) {
+                while (start <= size && !filter.bypassed && !filter.killed) {
+                    if (start<size && !okayChars[(unsigned char)text[start]]) {
                         ++start;
                         continue;
                     }
@@ -214,10 +214,7 @@ void CTestFrame::OnCommand(wxCommandEvent& event) {
                             done = start = end;
                     }
                 }
-                if (!filter.killed) {
-                    if (filter.bypassed) start = size;
-                    result << text.substr(done, start-done);
-                }
+                if (!filter.killed) result << text.substr(done, size-done);
                 if (!found) result.str(CSettings::ref().getMessage("TEST_NO_MATCH"));
 
             // Test of a header filter. Much simpler...

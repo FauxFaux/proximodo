@@ -186,7 +186,7 @@ void CTextFilter::process(const string& data, bool feeding) {
         return;
     }
     
-    // send data to buffer
+    // add data to buffer
     buffer += data;
     int size = buffer.size();
 
@@ -200,10 +200,10 @@ void CTextFilter::process(const string& data, bool feeding) {
     int start = 0;      // index where we currently look for a match
     
     // scan buffer
-    while (start < size && !killed && !bypassed) {
+    while ((start<size || start==size && !feeding) && !killed && !bypassed) {
 
         // pass characters that cannot match
-        if (!okayChars[(unsigned char)buffer[start]]) {
+        if (start<size && !okayChars[(unsigned char)buffer[start]]) {
             ++start;
             continue;
         }
@@ -275,6 +275,9 @@ void CTextFilter::process(const string& data, bool feeding) {
         }
     }
     
+    // Set start back to size if it went over (end of file)
+    if (start > size) start = size;
+    
     // If the filter has been killed at some point,
     // send the processed text then dump next filters
     if (killed) {
@@ -304,4 +307,3 @@ void CTextFilter::process(const string& data, bool feeding) {
     string str = output.str();
     if (!str.empty()) nextFilter->dataFeed(str);
 }
-

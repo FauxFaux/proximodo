@@ -52,8 +52,9 @@ string CFilterOwner::evaluateType(string data) {
 string CFilterOwner::evaluateType(const CUrl& url) {
 
     string path = url.getPath();
+    unsigned int slash = path.rfind('/');
     unsigned int dot = path.rfind('.');
-    if (dot == string::npos) return "oth";
+    if (dot == string::npos || dot < slash) return "htm";
     path = path.substr(dot + 1);
     CUtil::lower(path);
     if (path.find("htm") != string::npos ||

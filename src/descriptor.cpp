@@ -307,20 +307,29 @@ int CFilterDescriptor::importProxomitron(const string& text,
             CUtil::trim(value, "\"");
             value = CUtil::replaceAll(value, "\r", "\n");
 
-            if (label == "KEY") {
+            if (label == "IN") {
+                if (value == "TRUE") d.filterType = HEADIN;
+            }
+            else if (label == "OUT") {
+                if (value == "TRUE") d.filterType = HEADOUT;
+            }
+            else if (label == "KEY") {
                 unsigned int colon = value.find(':');
                 if (colon != string::npos) {
                     d.headerName = value.substr(0, colon);
                     d.title = value.substr(colon + 1);
                     CUtil::trim(d.headerName);
                     CUtil::trim(d.title);
-                    CUtil::lower(value);
-                    unsigned int i = value.find('(');
-                    d.filterType = ((i != string::npos &&
-                        value.find("out", i) != string::npos) ? HEADOUT : HEADIN);
+                    if (d.filterType == TEXT) {
+                        CUtil::lower(value);
+                        unsigned int i = value.find('(');
+                        d.filterType = ((i != string::npos &&
+                            value.find("out", i) != string::npos)
+                            ? HEADOUT : HEADIN);
+                    }
                 }
             }
-            else if (label == "NAME"   ) {
+            else if (label == "NAME") {
                 d.title = CUtil::trim(value);
                 d.filterType = TEXT;
             }
