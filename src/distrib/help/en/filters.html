@@ -59,9 +59,10 @@ given configuration. Do not neglect it.</p>
 
 <p class="explain">This arbitrary number defines the order in which
 active filters are executed. Higher priority filters are executed
-first. This order is very important: for example, if you use a
-filter that removes some JavaScripts and a filter that inserts a
-JavaScript, the former must run first, or it would undo the effect
+first (e.g a filter with priority 200 is executed before a filter
+with priority 100). This order is very important: for example, if you
+use a filter that removes some JavaScripts and a filter that inserts
+a JavaScript, the former must run first, or it would undo the effect
 of the latter. Default filters' priorities are defined so that no
 such interference occur (from 1000 down to 0). When you write a new
 filter, you should choose a priority consistent with your custom

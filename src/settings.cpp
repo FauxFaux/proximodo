@@ -394,9 +394,9 @@ void CSettings::loadSettings() {
     
     // Define browser executable path on first run
     if (firstRun && browserPath.empty()) {
-        wxString command;
         wxFileType* type = wxTheMimeTypesManager->GetFileTypeFromMimeType("text/html");
-        if (type && type->GetOpenCommand(&command, wxString(""))) {
+        if (type) {
+            wxString command = type->GetOpenCommand(wxString(""));
             browserPath = CUtil::getExeName(command.c_str());
         }
     }

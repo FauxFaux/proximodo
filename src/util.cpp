@@ -362,8 +362,8 @@ void CUtil::openBrowser(const string& path) {
     }
     
     // Get command
-    wxString command;
-    if (!type->GetOpenCommand(&command, pathString)) return;
+    wxString command = type->GetOpenCommand(pathString);
+    if (command.IsEmpty()) return;
     
     // Remove parameters from command line if path was empty
     if (path.empty())
@@ -399,8 +399,8 @@ void CUtil::openNotepad(const string& path) {
     if (!type) return;
     wxFileName fn(CUtil::makePath(path).c_str());
     fn.MakeAbsolute();
-    wxString command;
-    if (!type->GetOpenCommand(&command, fn.GetFullPath())) return;
+    wxString command = type->GetOpenCommand(fn.GetFullPath());
+    if (command.IsEmpty()) return;
     wxExecute(command, wxEXEC_ASYNC);
 }
 

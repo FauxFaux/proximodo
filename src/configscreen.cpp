@@ -598,6 +598,10 @@ void CConfigScreen::OnTreeEvent(wxTreeEvent& event) {
     if (evt == wxEVT_COMMAND_TREE_STATE_IMAGE_CLICK) {
 
         // An item is checked/unchecked
+        if (!tree->IsSelected(id)) {
+            tree->UnselectAll();
+            tree->SelectItem(id);
+        }
         checkSelection();
 
     } else if (evt == wxEVT_COMMAND_TREE_SEL_CHANGED) {
