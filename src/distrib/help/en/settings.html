@@ -30,50 +30,6 @@ the screen or last applied the settings.</p>
 
 <p class="section">Filtering Settings</p>
 
-<p class="option">Filter Outgoing Headers</p>
-
-<p class="explain">If this box is unchecked, outgoing headers (that
-is, headers included in the requests your browser sends to
-websites) will not be affected by filters. If the box is checked,
-headers may be changed / added / deleted by a header filter that
-matches it. Note that Proximodo being a proxy server, it may change
-a few proxy-related headers for its proper functioning, whether the
-box is checked or not.</p>
-
-<p class="option">Filter Incoming Headers</p>
-
-<p class="explain">If this box is unchecked, incoming headers
-(headers that websites send along with html documents and images)
-are not affected by header filters. If the box is checked, headers
-may be changed / added / deleted by header filters in the current
-configuration.</p>
-
-<p class="option">Filter Text</p>
-
-<p class="explain">If this box is unchecked, downloaded html
-documents are left untouched. If checked, the documents go through
-all text filters in the current configuration. Those filters are
-chained, and they may replace bits of text or not. The document's
-content is then sent to the browser for viewing.</p>
-
-<p class="option">Freeze GIF Images</p>
-
-<p class="explain">If this box is checked, animated GIF images will
-be transformed into fixed GIF images. Use this when flashy blinking
-images all over the screen make you dizzy.</p>
-
-<p class="option">Active Configuration</p>
-
-<p class="explain">This is the active configuration for header/text
-processing. A configuration is a set of selected filters that you
-want to use. Proximodo comes with many filters, and you can add
-more, but hopefully they are not all being used at the same time.
-Instead, you can select the filters you want to use and "group"
-them in a configuration. You can create several configurations, so
-that switching from one set to another (for example for a set of
-very unforgiving filters to a more permissive one) comes just to
-changing the value of this setting.</p>
-
 <p class="option">Bypass URL Pattern</p>
 
 <p class="explain">This field contains a pattern for selecting
@@ -96,13 +52,22 @@ all instead of deactivating/reactivating Proximodo filters.</p>
 interface, filter titles and comments. Changes will take effect
 upon next restart (i.e by quitting/reloading Proximodo).</p>
 
-<p class="option">On startup, display</p>
+<p class="option">Show GUI On Start-Up</p>
 
-<p class="explain">Normally, Proximodo puts itself in the 
-background and opens your default browser - this corresponds
-to the &quot;default browser&quot; choice here. You can
-adjust this behaviour so that Proximodo opens both itself
-and the browser, or just itself.</p>
+<p class="explain">By default, Proximodo window opens each
+time Proximodo starts. If you only need the tray icon, uncheck
+this checkbox. You will still be able to open the window, by
+clicking on the icon in the system tray.</p>
+
+<p class="option">Launch This App On Start-Up</p>
+
+<p class="explain">By default, when Proximodo starts, it
+automatically opens a browser window for you. You can change this
+behaviour. Uncheck the checkbox to prevent Proximodo from opening
+anything else. Or change the executable path, to launch another
+program than the default browser (initially set to the browser
+associated with the text/html MIME type). Use the folder button to
+browse your hard drive.</p>
 
 <p class="section">Proxy Settings</p>
 
