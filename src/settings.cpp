@@ -89,7 +89,7 @@ CSettings::CSettings() {
  */
 CSettings::~CSettings() {
 
-    // (Nothing to do)
+    save(true);
 }
 
 

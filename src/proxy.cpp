@@ -125,11 +125,11 @@ bool CProxy::testPort(const string& port) {
     }
     
     // Is someone already using the port?
-    wxSocketClient *client = new wxSocketClient();
-    client->Connect(addr, FALSE);
-    if (client->WaitOnConnect(1) // Wait 1 second
+    wxSocketClient client;
+    client.Connect(addr, FALSE);
+    if (client.WaitOnConnect(1) // Wait 1 second
         && 
-        client->IsConnected())   // Checked only if connection completes
+        client.IsConnected())   // Checked only if connection completes
     {
         return false;
     }

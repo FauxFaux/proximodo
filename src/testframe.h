@@ -53,6 +53,9 @@ private:
 	pmTextCtrl *resultMemo;
 	pmTextCtrl *testMemo;
 
+    // Saved window position
+    static int savedX, savedY, savedW, savedH;
+
     // IDs
     enum {
         // Buttons

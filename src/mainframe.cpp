@@ -56,14 +56,18 @@
 /* Event table
  */
 BEGIN_EVENT_TABLE(CMainFrame, wxFrame)
-    EVT_SHOW      (CMainFrame::OnShow)
-    EVT_CLOSE     (CMainFrame::OnClose)
     EVT_ICONIZE   (CMainFrame::OnIconize)
     EVT_PROXY     (CMainFrame::OnProxyEvent)
     EVT_STATUS    (CMainFrame::OnStatusEvent)
     EVT_TOOL_RANGE(ID_SETTINGS,      ID_QUIT,       CMainFrame::OnCommand)
     EVT_MENU_RANGE(ID_TOOLSSETTINGS, ID_HELPSYNTAX, CMainFrame::OnCommand)
 END_EVENT_TABLE()
+
+
+/* Saved window position
+ */
+int CMainFrame::savedX = BIG_NUMBER,
+    CMainFrame::savedY = 0;
 
 
 /* Constructor
@@ -164,9 +168,15 @@ CMainFrame::CMainFrame(const wxPoint& position)
         settings.getMessage("MENU_HELP").c_str());
     SetMenuBar(menubar);
 
-    // Display welcome screen and tray icon
-    trayIcon = new CTrayIcon(this);
+    // Display welcome screen
     content = new CWelcomeScreen(this);
+    
+    // Reload window position
+    if (savedX == BIG_NUMBER) {
+        Centre(wxBOTH | wxCENTRE_ON_SCREEN);
+    } else {
+        Move(savedX, savedY);
+    }
 }
 
 
@@ -174,43 +184,21 @@ CMainFrame::CMainFrame(const wxPoint& position)
  */
 CMainFrame::~CMainFrame() {
 
-    delete trayIcon;
-    content->apply(false);
-    while (wxTheApp->Pending()) wxTheApp->Dispatch();
-    CSettings::ref().save(true);
+    // Save window position
+    GetPosition(&savedX, &savedY);
+    
     CLog::ref().proxyListeners.erase(this);
-    SetSizer(NULL);
-    CProxy::destroy();
-    CLog::destroy();
+    SetSizer(content = NULL);
+    CLog::ref().mainFrame = NULL;
 }
 
 
-/* Hides window when clicking on the [X] button (same as [_] )
- */
-void CMainFrame::OnClose(wxCloseEvent& event) {
-
-    Iconize();
-}
-
-
-/* Hides window when clicking on the [_] button (only tray icon remains)
+/* Closes window when clicking on the [_] button (same as [X])
+ * Only the tray icon remains.
  */
 void CMainFrame::OnIconize(wxIconizeEvent& event) {
 
-    if (event.Iconized()) {
-        content->apply(true);
-        Hide();
-    }
-}
-
-
-/* Revert the screen on Show(true) event (in case something, i.e a filter,
- * changed some settings, this function will refresh the data in the
- * current screen)
- */
-void CMainFrame::OnShow(wxShowEvent& event){
-
-    if (event.GetShow()) content->revert(false);
+    if (event.Iconized()) Close();
 }
 
 
@@ -218,7 +206,7 @@ void CMainFrame::OnShow(wxShowEvent& event){
  */
 void CMainFrame::OnStatusEvent(CStatusEvent& event) {
 
-    if (event.field != 0 && event.field != 2) return;
+    if (event.field < 0 && event.field > 2) return;
     if (event.text == statusbar->GetStatusText(event.field).c_str()) return;
     statusbar->SetStatusText(event.text.c_str(), event.field);
 }
@@ -266,34 +254,38 @@ void CMainFrame::OnCommand(wxCommandEvent& event) {
 
     case ID_LOG:
     case ID_TOOLSLOG:
+        if (!CLog::ref().logFrame)
+            CLog::ref().logFrame = new CLogFrame();
         CUtil::show(CLog::ref().logFrame);
         break;
 
     case ID_TOOLSSAVE:
-        content->apply(false);
+        if (content) content->apply(false);
         settings.save();
         break;
 
     case ID_TOOLSRELOAD:
-        content->apply(false);
+        if (content) content->apply(false);
         settings.save(true);
         // Stop proxy
         CProxy::ref().closeProxyPort();
         CProxy::ref().refreshManagers();
         // Load settings and filters
         settings.load();
-        content->revert(false);
+        if (content) content->revert(false);
         // Restart proxy
         CProxy::ref().openProxyPort();
         break;
 
     case ID_QUIT:
     case ID_TOOLSQUIT:
-        Destroy();
+        if (CLog::ref().trayIcon) delete CLog::ref().trayIcon;
+        if (CLog::ref().logFrame) CLog::ref().logFrame->Destroy();
+        if (CLog::ref().mainFrame) CLog::ref().mainFrame->Destroy();
         break;
 
     case ID_TOOLSICONIZE:
-        Iconize(true);
+        Close();
         break;
 
     case ID_HELP:

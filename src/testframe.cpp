@@ -50,6 +50,14 @@ BEGIN_EVENT_TABLE(CTestFrame, wxFrame)
 END_EVENT_TABLE()
 
 
+/* Saved window position
+ */
+int CTestFrame::savedX = BIG_NUMBER,
+    CTestFrame::savedY = 0,
+    CTestFrame::savedW = 0,
+    CTestFrame::savedH = 0;
+
+
 /* Constructor
  */
 CTestFrame::CTestFrame(CFilterDescriptor* desc)
@@ -88,12 +96,24 @@ CTestFrame::CTestFrame(CFilterDescriptor* desc)
 
     GetSizer()->Fit(this);
     GetSizer()->SetSizeHints(this);
+
+    // Reload position and size
+    if (savedX == BIG_NUMBER) {
+        Centre(wxBOTH | wxCENTRE_ON_SCREEN);
+    } else {
+        Move(savedX, savedY);
+        SetSize(savedW, savedH);
+    }
 }
 
 
 /* Destructor
  */
 CTestFrame::~CTestFrame() {
+
+    // Record position and size
+    GetPosition(&savedX, &savedY);
+    GetSize(&savedW, &savedH);
 }
 
 

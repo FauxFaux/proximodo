@@ -73,6 +73,9 @@ private:
     pmTextCtrl *replaceMemo;
     pmListCtrl *listCtrl;
 
+    // Saved window position
+    static int savedX, savedY, savedW, savedH;
+
     // Event handling function
     void OnCommand(wxCommandEvent& event);
 

@@ -1277,6 +1277,8 @@ CNode_Ask::CNode_Ask(const string& text, int& reached, CFilter& filter,
 }
 
 CNode_Ask::~CNode_Ask() {
+    delete allowMatcher;
+    delete denyMatcher;
 }
 
 int CNode_Ask::consume() {

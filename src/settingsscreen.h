@@ -50,7 +50,6 @@ private:
 
     // Managed variables
     string         language;
-    string         currentConfig;
     string         proxyPort;
     bool           useNextProxy;
     string         nextProxy;
@@ -59,10 +58,6 @@ private:
     unsigned long  minIPRange;
     unsigned long  maxIPRange;
     string         bypass;
-    bool           filterIn;
-    bool           filterOut;
-    bool           filterText;
-    bool           filterGif;
     bool           showOnStartup;
     bool           startBrowser;
     string         browserPath;

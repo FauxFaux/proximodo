@@ -29,14 +29,12 @@
 #include <wx/taskbar.h>
 #include <wx/event.h>
 
-class CMainFrame; // (to solve circualr reference)
-
 /* This class implements Proximodo's tray icon
  */
 class CTrayIcon : public wxTaskBarIcon {
 
 public:
-    CTrayIcon(CMainFrame* mainFrame);
+    CTrayIcon();
     ~CTrayIcon();
     virtual wxMenu* CreatePopupMenu();
 
@@ -60,9 +58,6 @@ private:
     void OnCommand(wxCommandEvent& event);
     void OnClick(wxTaskBarIconEvent& event);
 
-    // Reference to main frame, for Open menu item
-    CMainFrame* mainFrame;
-    
     // For event management
     DECLARE_EVENT_TABLE()
 };

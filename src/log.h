@@ -32,6 +32,7 @@
 #include <string>
 #include "events.h"
 #include "logframe.h"
+#include "mainframe.h"
 
 using namespace std;
 
@@ -108,7 +109,13 @@ public:
     
     // Log window
     CLogFrame* logFrame;
-
+    
+    // Main window
+    CMainFrame* mainFrame;
+    
+    // Taskbar icon
+    CTrayIcon* trayIcon;
+    
 protected:
     CLog();
     ~CLog();

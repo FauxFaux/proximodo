@@ -32,6 +32,8 @@
 #include <wx/icon.h>
 #include "images/icon32.xpm"
 #include "util.h"
+#include "log.h"
+#include "const.h"
 
 #define  LOG_COLOR_BACKGROUND  255, 255, 255
 #define  LOG_COLOR_DEFAULT     150, 150, 150
@@ -53,14 +55,21 @@ using namespace std;
 /* Events
  */
 BEGIN_EVENT_TABLE(CLogFrame, wxFrame)
-    EVT_CLOSE  (CLogFrame::OnClose)
-    EVT_SHOW   (CLogFrame::OnShow)
     EVT_BUTTON (ID_CLEARBUTTON, CLogFrame::OnCommand)
     EVT_BUTTON (ID_STARTBUTTON, CLogFrame::OnCommand)
     EVT_PROXY  (CLogFrame::OnProxyEvent)
     EVT_HTTP   (CLogFrame::OnHttpEvent)
     EVT_FILTER (CLogFrame::OnFilterEvent)
 END_EVENT_TABLE()
+
+
+/* Saved window position
+ */
+int CLogFrame::savedX = BIG_NUMBER,
+    CLogFrame::savedY = 0,
+    CLogFrame::savedW = 0,
+    CLogFrame::savedH = 0,
+    CLogFrame::savedOpt = 0;
 
 
 /* Constructor
@@ -94,7 +103,7 @@ CLogFrame::CLogFrame()
     vertSizer->Add(lowerSizer,0,wxALIGN_LEFT | wxALL,0);
 
     startButton =  new pmButton(this, ID_STARTBUTTON,
-        settings.getMessage("LOG_BUTTON_START").c_str() );
+        settings.getMessage("LOG_BUTTON_STOP").c_str() );
     lowerSizer->Add(startButton,0,wxALIGN_CENTER_VERTICAL | wxALL,5);
 
     pmButton* clearButton =  new pmButton(this, ID_CLEARBUTTON,
@@ -131,41 +140,54 @@ CLogFrame::CLogFrame()
         settings.getMessage("LOG_CKB_LOG").c_str() );
     ckbxSizer2->Add(logCheckbox,0,wxALIGN_LEFT | wxALL,2);
 
-    active = false;
+    active = true;
     httpCheckbox->SetValue(true);
     browserCheckbox->SetValue(true);
     logCheckbox->SetValue(true);
     filterCheckbox->SetValue(true);
-
+    
     GetSizer()->Fit(this);
     GetSizer()->SetSizeHints(this);
+
+    // Reload position, size and options
+    if (savedX == BIG_NUMBER) {
+        Centre(wxBOTH | wxCENTRE_ON_SCREEN);
+    } else {
+        Move(savedX, savedY);
+        SetSize(savedW, savedH);
+        logCheckbox->SetValue(savedOpt & 32);
+        httpCheckbox->SetValue(savedOpt & 16);
+        postCheckbox->SetValue(savedOpt & 8);
+        proxyCheckbox->SetValue(savedOpt & 4);
+        filterCheckbox->SetValue(savedOpt & 2);
+        browserCheckbox->SetValue(savedOpt & 1);
+    }
+
+    CLog::ref().httpListeners.insert(this);
+    CLog::ref().proxyListeners.insert(this);
+    CLog::ref().filterListeners.insert(this);
 }
 
 
 /* Destructor
  */
 CLogFrame::~CLogFrame() {
-}
 
+    // Record position, size and options
+    GetPosition(&savedX, &savedY);
+    GetSize(&savedW, &savedH);
+    savedOpt =
+        (logCheckbox->GetValue() ? 32 : 0) +
+        (httpCheckbox->GetValue() ? 16 : 0) +
+        (postCheckbox->GetValue() ? 8 : 0) +
+        (proxyCheckbox->GetValue() ? 4 : 0) +
+        (filterCheckbox->GetValue() ? 2 : 0) +
+        (browserCheckbox->GetValue() ? 1 : 0);
 
-/* Hide the window when clicking on the [X] button
- */
-void CLogFrame::OnClose(wxCloseEvent& event) {
-
-    Hide();
-    if (active) {
-        startButton->SetLabel(settings.getMessage("LOG_BUTTON_START").c_str());
-        active = false;
-    }
-}
-
-
-/* Turn on the display when the window appears
- */
-void CLogFrame::OnShow(wxShowEvent& event) {
-
-    startButton->SetLabel(settings.getMessage("LOG_BUTTON_STOP").c_str());
-    active = true;
+    CLog::ref().httpListeners.erase(this);
+    CLog::ref().proxyListeners.erase(this);
+    CLog::ref().filterListeners.erase(this);
+    CLog::ref().logFrame = NULL;
 }
 
 
@@ -196,7 +218,6 @@ void CLogFrame::OnCommand(wxCommandEvent& event) {
  */
 void CLogFrame::OnProxyEvent(CProxyEvent& evt) {
 
-    evt.Skip();
     // Exclude unwanted events
     if (!active || !proxyCheckbox->GetValue()) return;
     
@@ -242,7 +263,6 @@ void CLogFrame::OnProxyEvent(CProxyEvent& evt) {
 
 void CLogFrame::OnHttpEvent(CHttpEvent& evt) {
 
-    evt.Skip();
     // Exclude unwanted events
     if (   !active
         || !httpCheckbox->GetValue()
@@ -296,8 +316,6 @@ void CLogFrame::OnHttpEvent(CHttpEvent& evt) {
 
 void CLogFrame::OnFilterEvent(CFilterEvent& evt) {
 
-    evt.Skip();
-    
     if (evt.type == pmEVT_FILTER_TYPE_LOGCOMMAND) {
     
         // If a Log event starts with ! the window must appear and show it

@@ -90,7 +90,7 @@ bool CMatcher::testPattern(const string& pattern) {
     CFilter filter(owner);
     string text;
     try {
-        new CMatcher(text, pattern, filter);
+        CMatcher(text, pattern, filter);
     } catch (parsing_exception e) {
         return false;
     }
@@ -103,7 +103,7 @@ bool CMatcher::testPattern(const string& pattern, string& errmsg) {
     CFilter filter(owner);
     string text;
     try {
-        new CMatcher(text, pattern, filter);
+        CMatcher(text, pattern, filter);
     } catch (parsing_exception e) {
         stringstream mess;
         mess << CSettings::ref().getMessage(e.message, e.position) << endl;

@@ -304,7 +304,7 @@ CSettingsScreen::CSettingsScreen(wxFrame* frame) : CWindowContent(frame) {
  */
 CSettingsScreen::~CSettingsScreen() {
 
-    if (hasChanged()) apply(true);
+    apply(true);
 }
 
 
@@ -314,7 +314,6 @@ bool CSettingsScreen::hasChanged() {
 
     commitText();
     return (language      != settings.language      ||
-            currentConfig != settings.currentConfig ||
             proxyPort     != settings.proxyPort     ||
             useNextProxy  != settings.useNextProxy  ||
             nextProxy     != settings.nextProxy     ||
@@ -322,10 +321,6 @@ bool CSettingsScreen::hasChanged() {
             minIPRange    != settings.minIPRange    ||
             maxIPRange    != settings.maxIPRange    ||
             bypass        != settings.bypass        ||
-            filterIn      != settings.filterIn      ||
-            filterOut     != settings.filterOut     ||
-            filterText    != settings.filterText    ||
-            filterGif     != settings.filterGif     ||
             proxies       != settings.proxies       ||
             showOnStartup != settings.showOnStartup ||
             startBrowser  != settings.startBrowser  ||
@@ -347,7 +342,6 @@ void CSettingsScreen::revert(bool confirm) {
 
     // Load variables
     language      = settings.language      ;
-    currentConfig = settings.currentConfig ;
     proxyPort     = settings.proxyPort     ;
     useNextProxy  = settings.useNextProxy  ;
     nextProxy     = settings.nextProxy     ;
@@ -355,10 +349,6 @@ void CSettingsScreen::revert(bool confirm) {
     minIPRange    = settings.minIPRange    ;
     maxIPRange    = settings.maxIPRange    ;
     bypass        = settings.bypass        ;
-    filterIn      = settings.filterIn      ;
-    filterOut     = settings.filterOut     ;
-    filterText    = settings.filterText    ;
-    filterGif     = settings.filterGif     ;
     proxies       = settings.proxies       ;
     showOnStartup = settings.showOnStartup ;
     startBrowser  = settings.startBrowser  ;
@@ -422,19 +412,14 @@ void CSettingsScreen::apply(bool confirm) {
     CProxy::ref().closeProxyPort();
     CProxy::ref().refreshManagers();
     // Apply variables
-    settings.useNextProxy  = (nextProxy.empty() ? false : useNextProxy);
+    settings.useNextProxy  = useNextProxy  ;
     settings.language      = language      ;
-    settings.currentConfig = currentConfig ;
     settings.proxyPort     = proxyPort     ;
     settings.nextProxy     = nextProxy     ;
     settings.allowIPRange  = allowIPRange  ;
     settings.minIPRange    = minIPRange    ;
     settings.maxIPRange    = maxIPRange    ;
     settings.bypass        = bypass        ;
-    settings.filterIn      = filterIn      ;
-    settings.filterOut     = filterOut     ;
-    settings.filterText    = filterText    ;
-    settings.filterGif     = filterGif     ;
     settings.proxies       = proxies       ;
     settings.showOnStartup = showOnStartup ;
     settings.startBrowser  = startBrowser  ;
@@ -466,6 +451,8 @@ void CSettingsScreen::OnCommand(wxCommandEvent& event) {
         allowIPRange = allowIPCheckbox->GetValue(); break;
 
     case ID_USEPROXYCHECKBOX:
+        if (nextProxyDropdown->GetValue().IsEmpty())
+            useProxyCheckbox->SetValue(false);
         useNextProxy = useProxyCheckbox->GetValue(); break;
 
     case ID_SHOWGUICHECKBOX:
@@ -559,6 +546,8 @@ void CSettingsScreen::OnCommand(wxCommandEvent& event) {
                                      APP_NAME);
                     }
                 }
+            } else {
+                useProxyCheckbox->SetValue(useNextProxy = false);
             }
             break;
         }

@@ -138,7 +138,7 @@ CConfigScreen::CConfigScreen(wxFrame* frame) :
     Add(commentText, 0,wxGROW | wxALIGN_CENTER_VERTICAL | wxALL,5);
 
     // Menu
-    wxMenu* menuConfig = new wxMenu();
+    menuConfig = new wxMenu();
     menuConfig->Append(ID_FOLDERSNEW,
         settings.getMessage("MENU_FOLDERSNEW").c_str(),
         settings.getMessage("MENU_FOLDERSNEW_TIP").c_str());
@@ -206,6 +206,7 @@ CConfigScreen::~CConfigScreen() {
     delete editWindow;
     apply(true);
     frame->GetMenuBar()->Remove(1);
+    delete menuConfig;
 }
 
 

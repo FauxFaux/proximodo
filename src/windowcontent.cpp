@@ -41,11 +41,13 @@ CWindowContent::CWindowContent(wxFrame* frame, int orient) :
 void CWindowContent::makeSizer() {
 
     revert(false);
-    frame->PushEventHandler(this);  // (to get menu events from menubar)
-    wxSizer* frameSizer = frame->GetSizer();
-    frame->SetSizeHints(frameSizer->GetMinSize() + frame->GetSize() - frame->GetClientSize());
-    frame->SetSize(frameSizer->GetMinSize() + frame->GetSize() - frame->GetClientSize());
+    wxSize newSize = frame->GetSizer()->GetMinSize()
+                   + frame->GetSize()
+                   - frame->GetClientSize();
+    frame->SetSizeHints(newSize);
+    frame->SetSize(newSize);
     frame->Layout();
+    frame->PushEventHandler(this);  // (to get menu events from menubar)
 }
 
 

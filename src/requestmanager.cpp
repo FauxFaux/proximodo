@@ -166,6 +166,7 @@ void CRequestManager::manage(wxSocketBase* browser) {
                 if (sendIn())       { rest = false; }
                 if (receiveOut())   { rest = false; processOut(); }
                 if (rest) wxThread::Sleep(5);
+                if (!valid && inStep == STEP_START) browser->Close();
 
             } while (website->IsConnected() && browser->IsConnected());
 
@@ -190,6 +191,7 @@ void CRequestManager::manage(wxSocketBase* browser) {
             }
         }
         if (rest) wxThread::Sleep(50);
+        if (!valid && inStep == STEP_START) browser->Close();
     }
     destroy();
 }

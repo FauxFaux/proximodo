@@ -24,6 +24,7 @@
 
 
 #include "log.h"
+#include "const.h"
 
 /* Functions to log event
  */
@@ -73,16 +74,13 @@ void CLog::destroy() {
 
 CLog::CLog() {
     numRequests = numActiveRequests = numOpenSockets = 0;
-    logFrame = new CLogFrame();
-    httpListeners.insert(logFrame);
-    proxyListeners.insert(logFrame);
-    filterListeners.insert(logFrame);
+    mainFrame = NULL;
+    logFrame = NULL;
+    trayIcon = NULL;
 }
 
 CLog::~CLog() {
-    httpListeners.erase(logFrame);
-    proxyListeners.erase(logFrame);
-    filterListeners.erase(logFrame);
-    logFrame->Destroy();
+    if (trayIcon) delete trayIcon;
+    if (logFrame) logFrame->Destroy();
+    if (mainFrame) mainFrame->Destroy();
 }
-

@@ -44,15 +44,12 @@ public:
 
 private:
     // Event handling functions
-    void OnClose(wxCloseEvent& event);
-    void OnShow(wxShowEvent& event);
     void OnIconize(wxIconizeEvent& event);
     void OnCommand(wxCommandEvent& event);
     void OnProxyEvent(CProxyEvent& event);
     void OnStatusEvent(CStatusEvent& event);
 
     // Variables
-    CTrayIcon* trayIcon;
     wxStatusBar* statusbar;
     CWindowContent* content;  // destroyed with SetSizer(NULL) or
                               // by creating another CWindowContent
@@ -60,6 +57,9 @@ private:
     // Functions
     void updateStatusBar();
     
+    // Saved window position
+    static int savedX, savedY;
+
     // IDs
     enum {
         // Buttons

@@ -62,6 +62,14 @@ BEGIN_EVENT_TABLE(CEditScreen, wxFrame)
 END_EVENT_TABLE()
 
 
+/* Saved window position
+ */
+int CEditScreen::savedX = BIG_NUMBER,
+    CEditScreen::savedY = 0,
+    CEditScreen::savedW = 0,
+    CEditScreen::savedH = 0;
+
+
 /* Constructor
  */
 CEditScreen::CEditScreen(CFilterDescriptor* desc) :
@@ -250,6 +258,14 @@ CEditScreen::CEditScreen(CFilterDescriptor* desc) :
     GetSizer()->Fit(this);
     GetSizer()->SetSizeHints(this);
 
+    // Reload position and size
+    if (savedX == BIG_NUMBER) {
+        Centre(wxBOTH | wxCENTRE_ON_SCREEN);
+    } else {
+        Move(savedX, savedY);
+        SetSize(savedW, savedH);
+    }
+
     current = desc;
     testWindow = new CTestFrame(current);
 }
@@ -258,6 +274,10 @@ CEditScreen::CEditScreen(CFilterDescriptor* desc) :
 /* Destructor
  */
 CEditScreen::~CEditScreen() {
+
+    // Record position and size
+    GetPosition(&savedX, &savedY);
+    GetSize(&savedW, &savedH);
 
     delete testWindow;
 }

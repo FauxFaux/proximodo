@@ -100,6 +100,7 @@ private:
 	pmComboBox *nameEdit;
 	pmTreeCtrl *tree;
 	pmTextCtrl *commentText;
+	wxMenu     *menuConfig;
 
     // Event handling functions
     void OnCommand(wxCommandEvent& event);

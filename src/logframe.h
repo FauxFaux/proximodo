@@ -58,9 +58,10 @@ private:
 	pmCheckBox *browserCheckbox;
     pmTextCtrl *logText;
 
+    // Saved window position
+    static int savedX, savedY, savedW, savedH, savedOpt;
+
     // Event handling function
-    void OnClose(wxCloseEvent& event);
-    void OnShow(wxShowEvent& event);
     void OnCommand(wxCommandEvent& event);
     void OnHttpEvent(CHttpEvent& evt);
     void OnProxyEvent(CProxyEvent& evt);

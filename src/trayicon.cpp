@@ -26,6 +26,7 @@
 #include "trayicon.h"
 #include <wx/menu.h>
 #include <wx/icon.h>
+#include <wx/app.h>
 #include <vector>
 #include <map>
 #include <string>
@@ -47,8 +48,7 @@ END_EVENT_TABLE()
 
 /* Constructor
  */
-CTrayIcon::CTrayIcon(CMainFrame* mainFrame) :
-            wxTaskBarIcon(), mainFrame(mainFrame) {
+CTrayIcon::CTrayIcon() : wxTaskBarIcon() {
 
     SetIcon(wxIcon(icon32_xpm), APP_NAME);
 }
@@ -57,6 +57,8 @@ CTrayIcon::CTrayIcon(CMainFrame* mainFrame) :
 /* Destructor
  */
 CTrayIcon::~CTrayIcon() {
+
+    CLog::ref().trayIcon = NULL;
 }
 
 
@@ -64,7 +66,9 @@ CTrayIcon::~CTrayIcon() {
  */
 void CTrayIcon::OnClick(wxTaskBarIconEvent& event) {
 
-    CUtil::show(mainFrame);
+    if (!CLog::ref().mainFrame)
+        CLog::ref().mainFrame = new CMainFrame(wxDefaultPosition);
+    CUtil::show(CLog::ref().mainFrame);
 }
 
 
@@ -76,11 +80,15 @@ void CTrayIcon::OnCommand(wxCommandEvent& event) {
 
     switch (event.GetId()) {
     case ID_LOG:
+        if (!CLog::ref().logFrame)
+            CLog::ref().logFrame = new CLogFrame();
         CUtil::show(CLog::ref().logFrame);
         break;
 
     case ID_EXIT:
-        mainFrame->Destroy();
+        if (CLog::ref().trayIcon) delete CLog::ref().trayIcon;
+        if (CLog::ref().logFrame) CLog::ref().logFrame->Destroy();
+        if (CLog::ref().mainFrame) CLog::ref().mainFrame->Destroy();
         break;
 
     case ID_FILTERNONE:

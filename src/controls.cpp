@@ -101,6 +101,7 @@ pmStaticBoxSizer::~pmStaticBoxSizer() {
     wxWindow* window = box->GetParent();
     window->RemoveChild(box);
     box->Show(false);
+    delete box;
 }
 
 

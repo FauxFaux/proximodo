@@ -30,6 +30,7 @@
 #include "settings.h"
 #include "mainframe.h"
 #include "util.h"
+#include "log.h"
 
 class ProximodoApp : public wxApp {
 
@@ -66,10 +67,11 @@ bool ProximodoApp::OnInit() {
     // Start proxy server
     CProxy::ref().openProxyPort();
 
-    // Create main frame
-    CMainFrame* mf = new CMainFrame(wxDefaultPosition);
-    mf->Centre(wxBOTH | wxCENTRE_ON_SCREEN);
-    if (CSettings::ref().showOnStartup) mf->Show();
+    // Create and display main frame
+    if (CSettings::ref().showOnStartup) {
+        CLog::ref().mainFrame = new CMainFrame(wxDefaultPosition);
+        CLog::ref().mainFrame->Show();
+    }
     
     // Open welcome html page on first run
     if (CSettings::ref().firstRun) {
@@ -82,12 +84,17 @@ bool ProximodoApp::OnInit() {
         wxExecute(CSettings::ref().browserPath.c_str(), wxEXEC_ASYNC);
     }
 
+    // Create tray icon
+    CLog::ref().trayIcon = new CTrayIcon();
+
     return true;
 }
 
 
 int ProximodoApp::OnExit() {
 
+    CProxy::destroy();
+    CLog::destroy();
     CSettings::destroy();
     delete sic;
     return 0;
