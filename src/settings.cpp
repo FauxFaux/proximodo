@@ -476,7 +476,11 @@ void CSettings::loadLists() {
  */
 void CSettings::loadList(string name) {
 
-    wxTextFile f(listNames[name].c_str());
+    string fn(listNames[name]);
+    for (int i = 0; fn[i]; i++)   // Replace \ with / in paths on Unix
+        if (fn[i] == wxFILE_SEP_PATH_UNIX || fn[i] == wxFILE_SEP_PATH_DOS)
+            fn[i] = wxFILE_SEP_PATH;
+    wxTextFile f(fn.c_str());
     deque<string> patterns;
     if (f.Open()) {
         f.AddLine("");  // (so that we don't need post-loop processing)
