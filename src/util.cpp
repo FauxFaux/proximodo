@@ -31,8 +31,10 @@
 #include <wx/mimetype.h>
 #include <wx/clipbrd.h>
 #include <wx/list.h>
+#include <wx/msgdlg.h>
 #include "platform.h"
 #include "const.h"
+#include "settings.h"
 
 using namespace std;
 
@@ -348,26 +350,31 @@ string CUtil::decodeBASE64(const string& str) {
 // default home page
 void CUtil::openBrowser(const string& path) {
 
-    // Get file type
-    wxFileType* type = wxTheMimeTypesManager->GetFileTypeFromMimeType("text/html");
-    if (!type) return;
-
-    // Get path string
+    // Get absolute path string
     wxString pathString;
-    // Get command to open given path, if provided
     if (!path.empty()) {
         wxFileName fn(CUtil::makePath(path).c_str());
         fn.MakeAbsolute();
         pathString = fn.GetFullPath();
     }
-    
+
     // Get command
-    wxString command = type->GetOpenCommand(pathString);
-    if (command.IsEmpty()) return;
-    
+    wxString command;
+    wxFileType* type = wxTheMimeTypesManager->GetFileTypeFromMimeType("text/html");
+    if (type) command = type->GetOpenCommand(pathString);
+
     // Remove parameters from command line if path was empty
     if (path.empty())
         command = getExeName(command.c_str()).c_str();
+
+    // Make sure command was found
+    if (command.IsEmpty()) {
+        if (!pathString.IsEmpty()) {
+            wxMessageBox(CSettings::ref().getMessage("UTIL_OPEN_FILE",
+                    pathString.c_str()).c_str(), APP_NAME, wxICON_ERROR);
+        }
+        return;
+    }
     
     // Execute command
     wxExecute(command, wxEXEC_ASYNC);
@@ -395,12 +402,16 @@ string CUtil::getExeName(const string& cmd) {
 // Launch default text editor (for a list file)
 void CUtil::openNotepad(const string& path) {
 
-    wxFileType* type = wxTheMimeTypesManager->GetFileTypeFromMimeType("text/plain");
-    if (!type) return;
     wxFileName fn(CUtil::makePath(path).c_str());
     fn.MakeAbsolute();
-    wxString command = type->GetOpenCommand(fn.GetFullPath());
-    if (command.IsEmpty()) return;
+    wxString command;
+    wxFileType* type = wxTheMimeTypesManager->GetFileTypeFromMimeType("text/plain");
+    if (type) command = type->GetOpenCommand(fn.GetFullPath());
+    if (command.IsEmpty()) {
+        wxMessageBox(CSettings::ref().getMessage("UTIL_OPEN_FILE",
+                fn.GetFullPath().c_str()).c_str(), APP_NAME, wxICON_ERROR);
+        return;
+    }
     wxExecute(command, wxEXEC_ASYNC);
 }
 

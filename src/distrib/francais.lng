@@ -265,6 +265,10 @@ TRAY_OPEN                     =Ouvrir
 TRAY_EXIT                     =Quitter
 TRAY_USEPROXY                 =Passer par proxy
 
+Other Messages
+
+UTIL_OPEN_FILE                =Ne peut trouver le programme pour ouvrir %1
+
 Tool Tips
 
 CONFIG_ALLLIST_TIP            =Filtres disponibles. Cliquez sur un titre de colonne pour trier
