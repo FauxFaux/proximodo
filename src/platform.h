@@ -1,7 +1,8 @@
 //------------------------------------------------------------------
 //
 //this file is part of Proximodo
-//Copyright (C) 2004 Antony BOUCHER ( kuruden@users.sourceforge.net )
+//Copyright (C) 2004-2005 Antony BOUCHER ( kuruden@users.sourceforge.net )
+//                        Paul Rupe      ( prupe@users.sourceforgen.net )
 //
 //This program is free software; you can redistribute it and/or
 //modify it under the terms of the GNU General Public License
@@ -27,6 +28,7 @@
 #define __platform__
 
 #include <wx/event.h>
+#include <wx/socket.h>
 
 /* This file contains platform-specific functions.
  * Theoretically, to port Proximodo on a platform where wxWidgets and
@@ -38,6 +40,11 @@ class CPlatform {
 
 public:
     static bool isKeyPressed(wxKeyCode keyCode);
+#if defined(__WINDOWS__) || defined(__WIN32__)
+    static const wxSocketFlags serverFlags = wxSOCKET_NONE;
+#else
+    static const wxSocketFlags serverFlags = wxSOCKET_REUSEADDR;
+#endif
 };
 
 #endif

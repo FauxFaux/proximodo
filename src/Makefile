@@ -44,20 +44,21 @@ tags: $(SRC) $(HDR)
 # DO NOT DELETE THIS LINE -- make depend depends on it.
 
 configscreen.o: configscreen.h controls.h windowcontent.h settings.h
-configscreen.o: descriptor.h mainframe.h events.h trayicon.h const.h util.h
-configscreen.o: proxy.h requestmanager.h zlibbuffer.h receptor.h
-configscreen.o: filterowner.h url.h textfilter.h filter.h memory.h matcher.h
-configscreen.o: node.h headerfilter.h giffilter.h managerthread.h testframe.h
-configscreen.o: images/btn_up.xpm images/btn_down.xpm images/btn_left.xpm
-configscreen.o: images/btn_right.xpm
-controls.o: controls.h events.h
+configscreen.o: descriptor.h editscreen.h testframe.h mainframe.h events.h
+configscreen.o: trayicon.h const.h util.h proxy.h requestmanager.h
+configscreen.o: zlibbuffer.h receptor.h filterowner.h url.h textfilter.h
+configscreen.o: filter.h memory.h matcher.h node.h headerfilter.h giffilter.h
+configscreen.o: managerthread.h images/box_on.xpm images/box_off.xpm
+configscreen.o: images/box_half.xpm images/btn_addfold32.xpm
+configscreen.o: images/btn_addfilt32.xpm images/btn_trash32.xpm
+configscreen.o: images/btn_edit32.xpm images/btn_ok32.xpm
+configscreen.o: images/btn_undo32.xpm
+controls.o: util.h controls.h events.h
 descriptor.o: descriptor.h matcher.h node.h filter.h filterowner.h url.h
 descriptor.o: memory.h util.h settings.h
-editscreen.o: editscreen.h controls.h descriptor.h testframe.h
-editscreen.o: windowcontent.h settings.h const.h util.h proxy.h
-editscreen.o: requestmanager.h zlibbuffer.h receptor.h filterowner.h url.h
-editscreen.o: textfilter.h filter.h memory.h matcher.h node.h headerfilter.h
-editscreen.o: giffilter.h managerthread.h
+editscreen.o: editscreen.h controls.h descriptor.h testframe.h matcher.h
+editscreen.o: node.h filter.h filterowner.h url.h memory.h settings.h const.h
+editscreen.o: util.h images/icon32.xpm
 events.o: events.h
 expander.o: expander.h filter.h filterowner.h url.h memory.h const.h util.h
 expander.o: settings.h descriptor.h matcher.h node.h log.h events.h
@@ -82,13 +83,14 @@ mainframe.o: trayicon.h proxy.h requestmanager.h zlibbuffer.h receptor.h
 mainframe.o: filterowner.h url.h textfilter.h filter.h memory.h matcher.h
 mainframe.o: node.h headerfilter.h giffilter.h managerthread.h log.h
 mainframe.o: logframe.h controls.h util.h const.h welcomescreen.h
-mainframe.o: settingsscreen.h editscreen.h testframe.h configscreen.h
-mainframe.o: images/btn_settings.xpm images/btn_log.xpm
-mainframe.o: images/btn_filters.xpm images/btn_config.xpm images/btn_help.xpm
-mainframe.o: images/btn_quit.xpm images/icon32.xpm
+mainframe.o: settingsscreen.h configscreen.h editscreen.h testframe.h
+mainframe.o: images/btn_settings.xpm images/btn_log.xpm images/btn_config.xpm
+mainframe.o: images/btn_help.xpm images/btn_quit.xpm images/icon32.xpm
 managerthread.o: managerthread.h requestmanager.h zlibbuffer.h receptor.h
 managerthread.o: filterowner.h url.h textfilter.h filter.h memory.h
 managerthread.o: descriptor.h matcher.h node.h headerfilter.h giffilter.h
+managerthread.o: log.h events.h logframe.h windowcontent.h settings.h
+managerthread.o: controls.h
 matcher.o: matcher.h node.h filter.h filterowner.h url.h memory.h settings.h
 matcher.o: descriptor.h nodes.h const.h util.h log.h events.h logframe.h
 matcher.o: windowcontent.h controls.h
@@ -98,8 +100,8 @@ nodes.o: logframe.h windowcontent.h controls.h
 platform.o: platform.h
 proxy.o: proxy.h requestmanager.h zlibbuffer.h receptor.h filterowner.h url.h
 proxy.o: textfilter.h filter.h memory.h descriptor.h matcher.h node.h
-proxy.o: headerfilter.h giffilter.h managerthread.h log.h events.h logframe.h
-proxy.o: windowcontent.h settings.h controls.h util.h
+proxy.o: headerfilter.h giffilter.h managerthread.h util.h settings.h
+proxy.o: events.h log.h logframe.h windowcontent.h controls.h platform.h
 requestmanager.o: requestmanager.h zlibbuffer.h receptor.h filterowner.h
 requestmanager.o: url.h textfilter.h filter.h memory.h descriptor.h matcher.h
 requestmanager.o: node.h headerfilter.h giffilter.h util.h settings.h log.h

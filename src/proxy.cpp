@@ -1,7 +1,8 @@
 //------------------------------------------------------------------
 //
 //this file is part of Proximodo
-//Copyright (C) 2004 Antony BOUCHER ( kuruden@users.sourceforge.net )
+//Copyright (C) 2004-2005 Antony BOUCHER ( kuruden@users.sourceforge.net )
+//                        Paul Rupe      ( prupe@users.sourceforgen.net )
 //
 //This program is free software; you can redistribute it and/or
 //modify it under the terms of the GNU General Public License
@@ -30,6 +31,7 @@
 #include "settings.h"
 #include "events.h"
 #include "log.h"
+#include "platform.h"
 
 using namespace std;
 
@@ -158,7 +160,7 @@ bool CProxy::openProxyPort() {
         addr.Service(CSettings::ref().proxyPort.c_str());
 
         // Create the socket
-        server = new wxSocketServer(addr);
+        server = new wxSocketServer(addr, CPlatform::serverFlags);
     }
     
     // Check if the port is open
