@@ -1,0 +1,36 @@
+These are source-code installation instructions for Proximodo, and are only of interest to those wishing to compile or modify Proximodo. 
+
+At the moment, they are Windows-specific; please add installation instructions for other operating systems if you can. Even worse, these instructions are specific to a particular IDE on Windows, Dev-C++. Again, please add additional instructions for other build methods if you are able.
+
+DOWNLOADING
+1. Download Dev-C++ from http://www.bloodshed.net/devcpp.html, then run the installer you downloaded. Below, I use DEV_CPP for the directory where you installed Dev-C++ (normally C:\Dev-Cpp). Remember to ensure that DEV_CPP does _not_ contain any spaces (e.g. do not use C:\Program Files\Dev-Cpp).
+2. Download proximodo_0.2.1_src.zip from http://sourceforge.net/projects/proximodo. Unzip to any convenient place. Below, I'll use PROX for the directory where you unzipped this file.
+3. Download proximodo_0.2.1_winlibs.zip from http://sourceforge.net/projects/proximodo. Unzip to any convenient place. The archive contains two folders named wxWidgets-2.5.3-msw-static and zlib1.2.2; move both of these to the DEV_CPP folder.
+4. Download NullSoft Installer from http://nsis.sourceforge.net, then run the installer you downloaded. Take note of the installation location.
+
+SETUP
+1. Start Dev-C++. Choose File->Open Project or File. Navigate to PROX/src and choose Proximodo.dev.
+2. Choose Tools->Compiler. Click Directories.
+  a. Add to the Libraries list:
+       DEV_CPP\wxWidgets-2.5.3-msw-static\lib
+       DEV_CPP\zlib1.2.2\lib
+  b. Add to the C++ Includes list:
+       DEV_CPP\wxWidgets-2.5.3-msw-static\lib\wx\include\msw-ansi-release-static-2.5
+       DEV_CPP\wxWidgets-2.5.3-msw-static\include
+       DEV_CPP\zlib1.2.2\include
+3. Choose Project->Project Options. Click Directories, then Resource Directories. Check that DEV_CPP\wxWidgets-2.5.3-msw-static\include is present (you may need to change the path using the Replace button).
+4. Choose Project->Add to Project. Navigate to DEV_CPP\wxWidgets-2.5.3-msw-static\include\wx\msw and add wx.rc to the project.
+5. Set the environment variable NSIS_HOME to the location where you installed the NullSoft Installer (by default, this is C:\Program Files\NSIS). To set an environment variable in Windows XP (other flavours are similar), right-click My Computer and choose Properties. Click the Advanced tab and then the Environment Variables button. Click the New button under System variables, enter name=NSIS_HOME and the appropriate value, then click OK in each of the three open dialogs.
+
+BUILD
+1. The compile button in Dev-C++ will compile the code as expected. The output goes in PROX\bin. The run button will run PROX\bin\Proximodo.exe.
+2. To construct the installer, run PROX\installer\makeinstaller.bat. The installer, called Proximodo_0.2.1_win32.exe, is created in PROX. Note the batch file will fail if you have not set NSIS_HOME (see above).
+3. To construct the source zip file, create a zip file containing:
+  a. this file;
+  b. PROX\installer; and
+  c. PROX\src. 
+
+
+
+
+
