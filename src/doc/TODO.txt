@@ -1,0 +1,31 @@
+Distributing:
+
+- Write the English HTML help pages
+- Write the French HTML help pages
+- Make an installer (NSIS?)
+- Design a simple website
+- Put project on Sourceforge
+- Design a nice website
+
+GUI:
+
+- Design an "Add to List" dialog
+- Use this dialog in tray icon, and for $ADDLSTBOX()
+- Make very minor changes in code so that it compiles and runs smoothly on Mac, Linux or Unix platforms
+
+Engine:
+
+- Estimate and improve performance and stability
+- \x and URL commands will not be implemented (they are called 'vestigial' by Scott)
+
+Proxy:
+
+- Next proxy login/password settings
+- Support 206 response code
+- Fix gzip/deflate output, that seems to be corrupted after a few KB (use another zlib version?)
+- HTML debug info
+- maximum HTTP 1.1 compliance
+- HTTP 1.0 option
+- SSL support (https)
+- Let FTP through (currently, only works when HTTP request is redirected to next proxy)
+- Act as a real proxy when not forwarding to a next proxy

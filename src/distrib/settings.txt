@@ -1,0 +1,55 @@
+[Settings]
+ShowOnStartup = yes
+Port = 8080
+UseProxy = no
+CurrentProxy = proxy.yourprovider.com:8080
+AllowIPRange = no
+MinIP = 0.0.0.0
+MaxIP = 255.255.255.255
+FilterIn = yes
+FilterOut = yes
+FilterText = yes
+FilterGif = yes
+Language = english
+CurrentConfig = Default
+Bypass = $URL(Bypass)
+FirstRun = yes
+
+[Proxies]
+Proxy = proxy.yourprovider.com:8080
+
+[Lists]
+List = AdKeys, Lists\Keyword list.txt
+List = AdList, Lists\URL Killfile.txt
+List = AliasList, Lists\URL Alias List.txt
+List = Bypass, Lists\Bypass List.txt
+List = CookieList, Lists\AllowCookies.txt
+List = MIME-List, Lists\MIME Fix List.txt
+List = NoImages, Lists\Kill Images.txt
+
+[Default]
+Config = Default, Don't force reloads
+Config = Default, Enable Keyword search
+Config = Default, Hide where we've been
+Config = Default, kill-a-URL
+Config = Default, Prevent webpage encoding
+Config = Default, Alias Redirector
+Config = Default, Always cache (cache control)
+Config = Default, Always cache (expires)
+Config = Default, Fix MIME types
+Config = Default, Kill add-on JavaScripts
+Config = Default, Kill JavaScript Banners
+Config = Default, DOM Banner Blaster
+Config = Default, DOM container killer
+Config = Default, Kill pop-up windows
+Config = Default, Restore pop-ups after a page loads
+Config = Default, Force pop-ups to have browser controls
+Config = Default, Allow right mouse click
+Config = Default, Anti-Auto-Refresher
+Config = Default, Blink Buster (Blink to Bold)
+Config = Default, Kill alert/confirm boxes
+Config = Default, Kill anti-cache meta tags
+Config = Default, Kill window.external methods
+Config = Default, OnUnload unloader
+Config = Default, Suppress all JavaScript errors
+Config = Default, Wordwrap all form textboxes
