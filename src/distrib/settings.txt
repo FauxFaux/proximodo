@@ -19,13 +19,13 @@ FirstRun= yes
 Proxy = proxy.yourprovider.com:8080
 
 [Lists]
-List = AdKeys, lists\Keyword list.txt
-List = AdList, lists\URL Killfile.txt
-List = AliasList, lists\URL Alias List.txt
-List = Bypass, lists\Bypass List.txt
-List = CookieList, lists\AllowCookies.txt
-List = MIME-List, lists\MIME Fix List.txt
-List = NoImages, lists\Kill Images.txt
+List = AdKeys, lists/Keyword list.txt
+List = AdList, lists/URL Killfile.txt
+List = AliasList, lists/URL Alias List.txt
+List = Bypass, lists/Bypass List.txt
+List = CookieList, lists/AllowCookies.txt
+List = MIME-List, lists/MIME Fix List.txt
+List = NoImages, lists/Kill Images.txt
 
 [Folders]
 Folder = Handy Tools, 1, 0, 101
