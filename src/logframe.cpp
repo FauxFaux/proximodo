@@ -1,7 +1,8 @@
 //------------------------------------------------------------------
 //
 //this file is part of Proximodo
-//Copyright (C) 2004 Antony BOUCHER ( kuruden@users.sourceforge.net )
+//Copyright (C) 2004-2005 Antony BOUCHER ( kuruden@users.sourceforge.net )
+//                        Paul Rupe      ( prupe@users.sourceforgen.net )
 //
 //This program is free software; you can redistribute it and/or
 //modify it under the terms of the GNU General Public License
@@ -70,7 +71,7 @@ CLogFrame::CLogFrame()
         wxDefaultPosition, wxSize(500,250),
         wxTE_READONLY | wxTE_RICH |  wxTE_MULTILINE | wxTE_DONTWRAP );
     logText->SetBackgroundColour(wxColour(*wxBLACK));
-    logText->SetDefaultStyle(wxTextAttr(*wxLIGHT_GREY, wxNullColour,
+    logText->SetDefaultStyle(wxTextAttr(*wxLIGHT_GREY, *wxBLACK,
         wxFont(8, wxDEFAULT, wxNORMAL, wxBOLD)));
     vertSizer->Add(logText,1,wxGROW | wxALL,5);
 
