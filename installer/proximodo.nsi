@@ -112,8 +112,8 @@ LangString PROXY_TITLE    ${LANG_FRENCH}   "Configuration du navigateur"
 LangString PROXY_SUBTITLE ${LANG_FRENCH}   "Configuration de votre navigateur pour utiliser Proximodo"
 LangString PROXY_TITLE    ${LANG_JAPANESE} "Browser Configuration"
 LangString PROXY_SUBTITLE ${LANG_JAPANESE} "Configuring your browser to use Proximodo"
-LangString PROXY_TITLE    ${LANG_ITALIAN}  "Browser Configuration"
-LangString PROXY_SUBTITLE ${LANG_ITALIAN}  "Configuring your browser to use Proximodo"
+LangString PROXY_TITLE    ${LANG_ITALIAN}  "Configurazione del Browser"
+LangString PROXY_SUBTITLE ${LANG_ITALIAN}  "Configura il vostro browser in modo da usare Proximodo"
 
 Function proxyPage
   ; Set header
@@ -134,15 +134,6 @@ Function proxyPage
 FunctionEnd
 
 Section -ProximodoFiles
-  SetOutPath "$INSTDIR"
-  File "..\bin\Proximodo.exe"
-  File "..\bin\libz.dll"
-  File "..\bin\settings.txt"
-  File "..\bin\filters.txt"
-  File "..\bin\english.lng"
-  File "..\bin\francais.lng"
-  File "..\bin\japanese.lng"
-  File "..\bin\Italiano.lng"
   SetOutPath "$INSTDIR\help\en"
   File "..\bin\help\en\bg1.jpg"
   File "..\bin\help\en\bg2.jpg"
@@ -195,6 +186,14 @@ Section -ProximodoFiles
   File "..\bin\lists\MIME Fix List.txt"
   File "..\bin\lists\URL Alias List.txt"
   File "..\bin\lists\URL Killfile.txt"
+  SetOutPath "$INSTDIR"
+  File "..\bin\Proximodo.exe"
+  File "..\bin\settings.txt"
+  File "..\bin\filters.txt"
+  File "..\bin\english.lng"
+  File "..\bin\francais.lng"
+  File "..\bin\japanese.lng"
+  File "..\bin\Italiano.lng"
 
 ; Shortcuts
   !insertmacro MUI_STARTMENU_WRITE_BEGIN Application
@@ -251,7 +250,6 @@ Section Uninstall
   Delete "$INSTDIR\${PRODUCT_NAME}.url"
   Delete "$INSTDIR\uninst.exe"
   Delete "$INSTDIR\Proximodo.exe"
-  Delete "$INSTDIR\libz.dll"
   Delete "$INSTDIR\settings.txt"
   Delete "$INSTDIR\filters.txt"
   Delete "$INSTDIR\english.lng"
