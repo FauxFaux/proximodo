@@ -108,17 +108,17 @@ width must be provided.</p>
 read and modify. It is case-insensitive. Wildcards or codes are not
 allowed. For outgoing header filters, if the field starts with
 "URL" (no matter what follows), the filter will read the requested
-URL instead of a given header. Use this trick to test the URL and
-possibly alter it (acting like a transparent redirection) or call
-$commands.</p>
+URL (including :// part) instead of a given header. Use this trick
+to test the URL and possibly alter it (acting like a transparent
+redirection) or call $commands.</p>
 
 <p class="option">URL Pattern</p>
 
 <p class="explain">If this field contains a pattern and the URL
-does not match, the filter will be bypassed, i.e it will not try
-and match anything in this header/text. Use this field when you
-want the filter to work only on specific URLs. Common patterns are
-<span class="example">$LST(someList)</span>, <span class=
+(without :// part) does not match, the filter will be bypassed, i.e it
+will not try and match anything in this header/text. Use this field
+when you want the filter to work only on specific URLs. Common patterns
+are <span class="example">$LST(someList)</span>, <span class=
 "example">(^$LST(someList))</span> or <span class=
 "example">$TYPE(htm)</span></p>
 

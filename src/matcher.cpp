@@ -109,7 +109,8 @@ bool CMatcher::testPattern(const string& pattern, string& errmsg) {
         mess << CSettings::ref().getMessage(e.message, e.position) << endl;
         int index = e.position - 8;
         if (index < 0) index = 0;
-        mess << pattern.substr(index, e.position - index) << "•";
+        mess << pattern.substr(index, e.position - index);
+        mess << CSettings::ref().getMessage("ERROR_MARKER");
         index = e.position + 8;
         if (index > (int)pattern.size()) index = pattern.size();
         mess << pattern.substr(e.position, index - e.position);
@@ -147,7 +148,7 @@ bool CMatcher::match(int start, int stop, int& end, int& reached) {
 /* This static version of the matching function builds a search tree
  * at each call. It is mainly for use in replacement functions, that
  * are not supposed to be called too often (only after a match has
- * been found with an instanciated CMatcher).
+ * been found with an instantiated CMatcher).
  */
 bool CMatcher::match(const string& text, const string& pattern, CFilter& filter,
                      int start, int stop, int& end, int& reached) {
@@ -402,7 +403,7 @@ CNode* CMatcher::code(const string& pattern, int& pos, int stop) {
                 // Rule: \w
                 return new CNode_Repeat(text, reached,
                         new CNode_Chars(text, reached, " \t\r\n>", false),
-                        0, BIG_NUMBER, true);
+                        0, BIG_NUMBER);
             case '#':
                 // Rule: \#
                 return new CNode_MemStar(text, reached, filter.memoryStack);
@@ -453,65 +454,81 @@ CNode* CMatcher::code(const string& pattern, int& pos, int stop) {
         } else {
 
             // Rule: []
-            // We create an clear CNode_Chars then provide it with
+            // We create a clear CNode_Chars then provide it with
             // characters one by one.
             CNode_Chars *node = new CNode_Chars(text, reached, "", allow);
-            for (; pos < stop && (token = pattern[pos]) != ']'; ++pos) {
+            
+            unsigned char prev = 0, code;
+            bool prevCase = false, codeCase, inRange = false;
+            for (; pos < stop && (code = pattern[pos]) != ']'; ++pos) {
 
-                if (token == '%' && pos+2 < stop) {
+                if (code == '%' && pos+2 < stop
+                        && CUtil::hexa(pattern[pos+1])
+                        && CUtil::hexa(pattern[pos+2])) {
 
                     // %xx notation (case-sensitive)
-                    char c1 = toupper(pattern[pos+1]);
-                    char c2 = toupper(pattern[pos+2]);
-                    int ascii;
-                    if (c1 >= '0' && c1 <= '9') {
-                        ascii = (c1 - '0') * 16;
-                    } else if (c1 >= 'A' && c1 <= 'F') {
-                        ascii = (c1 - 'A' + 10) * 16;
-                    } else {
-                        node->add(token);
-                        continue;
-                    }
-                    if (c2 >= '0' && c2 <= '9') {
-                        ascii += (c2 - '0');
-                    } else if (c2 >= 'A' && c2 <= 'F') {
-                        ascii += (c2 - 'A' + 10);
-                    } else {
-                        node->add(token);
-                        continue;
-                    }
-                    node->add(ascii);
-                    pos += 2;
+                    char c = toupper(pattern[++pos]);
+                    code = (c <= '9' ? c - '0' : c - 'A' + 10) * 16;
+                    c = toupper(pattern[++pos]);
+                    code += (c <= '9' ? c - '0' : c - 'A' + 10);
+                    codeCase = true;
                     
-                } else if (token == '\\' && pos+1 < stop) {
+                } else if (code == '\\' && pos+1 < stop) {
 
-                    // escaped characters must be decoded
-                    token = pattern[++pos];
-                    switch (token) {
-                        case 't' : token = '\t'; break;
-                        case 'r' : token = '\r'; break;
-                        case 'n' : token = '\n'; break;
+                    // escaped characters must be decoded (case-sensitive)
+                    code = pattern[++pos];
+                    switch (code) {
+                        case 't' : code = '\t'; break;
+                        case 'r' : code = '\r'; break;
+                        case 'n' : code = '\n'; break;
                         // Only those three are not to be taken as is
                     }
-                    node->add(token);
-                    
-                } else if (pos+2 < stop && pattern[pos+1] == '-') {
+                    codeCase = true;
 
-                    // range of characters a-z
-                    // we add each character in the range
-                    unsigned char i = tolower(token);
-                    unsigned char j = tolower(pattern[pos+2]);
-                    for (; i<=j; i++) {
-                        node->add(i);
-                        node->add(toupper(i));
-                    }
-                    pos += 2;
-                    
                 } else {
 
                     // normal character
-                    node->add(tolower(token));
-                    node->add(toupper(token));
+                    codeCase = false;
+                }
+                
+                if (inRange) {
+
+                    // We decoded both ends of a range
+                    if (prevCase || codeCase) {
+                        // Add characters as is
+                        for (; prev<=code; prev++) {
+                            node->add(prev);
+                        }
+                    } else {
+                        // Add both uppercase and lowercase characters
+                        prev = tolower(prev);
+                        unsigned char cmax = tolower(code);
+                        for (; prev<=cmax; prev++) {
+                            node->add(prev);
+                            node->add(toupper(prev));
+                        }
+                    }
+                    inRange = false;
+                    
+                } else if (pos+2 < stop
+                        && pattern[pos+1] == '-'
+                        && pattern[pos+2] != ']') {
+
+                    // We just decoded the start of a range, record it but don't add it
+                    inRange = true;
+                    prev = code;
+                    prevCase = codeCase;
+                    pos++;
+                    
+                } else {
+
+                    // The decoded character is not part of a range
+                    if (codeCase) {
+                        node->add(code);
+                    } else {
+                        node->add(tolower(code));
+                        node->add(toupper(code));
+                    }
                 }
             }
             // Check if the [] is closed
@@ -531,7 +548,8 @@ CNode* CMatcher::code(const string& pattern, int& pos, int stop) {
         // Note: unknown commands are ignored (just as a $DONOTHING(someignoredtext))
         string command, content;
         int endContent = decodeCommand(pattern, pos+1, stop, command, content); // after )
-        int startContent = endContent - 1 - content.size(); // for exception info
+        int contentSize = content.size();
+        int startContent = endContent - 1 - contentSize; // for exception info
         
         if (endContent<0) {
             // Do as if it was not a command, the token is a normal char
@@ -550,7 +568,7 @@ CNode* CMatcher::code(const string& pattern, int& pos, int stop) {
                 // a fast quote searcher
                 int start = 0;
                 return new CNode_AV(text, reached,
-                                    expr(content, start, content.size()), false);
+                                    expr(content, start, contentSize), false);
 
             } else if (command == "AVQ") {
 
@@ -559,7 +577,7 @@ CNode* CMatcher::code(const string& pattern, int& pos, int stop) {
                 // quote searcher
                 int start = 0;
                 return new CNode_AV(text, reached,
-                                    expr(content, start, content.size()), true);
+                                    expr(content, start, contentSize), true);
 
             } else if (command == "LST") {
 
@@ -593,10 +611,20 @@ CNode* CMatcher::code(const string& pattern, int& pos, int stop) {
             } else if (command == "TST") {
 
                 // Command to try and match a variable
-                unsigned int eq = content.find('=');
-                if (eq == string::npos) {
+                int eq, level;
+                for (eq = 0, level = 0; eq < contentSize; eq++) {
+                    // Left parameter can be some text containing ()
+                    if (content[eq] == '(' && (!eq || content[eq-1]!='\\'))
+                        level++;
+                    else if (content[eq] == ')' && (!eq || content[eq-1]!='\\'))
+                        level--;
+                    else if (content[eq] == '=' && !level)
+                        break;
+                }
+                
+                if (eq == contentSize) {
                     CUtil::trim(content);
-                    CUtil::lower(content);
+                    if (content[0] != '(') CUtil::lower(content);
                     if (content[0] == '\\') content.erase(0,1);
                     return new CNode_Test(text, reached, content, filter);
                 }
@@ -604,13 +632,17 @@ CNode* CMatcher::code(const string& pattern, int& pos, int stop) {
                 string name = content.substr(0, eq);
                 string value = content.substr(eq+1);
                 CUtil::trim(name);
-                CUtil::lower(name);
+                if (name[0] != '(') CUtil::lower(name);
                 if (name[0] == '\\') name.erase(0,1);
                 if (name == "#") {
                     return new CNode_Command(text, reached, CMD_TSTSHARP,
                                              "", value, filter);
                 } else if (name.length() == 1 && CUtil::digit(name[0])) {
                     return new CNode_Command(text, reached, CMD_TSTDIGIT,
+                                             name, value, filter);
+                } else if (name[0] == '(' && name[name.size()-1] == ')') {
+                    name = name.substr(1, name.size()-2);
+                    return new CNode_Command(text, reached, CMD_TSTEXPAND,
                                              name, value, filter);
                 } else {
                     return new CNode_Command(text, reached, CMD_TSTVAR,
@@ -814,7 +846,7 @@ CNode* CMatcher::code(const string& pattern, int& pos, int stop) {
                 // Command to match nested tags (with optional content)
                 unsigned int colon = CUtil::findUnescaped(content, ',');
                 if (colon == string::npos)
-                    throw parsing_exception("MISSING_COLON", 0);
+                    throw parsing_exception("MISSING_COMMA", 0);
                 bool hasMiddle = false;
                 string text1 = content.substr(0, colon);
                 string text2;
@@ -845,17 +877,17 @@ CNode* CMatcher::code(const string& pattern, int& pos, int stop) {
                 // Command to automate the insertion of an item in one of 2 lists
                 unsigned int colon = content.find(',');
                 if (colon == string::npos)
-                    throw parsing_exception("MISSING_COLON", 0);
+                    throw parsing_exception("MISSING_COMMA", 0);
                 string allowName = content.substr(0, colon);
                 content.erase(0, colon + 1);
                 colon = content.find(',');
                 if (colon == string::npos)
-                    throw parsing_exception("MISSING_COLON", 0);
+                    throw parsing_exception("MISSING_COMMA", 0);
                 string denyName = content.substr(0, colon);
                 content.erase(0, colon + 1);
                 colon = CUtil::findUnescaped(content, ',');
                 if (colon == string::npos)
-                    throw parsing_exception("MISSING_COLON", 0);
+                    throw parsing_exception("MISSING_COMMA", 0);
                 string question = content.substr(0, colon);
                 string item = content.substr(colon + 1);
                 string pattern = "\\h\\p\\q\\a";
@@ -1031,6 +1063,9 @@ void CMatcher::readMinMax(const string& pattern, int& pos, int stop, char sep,
         ++pos;
         min = -BIG_NUMBER;
         max = BIG_NUMBER;   // in case there is no upper limit
+    } else if (pos < stop && pattern[pos] == sep) {
+        min = -BIG_NUMBER;
+        max = BIG_NUMBER;   // in case there is no upper limit
     } else {
         max = min = 0;
         readNumber(pattern, pos, stop, min);
@@ -1050,6 +1085,8 @@ void CMatcher::readMinMax(const string& pattern, int& pos, int stop, char sep,
         // read upper limit
         if (pos < stop && pattern[pos] == '*') {
             ++pos;
+            max = BIG_NUMBER;
+        } else if (pos < stop && pattern[pos] != '-' && !CUtil::digit(pattern[pos])) {
             max = BIG_NUMBER;
         } else {
             readNumber(pattern, pos, stop, max);

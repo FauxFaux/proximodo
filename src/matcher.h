@@ -66,7 +66,7 @@ public:
     static bool match(const string& text, const string& pattern, CFilter& filter,
                         int start, int stop, int& end, int& reached);
 
-    // Filter the contains memory stack and table
+    // Filter that contains memory stack and table
     CFilter& filter;
     
     // Tells if pattern is * or \0-9

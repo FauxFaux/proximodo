@@ -30,6 +30,7 @@
 #include <map>
 #include <string>
 #include <vector>
+#include <deque>
 #include <wx/textfile.h>
 #include "descriptor.h"
 
@@ -83,6 +84,7 @@ public:
     bool           filterText;     // is text filtering active
     bool           filterGif;      // is GIF image freezing active
     bool           showOnStartup;  // Indicates if the GUI is shown on startup
+    bool           startBrowser;   // Indicates whether the default browser should be run at startup
     string         language;       // GUI language
     bool           firstRun;       // only true on first Proximodo run
     bool           settingsChanged;// set to true when settings are modified
@@ -92,7 +94,7 @@ public:
     map<int, CFolder>            folders;    // folder id, folder data
     map<string, set<int> >       configs;    // config name, set of filter titles
     map<string, string>          listNames;  // list name, file path
-    map<string, vector<string> > lists;      // list name, content
+    map<string, deque<string> >  lists;      // list name, content
     
     // Remove inexistant filter ids from config
     void cleanConfigs();

@@ -39,12 +39,11 @@ CHeaderFilter::CHeaderFilter(const CFilterDescriptor& desc, CFilterOwner& owner)
                 throw (parsing_exception) : CFilter(owner) {
 
     headerName = desc.headerName;
-    CUtil::lower(headerName);
     title = desc.title;
     urlMatcher = textMatcher = NULL;
     replacePattern = desc.replacePattern;
     if (!desc.urlPattern.empty()) {
-        urlMatcher = new CMatcher(content, desc.urlPattern, *this);
+        urlMatcher = new CMatcher(owner.url.getFromHost(), desc.urlPattern, *this);
     }
     if (!desc.matchPattern.empty()) {
         try {
@@ -70,7 +69,7 @@ CHeaderFilter::~CHeaderFilter() {
  */
 bool CHeaderFilter::filter(string& content) {
 
-    if (!active || content.empty() && textMatcher && textMatcher->isStar())
+    if (bypassed || content.empty() && textMatcher && textMatcher->isStar())
         return false;
 
     // clear memory
@@ -80,8 +79,7 @@ bool CHeaderFilter::filter(string& content) {
     if (urlMatcher) {
         int end, reached;
         bool ret;
-        this->content = owner.url.getFromHost();
-        ret = urlMatcher->match(0, content.size(), end, reached);
+        ret = urlMatcher->match(0, owner.url.getFromHost().size(), end, reached);
         unlock();
         if (!ret) return false;
     }

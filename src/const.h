@@ -32,7 +32,7 @@
 #define APP_NAME "Proximodo"
 
 // Proximodo version
-#define APP_VERSION "0.2"
+#define APP_VERSION "0.2.1"
 
 // Constant used for "+infinity"
 #define BIG_NUMBER 0x7FFFFFFF
@@ -57,5 +57,13 @@
 // Zlib stream buffer (this is the size of chunks provided to deflate,
 // not compression window size)
 #define ZLIB_BLOCK 4096
+
+// Line terminations
+#define CRLF "\r\n"
+#define CR   '\r'
+#define LF   '\n'
+
+// Maximum size of virtual lists
+#define VIRTUAL_LIST_MAXSIZE  1000
 
 #endif

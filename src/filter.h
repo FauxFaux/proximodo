@@ -47,8 +47,11 @@ public:
 
     CFilterOwner& owner;
 
-    // Is the filter active or bypassed?
-    bool active;
+    // Is the filter bypassed?
+    bool bypassed;
+    
+    // Has a pattern executed a \k ?
+    bool killed;
     
     // Filter title (mainly for log events)
     string title;

@@ -78,6 +78,7 @@ CSettings::CSettings() {
     filterGif     = true;
     language      = DEFAULT_LANGUAGE;
     showOnStartup = true;
+    startBrowser  = true;
     firstRun      = false;
     modified      = false;
 }
@@ -234,6 +235,7 @@ void CSettings::saveSettings() {
     
     addLine (f,"[Settings]");
     addLine (f, "ShowOnStartup = " + string(showOnStartup ? "yes" : "no"));
+    addLine (f, "StartBrowser = " + string(startBrowser ? "yes" : "no"));
     addLine (f, "Port = " + proxyPort);        // For file readability only
     addLine (f, "UseProxy = " + string(useNextProxy ? "yes" : "no"));
     addLine (f, "CurrentProxy = " + nextProxy);
@@ -306,6 +308,8 @@ void CSettings::loadSettings() {
             proxyPort = value;
         else if (label == "SHOWONSTARTUP")
             showOnStartup = (toupper(value[0])=='Y');
+        else if (label == "STARTBROWSER")
+            startBrowser = (toupper(value[0])=='Y');
         else if (label == "FIRSTRUN")
             firstRun = true;
         else if (label == "USEPROXY")
@@ -375,6 +379,12 @@ void CSettings::loadSettings() {
             folders[id2] = CFolder(id2, s1, id3, id4);
         }
     }
+    
+    // If showOnStartup and startBrowser are both false, starting
+    // Proximodo will do nothing visible.
+    // *** The user might want this! since they explicitly chose
+    //     it in settings screen (Kuruden)
+    
     cleanFolders();
     f.Close();
 }
@@ -454,7 +464,7 @@ void CSettings::loadLists() {
 void CSettings::loadList(string name) {
 
     wxTextFile f(listNames[name].c_str());
-    vector<string> patterns;
+    deque<string> patterns;
     if (f.Open()) {
         f.AddLine("");  // (so that we don't need post-loop processing)
         string pattern;
@@ -486,25 +496,37 @@ void CSettings::loadList(string name) {
  */
 void CSettings::addListLine(string name, string line) {
 
-    // We don't add if the list does not exist or the line is empty
-    if (listNames.find(name) == listNames.end()) return;
+    // We do nothing if the line is empty
     if (CUtil::trim(line).empty()) return;
-    
-    // multiline patterns are converted to single line, to avoid
-    // the danger of having the 2nd+ line not beginning by a space
-    line = CUtil::replaceAll(line, "\r", "");
-    line = CUtil::replaceAll(line, "\n", "");
 
-    // Append line to file
-    wxTextFile f(listNames[name].c_str());
-    if (!f.Open()) f.Create();
-    f.AddLine(line.c_str());
-    f.Write();
-    f.Close();
-    
-    // If line is a valid pattern, keep it in memory
-    if (line[0] != '#' && CMatcher::testPattern(line))
+    // We add the line to the file if the list exists
+    if (listNames.find(name) != listNames.end()) {
+
+        // multiline patterns are converted to single line, to avoid
+        // the danger of having the 2nd+ line not beginning by a space
+        line = CUtil::replaceAll(line, "\r", "");
+        line = CUtil::replaceAll(line, "\n", "");
+
+        // Append line to file
+        wxTextFile f(listNames[name].c_str());
+        if (!f.Open()) f.Create();
+        f.AddLine(line.c_str());
+        f.Write();
+        f.Close();
+
+        // If line is a valid pattern, keep it in memory
+        if (line[0] != '#' && CMatcher::testPattern(line))
+            lists[name].push_back(line);
+
+    } else {
+
+        // This is a virtual list, always add the line
         lists[name].push_back(line);
+        
+        // we will limit its size
+        if (lists[name].size() > VIRTUAL_LIST_MAXSIZE)
+            lists[name].pop_front();
+    }
 }
 
 

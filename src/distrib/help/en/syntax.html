@@ -40,11 +40,12 @@ class="extext">foodoodlebar</span></p>
 <td>
 <p>a single character if present in <span class=
 "example">[]</span><br>
- To include a whole range (case sensitive), seperate first and last
+ To include a whole range (case-insensitive), seperate first and last
 characters by a minus sign (example <span class=
 "example">[abc0-9]</span>). You can also use \ to escape a character,
 and %hh (where hh is an hexadecimal number) to specify an ASCII
-character. \ and % notations are case-sensitive.</p>
+character. \ and % notations are case-sensitive, and can be used
+to define a range (in this case, the range becomes case-sensitive).</p>
 </td>
 </tr>
 
@@ -270,7 +271,7 @@ matches, the matched text is saved into a slot or the queue.</p>
 class="extext">aaaaa</span>. Use * on the left for -infinity, * on
 the right for +infinity. <span class="example">+{n}</span> is the
 same as <span class="example">+{n,n}</span> ("must match exactly n
-times")</p>
+times"). Stars are optional.</p>
 </td>
 </tr>
 
@@ -380,7 +381,7 @@ of only <span class="extext">"foo '</span></p>
 <p><span class="syntax">\u</span></p>
 </td>
 <td>
-<p>the full URL (including protocol)</p>
+<p>the full URL (including :// part)</p>
 </td>
 </tr>
 
@@ -389,7 +390,9 @@ of only <span class="extext">"foo '</span></p>
 <p><span class="syntax">\k</span></p>
 </td>
 <td>
-<p>zero character, but kills the connection</p>
+<p>zero character, but kills the connection<br>
+In text filters, it truncates data after the replacement
+text.</p>
 </td>
 </tr>
 
@@ -536,7 +539,10 @@ Unless otherwise stated, commands in a replacement text always
 match.<br>
  Because commands can be nested, you should always make sure
 parentheses are consistent. If you need to insert/match the
-parentheses characters themselves, escape them.</p>
+parentheses characters themselves, escape them.<br>
+ Unknown commands are ignored, so you can use for example
+<span class="example">$NOP(some ignored text)</span>
+to disable a part of the pattern or insert some comment.</p>
 
 <table>
 <tr>
@@ -552,7 +558,12 @@ parentheses characters themselves, escape them.</p>
 <p>Adds a line to a list<br>
  The line is immediately added to the file. If it is a valid match
 pattern, it is also immediately taken into account by all $LST
-commands that use this list.</p>
+commands that use this list.<br>
+It is possible to add a line to a list that is not defined in the
+GUI: in this case, the line is not appended to a file, but remains
+available in memory for subsequent $LST commands, until the
+application is exited or more than 1000 lines are added to the
+same list (fixed-size virtual list).</p>
 </td>
 </tr>
 
@@ -1110,7 +1121,8 @@ in the slot (or last item in queue).</p>
 <p class="command">$TST(\# or \0-\9=pattern)</p>
 
 <p>Matches if the content of the slot (or last item in queue)
-matches the pattern.</p>
+matches the pattern.<br>
+But does not match if the slot is empty.</p>
 </td>
 </tr>
 
@@ -1140,7 +1152,39 @@ in the variable.</p>
 <td>
 <p class="command">$TST(VariableName=pattern)</p>
 
-<p>Matches if the content of the variable matches the pattern.</p>
+<p>Matches if the content of the variable matches the pattern.<br>
+But does not match if the variable is empty.</p>
+</td>
+</tr>
+
+<tr>
+<td>
+<p><span class="indic">M</span></p>
+</td>
+<td>
+<p><br>
+</p>
+</td>
+<td>
+<p class="command">$TST((expanded text))</p>
+
+<p>Try and match (and consume) the text against the pattern obtained
+by expanding the parameter.</p>
+</td>
+</tr>
+
+<tr>
+<td>
+<p><span class="indic">M</span></p>
+</td>
+<td>
+<p><span class="indic">R</span></p>
+</td>
+<td>
+<p class="command">$TST((expanded text)=pattern)</p>
+
+<p>Matches if the expanded text matches the pattern.<br>
+But does not match if the expanded text is empty.</p>
 </td>
 </tr>
 

@@ -46,28 +46,41 @@ private:
 IMPLEMENT_APP(ProximodoApp)
 
 
-bool ProximodoApp::OnInit(){
+bool ProximodoApp::OnInit() {
 
-    // Check for single application instance
+    // Initialize sockets
+    wxSocketBase::Initialize();
+
+    // Check that there is no other Proximodo running
     const wxString name = APP_NAME;
     sic = new wxSingleInstanceChecker(name);
-    if (sic->IsAnotherRunning()) return false;
-
-    // Start proxy server
-    wxSocketBase::Initialize();
-    CProxy::ref().openProxyPort();
-
-    // Open welcome html page on first run
-    if (CSettings::ref().firstRun) {
-        CSettings::ref().save(); // (get rid of firstRun)
-        CUtil::openBrowser(CSettings::ref().getMessage("HELP_PAGE_WELCOME"));
+    if (sic->IsAnotherRunning()) // Verifies this user is not running Proximodo
+    {
+        // If configured, still open the browser
+        if (CSettings::ref().startBrowser) {
+            CUtil::openBrowser();
+        }
+        return false;
     }
+    
+    // Start proxy server
+    CProxy::ref().openProxyPort();
 
     // Create main frame
     CMainFrame* mf = new CMainFrame(wxDefaultPosition);
     mf->Centre(wxBOTH | wxCENTRE_ON_SCREEN);
     if (CSettings::ref().showOnStartup) mf->Show();
     
+    // Open welcome html page on first run
+    if (CSettings::ref().firstRun) {
+        CSettings::ref().firstRun = false;
+        CSettings::ref().save();
+        CUtil::openBrowser(CSettings::ref().getMessage("HELP_PAGE_WELCOME"));
+    } else if (CSettings::ref().startBrowser) {
+        // Open browser
+        CUtil::openBrowser();
+    }
+
     return true;
 }
 

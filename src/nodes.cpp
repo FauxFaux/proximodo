@@ -589,7 +589,13 @@ bool CNode_And::mayMatch(bool* tab) {
     for (int i=0; i<256; i++) tabL[i] = tabR[i] = false;
     retL = nodeL->mayMatch(tabL);
     retR = nodeR->mayMatch(tabR);
-    for (int i=0; i<256; i++) if (tabL[i] && tabR[i]) tab[i] = true;
+    if (!retL && !retR) {
+        for (int i=0; i<256; i++)
+            if (tabL[i] && tabR[i]) tab[i] = true;
+    } else {
+        for (int i=0; i<256; i++)
+            if (retR && tabL[i] || retL && tabR[i]) tab[i] = true;
+    }
     return retL && retR;
 }
 
@@ -880,8 +886,8 @@ CNode_List::~CNode_List() {
 
 int CNode_List::consume() {
     retry = false;
-    vector<string>& list = CSettings::ref().lists[name];
-    for (vector<string>::iterator it = list.begin(); it != list.end(); it++) {
+    deque<string>& list = CSettings::ref().lists[name];
+    for (deque<string>::iterator it = list.begin(); it != list.end(); it++) {
 
         CNode* node;
         if (nodes.find(*it) == nodes.end()) { // we have to build this node
@@ -940,19 +946,29 @@ int CNode_Command::consume() {
         retry = false;
         if (filter.memoryStack.empty()) return -1;
         toMatch = filter.memoryStack.back().getValue();
-        return (matcher->match(0, toMatch.size(), end, reached)
+        return (!toMatch.empty()
+                && matcher->match(0, toMatch.size(), end, reached)
+                && end == (int)toMatch.size() ? start : -1);
+
+    case CMD_TSTEXPAND:
+        retry = false;
+        toMatch = CExpander::expand(name, filter);
+        return (!toMatch.empty()
+                && matcher->match(0, toMatch.size(), end, reached)
                 && end == (int)toMatch.size() ? start : -1);
 
     case CMD_TSTDIGIT:
         retry = false;
         toMatch = filter.memoryTable[name[0]-'0'].getValue();
-        return (matcher->match(0, toMatch.size(), end, reached)
+        return (!toMatch.empty()
+                && matcher->match(0, toMatch.size(), end, reached)
                 && end == (int)toMatch.size() ? start : -1);
 
     case CMD_TSTVAR:
         retry = false;
         toMatch = owner.variables[name];
-        return (matcher->match(0, toMatch.size(), end, reached)
+        return (!toMatch.empty()
+                && matcher->match(0, toMatch.size(), end, reached)
                 && end == (int)toMatch.size() ? start : -1);
 
     case CMD_URL:
@@ -962,12 +978,12 @@ int CNode_Command::consume() {
 
     case CMD_IHDR:
         retry = false;
-        toMatch = owner.inHeaders[name];
+        toMatch = CFilterOwner::getHeader(owner.inHeaders, name);
         return (matcher->match(0, toMatch.size(), end, reached) ? start : -1);
 
     case CMD_OHDR:
         retry = false;
-        toMatch = owner.outHeaders[name];
+        toMatch = CFilterOwner::getHeader(owner.outHeaders, name);
         return (matcher->match(0, toMatch.size(), end, reached) ? start : -1);
 
     case CMD_RESP:
@@ -1001,10 +1017,7 @@ int CNode_Command::consume() {
     case CMD_KILL:
         // \k acts as a command (it changes variables and does not consume)
         // so it is processed by CNode_Command.
-        if (owner.url.getPath().find(".gif") != string::npos)
-            owner.rdirToHost = "http://file//./html/killed.gif";
-        else
-            owner.rdirToHost = "http://file//./html/killed.html";
+        filter.killed = true;
         break;
 
     case CMD_ADDLST:
@@ -1044,7 +1057,7 @@ int CNode_Command::consume() {
         return (content == owner.fileType ? start : -1);
 
     case CMD_STOP:
-        filter.active = false;
+        filter.bypassed = true;
         break;
 
     case CMD_USEPROXY:
@@ -1071,11 +1084,15 @@ int CNode_Command::consume() {
         break;
 
     case CMD_JUMP:
-        owner.jumpToHost = content;
+        owner.rdirToHost = CExpander::expand(content, filter);
+        CUtil::trim(owner.rdirToHost);
+        owner.rdirMode = 0;
         break;
 
     case CMD_RDIR:
-        owner.rdirToHost = content;
+        owner.rdirToHost = CExpander::expand(content, filter);
+        CUtil::trim(owner.rdirToHost);
+        owner.rdirMode = 1;
         break;
 
     case CMD_FILTER:
@@ -1218,6 +1235,8 @@ int CNode_Test::consume() {
             str = filter.memoryStack.back().getValue();
     } else if (name.size() == 1 && CUtil::digit(name[0])) {
         str = filter.memoryTable[name[0]-'0'].getValue();
+    } else if (name[0] == '(' && name[name.size()-1] == ')') {
+        str = CExpander::expand(name.substr(1, name.size()-2), filter);
     } else {
         str = filter.owner.variables[name];
     }

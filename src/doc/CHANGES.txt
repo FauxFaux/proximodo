@@ -1,4 +1,44 @@
 --------------------------------------------------------------------------------
+Version 0.3 (???, 2005)
+-------------
+
+Engine
+- Bypass URL and URL Match now work like in Proxomitron
+
+Proxy
+- Don't reorder or concatenate headers (cookies must not be concatenated!)
+
+--------------------------------------------------------------------------------
+Version 0.2.1 (Jan 8th, 2005)
+-------------
+
+Engine
+- Content of $RDIR and $JUMP is now expanded
+- "URL" header filters will scan the URL _including_ the http://
+- $TST won't match if variable is empty
+- Added usage of \k in text filters
+- Added $TST((expandedText)=pattern) and $TST((expandedText))
+- Note: unknown commands being ignored, you can use $NOP(some comment text)
+- stars are now optional in [#n:n] and {n,n}
+- Added [%nn-%nn]  [%nn-z]  and  [z-%nn]  (all are case-sensitive)
+- In [], \char is now case-sensitive: [\A-Z] will match uppercase letters only
+- Added fixed-size virtual lists
+
+Proxy
+- Can process request/response with LF instead of CRLF
+- Improved URL redir code
+- Redirections by incoming headers are limited to 3 (to avoid infinite loop)
+- Improved compatibility with Internet Explorer
+
+GUI
+- Added an option to start a browser automatically
+
+Other
+- Fixed bad management of config names containing a comma
+- Installer has an option to set IE proxy automatically
+
+
+--------------------------------------------------------------------------------
 Version 0.2 (Nov 28th, 2004)
 -----------
 

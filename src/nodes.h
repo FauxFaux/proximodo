@@ -458,7 +458,8 @@ enum CMD_ID {
     
     CMD_TSTSHARP = 100, // From this point, commands need a CMatcher for content
     CMD_TSTDIGIT, CMD_TSTVAR, CMD_URL,
-    CMD_IHDR,     CMD_OHDR,   CMD_RESP
+    CMD_IHDR,     CMD_OHDR,   CMD_RESP,
+    CMD_TSTEXPAND
 };
 
 class CNode_Command : public CNode {

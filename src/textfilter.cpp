@@ -98,16 +98,17 @@ CTextFilter::~CTextFilter() {
  */
 void CTextFilter::dataReset() {
 
-    active = true;
-    isStarted = false;
+    bypassed = false;
     
     if (urlMatcher) {
         // The filter will be inactive if the URL does not match
         int end, reached;
-        active = urlMatcher->match(0, owner.url.getFromHost().size(), end, reached);
+        bypassed = !urlMatcher->match(0, owner.url.getFromHost().size(), end, reached);
         unlock();
     }
     
+    killed = false;
+    isStarted = false;
     needed = CTF_THRESHOLD2;
     lastEnd = -1;
     buffer.clear();
@@ -121,6 +122,7 @@ void CTextFilter::dataReset() {
 /* Receive data
  */
 void CTextFilter::dataFeed(const string& data) {
+    if (killed) return;
     process(data, true);
 }
 
@@ -128,9 +130,11 @@ void CTextFilter::dataFeed(const string& data) {
 /* Process data still in the buffer
  */
 void CTextFilter::dataDump() {
+    if (killed) return;
     string str = "";
     process(str, false);
     nextFilter->dataDump();
+    killed = true;
 }
 
 
@@ -154,14 +158,14 @@ void CTextFilter::dataDump() {
  */
 void CTextFilter::process(const string& data, bool feeding) {
 
-    // if filter has been set inactive (i.e by $STOP() or
-    // mismatched URL), bypass the filter
-    if (!active) {
+    // if filter has been deactivated (i.e by $STOP() or
+    // mismatched URL), forward the text unfiltered
+    if (bypassed) {
         // buffer should be empty
         if (!buffer.empty()) {
             // buffer has not yet been emptied
             nextFilter->dataFeed(buffer);
-            buffer = "";
+            buffer.clear();
         }
         // directly send data to next filter
         nextFilter->dataFeed(data);
@@ -196,8 +200,9 @@ void CTextFilter::process(const string& data, bool feeding) {
     int start = 0;      // index where we currently look for a match
     
     // scan buffer
-    do {
-        // if character cannot match, pass it
+    while (start < size && !killed && !bypassed) {
+
+        // pass characters that cannot match
         if (!okayChars[(unsigned char)buffer[start]]) {
             ++start;
             continue;
@@ -205,7 +210,7 @@ void CTextFilter::process(const string& data, bool feeding) {
         
         bool matched;
         int end, reached;
-
+        
         // compute up to where we want to match
         int stop = start + windowWidth;
         if (stop > size) stop = size;
@@ -234,7 +239,9 @@ void CTextFilter::process(const string& data, bool feeding) {
         if (reached == size && feeding) break;
 
         // pattern not matching (and condition for avoiding infinite loop)
-        if (!matched || multipleMatches && end <= lastEnd) {
+        if (!matched
+                || boundsMatcher && end != stop
+                || multipleMatches && end <= lastEnd) {
             ++start;
             continue;
         }
@@ -266,11 +273,21 @@ void CTextFilter::process(const string& data, bool feeding) {
             else
                 done = start = end;
         }
-    } while (start < size && active);
+    }
+    
+    // If the filter has been killed at some point,
+    // send the processed text then dump next filters
+    if (killed) {
+        string str = output.str();
+        nextFilter->dataFeed(str);
+        nextFilter->dataDump();
+        buffer.clear();
+        return;
+    }
 
     // If the filter has been deactivated in the loop, the rest of
     // the buffer is considered unmatching
-    if (!active) start = size;
+    if (bypassed) start = size;
 
     // decide how much data we'll then wait for
     needed = CTF_THRESHOLD2;

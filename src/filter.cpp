@@ -29,7 +29,7 @@
 /* Constructor
  */
 CFilter::CFilter(CFilterOwner& owner) : owner(owner),
-            active(true), locked(false) {
+            bypassed(false), killed(false), locked(false) {
 }
 
 

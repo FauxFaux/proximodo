@@ -181,6 +181,7 @@ wxMenu* CTrayIcon::CreatePopupMenu() {
     }
     menu->Append(ID_LOG,
         settings.getMessage("TRAY_LOG").c_str());
+    menu->AppendSeparator();
     menu->Append(ID_EXIT,
         settings.getMessage("TRAY_EXIT").c_str());
     return menu;

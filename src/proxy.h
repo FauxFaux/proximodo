@@ -42,10 +42,17 @@ public:
     static CProxy& ref();
     static void destroy();
     
+    // Test the port configured in settings, 
+    // using testPort(const string& port).
+    bool testPort();
+    
     // Tests a port for server usage.
     // If the port is the one we are using, returns true.
-    // Otherwise try and open the port, return true if it worked.
-    bool testPort(string port);
+    // Otherwise check that:
+    // 1. The port is not in use (i.e. you cannot connect to it), and
+    // 2. You can open a server on the port.
+    // If both tests pass, returns true, otherwise false.
+    bool testPort(const string& port);
     
     // Tests a remote proxy.
     bool testRemoteProxy(string hostport);

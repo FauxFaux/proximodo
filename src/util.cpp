@@ -32,6 +32,7 @@
 #include <wx/clipbrd.h>
 #include <wx/list.h>
 #include "platform.h"
+#include "const.h"
 
 using namespace std;
 
@@ -343,15 +344,51 @@ string CUtil::decodeBASE64(const string& str) {
 
 
 // Launch default browser (for a Proximodo help page)
+// If path is empty or omitted, just opens the browser to its 
+// default home page
 void CUtil::openBrowser(const string& path) {
-
-    wxFileType* type = wxTheMimeTypesManager->GetFileTypeFromExtension( "html");
+    // Get file type
+    wxFileType* type = wxTheMimeTypesManager->GetFileTypeFromExtension("html");
     if (!type) return;
-    wxFileName fn(CUtil::makePath(path).c_str());
-    fn.MakeAbsolute();
+
+    // Get path string
+    wxString pathString;
+    // Get command to open given path, if provided
+    if (0 < path.length()) {
+        wxFileName fn(CUtil::makePath(path).c_str());
+        fn.MakeAbsolute();
+        pathString = fn.GetFullPath();
+    } else {
+        pathString = "";
+    } 
+    
+    // Get command
     wxString command;
-    if (!type->GetOpenCommand(&command, fn.GetFullPath())) return;
+    if (!type->GetOpenCommand(&command, pathString)) return;
+    
+    // If path empty, reduce to just browser open command
+    if (0 == path.length()) {
+        wxString reducedCommand = command;
+        // Just keep stripping words off the end
+        while (containsBrowserCommand(reducedCommand)) {
+            command = reducedCommand;
+            reducedCommand = command.BeforeLast(' ');
+        }
+    } 
+
+    // Execute command
     wxExecute(command, wxEXEC_ASYNC);
+}
+
+// Checks that a command contains one of the common browser names
+bool CUtil::containsBrowserCommand(const wxString& command) {
+    wxString c = command.Lower();
+    return (0 <= c.Find("firefox")  ||
+            0 <= c.Find("iexplore") ||
+            0 <= c.Find("opera")    ||
+            0 <= c.Find("mozilla")  ||
+            0 <= c.Find("netscape") ||
+            0 <= c.Find("navigator"));
 }
 
 
@@ -445,7 +482,7 @@ string CUtil::quote(string str, string codes) {
 
     trim(str);
     if (   str.find("\"") == string::npos
-        || str.find_first_of(codes) == string::npos )
+        && str.find_first_of(codes) == string::npos )
         return str;
     else
         return "\"" + replaceAll(str, "\"", "\"\"") + "\"";
@@ -485,5 +522,41 @@ int CUtil::getQuoted(const string& str, string& out, int start, char token) {
         trim(out = str.substr(start, stop-start));
     }
     return stop == string::npos ? -2 : (int)stop;
+}
+
+
+// Locates the next end-of-line (can be CRLF or LF)
+bool CUtil::endOfLine(const string& str, unsigned int start,
+                      unsigned int& pos, unsigned int& len, int nbr) {
+
+    while (true) {
+        unsigned int index = str.find(LF, start);
+        if (index == string::npos) return false;
+        if (start < index && str[index-1] == CR) {
+            len = 2; pos = index - 1;
+        } else {
+            len = 1; pos = index;
+        }
+        if (nbr <= 1) {
+            return true;
+        } else {
+            int remain = nbr-1;
+            string::const_iterator it = str.begin() + (index + 1);
+            while (remain && it != str.end()) {
+                if (*it == LF) {
+                    len++; it++; remain--;
+                } else if (*it == CR) {
+                    len++; it++;
+                } else {
+                    break;
+                }
+            }
+            if (remain) {
+                start = pos+len;
+            } else {
+                return true;
+            }
+        }
+    }
 }
 

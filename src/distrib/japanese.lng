@@ -1,7 +1,8 @@
 ---------------------------------------------------------------------
 Language: “ú–{Œê
-Author: Antony Boucher
-Contributions by: Shimazaki Ryo  (2004/11/22)
+Author: Shimazaki Ryo  (2004/12/01)
+Contributions by: 
+Version: 0.2
 ---------------------------------------------------------------------
 
 
@@ -21,15 +22,17 @@ TWO_THREE_INTEGERS            =, ‚Å‹æØ‚Á‚Ä2ŒÂ‚©3ŒÂ‚Ì³‚Ì®”‚ðŽw’è‚µ‚Ä‰º‚³‚¢i%
 MISSING_COLON                 =Š‡ŒÊ“à‚É : ‚ª‚ ‚è‚Ü‚¹‚ñi%1•¶Žš–Új
 CROCHET_AT_END                =ƒpƒ^[ƒ“––”ö‚É [ ‚ª‚ ‚è‚Ü‚·
 MISSING_COMMA                 =, ‚ª‚ ‚è‚Ü‚¹‚ñi%1•¶Žš–Új
+ERROR_MARKER                  =___
 
 Web Error Messages
 
-404_NOT_FOUND                 =DNS‚©‚çƒzƒXƒg‚ðŽQÆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½BƒzƒXƒg–¼‚ðŠm”F‚µ‚ÄÄŽŽs‚µ‚Ä‰º‚³‚¢B
+404_NOT_FOUND                 =ƒtƒ@ƒCƒ‹‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñB
+502_BAD_GATEWAY               =DNSŽQÆ‚ªŽ¸”s‚µ‚Ü‚µ‚½B
 503_UNAVAILABLE               =ƒzƒXƒg‚Æ‚ÌÚ‘±‚ÉŽ¸”s‚µ‚Ü‚µ‚½BƒT[ƒo‚ª’âŽ~‚µ‚Ä‚¢‚é‚©ƒrƒW[ó‘Ô‚Å‚·BŒã‚ÅÄŽŽs‚µ‚Ä‰º‚³‚¢B
 
 Filter Messages
 
-ADDLSTBOX_MESSAGE             =%1 ‚ÉˆÈ‰º‚ÌƒGƒ“ƒgƒŠ‚ð’Ç‰Á‚µ‚Ü‚·iƒƒCƒ‹ƒhƒJ[ƒh‚ªŽg—p‚Å‚«‚Ü‚·j
+ADDLSTBOX_MESSAGE             =%1 ‚ÉˆÈ‰º‚ÌƒGƒ“ƒgƒŠ‚ð’Ç‰Á‚µ‚Ü‚·iƒƒCƒ‹ƒhƒJ[ƒh‚ªŽg—p‚Å‚«‚Ü‚·jB
 INVALID_FILTER_TITLE          =ƒ^ƒCƒgƒ‹‚ª•K—v‚Å‚·B
 INVALID_FILTER_MATCHEMPTY     =ƒ}ƒbƒ`ƒ“ƒOƒpƒ^[ƒ“‚ª‹ó‚Å‚·B
 INVALID_FILTER_WIDTH          =ãŒÀƒoƒCƒg”‚ÌŽw’è‚ªŠÔˆá‚Á‚Ä‚¢‚Ü‚·B
@@ -45,10 +48,11 @@ BUTTON_HELP                   =ƒwƒ‹ƒv
 BUTTON_QUIT                   =I—¹
 STAT_ACTIVE_REQS              =ƒAƒNƒeƒBƒu‚ÈÚ‘±: %1
 STAT_ACTIVE_REQ               =ƒAƒNƒeƒBƒu‚ÈÚ‘±: %1
-HELP_PAGE_CONTENT             =./html/help/en/f_content.html
-HELP_PAGE_SYNTAX              =./html/help/en/f_syntax.html
-HELP_PAGE_WELCOME             =./html/help/en/f_welcome.html
-HELP_PAGE_LICENSE             =./html/help/en/f_license.html
+HELP_PAGE_CONTENT             =./help/en/f_content.html
+HELP_PAGE_SYNTAX              =./help/en/f_syntax.html
+HELP_PAGE_WELCOME             =./help/en/f_welcome.html
+HELP_PAGE_LICENSE             =./help/en/f_license.html
+HELP_PAGE_FILTERS             =./help/en/f_filters.html
 HELP_ABOUT_TEXT               =Proximodo version %1
 _2004 (c) Antony Boucher
 _
@@ -61,7 +65,7 @@ Menu Bar
 
 MENU_TOOLS                    =ƒc[ƒ‹(&T)
 MENU_FILTERS                  =ƒtƒBƒ‹ƒ^(&E)
-MENU_CONFIG                   =\@¬(&C)
+MENU_CONFIG                   =\¬(&C)
 MENU_HELP                     =ƒwƒ‹ƒv(&H)
 MENU_TOOLSSETTINGS            =Ý’è	Alt+S
 MENU_TOOLSCONFIG              =\¬	Alt+G
@@ -75,14 +79,18 @@ MENU_HELPABOUT                =ƒo[ƒWƒ‡ƒ“î•ñ(&A)
 MENU_HELPCONTENT              =–ÚŽŸ(&H)	F1
 MENU_HELPSYNTAX               =ƒR[ƒh‚ÆƒRƒ}ƒ“ƒh(&C)
 MENU_HELPLICENSE              =ƒ‰ƒCƒZƒ“ƒX(&L)
+MENU_HELPFILTERS              =ƒtƒBƒ‹ƒ^•ÒW(&E)
+MENU_FILTERSEDIT              =ƒtƒBƒ‹ƒ^•ÒW(&J)	Enter
+MENU_FILTERSCHECK             =ƒ`ƒFƒbƒN”½“](&C)	Alt+Space
+MENU_FOLDERSNEW               =ƒtƒHƒ‹ƒ_ì¬(&F)	Alt+F
 MENU_FILTERSAPPLY             =“K—p(&A)	F8
 MENU_FILTERSREVERT            =Œ³‚É–ß‚·(&R)	F9
 MENU_FILTERSDELETE            =íœ(&X)	Alt+X
 MENU_FILTERSEXPORT            =ƒGƒNƒXƒ|[ƒg(&E)	Alt+C
 MENU_FILTERSIMPORT            =ƒCƒ“ƒ|[ƒg(&I)	Alt+V
-MENU_FILTERSPROXOMITRON       =Proxomitron‚©‚çƒCƒ“ƒ|[ƒg(&O)	Alt+P
+MENU_FILTERSPROXOMITRON       =&Proxomitron‚©‚çƒCƒ“ƒ|[ƒg	Alt+P
 MENU_FILTERSDUPLICATE         =•¡»(&D)	Alt+D
-MENU_FILTERSNEW               =V‹K(&N)	Alt+N
+MENU_FILTERSNEW               =V‚µ‚¢ƒtƒBƒ‹ƒ^(&N)	Alt+N
 MENU_FILTERSTEST              =ƒeƒXƒg(&T)	Alt+T
 MENU_FILTERSENCODE            =Base64 ƒGƒ“ƒR[ƒh(&B)
 MENU_FILTERSDECODE            =Base64 ƒfƒR[ƒh(&S)
@@ -150,18 +158,21 @@ LB_EDIT_TYPEOUT               =‘—Mƒwƒbƒ_
 LB_EDIT_TYPETEXT              =ƒEƒFƒuƒy[ƒW
 LB_EDIT_VERSION               =Version
 LB_EDIT_WIDTH                 =ãŒÀƒoƒCƒg”
+LB_EDIT_PRIORITY              =—Dæ“x
 LB_EDIT_URL                   =URLƒpƒ^[ƒ“:
 LB_EDIT_BOUNDS                =”ÍˆÍŽw’èƒpƒ^[ƒ“:
 LB_EDIT_MATCH                 =ƒ}ƒbƒ`ƒ“ƒOƒpƒ^[ƒ“:
 LB_EDIT_REPLACE               =’uŠ·‚·‚éƒeƒLƒXƒg:
 REVERT_EDITFILTERS            =•ÏX‚µ‚½ƒtƒBƒ‹ƒ^‚ÍŽ¸‚í‚ê‚Ü‚·BƒtƒBƒ‹ƒ^ƒŠƒXƒg‚ðŒ³‚É–ß‚µ‚Ü‚·‚©H
 APPLY_EDITFILTERS             =ƒtƒBƒ‹ƒ^‚ª•ÏX‚³‚ê‚Ä‚¢‚Ü‚·B“K—p‚µ‚Ü‚·‚©H
-DEFAULT_FILTER_NAME           =New Filter
+DEFAULT_FILTER_NAME           =V‚µ‚¢ƒtƒBƒ‹ƒ^
+DEFAULT_FOLDER_NAME           =V‚µ‚¢ƒtƒHƒ‹ƒ_
 PROXOMITRON_CATEGORY          =Proxomitron
+EDIT_WINDOW_TITLE             =•ÒWƒEƒBƒ“ƒhƒE - Proximodo
 
 Test Window
 
-TEST_WINDOW_TEST_BUTTON       =ƒeƒXƒg
+TEST_WINDOW_TEST_BUTTON       =ƒeƒXƒg(&T)
 TEST_WINDOW_CLOSE_BUTTON      =•Â‚¶‚é
 TEST_WINDOW_TITLE             =ƒeƒXƒgƒEƒBƒ“ƒhƒE - Proximodo
 TEST_NO_MATCH                 =(ƒ}ƒbƒ`‚È‚µ)
@@ -177,7 +188,7 @@ REVERT_CONFIG                 =•ÏX‚µ‚½\¬‚ÍŽ¸‚í‚ê‚Ü‚·BƒtƒBƒ‹ƒ^\¬‚ðŒ³‚É–ß‚µ‚
 CONFIG_TYPE_OUT               =‘—Mƒwƒbƒ_
 CONFIG_TYPE_IN                =ŽóMƒwƒbƒ_
 CONFIG_TYPE_TEXT              =ƒEƒFƒuƒy[ƒW
-CONFIG_NEW_NAME               =V‹K\¬
+CONFIG_NEW_NAME               =V‚µ‚¢\¬
 
 Log Window
 
@@ -232,475 +243,399 @@ TRAY_USEPROXY                 =ƒŠƒ‚[ƒgƒvƒƒNƒVŽg—p
 
 Tool Tips
 
-CONFIG_ALLLIST_TIP            =Žg—p‰Â”\‚ÈƒtƒBƒ‹ƒ^BƒJƒ‰ƒ€–¼ƒNƒŠƒbƒN‚Åƒ\[ƒg‚³‚ê‚Ü‚·
-CONFIG_ADD_TIP                =¶‘¤‚Å‘I‘ð‚µ‚½ƒtƒBƒ‹ƒ^‚ð\¬‚É’Ç‰Á‚µ‚Ü‚·
-CONFIG_REMOVE_TIP             =‰E‘¤‚Å‘I‘ð‚µ‚½ƒtƒBƒ‹ƒ^‚ð\¬‚©‚çíœ‚µ‚Ü‚·
-CONFIG_UP_TIP                 =‰E‘¤‚Å‘I‘ð‚µ‚½ƒtƒBƒ‹ƒ^‚ðˆêsã‚ÉˆÚ“®‚µ‚Ü‚·
-CONFIG_DOWN_TIP               =‰E‘¤‚Å‘I‘ð‚µ‚½ƒtƒBƒ‹ƒ^‚ðˆês‰º‚ÉˆÚ“®‚µ‚Ü‚·
-CONFIG_NAME_TIP               =•ÒW’†‚Ì\¬–¼B‘‚«Š·‚¦‚ÅƒŠƒl[ƒ€o—ˆ‚Ü‚·
-CONFIG_OKLIST_TIP             =‚±‚Ì\¬‚Å—LŒø‚ÈƒtƒBƒ‹ƒ^iƒEƒFƒuƒy[ƒWƒtƒBƒ‹ƒ^‚Íã‚©‚ç‰º‚Ì‡‚Å“®ì‚µ‚Ü‚·j
-CONFIG_COMMENT_TIP            =‘I‘ð‚µ‚½ƒtƒBƒ‹ƒ^‚Ìà–¾
-MENU_CONFIGADD_TIP            =¶‘¤‘I‘ð‚µ‚½ƒtƒBƒ‹ƒ^‚ð\¬‚É’Ç‰Á‚µ‚Ü‚·
-MENU_CONFIGREMOVE_TIP         =‰E‘¤‚Å‘I‘ð‚µ‚½ƒtƒBƒ‹ƒ^‚ð\¬‚©‚çíœ‚µ‚Ü‚·
-MENU_CONFIGMOVEUP_TIP         =‰E‘¤‚Å‘I‘ð‚µ‚½ƒtƒBƒ‹ƒ^‚ðˆêsã‚ÉˆÚ“®‚µ‚Ü‚·
-MENU_CONFIGMOVEDOWN_TIP       =‰E‘¤‚Å‘I‘ð‚µ‚½ƒtƒBƒ‹ƒ^‚ðˆês‰º‚ÉˆÚ“®‚µ‚Ü‚·
-MENU_CONFIGNEW_TIP            =V‚µ‚¢\¬‚ðì¬‚µ‚Ü‚·
-MENU_CONFIGDUPLICATE_TIP      =Œ»Ý‚Ì\¬‚ð•¡ŽÊ‚µ‚ÄV‚µ‚¢\¬‚ðì¬‚µ‚Ü‚·
-MENU_CONFIGDELETE_TIP         =Œ»Ý‚Ì\¬‚ðíœ‚µ‚Ü‚·
-MENU_CONFIGAPPLY_TIP          =‘S‚Ä‚Ì\¬‚Ì•ÏX‚ð“K—p‚µ‚Ü‚·
-MENU_CONFIGREVERT_TIP         =‘O‰ñ‚Ì“K—pEŒ³‚É–ß‚·Œã‚É‰Á‚¦‚½•ÏX‚ðŒ³‚É–ß‚µ‚Ü‚·
-EDIT_FILTERLIST_TIP           =ƒNƒŠƒbƒN‚Å•ÒW‚Å‚«‚Ü‚·BƒJƒ‰ƒ€–¼ƒNƒŠƒbƒN‚Åƒ\[ƒg‚³‚ê‚Ü‚·
-EDIT_TITLE_TIP                =ƒtƒBƒ‹ƒ^–¼B‘¼‚ÌƒtƒBƒ‹ƒ^‚Æ“¯ˆê‚É‚Ío—ˆ‚Ü‚¹‚ñ
-EDIT_CATEGORY_TIP             =ƒtƒBƒ‹ƒ^‚Ì•ª—Þi•\Ž¦—pj
-EDIT_COMMENT_TIP              =ƒtƒBƒ‹ƒ^‚Ìà–¾i•\Ž¦—pj
-EDIT_AUTHOR_TIP               =ƒtƒBƒ‹ƒ^‚ÌìŽÒi•\Ž¦—pj
-EDIT_VERSION_TIP              =ƒtƒBƒ‹ƒ^‚Ìƒo[ƒWƒ‡ƒ“i•\Ž¦—pj
-EDIT_TYPE_TIP                 =ƒtƒBƒ‹ƒ^‚ÌŽí•ÊB‘—Mƒwƒbƒ_‚ÆŽóMƒwƒbƒ_‚ðƒtƒBƒ‹ƒ^ƒŠƒ“ƒO‚·‚éê‡‚Í•¡ŽÊ‚µ‚Ä‰º‚³‚¢
-EDIT_HEADERNAME_TIP           =ƒ}ƒbƒ`‚³‚¹‚éƒwƒbƒ_–¼BƒƒCƒ‹ƒhƒJ[ƒh‚ÍŽg—p‚Å‚«‚Ü‚¹‚ñ
-EDIT_WIDTH_TIP                =ãŒÀƒoƒCƒg”Bo—ˆ‚é‚¾‚¯¬‚³‚­‚·‚é‚±‚Æi‚æ‚è‘¬‚­‚È‚è‚Ü‚·j
-EDIT_MULTIMATCH_TIP           =ƒ`ƒFƒbƒN‚ð“ü‚ê‚é‚ÆA’uŠ·‚µ‚½ƒeƒLƒXƒg‚àŒJ‚è•Ô‚µƒtƒBƒ‹ƒ^ƒŠƒ“ƒO‚µ‚Ü‚·
-EDIT_BOUNDS_TIP               =‚±‚Ìƒpƒ^[ƒ“‚Éƒ}ƒbƒ`‚µ‚½•”•ª‚¾‚¯‚ªƒ}ƒbƒ`ƒ“ƒOƒpƒ^[ƒ“‚Å”äŠr‚³‚ê‚Ü‚·iŽw’èŽž‚Ì‚ÝjB‰Â”\‚ÈŒÀ‚èŽg‚¤‚±‚Æi‚æ‚è‘¬‚­‚È‚è‚Ü‚·j
-EDIT_URL_TIP                  =URL‚ªƒ}ƒbƒ`‚µ‚½ê‡‚Ì‚Ý—LŒø‚É‚È‚è‚Ü‚·iŽw’èŽž‚Ì‚ÝjB‰Â”\‚ÈŒÀ‚èŽg‚¤‚±‚Æi‚æ‚è‘¬‚­‚È‚è‚Ü‚·j
-EDIT_MATCH_TIP                =ŒŸõ‚·‚éƒpƒ^[ƒ“BÚ×‚Íƒwƒ‹ƒv‚ðŽQÆ‚µ‚Ä‰º‚³‚¢
-EDIT_REPLACE_TIP              =ƒ}ƒbƒ`ƒ“ƒO‚µ‚½•”•ª‚ð’uŠ·‚·‚éƒeƒLƒXƒgiƒR[ƒh‚âƒRƒ}ƒ“ƒh‚àŽg—p‚Å‚«‚Ü‚·j
-MENU_FILTERSNEW_TIP           =V‚µ‚¢ƒtƒBƒ‹ƒ^‚ðì¬‚µ‚Ü‚·
-MENU_FILTERSDUPLICATE_TIP     =•ÒW’†‚ÌƒtƒBƒ‹ƒ^‚ð•¡»‚µ‚Ü‚·
-MENU_FILTERSDELETE_TIP        =•ÒW’†‚ÌƒtƒBƒ‹ƒ^‚ðíœ‚µ‚Ü‚·
-MENU_FILTERSTEST_TIP          =ƒeƒXƒgƒEƒBƒ“ƒhƒE‚ðŠJ‚«‚Ü‚·BŠJ‚¢‚½‚Ü‚Ü‚Å‚àƒtƒBƒ‹ƒ^‚Ì•ÒW’†‚ª‰Â”\‚Å‚·
-MENU_FILTERSENCODE_TIP        =ƒNƒŠƒbƒvƒ{[ƒh‚Ì“à—e‚ðBASE64 (MIME)ƒGƒ“ƒR[ƒh‚µ‚Ü‚·iƒeƒLƒXƒg‚Ì‚Ýj
-MENU_FILTERSDECODE_TIP        =ƒNƒŠƒbƒvƒ{[ƒh‚Ì“à—e‚ðBASE64 (MIME)ƒfƒR[ƒh‚µ‚Ü‚·iƒeƒLƒXƒg‚Ì‚Ýj
-MENU_FILTERSIMPORT_TIP        =ƒNƒŠƒbƒvƒ{[ƒh‚©‚çProximodo‚ÌƒtƒBƒ‹ƒ^‚ðŽæ‚èž‚Ý‚Ü‚·B–¼‘O‚ªd‚È‚Á‚½ê‡‚Í”Žš‚ª‰ÁŽZ‚³‚ê‚Ü‚·
-MENU_FILTERSPROXOMITRON_TIP   =ƒNƒŠƒbƒvƒ{[ƒh‚©‚çProxomitron‚ÌƒtƒBƒ‹ƒ^‚ðŽæ‚èž‚Ý‚Ü‚·B–¼‘O‚ªd‚È‚Á‚½ê‡‚Í”Žš‚ª‰ÁŽZ‚³‚ê‚Ü‚·
-MENU_FILTERSEXPORT_TIP        =‘I‘ð‚µ‚½ƒtƒBƒ‹ƒ^‚ðƒNƒŠƒbƒvƒ{[ƒh‚É‘—‚è‚Ü‚·
-MENU_FILTERSAPPLY_TIP         =‘S‚Ä‚ÌƒtƒBƒ‹ƒ^‚Ì•ÏX‚ð“K—p‚µ‚Ü‚·
-MENU_FILTERSREVERT_TIP        =‘O‰ñ‚Ì“K—pEŒ³‚É–ß‚·Œã‚É‰Á‚¦‚½•ÏX‚ðŒ³‚É–ß‚µ‚Ü‚·
-BUTTON_SETTINGS_TIP           =Ý’è‰æ–Ê‚ð•\Ž¦‚µ‚Ü‚·
-BUTTON_LOG_TIP                =ƒƒOƒEƒBƒ“ƒhƒE‚ðŠJ‚«‚Ü‚·
-BUTTON_FILTERS_TIP            =ƒtƒBƒ‹ƒ^•ÒW‰æ–Ê‚ð•\Ž¦‚µ‚Ü‚·
-BUTTON_CONFIG_TIP             =\¬•ÒW‰æ–Ê‚ð•\Ž¦‚µ‚Ü‚·
-BUTTON_HELP_TIP               =ƒuƒ‰ƒEƒU‚Åƒwƒ‹ƒv‚ð•\Ž¦‚µ‚Ü‚·
-BUTTON_QUIT_TIP               =ƒvƒƒNƒV‚ð’âŽ~‚µ‚ÄProximodo‚ðI—¹‚µ‚Ü‚·
-MENU_TOOLSSETTINGS_TIP        =Ý’è‰æ–Ê‚ð•\Ž¦‚µ‚Ü‚·
-MENU_TOOLSCONFIG_TIP          =\¬•ÒW‰æ–Ê‚ð•\Ž¦‚µ‚Ü‚·
-MENU_TOOLSFILTERS_TIP         =ƒtƒBƒ‹ƒ^•ÒW‰æ–Ê‚ð•\Ž¦‚µ‚Ü‚·
-MENU_TOOLSLOG_TIP             =ƒƒOƒEƒBƒ“ƒhƒE‚ðŠJ‚«‚Ü‚·
-MENU_TOOLSSAVE_TIP            =‘S‚Ä‚Ì•ÏX‚ð“K—p‚µ‚ÄƒfƒBƒXƒN‚É•Û‘¶‚µ‚Ü‚·
-MENU_TOOLSRELOAD_TIP          =‘S‚Ä‚ÌÝ’è‚ðƒfƒBƒXƒN‚©‚çÄ“Ç‚Ýž‚Ý‚µ‚Ü‚·
-MENU_TOOLSICONIZE_TIP         =Proximodo‚ð’Ê’m—Ìˆæ‚ÉƒAƒCƒRƒ“‰»‚µ‚Ü‚·
-MENU_TOOLSQUIT_TIP            =ƒvƒƒNƒV‚ð’âŽ~‚µ‚ÄProximodo‚ðI—¹‚µ‚Ü‚·
-MENU_HELPABOUT_TIP            =Proximodo‚Ìƒo[ƒWƒ‡ƒ“î•ñ‚ð•\Ž¦‚µ‚Ü‚·
-MENU_HELPCONTENT_TIP          =ƒuƒ‰ƒEƒU‚Åƒwƒ‹ƒv‚ð•\Ž¦‚µ‚Ü‚·
-MENU_HELPSYNTAX_TIP           =ƒuƒ‰ƒEƒU‚ÅƒR[ƒh‚ÆƒRƒ}ƒ“ƒh‚Ìƒwƒ‹ƒv‚ð•\Ž¦‚µ‚Ü‚·
-MENU_HELPLICENSE_TIP          =Proximodo‚Ì•¡»E”z•zE•ÏX‚ÉŠÖ‚·‚éƒ‰ƒCƒZƒ“ƒX‚ð•\Ž¦‚µ‚Ü‚·
-SETTINGS_OUTGOING_TIP         =‘—Mƒwƒbƒ_ƒtƒBƒ‹ƒ^‚ð—LŒø‚É‚µ‚Ü‚·
-SETTINGS_INCOMING_TIP         =ŽóMƒwƒbƒ_ƒtƒBƒ‹ƒ^‚ð—LŒø‚É‚µ‚Ü‚·
-SETTINGS_TEXT_TIP             =ƒEƒFƒuƒy[ƒWƒtƒBƒ‹ƒ^‚ð—LŒø‚É‚µ‚Ü‚·
-SETTINGS_GIF_TIP              =GIFƒAƒjƒ[ƒVƒ‡ƒ“‚Ì’âŽ~‚ð—LŒø‚É‚µ‚Ü‚·
-SETTINGS_CONFIG_TIP           =Œ»ÝŽg—p‚³‚ê‚Ä‚¢‚é\¬
-SETTINGS_BYPASS_TIP           =URL‚ªƒ}ƒbƒ`‚µ‚½ê‡‚ÍƒtƒBƒ‹ƒ^ƒŠƒ“ƒO‚³‚ê‚Ü‚¹‚ñ
-SETTINGS_LANGUAGE_TIP         =GUI ‚ÅŽg—p‚·‚éŒ¾ŒêBÄ‹N“®Œã‚É“K—p‚³‚ê‚Ü‚·
-SETTINGS_STARTUP_TIP          =‹N“®Žž‚ÉProximodo‚ÌƒEƒBƒ“ƒhƒE‚ðŠJ‚«‚Ü‚·
-SETTINGS_PORT_TIP             =Proximodo‚Ì‘Ò‚¿‚¤‚¯ƒ|[ƒg”Ô†Bƒuƒ‰ƒEƒU‚ÌƒvƒƒNƒVÝ’è‚É“¯‚¶”Ô†‚ðŽw’è‚µ‚Ä‰º‚³‚¢
-SETTINGS_USEPROXY_TIP         =ƒ`ƒFƒbƒN‚ð“ü‚ê‚é‚ÆAProximodo‚ªƒCƒ“ƒ^[ƒlƒbƒg‚ÉÚ‘±‚·‚éŽž‚ÉƒŠƒ‚[ƒgƒvƒƒNƒV‚ðŽg‚¢‚Ü‚·
-SETTINGS_NEXTPROXY_TIP        =Žg—p‚·‚éƒŠƒ‚[ƒgƒvƒƒNƒVBŽw’è‚µ‚½ƒvƒƒNƒV‚ª$SETPROXYƒRƒ}ƒ“ƒh‚ÅŽg—p‚Å‚«‚Ü‚·
-SETTINGS_REMOVEPROXY_TIP      =‘I‘ð‚µ‚½ƒvƒƒNƒV‚ðíœ‚µ‚Ü‚·
-SETTINGS_ALLOWIP_TIP          =‘¼‚ÌPC‚©‚ç‚ÌÚ‘±‚ð‹–‰Â‚µ‚Ü‚·B’ˆÓ‚µ‚ÄŽg—p‚·‚é‚±‚ÆiÅ¬EÅ‘åƒAƒhƒŒƒX‚Æ•¹—p‚·‚éj
-SETTINGS_MINRANGE_TIP         =Ú‘±‚ð‹–‰Â‚·‚éIPƒAƒhƒŒƒX‚Ì”ÍˆÍ‚ðŽw’è‚µ‚Ü‚·
-SETTINGS_MAXRANGE_TIP         =Ú‘±‚ð‹–‰Â‚·‚éIPƒAƒhƒŒƒX‚Ì”ÍˆÍ‚ðŽw’è‚µ‚Ü‚·
-SETTINGS_LISTNAME_TIP         =Žg—p‰Â”\‚ÈƒŠƒXƒgBíœ‚·‚é‚Æˆê——‚©‚çœŠO‚³‚ê‚Ü‚·iƒtƒ@ƒCƒ‹‚Ííœ‚³‚ê‚Ü‚¹‚ñj
-SETTINGS_NEWLIST_TIP          =V‚µ‚¢ƒŠƒXƒg‚ð’Ç‰Á‚µ‚Ü‚·B–¼Ì‚Æƒtƒ@ƒCƒ‹‚ðŽw’è‚µ‚Ü‚·
-SETTINGS_OPENLIST_TIP         =ƒeƒLƒXƒgƒGƒfƒBƒ^‚Åƒtƒ@ƒCƒ‹‚ðŠJ‚«‚Ü‚·
-SETTINGS_LISTFILE_TIP         =ƒŠƒXƒg‚Ìƒtƒ@ƒCƒ‹–¼‚Å‚·B‘¶Ý‚µ‚È‚¢ê‡‚Íì¬‚·‚é‚©–â‚¢‡‚í‚¹‚Ü‚·
-SETTINGS_FILECHOOSE_TIP       =ƒtƒ@ƒCƒ‹‚ðŽQÆ‚µ‚Ü‚·
-SETTINGS_APPLY_TIP            =•ÏX‚µ‚½Ý’è‚ð“K—p‚µ‚Ü‚·
-SETTINGS_REVERT_TIP           =•ÏX‚µ‚½Ý’è‚ðŒ³‚É–ß‚µ‚Ü‚·
+CONFIG_ALLLIST_TIP            =Žg—p‰Â”\‚ÈƒtƒBƒ‹ƒ^BƒJƒ‰ƒ€–¼ƒNƒŠƒbƒN‚Åƒ\[ƒg‚³‚ê‚Ü‚·B
+CONFIG_ADD_TIP                =¶‘¤‚Å‘I‘ð‚µ‚½ƒtƒBƒ‹ƒ^‚ð\¬‚É’Ç‰Á‚µ‚Ü‚·B
+CONFIG_REMOVE_TIP             =‰E‘¤‚Å‘I‘ð‚µ‚½ƒtƒBƒ‹ƒ^‚ð\¬‚©‚çíœ‚µ‚Ü‚·B
+CONFIG_UP_TIP                 =‰E‘¤‚Å‘I‘ð‚µ‚½ƒtƒBƒ‹ƒ^‚ðˆêsã‚ÉˆÚ“®‚µ‚Ü‚·B
+CONFIG_DOWN_TIP               =‰E‘¤‚Å‘I‘ð‚µ‚½ƒtƒBƒ‹ƒ^‚ðˆês‰º‚ÉˆÚ“®‚µ‚Ü‚·B
+CONFIG_NAME_TIP               =•ÒW’†‚Ì\¬–¼B‘‚«Š·‚¦‚ÅƒŠƒl[ƒ€o—ˆ‚Ü‚·B
+CONFIG_OKLIST_TIP             =‚±‚Ì\¬‚Å—LŒø‚ÈƒtƒBƒ‹ƒ^iƒEƒFƒuƒy[ƒWƒtƒBƒ‹ƒ^‚Íã‚©‚ç‰º‚Ì‡‚Å“®ì‚µ‚Ü‚·jB
+CONFIG_COMMENT_TIP            =‘I‘ð‚µ‚½ƒtƒBƒ‹ƒ^‚Ìà–¾B
+MENU_CONFIGADD_TIP            =¶‘¤‘I‘ð‚µ‚½ƒtƒBƒ‹ƒ^‚ð\¬‚É’Ç‰Á‚µ‚Ü‚·B
+MENU_CONFIGREMOVE_TIP         =‰E‘¤‚Å‘I‘ð‚µ‚½ƒtƒBƒ‹ƒ^‚ð\¬‚©‚çíœ‚µ‚Ü‚·B
+MENU_CONFIGMOVEUP_TIP         =‰E‘¤‚Å‘I‘ð‚µ‚½ƒtƒBƒ‹ƒ^‚ðˆêsã‚ÉˆÚ“®‚µ‚Ü‚·B
+MENU_CONFIGMOVEDOWN_TIP       =‰E‘¤‚Å‘I‘ð‚µ‚½ƒtƒBƒ‹ƒ^‚ðˆês‰º‚ÉˆÚ“®‚µ‚Ü‚·B
+MENU_CONFIGNEW_TIP            =V‚µ‚¢\¬‚ðì¬‚µ‚Ü‚·B
+MENU_CONFIGDUPLICATE_TIP      =Œ»Ý‚Ì\¬‚ð•¡ŽÊ‚µ‚ÄV‚µ‚¢\¬‚ðì¬‚µ‚Ü‚·B
+MENU_CONFIGDELETE_TIP         =Œ»Ý‚Ì\¬‚ðíœ‚µ‚Ü‚·B
+MENU_CONFIGAPPLY_TIP          =‘S‚Ä‚Ì\¬‚Ì•ÏX‚ð“K—p‚µ‚Ü‚·B
+MENU_CONFIGREVERT_TIP         =‘O‰ñ‚Ì“K—pEŒ³‚É–ß‚·Œã‚É‰Á‚¦‚½•ÏX‚ðŒ³‚É–ß‚µ‚Ü‚·B
+EDIT_FILTERLIST_TIP           =ƒNƒŠƒbƒN‚Å•ÒW‚Å‚«‚Ü‚·BƒJƒ‰ƒ€–¼ƒNƒŠƒbƒN‚Åƒ\[ƒg‚³‚ê‚Ü‚·B
+EDIT_TITLE_TIP                =ƒtƒBƒ‹ƒ^–¼B‘¼‚ÌƒtƒBƒ‹ƒ^‚Æ“¯ˆê‚É‚Ío—ˆ‚Ü‚¹‚ñB
+EDIT_CATEGORY_TIP             =ƒtƒBƒ‹ƒ^‚Ì•ª—Þi•\Ž¦—pjB
+EDIT_COMMENT_TIP              =ƒtƒBƒ‹ƒ^‚Ìà–¾i•\Ž¦—pjB
+EDIT_AUTHOR_TIP               =ƒtƒBƒ‹ƒ^‚ÌìŽÒi•\Ž¦—pjB
+EDIT_VERSION_TIP              =ƒtƒBƒ‹ƒ^‚Ìƒo[ƒWƒ‡ƒ“i•\Ž¦—pjB
+EDIT_TYPE_TIP                 =ƒtƒBƒ‹ƒ^‚ÌŽí•ÊB‘—Mƒwƒbƒ_‚ÆŽóMƒwƒbƒ_‚ðƒtƒBƒ‹ƒ^ƒŠƒ“ƒO‚·‚éê‡‚Í•¡ŽÊ‚µ‚Ä‰º‚³‚¢B
+EDIT_HEADERNAME_TIP           =ƒ}ƒbƒ`‚³‚¹‚éƒwƒbƒ_–¼BƒƒCƒ‹ƒhƒJ[ƒh‚ÍŽg—p‚Å‚«‚Ü‚¹‚ñB
+EDIT_WIDTH_TIP                =ãŒÀƒoƒCƒg”Bo—ˆ‚é‚¾‚¯¬‚³‚­‚·‚é‚±‚Æi‚æ‚è‘¬‚­‚È‚è‚Ü‚·jB
+EDIT_PRIORITY_TIP             =ŽÀs—Dæ“xB—Dæ“x‚Ì‘å‚«‚¢ƒtƒBƒ‹ƒ^‚©‚çŽÀs‚³‚ê‚Ü‚·B
+EDIT_MULTIMATCH_TIP           =ƒ`ƒFƒbƒN‚ð“ü‚ê‚é‚ÆA’uŠ·‚µ‚½ƒeƒLƒXƒg‚àŒJ‚è•Ô‚µƒtƒBƒ‹ƒ^ƒŠƒ“ƒO‚µ‚Ü‚·B
+EDIT_BOUNDS_TIP               =‚±‚Ìƒpƒ^[ƒ“‚Éƒ}ƒbƒ`‚µ‚½•”•ª‚¾‚¯‚ªƒ}ƒbƒ`ƒ“ƒOƒpƒ^[ƒ“‚Å”äŠr‚³‚ê‚Ü‚·iŽw’èŽž‚Ì‚ÝjB‰Â”\‚ÈŒÀ‚èŽg‚¤‚±‚Æi‚æ‚è‘¬‚­‚È‚è‚Ü‚·jB
+EDIT_URL_TIP                  =URL‚ªƒ}ƒbƒ`‚µ‚½ê‡‚Ì‚Ý—LŒø‚É‚È‚è‚Ü‚·iŽw’èŽž‚Ì‚ÝjB‰Â”\‚ÈŒÀ‚èŽg‚¤‚±‚Æi‚æ‚è‘¬‚­‚È‚è‚Ü‚·jB
+EDIT_MATCH_TIP                =ŒŸõ‚·‚éƒpƒ^[ƒ“BÚ×‚Íƒwƒ‹ƒv‚ðŽQÆ‚µ‚Ä‰º‚³‚¢B
+EDIT_REPLACE_TIP              =ƒ}ƒbƒ`ƒ“ƒO‚µ‚½•”•ª‚ð’uŠ·‚·‚éƒeƒLƒXƒgiƒR[ƒh‚âƒRƒ}ƒ“ƒh‚àŽg—p‚Å‚«‚Ü‚·jB
+MENU_FOLDERSNEW_TIP           =‘I‘ð‚µ‚½êŠ‚ÉƒtƒHƒ‹ƒ_‚ðì¬‚µ‚Ü‚·B
+MENU_FILTERSEDIT_TIP          =ƒtƒBƒ‹ƒ^•ÒWƒEƒBƒ“ƒhƒE‚ðŠJ‚«‚Ü‚·B
+MENU_FILTERSCHECK_TIP         =‘I‘ð‚µ‚½€–Ú‚Ìƒ`ƒFƒbƒNó‘Ô‚ð”½“]‚µ‚Ü‚·B
+MENU_FILTERSNEW_TIP           =V‚µ‚¢ƒtƒBƒ‹ƒ^‚ðì¬‚µ‚Ü‚·B
+MENU_FILTERSDUPLICATE_TIP     =•ÒW’†‚ÌƒtƒBƒ‹ƒ^‚ð•¡»‚µ‚Ü‚·B
+MENU_FILTERSDELETE_TIP        =‘I‘ð‚µ‚½€–Ú‚ðíœ‚µ‚Ü‚·B
+MENU_FILTERSTEST_TIP          =ƒeƒXƒgƒEƒBƒ“ƒhƒE‚ðŠJ‚«‚Ü‚·BŠJ‚¢‚½‚Ü‚Ü‚Å‚àƒtƒBƒ‹ƒ^‚Ì•ÒW’†‚ª‰Â”\‚Å‚·B
+MENU_FILTERSENCODE_TIP        =ƒNƒŠƒbƒvƒ{[ƒh‚Ì“à—e‚ðBASE64 (MIME)ƒGƒ“ƒR[ƒh‚µ‚Ü‚·iƒeƒLƒXƒg‚Ì‚ÝjB
+MENU_FILTERSDECODE_TIP        =ƒNƒŠƒbƒvƒ{[ƒh‚Ì“à—e‚ðBASE64 (MIME)ƒfƒR[ƒh‚µ‚Ü‚·iƒeƒLƒXƒg‚Ì‚ÝjB
+MENU_FILTERSIMPORT_TIP        =ƒNƒŠƒbƒvƒ{[ƒh‚©‚çProximodo‚ÌƒtƒBƒ‹ƒ^‚ðŽæ‚èž‚Ý‚Ü‚·B–¼‘O‚ªd‚È‚Á‚½ê‡‚Í”Žš‚ª‰ÁŽZ‚³‚ê‚Ü‚·B
+MENU_FILTERSPROXOMITRON_TIP   =ƒNƒŠƒbƒvƒ{[ƒh‚©‚çProxomitron‚ÌƒtƒBƒ‹ƒ^‚ðŽæ‚èž‚Ý‚Ü‚·B–¼‘O‚ªd‚È‚Á‚½ê‡‚Í”Žš‚ª‰ÁŽZ‚³‚ê‚Ü‚·B
+MENU_FILTERSEXPORT_TIP        =‘I‘ð‚µ‚½ƒtƒBƒ‹ƒ^‚ðƒNƒŠƒbƒvƒ{[ƒh‚É‘—‚è‚Ü‚·B
+MENU_FILTERSAPPLY_TIP         =‘S‚Ä‚ÌƒtƒBƒ‹ƒ^‚Ì•ÏX‚ð“K—p‚µ‚Ü‚·B
+MENU_FILTERSREVERT_TIP        =‘O‰ñ‚Ì“K—pEŒ³‚É–ß‚·Œã‚É‰Á‚¦‚½•ÏX‚ðŒ³‚É–ß‚µ‚Ü‚·B
+BUTTON_SETTINGS_TIP           =Ý’è‰æ–Ê‚ð•\Ž¦‚µ‚Ü‚·B
+BUTTON_LOG_TIP                =ƒƒOƒEƒBƒ“ƒhƒE‚ðŠJ‚«‚Ü‚·B
+BUTTON_FILTERS_TIP            =ƒtƒBƒ‹ƒ^•ÒW‰æ–Ê‚ð•\Ž¦‚µ‚Ü‚·B
+BUTTON_CONFIG_TIP             =ƒtƒBƒ‹ƒ^\¬‚Ì•ÒW‰æ–Ê‚ð•\Ž¦‚µ‚Ü‚·B
+BUTTON_HELP_TIP               =ƒuƒ‰ƒEƒU‚Åƒwƒ‹ƒv‚ð•\Ž¦‚µ‚Ü‚·B
+BUTTON_QUIT_TIP               =ƒvƒƒNƒV‚ð’âŽ~‚µ‚ÄProximodo‚ðI—¹‚µ‚Ü‚·B
+MENU_TOOLSSETTINGS_TIP        =Ý’è‰æ–Ê‚ð•\Ž¦‚µ‚Ü‚·B
+MENU_TOOLSCONFIG_TIP          =ƒtƒBƒ‹ƒ^\¬‚Ì•ÒW‰æ–Ê‚ð•\Ž¦‚µ‚Ü‚·B
+MENU_TOOLSFILTERS_TIP         =ƒtƒBƒ‹ƒ^•ÒW‰æ–Ê‚ð•\Ž¦‚µ‚Ü‚·B
+MENU_TOOLSLOG_TIP             =ƒƒOƒEƒBƒ“ƒhƒE‚ðŠJ‚«‚Ü‚·B
+MENU_TOOLSSAVE_TIP            =‘S‚Ä‚Ì•ÏX‚ð“K—p‚µ‚ÄƒfƒBƒXƒN‚É•Û‘¶‚µ‚Ü‚·B
+MENU_TOOLSRELOAD_TIP          =‘S‚Ä‚ÌÝ’è‚ðƒfƒBƒXƒN‚©‚çÄ“Ç‚Ýž‚Ý‚µ‚Ü‚·B
+MENU_TOOLSICONIZE_TIP         =Proximodo‚ð’Ê’m—Ìˆæ‚ÉƒAƒCƒRƒ“‰»‚µ‚Ü‚·B
+MENU_TOOLSQUIT_TIP            =ƒvƒƒNƒV‚ð’âŽ~‚µ‚ÄProximodo‚ðI—¹‚µ‚Ü‚·B
+MENU_HELPABOUT_TIP            =Proximodo‚Ìƒo[ƒWƒ‡ƒ“î•ñ‚ð•\Ž¦‚µ‚Ü‚·B
+MENU_HELPCONTENT_TIP          =ƒuƒ‰ƒEƒU‚Åƒwƒ‹ƒv‚ð•\Ž¦‚µ‚Ü‚·B
+MENU_HELPSYNTAX_TIP           =ƒuƒ‰ƒEƒU‚ÅƒR[ƒh‚ÆƒRƒ}ƒ“ƒh‚Ìƒwƒ‹ƒv‚ð•\Ž¦‚µ‚Ü‚·B
+MENU_HELPLICENSE_TIP          =Proximodo‚Ì•¡»E”z•zE•ÏX‚ÉŠÖ‚·‚éƒ‰ƒCƒZƒ“ƒX‚ð•\Ž¦‚µ‚Ü‚·B
+MENU_HELPFILTERS_TIP          =ƒuƒ‰ƒEƒU‚ÅƒtƒBƒ‹ƒ^•ÒW‚Ìƒwƒ‹ƒv‚ð•\Ž¦‚µ‚Ü‚·B
+SETTINGS_OUTGOING_TIP         =‘—Mƒwƒbƒ_ƒtƒBƒ‹ƒ^‚ð—LŒø‚É‚µ‚Ü‚·B
+SETTINGS_INCOMING_TIP         =ŽóMƒwƒbƒ_ƒtƒBƒ‹ƒ^‚ð—LŒø‚É‚µ‚Ü‚·B
+SETTINGS_TEXT_TIP             =ƒEƒFƒuƒy[ƒWƒtƒBƒ‹ƒ^‚ð—LŒø‚É‚µ‚Ü‚·B
+SETTINGS_GIF_TIP              =GIFƒAƒjƒ[ƒVƒ‡ƒ“‚Ì’âŽ~‚ð—LŒø‚É‚µ‚Ü‚·B
+SETTINGS_CONFIG_TIP           =Œ»ÝŽg—p‚³‚ê‚Ä‚¢‚éƒtƒBƒ‹ƒ^\¬B
+SETTINGS_BYPASS_TIP           =URL‚ªƒ}ƒbƒ`‚µ‚½ê‡‚ÍƒtƒBƒ‹ƒ^ƒŠƒ“ƒO‚³‚ê‚Ü‚¹‚ñB
+SETTINGS_LANGUAGE_TIP         =GUI ‚ÅŽg—p‚·‚éŒ¾ŒêBÄ‹N“®Œã‚É“K—p‚³‚ê‚Ü‚·B
+SETTINGS_STARTUP_TIP          =‹N“®Žž‚ÉProximodo‚ÌƒEƒBƒ“ƒhƒE‚ðŠJ‚«‚Ü‚·B
+SETTINGS_PORT_TIP             =Proximodo‚Ì‘Ò‚¿Žó‚¯ƒ|[ƒg”Ô†Bƒuƒ‰ƒEƒU‚ÌƒvƒƒNƒVÝ’è‚É“¯‚¶”Ô†‚ðŽw’è‚µ‚Ä‰º‚³‚¢B
+SETTINGS_USEPROXY_TIP         =ƒ`ƒFƒbƒN‚ð“ü‚ê‚é‚ÆAProximodo‚ªƒCƒ“ƒ^[ƒlƒbƒg‚ÉÚ‘±‚·‚éŽž‚ÉƒŠƒ‚[ƒgƒvƒƒNƒV‚ðŽg‚¢‚Ü‚·B
+SETTINGS_NEXTPROXY_TIP        =Žg—p‚·‚éƒŠƒ‚[ƒgƒvƒƒNƒVBŽw’è‚µ‚½ƒvƒƒNƒV‚ª$SETPROXYƒRƒ}ƒ“ƒh‚ÅŽg—p‚Å‚«‚Ü‚·B
+SETTINGS_REMOVEPROXY_TIP      =‘I‘ð‚µ‚½ƒvƒƒNƒV‚ðíœ‚µ‚Ü‚·B
+SETTINGS_ALLOWIP_TIP          =‘¼‚ÌPC‚©‚ç‚ÌÚ‘±‚ð‹–‰Â‚µ‚Ü‚·B’ˆÓ‚µ‚ÄŽg—p‚·‚é‚±‚ÆiÅ¬EÅ‘åƒAƒhƒŒƒX‚Æ•¹—p‚·‚éjB
+SETTINGS_MINRANGE_TIP         =Ú‘±‚ð‹–‰Â‚·‚éIPƒAƒhƒŒƒX‚Ì”ÍˆÍ‚ðŽw’è‚µ‚Ü‚·B
+SETTINGS_MAXRANGE_TIP         =Ú‘±‚ð‹–‰Â‚·‚éIPƒAƒhƒŒƒX‚Ì”ÍˆÍ‚ðŽw’è‚µ‚Ü‚·B
+SETTINGS_LISTNAME_TIP         =Žg—p‰Â”\‚ÈƒŠƒXƒgBíœ‚·‚é‚Æˆê——‚©‚çœŠO‚³‚ê‚Ü‚·iƒtƒ@ƒCƒ‹‚Ííœ‚³‚ê‚Ü‚¹‚ñjB
+SETTINGS_NEWLIST_TIP          =V‚µ‚¢ƒŠƒXƒg‚ð’Ç‰Á‚µ‚Ü‚·B–¼Ì‚Æƒtƒ@ƒCƒ‹‚ðŽw’è‚µ‚Ü‚·B
+SETTINGS_OPENLIST_TIP         =ƒeƒLƒXƒgƒGƒfƒBƒ^‚Åƒtƒ@ƒCƒ‹‚ðŠJ‚«‚Ü‚·B
+SETTINGS_LISTFILE_TIP         =ƒŠƒXƒg‚Ìƒtƒ@ƒCƒ‹–¼‚Å‚·B‘¶Ý‚µ‚È‚¢ê‡‚Íì¬‚·‚é‚©–â‚¢‡‚í‚¹‚Ü‚·B
+SETTINGS_FILECHOOSE_TIP       =ƒtƒ@ƒCƒ‹‚ðŽQÆ‚µ‚Ü‚·B
+SETTINGS_APPLY_TIP            =•ÏX‚µ‚½Ý’è‚ð“K—p‚µ‚Ü‚·B
+SETTINGS_REVERT_TIP           =•ÏX‚µ‚½Ý’è‚ðŒ³‚É–ß‚µ‚Ü‚·B
 
 Default Filter Titles
 
 FILTER_101_TITLE    =Alias Redirector
-FILTER_101_CATEGORY =Handy Tools
 FILTER_101_COMMENT  =ƒuƒ‰ƒEƒU‚ÌƒAƒhƒŒƒX—“‚É'.'‚É‘±‚¯‚ÄƒGƒCƒŠƒAƒX–¼‚ð“ü—Í‚·‚é‚±‚Æ‚ÅAD‚«‚ÈƒTƒCƒg‚ðŠJ‚¯‚Ü‚·BƒGƒCƒŠƒAƒX–¼‚ÍAliasListƒŠƒXƒg‚Å’è‹`‚µ‚Ü‚·B
 
 FILTER_102_TITLE    =Allow for frame resizing
-FILTER_102_CATEGORY =Layout
 FILTER_102_COMMENT  =‘S‚Ä‚ÌƒtƒŒ[ƒ€‚ðƒŠƒTƒCƒY‰Â”\‚É‚µA”¼•ª‚µ‚©Œ©‚¦‚È‚¢ƒtƒŒ[ƒ€‚ðŒ©‚½‚èAL‚ÌƒtƒŒ[ƒ€‚Å‹·‚­‚È‚Á‚½ƒXƒy[ƒX‚ðL‚°‚ç‚ê‚é‚æ‚¤‚É‚µ‚Ü‚·B
 
 FILTER_103_TITLE    =Allow right mouse click
-FILTER_103_CATEGORY =Navigation
 FILTER_103_COMMENT  =JavaScript‚Åƒ}ƒEƒX‘€ì‚ð§ŒÀ‚³‚ê‚Ä‚¢‚é‚½‚ß‰EƒNƒŠƒbƒNƒƒjƒ…[‚Å‚¨‹C‚É“ü‚è‚É’Ç‰Á‚â•\Ž¦‚³‚ê‚È‚©‚Á‚½‰æ‘œ‚ÌÄ•\Ž¦‚ªo—ˆ‚È‚¢ƒTƒCƒg‚ÅŽg‚¢‚Ü‚·B
 
 FILTER_104_TITLE    =Allow webpage encoding
-FILTER_104_CATEGORY =Connection Control
 FILTER_104_COMMENT  =ƒEƒFƒuƒTƒCƒg‚ÉAˆ³kŒ`Ž®‚Ìƒtƒ@ƒCƒ‹‚É‘Î‰ž‚µ‚Ä‚¢‚Äƒuƒ‰ƒEƒU‚ª‚»‚ê‚ð“WŠJ‚Å‚«‚é‚±‚Æ‚ð“`‚¦‚Ü‚·B
 
 FILTER_105_TITLE    =Always cache (cache control)
-FILTER_105_CATEGORY =Cache Control
 FILTER_105_COMMENT  =ƒEƒFƒuƒTƒCƒg‚ÍAƒuƒ‰ƒEƒU‚ªƒtƒ@ƒCƒ‹‚ðƒLƒƒƒbƒVƒ“ƒO‚µ‚È‚¢‚æ‚¤‚É‹­—v‚·‚é‚±‚Æ‚ª‚ ‚è‚Ü‚·B‚±‚ÌƒtƒBƒ‹ƒ^‚Í‚»‚ê‚ð–h‚¬Aƒuƒ‰ƒEƒU‚ª“KØ‚ÉƒLƒƒƒbƒVƒ…‚ðŠÇ—‚Å‚«‚é‚æ‚¤‚É‚µ‚Ü‚·B
 
 FILTER_106_TITLE    =Always cache (expires)
-FILTER_106_CATEGORY =Cache Control
 FILTER_106_COMMENT  =ƒy[ƒW‚Í—LŒøŠúŒÀ‚ðŽ‚Â‚±‚Æ‚ª‚Å‚«AŠúŒÀ‚ª‰ß‚¬‚½‚çƒuƒ‰ƒEƒU‚ÍƒLƒƒƒbƒVƒ…‚ð”jŠü‚·‚é‚Å‚µ‚å‚¤B‚±‚ÌƒtƒBƒ‹ƒ^‚Í—LŒøŠúŒÀ‚ðíœ‚µAƒuƒ‰ƒEƒU‚É‘Î‚µ–¾Ž¦“I‚ÉƒŠƒ[ƒh‚·‚é‚Ü‚ÅƒLƒƒƒbƒVƒ…‚É•ÛŽ‚³‚¹‚Ä‚¨‚­‚±‚Æ‚ªo—ˆ‚Ü‚·B
 
 FILTER_107_TITLE    =Always reload pages
-FILTER_107_CATEGORY =Cache Control
 FILTER_107_COMMENT  =ƒuƒ‰ƒEƒU‚ªƒLƒƒƒbƒVƒ…Ï‚Ý‚Ìƒy[ƒW‚ð—v‹‚·‚é‚Æ‚«AÅŒã‚Ìƒ_ƒEƒ“ƒ[ƒhˆÈ~‚Éƒy[ƒW‚ª•ÏX‚³‚ê‚Ä‚¢‚È‚¢ê‡‚Í‘—M‚µ‚È‚¢‚æ‚¤‚ÉƒEƒFƒuƒTƒCƒg‚ÉŽwŽ¦‚·‚é‚±‚Æ‚ª‚ ‚è‚Ü‚·B‚±‚ÌƒtƒBƒ‹ƒ^‚ðŽg‚¤‚ÆAƒy[ƒW‚ª•ÏX‚³‚ê‚Ä‚¢‚È‚­‚Ä‚àí‚ÉÄƒ_ƒEƒ“ƒ[ƒh‚·‚é‚æ‚¤‚É—v‹‚µ‚Ü‚·B
 
 FILTER_108_TITLE    =Anti-Auto-Refresher
-FILTER_108_CATEGORY =Cache Control
 FILTER_108_COMMENT  =ƒy[ƒW‚ÌŽ©“®XV‚ð–³Œø‰»‚µ‚Ü‚·BV‚µ‚¢ƒy[ƒW‚É“]‘—‚·‚éˆ×‚ÉŽžXŽg‚í‚ê‚Ü‚·‚ªA‚»‚ê‚æ‚è‚àAƒtƒŒ[ƒ€•t‚«‚Ìƒy[ƒW‚ÅV‚µ‚¢L‚ð•\Ž¦‚·‚é‚½‚ß‚ÉŽg‚í‚ê‚Ü‚·B‚±‚ÌƒtƒBƒ‹ƒ^‚Å‚ÍA•K—v‚È‚çŽè“®‚ÅXV‚Å‚«‚é‚æ‚¤‚ÉƒŠƒ“ƒN‚ðì¬‚µ‚Ü‚·B
 
 FILTER_109_TITLE    =Area Map Ad Blaster
-FILTER_109_CATEGORY =Ad Removal
 FILTER_109_COMMENT  =ƒGƒŠƒAƒ}ƒbƒv‚ðŽg—p‚µ‚½L‚ðœ‹Ž‚·‚é‚½‚ß‚Ì“ñ‚Â‚ÌƒtƒBƒ‹ƒ^‚Å‚·BƒGƒŠƒAƒ}ƒbƒv‚Í’Êí‚Ìƒoƒi[‚Æ‚Íˆá‚¢•¡”‚ÌƒŠƒ“ƒN‚ðŠÜ‚Þ‚±‚Æ‚ªo—ˆ‚Ü‚·B‘æˆê‚ÌƒtƒBƒ‹ƒ^‚ÍÅ‰‚ÉŒ©‚Â‚¯‚½ƒŠƒ“ƒN‚ðƒeƒLƒXƒg‚É•ÏŠ·‚·‚éBanner Blaster‚Ì‚æ‚¤‚É“®ì‚µ‚Ü‚·B‚à‚µ’P“Æ‚ÅŽg—p‚³‚ê‚ê‚ÎAÅ‰‚ÌƒŠƒ“ƒN‚¾‚¯‚ª•ÏŠ·‚³‚ê‚Ü‚·B‘æ“ñ‚ÌƒtƒBƒ‹ƒ^‚ð‹¤‚ÉŽg‚¤‚ÆAƒGƒŠƒAƒ}ƒbƒv“à‚ÌŒã‘±‚ÌƒŠƒ“ƒN‚àƒeƒLƒXƒg‚É•ÏŠ·‚µ‚Ü‚·„Ÿ„ŸŠ®‘S‚È‹@”\‚ð”­Šö‚µ‚Ü‚·BUsually, the Banner Replacer is the way to go.
 
 FILTER_110_TITLE    =Area Map Ad Blaster pt2 (show all links)
-FILTER_110_CATEGORY =Ad Removal
 FILTER_110_COMMENT  =ƒGƒŠƒAƒ}ƒbƒv‚ðŽg—p‚µ‚½L‚ðœ‹Ž‚·‚é‚½‚ß‚Ì“ñ‚Â‚ÌƒtƒBƒ‹ƒ^‚Å‚·BƒGƒŠƒAƒ}ƒbƒv‚Í’Êí‚Ìƒoƒi[‚Æ‚Íˆá‚¢•¡”‚ÌƒŠƒ“ƒN‚ðŠÜ‚Þ‚±‚Æ‚ªo—ˆ‚Ü‚·B‘æˆê‚ÌƒtƒBƒ‹ƒ^‚ÍÅ‰‚ÉŒ©‚Â‚¯‚½ƒŠƒ“ƒN‚ðƒeƒLƒXƒg‚É•ÏŠ·‚·‚éBanner Blaster‚Ì‚æ‚¤‚É“®ì‚µ‚Ü‚·B‚à‚µ’P“Æ‚ÅŽg—p‚³‚ê‚ê‚ÎAÅ‰‚ÌƒŠƒ“ƒN‚¾‚¯‚ª•ÏŠ·‚³‚ê‚Ü‚·B‘æ“ñ‚ÌƒtƒBƒ‹ƒ^‚ð‹¤‚ÉŽg‚¤‚ÆAƒGƒŠƒAƒ}ƒbƒv“à‚ÌŒã‘±‚ÌƒŠƒ“ƒN‚àƒeƒLƒXƒg‚É•ÏŠ·‚µ‚Ü‚·„Ÿ„ŸŠ®‘S‚È‹@”\‚ð”­Šö‚µ‚Ü‚·BUsually, the Banner Replacer is the way to go.
 
 FILTER_111_TITLE    =Banner Blaster (full text)
-FILTER_111_CATEGORY =Ad Removal
 FILTER_111_COMMENT  =Banner Replacer‚Æ“¯‚¶‚Å‚·‚ªAL‚ðƒeƒLƒXƒgŒ`Ž®‚ÌƒŠƒ“ƒN‚É’uŠ·‚µ‚Ü‚·i‰æ‘œ‚Éalt‘®«‚ª‚ ‚ê‚Î‚»‚ê‚ðŽg‚¢‚Ü‚·jBL‚ªƒNƒŠƒbƒN‰Â”\‚È‚Ü‚Ü‚È‚Ì‚ÅAƒEƒFƒuƒy[ƒW‚Ì‘S‚Ä‚Ì‹@”\‚ªˆÛŽ‚³‚ê‚Ü‚·B
 
 FILTER_112_TITLE    =Banner Blaster (limit text)
-FILTER_112_CATEGORY =Ad Removal
 FILTER_112_COMMENT  =Banner Replacer‚Æ“¯‚¶‚Å‚·‚ªAƒeƒLƒXƒg‚ðÅ‰‚Ì4Œê‚ÉŒÀ’è‚µ‚Ü‚·B–K‚ê‚éƒy[ƒW‚ªalt‘®«‚ð‹l‚ßž‚Þê‡‚É—L—p‚Å‚·B
 
 FILTER_113_TITLE    =Banner Replacer
-FILTER_113_CATEGORY =Ad Removal
 FILTER_113_COMMENT  =ƒoƒi[‚ð˜g‚ÅˆÍ‚ñ‚¾“§–¾GIF‰æ‘œ‚É’u‚«Š·‚¦‚Ü‚·Bƒy[ƒW‚ÌƒŒƒCƒAƒEƒg‚ÍŒ³‚Æ“¯‚¶‚æ‚¤‚É‚È‚è‚Ü‚·B‚µ‚©‚µ’uŠ·ƒeƒLƒXƒg‚ð•ÒW‚µ‚ÄD‚Ý‚Ì‰æ‘œ‚ðŽg‚Á‚Ä‚à\‚¢‚Ü‚¹‚ñB
 
 FILTER_114_TITLE    =Blink Buster (Blink to Bold)
-FILTER_114_CATEGORY =Styles
 FILTER_114_COMMENT  =BLINKƒ^ƒO‚ðBoldƒ^ƒO‚É•ÏŠ·‚µ‚Ü‚·B–Ú‚Ì”æ‚ê‚ð—}‚¦‚Ü‚·B
 
 FILTER_115_TITLE    =Character set filter
-FILTER_115_CATEGORY =Styles
 FILTER_115_COMMENT  =ƒLƒƒƒ‰ƒNƒ^ƒGƒ“ƒR[ƒfƒBƒ“ƒO‚ÍƒoƒCƒg—ñ‚ð•¶Žš‚É•ÏŠ·‚·‚é•û–@‚Å‚·BHTMLƒhƒLƒ…ƒƒ“ƒg‚ð•\Ž¦‚·‚é‚½‚ß‚ÉAƒvƒƒOƒ‰ƒ€‚ÍƒLƒƒƒ‰ƒNƒ^ƒGƒ“ƒR[ƒfƒBƒ“ƒO‚ð‘I‚Î‚È‚¯‚ê‚Î‚È‚è‚Ü‚¹‚ñB‚±‚ÌƒtƒBƒ‹ƒ^‚ÍAƒwƒbƒ_‚ÅŽw’è‚³‚ê‚Ä‚¢‚½ƒGƒ“ƒR[ƒfƒBƒ“ƒO‚Ì•Ï‚í‚è‚ÉƒfƒtƒHƒ‹ƒg‚ÌƒGƒ“ƒR[ƒfƒBƒ“ƒO‚ðŽg‚¤‚±‚Æ‚ðƒuƒ‰ƒEƒU‚É‹­§‚µ‚Ü‚·B
 
 FILTER_116_TITLE    =Close all connections (request)
-FILTER_116_CATEGORY =Connection Control
 FILTER_116_COMMENT  =‰i‘±“IÚ‘±‚ð‹ÖŽ~‚µ‚Ü‚·B‚±‚ÌƒtƒBƒ‹ƒ^‚ðŽg‚¤‚ÆAƒuƒ‰ƒEƒU‚Íƒ_ƒEƒ“ƒ[ƒh‚µ‚½‚¢ƒhƒLƒ…ƒƒ“ƒg^ƒCƒ[ƒW‚²‚Æ‚Éƒ\ƒPƒbƒg‚ðŠJ‚«‚Ü‚·i’x‚­‚È‚è‚Ü‚·jB
 
 FILTER_117_TITLE    =Close all connections (response)
-FILTER_117_CATEGORY =Connection Control
 FILTER_117_COMMENT  =‰i‘±“IÚ‘±‚ð‹ÖŽ~‚µ‚Ü‚·B‚±‚ÌƒtƒBƒ‹ƒ^‚ðŽg‚¤‚ÆAƒuƒ‰ƒEƒU‚Íƒ_ƒEƒ“ƒ[ƒh‚µ‚½‚¢ƒhƒLƒ…ƒƒ“ƒg^ƒCƒ[ƒW‚²‚Æ‚Éƒ\ƒPƒbƒg‚ðŠJ‚«‚Ü‚·i’x‚­‚È‚è‚Ü‚·jB
 
 FILTER_118_TITLE    =Convert Frames to Links
-FILTER_118_CATEGORY =Layout
 FILTER_118_COMMENT  =ƒtƒŒ[ƒ€‚ðƒŠƒ“ƒN‚É’u‚«Š·‚¦‚Ü‚·BDeFramer‚Æ‹¤‚ÉŽg—p‚µ‚Ä‰º‚³‚¢BƒtƒŒ[ƒ€”ñ‘Î‰žƒuƒ‰ƒEƒU‚ÅuƒtƒŒ[ƒ€‚Ì‚Ýv‚ÌƒTƒCƒg‚ð‰{——‚Å‚«‚é‚æ‚¤‚É‚È‚è‚Ü‚·B
 
 FILTER_119_TITLE    =Counter Killer
-FILTER_119_CATEGORY =Ad Removal
 FILTER_119_COMMENT  =‘½‚­‚ÌƒEƒFƒuƒy[ƒWƒJƒEƒ“ƒ^‚ð’×‚µ‚Ü‚·„Ÿ„ŸƒJƒEƒ“ƒ^‚ª‚ ‚é‚Æƒuƒ‰ƒEƒU‚ÍXV‚ð‘Ò‚½‚È‚¯‚ê‚Î‚È‚ç‚È‚¢‚½‚ßAƒy[ƒW‚Ì•\Ž¦‚ª’x‚­‚È‚è‚Ü‚·B
 
 FILTER_120_TITLE    =DOM Banner Blaster
-FILTER_120_CATEGORY =Ad Removal
 FILTER_120_COMMENT  =DOM Blaster/Killer‚Í"Banner Blaster"ƒVƒŠ[ƒY‚Ì‘ã‚í‚è‚Å‚·B‚±‚Ì“ñ‚Â‚ÌƒtƒBƒ‹ƒ^‚Íí‚Éˆê‚ÉŽg—p‚µAÅ‘P‚ÌŒ‹‰Ê‚ð“¾‚é‚½‚ß‚É‚Í‘¼‚ÌBanner BlasterƒtƒBƒ‹ƒ^‚ð–³Œø‚É‚·‚×‚«‚Å‚·B‚±‚ê‚ç‚ÍL‚¾‚¯‚Å‚È‚­‚»‚ê‚ðˆÍ‚ÞƒXƒy[ƒX‚àœ‹Ž‚·‚éˆ×‚ÉA‚Ù‚Æ‚ñ‚Ç‚ÌV‚µ‚¢ƒuƒ‰ƒEƒU‚ÅŽg—p‰Â”\‚ÈDOMiƒhƒLƒ…ƒƒ“ƒgEƒIƒuƒWƒFƒNƒgEƒ‚ƒfƒ‹j‚ÌJavaScript‚ðŽg‚¢‚Ü‚·B‚¢‚­‚ç‚©‚Ìê‡‚É‚Í”ñí‚É¬‚³‚ÈŒ‹‰Ê‚Æ‚È‚è‚Ü‚·B
 
 FILTER_121_TITLE    =DOM container killer
-FILTER_121_CATEGORY =Ad Removal
 FILTER_121_COMMENT  =DOM Blaster/Killer‚Í"Banner Blaster"ƒVƒŠ[ƒY‚Ì‘ã‚í‚è‚Å‚·B‚±‚Ì“ñ‚Â‚ÌƒtƒBƒ‹ƒ^‚Íí‚Éˆê‚ÉŽg—p‚µAÅ‘P‚ÌŒ‹‰Ê‚ð“¾‚é‚½‚ß‚É‚Í‘¼‚ÌBanner BlasterƒtƒBƒ‹ƒ^‚ð–³Œø‚É‚·‚×‚«‚Å‚·B‚±‚ê‚ç‚ÍL‚¾‚¯‚Å‚È‚­‚»‚ê‚ðˆÍ‚ÞƒXƒy[ƒX‚àœ‹Ž‚·‚éˆ×‚ÉA‚Ù‚Æ‚ñ‚Ç‚ÌV‚µ‚¢ƒuƒ‰ƒEƒU‚ÅŽg—p‰Â”\‚ÈDOMiƒhƒLƒ…ƒƒ“ƒgEƒIƒuƒWƒFƒNƒgEƒ‚ƒfƒ‹j‚ÌJavaScript‚ðŽg‚¢‚Ü‚·B‚¢‚­‚ç‚©‚Ìê‡‚É‚Í”ñí‚É¬‚³‚ÈŒ‹‰Ê‚Æ‚È‚è‚Ü‚·B
 
 FILTER_122_TITLE    =DeFramer
-FILTER_122_CATEGORY =Layout
 FILTER_122_COMMENT  =ƒuƒ‰ƒEƒU‚ª‘S‚­ƒtƒŒ[ƒ€‚É‘Î‰ž‚µ‚Ä‚¢‚È‚¢‚©‚Ì‚æ‚¤‚É‚µ‚Ü‚·Bƒy[ƒW‚Ì”ñƒtƒŒ[ƒ€”Å‚ª‚ ‚é‚©‚Ì‚æ‚¤‚É‚È‚è‚Ü‚·B
 
 FILTER_123_TITLE    =DeTabler
-FILTER_123_CATEGORY =Layout
 FILTER_123_COMMENT  =ƒEƒFƒuƒy[ƒW‚©‚ç‘S‚Ä‚Ìƒe[ƒuƒ‹‚ðœ‹Ž‚µ‚Ü‚·Bƒy[ƒW‚ÌƒŒƒCƒAƒEƒg‚ð“O’ê“I‚É•Ï‚¦‚é‚Ì‚Åí‚ÉŽg‚¤‚à‚Ì‚Å‚Í‚È‚­A€–Ú‚ª‘½‚­‚Ä‚È‚©‚È‚©•\Ž¦‚³‚ê‚È‚¢ƒy[ƒW‚Å‚Í—L—p‚É‚È‚è‚Ü‚·B
 
 FILTER_124_TITLE    =Disable JavaScript
-FILTER_124_CATEGORY =JavaScript
 FILTER_124_COMMENT  =JavaScript‚ð–³Œø‰»‚µ‚Ü‚·B‘I‘ð‚µ‚½ƒy[ƒW‚ÌJavaScript‚¾‚¯‚ð–³Œø‰»‚·‚é‚½‚ß‚ÉURLƒ}ƒbƒ`‚ðŽg‚¤‚Ì‚ª—Ç‚¢•û–@‚Å‚·B
 
 FILTER_125_TITLE    =Disable JavaScript (and meta) cookies
-FILTER_125_CATEGORY =Cookies
 FILTER_125_COMMENT  =Cookieî•ñ‚ð“Ç‚Ý‘‚«‚·‚éJavaScript‚ÆMETAƒ^ƒO‚ðŒü‚±‚¤‚©‚µ‚Ü‚·B”CˆÓ‚ÌƒTƒCƒg‚ð—áŠO‚Æ‚·‚é‚½‚ß‚ÉCookieList‚ðŽg‚¢‚Ü‚·B
 
 FILTER_126_TITLE    =Don't force reloads
-FILTER_126_CATEGORY =Cache Control
 FILTER_126_COMMENT  =no-cacheƒvƒ‰ƒOƒ}‚ÍƒvƒƒNƒV‚ªƒy[ƒW‚ÌƒLƒƒƒbƒVƒ…‚ðŽ‚Á‚Ä‚¢‚Ä‚àƒEƒFƒuƒTƒCƒg‚©‚çƒhƒLƒ…ƒƒ“ƒg‚ðƒ_ƒEƒ“ƒ[ƒh‚·‚é‚æ‚¤‚ÉŽwŽ¦‚µ‚Ü‚·B‚±‚ÌƒtƒBƒ‹ƒ^‚ÍProximodo‚ªƒŠƒ‚[ƒgƒvƒƒNƒV‚ðŽg‚¤ê‡‚É—L—p‚ÅAŒÃ‚¢ƒy[ƒW‚Ìƒf[ƒ^‚ð‘—‚Á‚Ä‚±‚È‚­‚È‚è‚Ü‚·B
 
 FILTER_127_TITLE    =Embedded MIDI Silencer
-FILTER_127_CATEGORY =Sound
 FILTER_127_COMMENT  =Ž©“®‰‰‘t‹y‚Ñ•s‰ÂŽ‹‚Ì–„‚ßž‚ÝMIDIƒtƒ@ƒCƒ‹‚ð‰ÂŽ‹E”ñŽ©“®‰‰‘t‚É‚·‚é‚æ‚¤‚ÉŽŽ‚Ý‚Ü‚·B‚ ‚È‚½‚ª–]‚ñ‚¾Žž‚¾‚¯‰‰‘t‚Å‚«‚Ü‚·B
 
 FILTER_128_TITLE    =Enable Keyword search
-FILTER_128_CATEGORY =Handy Tools
 FILTER_128_COMMENT  =ƒuƒ‰ƒEƒU‚ÌƒAƒhƒŒƒX—“‚É’PŒê‚ð“ü—Í‚µ‚½Žž‚ÉGoogleŒŸõ‚ðs‚¢‚Ü‚·B
 
 FILTER_129_TITLE    =Example password entry
-FILTER_129_CATEGORY =Identification
 FILTER_129_COMMENT  =‚±‚Ì‚æ‚¤‚É‚µ‚ÄƒEƒFƒuƒTƒCƒg‚ÅŽ©“®“I‚ÉƒpƒXƒ[ƒh‚ð“ü—Í‚·‚é‚±‚Æ‚ªo—ˆ‚Ü‚·B’ñ‹Ÿ‚³‚ê‚½login:password‚ðì¬E•ÏX‚·‚é‚½‚ß‚ÉBASE64ƒGƒ“ƒR[ƒh^ƒfƒR[ƒh‚ðŽg‚¢‚Ü‚·B
 
 FILTER_130_TITLE    =Fake X-Forwarded-For header
-FILTER_130_CATEGORY =Identification
 FILTER_130_COMMENT  =X-Forwarded-For‚ÍŒ³‚ÌƒŠƒNƒGƒXƒg‚ðo‚µ‚½ƒNƒ‰ƒCƒAƒ“ƒg‚ðŽ¯•Ê‚·‚é‚½‚ß‚ÉƒvƒƒNƒVƒT[ƒo‚ª•t‰Á‚·‚éƒwƒbƒ_‚Å‚·B‚±‚ÌƒtƒBƒ‹ƒ^‚É‚æ‚è‚ ‚È‚½‚ªƒŠƒNƒGƒXƒgŒ³‚Æ‚ÍŒ©‚È‚³‚ê‚È‚¢‚Å‚µ‚å‚¤B
 
 FILTER_131_TITLE    =Fake a cookie
-FILTER_131_CATEGORY =Cookies
 FILTER_131_COMMENT  =‚±‚ÌƒtƒBƒ‹ƒ^‚Íƒuƒ‰ƒEƒU‚©‚ç‘—‚ç‚ê‚éCookie‚ð‘S‚Ä"monster"‚É’u‚«Š·‚¦‚Ü‚·„Ÿ„Ÿ‚¿‚å‚Á‚Æ–Ê”’‚¢‚¯‚Ç‹°‚ç‚­—L—p‚Å‚Í‚ ‚è‚Ü‚¹‚ñB‚µ‚©‚µ‚È‚ª‚ç‚±‚ê‚ðCookie•ÏX‚ÌŠî–{—á‚Æ‚µ‚ÄŽg‚¤‚±‚Æ‚ào—ˆ‚Ü‚·B
 
 FILTER_132_TITLE    =Filter out password requests
-FILTER_132_CATEGORY =Connection Control
 FILTER_132_COMMENT  =ƒuƒ‰ƒEƒU‚É‘—‚ç‚ê‚æ‚¤‚Æ‚µ‚Ä‚¢‚éƒEƒFƒuƒy[ƒW‚ÌƒpƒXƒ[ƒh‚ðíœ‚µ‚Ü‚·B‚µ‚©‚µƒpƒXƒ[ƒh‚Å•ÛŒì‚³‚ê‚½ƒTƒCƒg‚É“ü‚ê‚È‚­‚È‚è‚Ü‚·Bƒuƒ‰ƒEƒU‚ª‚»‚ÌŒ‚Å‚ ‚È‚½‚ðÓ‚ß‚é‚Ì‚ðŽ~‚ß‚Ü‚·B
 
 FILTER_133_TITLE    =Fix MIME types
-FILTER_133_CATEGORY =Connection Control
 FILTER_133_COMMENT  =¦–óŽÒ’F•s‹ï‡‚ª‚ ‚é‚Ì‚ÅŒˆ‚µ‚ÄŽg‚í‚È‚¢‚±‚ÆBŽžXƒEƒFƒuƒT[ƒo‚Í³‚µ‚­‚È‚¢"Content-Type"ƒwƒbƒ_‚ð‘—‚è‚Ü‚·B‚±‚ê‚ÍProximodo‚âƒuƒ‰ƒEƒU‚ª³‚µ‚­ƒtƒ@ƒCƒ‹‚ðˆµ‚¤Ž×–‚‚É‚È‚é‚©‚à’m‚ê‚Ü‚¹‚ñB‚±‚ÌƒtƒBƒ‹ƒ^‚Í‘½‚­‚Ìˆê”Ê“I‚ÉŒë¶¬‚³‚ê‚éContent-Type‚ðC³‚·‚é‚½‚ß‚ÉMIME-ListƒŠƒXƒg‚ðŽg‚¢‚Ü‚·B’ÊíŽg—p‚·‚é—Ç‚¢ƒtƒBƒ‹ƒ^‚Å‚·B
 
 FILTER_134_TITLE    =Flash animation killer
-FILTER_134_CATEGORY =Ad Removal
 FILTER_134_COMMENT  =FLASHƒAƒjƒ[ƒVƒ‡ƒ“‚ðƒNƒŠƒbƒN‰Â”\‚ÈƒŠƒ“ƒN‚É•ÏŠ·‚µ‚Ü‚·B
 
 FILTER_135_TITLE    =Force pop-ups to have browser controls
-FILTER_135_CATEGORY =Navigation
 FILTER_135_COMMENT  =‚±‚ÌƒtƒBƒ‹ƒ^‚Í‘S‚Ä‚Ìƒ|ƒbƒvƒAƒbƒvƒEƒBƒ“ƒhƒE‚ª‚¢‚­‚Â‚©‚ÌŠî–{“I‚Èƒuƒ‰ƒEƒUƒRƒ“ƒgƒ[ƒ‹iƒAƒhƒŒƒXƒo[A–ß‚éEi‚Þƒ{ƒ^ƒ“AƒXƒe[ƒ^ƒXƒo[‚È‚Çj‚ðŠÜ‚Þ‚©Šm‚©‚ß‚Ü‚·B‚±‚ê‚Íƒ|ƒbƒvƒAƒbƒv‚ð•Â‚¶‚½‚èƒŠƒTƒCƒY‚·‚é‚Ì‚ª¢“ï‚ÈƒTƒCƒg‚Å•‚¯‚É‚È‚è‚Ü‚·B“®ì‚Ìˆ×‚É"Kill all pop-up windows"‚Æ"Restore pop-up windows after page loads"ƒtƒBƒ‹ƒ^‚à—LŒø‚É‚·‚é•K—v‚ª‚ ‚è‚Ü‚·B
 
 FILTER_136_TITLE    =Foreign content-type filter
-FILTER_136_CATEGORY =Styles
 FILTER_136_COMMENT  =ƒy[ƒW‚Ì•¶ŽšƒZƒbƒg‚ð•ÏX‚·‚éMETAƒ^ƒO‚ðœ‹Ž‚µ‚Ü‚·B’Êí‚Í‚»‚Ì•ÏX‚Í–]‚Ü‚µ‚¢‚ªAŽžX”Ï‚í‚µ‚¢„Ÿ„Ÿ“Á‚É•K—v‚ÈƒtƒHƒ“ƒg‚ªƒCƒ“ƒXƒg[ƒ‹‚³‚ê‚Ä‚¢‚È‚¢ê‡B
 
 FILTER_137_TITLE    =Frame Exploder
-FILTER_137_CATEGORY =Layout
 FILTER_137_COMMENT  =ƒtƒŒ[ƒ€‚Ì‚ ‚éƒy[ƒW‚ÅAƒtƒŒ[ƒ€‚²‚Æ‚ÉV‚µ‚¢ƒEƒBƒ“ƒhƒE‚ðŠJ‚«‚Ü‚·B–Å‘½‚É—L—p‚Å‚Í‚ ‚è‚Ü‚¹‚ñcB
 
 FILTER_138_TITLE    =Frame Jumper-Outer
-FILTER_138_CATEGORY =Navigation
 FILTER_138_COMMENT  =Œ»Ý‚Ìƒy[ƒW‚ÌƒtƒŒ[ƒ€“à‚ÉƒŠƒ“ƒN‚ðŠJ‚­‚Ì‚ð–h‚¬‚Ü‚·B‘ã‚í‚è‚ÉŒ»Ý‚Ìƒy[ƒW‚É’u‚«Š·‚¦‚Ü‚·B
 
 FILTER_139_TITLE    =Freeze font's face
-FILTER_139_CATEGORY =Styles
 FILTER_139_COMMENT  =FONTƒ^ƒO‚©‚çface‘®«‚ðœ‹Ž‚µ‚Ü‚·FD‚«‚Å‚È‚¢ƒtƒHƒ“ƒg‚âƒCƒ“ƒXƒg[ƒ‹‚µ‚Ä‚¢‚È‚¢‚©‚à’m‚ê‚È‚¢ƒtƒHƒ“ƒg‚ðƒy[ƒW‚©‚ç·‚µT‚¦‚Ü‚·B
 
 FILTER_140_TITLE    =GeoCities branding killer
-FILTER_140_CATEGORY =Ad Removal
 FILTER_140_COMMENT  =GeoCitiesƒEƒFƒuƒy[ƒW‚ÌƒƒS‚ðœ‹Ž‚·‚éê—pƒtƒBƒ‹ƒ^B‚±‚ê‚Æ“¯‚¶‚Æ‚æ‚è‘½‚­‚Ì‚±‚Æ‚ð‚·‚é"Kill add-on JavaScripts"‚àŒ©‚Ä‰º‚³‚¢B
 
 FILTER_141_TITLE    =Hide Browser's Identity from JS
-FILTER_141_CATEGORY =Identification
 FILTER_141_COMMENT  =ƒuƒ‰ƒEƒU‚©‚çJavaScript‚É’Ê’m‚³‚ê‚½–¼‘O‚ð•ÏX‚µ‚Ü‚·Bƒuƒ‰ƒEƒUˆË‘¶‚Ìˆ—‚ðs‚¤ê‡A¬—‚µ‚Ä‚µ‚Ü‚¤‚Å‚µ‚å‚¤B
 
 FILTER_142_TITLE    =Hide Browser's Referrer from JS
-FILTER_142_CATEGORY =Identification
 FILTER_142_COMMENT  ="referrer"‚Íƒuƒ‰ƒEƒU‚ª‘—M‚µ‚½‚à‚Ì‚æ‚è‚Í‚é‚©‚ÉÅ‚àŽQl‚É‚È‚éƒf[ƒ^‚Å‚·BƒŠƒtƒ@ƒ‰‚Ìˆê——‚ðŒ©‚é‚±‚Æ‚É‚æ‚èAƒEƒFƒuƒ}ƒXƒ^[‚Í‚ ‚È‚½‚ªÅŒã‚É–K‚ê‚½ƒTƒCƒg‚¾‚¯‚Å‚È‚­A“dŽqƒ[ƒ‹‚©ƒn[ƒhƒfƒBƒXƒNã‚Ìƒy[ƒW‚ÌƒŠƒ“ƒN‚ðƒNƒŠƒbƒN‚µ‚½‚©AX‚ÉŒÂl“I‚Èî•ñ‚à’m‚é‚±‚Æ‚ªo—ˆ‚Ü‚·B‚±‚ê‚Í’Êí"Referer"‚Æ‚¢‚¤HTTPƒwƒbƒ_‚Å–¾‚ç‚©‚É‚³‚ê‚Ü‚·‚ªA‚±‚Ìî•ñ‚ð’Í‚Þˆ×‚ÉJavaScript‚ðŽg‚¤‚±‚Æ‚ào—ˆ‚é‚±‚Æ‚É’ˆÓ‚µ‚Ä‰º‚³‚¢B
 
 FILTER_143_TITLE    =Hide Browser's Version from JS
-FILTER_143_CATEGORY =Identification
 FILTER_143_COMMENT  =‰Šú‚Ìƒo[ƒWƒ‡ƒ“‚Ìƒuƒ‰ƒEƒU‚ðŽg—p‚µ‚Ä‚¢‚é‚ÆJavaScript‚ÉŽv‚í‚¹‚Ü‚·„Ÿ„Ÿ‚µ‚Î‚µ‚ÎJavaScript‚ª‚ ‚È‚½‚ð”Y‚Ü‚¹‚é"‚“x‚È"•û–@‚ðŽŽ‚Ý‚é‚Ì‚ð–h‚®‚±‚Æ‚ªo—ˆ‚Ü‚·Bƒ}ƒEƒXƒI[ƒo[‚Å‰æ‘œ‚ª•Ï‚í‚é‚Ì‚ðŽ~‚ß‚é‚Ì‚É“K‚µ‚Ä‚¢‚Ü‚·B
 
 FILTER_144_TITLE    =Hide where we've been
-FILTER_144_CATEGORY =Identification
 FILTER_144_COMMENT  ="referrer"‚Í’ÊíÅŒã‚É–K‚ê‚½ƒEƒFƒuƒTƒCƒg‚ÌURL‚ð“`‚¦‚Ü‚·B‚±‚ê‚ÍD‚Ü‚µ‚­‚È‚¢‚±‚Æ‚ª‚ ‚è‚Ü‚·„Ÿ„Ÿ“Á‚É‚ ‚È‚½‚ª“dŽqƒ[ƒ‹‚âŒÂl“I‚ÈŒfŽ¦”Â‚ÌƒŠƒ“ƒN‚ðƒNƒŠƒbƒN‚µ‚Ä–K‚ê‚½ê‡‚É‚ÍB‘½‚­‚Ì‹É”é‚Ìî•ñ‚ª‚±‚Ì‚æ‚¤‚É˜R‚ê‚Ä‚µ‚Ü‚¢‚Ü‚·B‚±‚ÌƒtƒBƒ‹ƒ^‚ÅProximodo‚Í‘ã‚í‚è‚ÉƒEƒFƒuƒy[ƒWŽ©‘Ì‚ÌURL‚ð‘—‚é‚Å‚µ‚å‚¤B‚±‚ê‚Í‘½‚©‚ê­‚È‚©‚êƒT[ƒo‚É‚Í³í‚ÉŒ©‚¦‚Ü‚·‚ªA‚¢‚©‚È‚éî•ñ‚àŒ©‚¹‚Ü‚¹‚ñB‚±‚ÌƒtƒBƒ‹ƒ^‚ÍƒZƒLƒ…ƒŠƒeƒB’ˆÓ‚Ì‚½‚ß‚É„§‚³‚ê‚Ä‚¢‚Ü‚·B
 
 FILTER_145_TITLE    =Kill All Backgrounds (even tables)
-FILTER_145_CATEGORY =Styles
 FILTER_145_COMMENT  =ƒe[ƒuƒ‹“à‚Ì‚à‚Ì‚àŠÜ‚ßA‘S‚Ä‚Ì”wŒi‰æ‘œ‚ðœ‹Ž‚µ‚Ü‚·B
 
 FILTER_146_TITLE    =Kill Dynamic HTML JavaScripts
-FILTER_146_CATEGORY =JavaScript
 FILTER_146_COMMENT  =‚µ‚Î‚µ‚Îƒ_ƒCƒiƒ~ƒbƒNHTML‚Í‚ ‚È‚½‚Ì•û‚ÖV‚µ‚¢L‚â‘¼‚Ì–À˜f‚ð‰Ÿ‚µ•t‚¯‚é‚½‚ß‚ÉŽg‚í‚ê‚Ü‚·B‚±‚ÌƒtƒBƒ‹ƒ^‚Í‚¢‚­‚Â‚©‚ÌDHTMLƒRƒ}ƒ“ƒh‚ð–³Œø‰»‚µ‚Ü‚·B‚¢‚­‚Â‚©‚Ìƒy[ƒW‚ÅŽÀÛ‚É‚Íƒvƒ‹ƒ_ƒEƒ“ƒƒjƒ…[“™‚Ìˆ×‚ÉDHTML‚ðŽg‚¤‚Ì‚Å’ˆÓ‚µ‚Ä‰º‚³‚¢B
 
 FILTER_147_TITLE    =Kill JavaScript Banners
-FILTER_147_CATEGORY =JavaScript
 FILTER_147_COMMENT  =JavaScript‚Å‘½‚­‚ÌV‚µ‚¢ƒoƒi[‚ª¶¬‚³‚ê‚Ü‚·B‘½‚­‚Ìê‡‚±‚ê‚ç‚ÌV‚µ‚¢ƒoƒi[‚ÍÌ‚Ì‚à‚Ì‚æ‚èN—ª“I‚Å‚·B‚±‚ÌƒtƒBƒ‹ƒ^‚ÍL—pƒzƒXƒg‚ðŒÄ‚Ñ‚Í‹¤’Ê“I‚Èƒoƒi[‹Zp‚ðŽg‚¤‘S‚Ä‚ÌJavaScript‚ðŒü‚±‚¤‚©‚·‚é‚æ‚¤‚ÉÝŒv‚³‚ê‚Ä‚¢‚Ü‚·B
 
 FILTER_148_TITLE    =Kill Layers
-FILTER_148_CATEGORY =Layout
 FILTER_148_COMMENT  =ƒŒƒCƒ„[‚ÍNetscape‚É‚æ‚Á‚Ä“±“ü‚³‚ê‚½Žž‘ã’x‚ê‚Å–ð—§‚½‚¸‚ÌƒAƒCƒfƒA‚Å‚·B
 
 FILTER_149_TITLE    =Kill Nosey JavaScripts
-FILTER_149_CATEGORY =JavaScript
 FILTER_149_COMMENT  =‚ ‚È‚½‚ÌŒÂlî•ñi"referrer"‚âCookiej‚ðŽQÆ‚µ‚æ‚¤‚Æ‚·‚é‘S‚Ä‚ÌJavaScript‚ð–³Œø‰»‚µ‚Ü‚·BJavaScript‚ª‚ ‚È‚½PC‚Ìî•ñ‚ðŒ©‚æ‚¤‚Æ‚·‚é‚Ì‚ðŽ~‚ß‚é‚½‚ß‚ÉŽg‚¢‚Ü‚·B‚ ‚È‚½‚ªŒ©‚ç‚ê‚Ä‚à—Ç‚¢‚ÆŠ´‚¶‚é‚à‚Ì‚É‚æ‚Á‚ÄƒŠƒXƒg‚ð•ÒW‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B
 
 FILTER_150_TITLE    =Kill Style Sheets
-FILTER_150_CATEGORY =Styles
 FILTER_150_COMMENT  =‘S‚Ä‚ÌSTYLEƒ^ƒO‚ð–³Œø‰»‚µ‚Ü‚·iƒXƒ^ƒCƒ‹ƒV[ƒg‚âstyle‘®«‚Í–³Œø‰»‚µ‚È‚¢jB
 
 FILTER_151_TITLE    =Kill a cookie
-FILTER_151_CATEGORY =Cookies
 FILTER_151_COMMENT  =ƒuƒ‰ƒEƒU‚©‚ç‘—M‚³‚ê‚éCookie‚ðƒEƒFƒuƒT[ƒo‚É“Í‚­‘O‚Éœ‹Ž‚µ‚Ü‚·BŽg‚¤ê‡‚ÍACookie‚ð’Ê‰ß‚³‚¹‚½‚¢ƒTƒCƒg‚ðCookieList‚ÅŽw’è‚µ‚Ü‚·B
 
 FILTER_152_TITLE    =Kill add-on JavaScripts
-FILTER_152_CATEGORY =JavaScript
 FILTER_152_COMMENT  =‚±‚ÌƒtƒBƒ‹ƒ^‚ÍƒEƒFƒuƒy[ƒW‚É•t‚¯‰Á‚¦‚ç‚ê‚½‘S‚Ä‚ÌJavaScript‚ðœ‹Ž‚µ‚Ü‚·B’Êí‚±‚ê‚ç‚ÌƒXƒNƒŠƒvƒg‚ÍALƒEƒBƒ“ƒhƒE‚ðƒ|ƒbƒvƒAƒbƒv‚µ‚½‚è‚æ‚èˆ«Ž¿‚ÈƒƒS‚ðƒEƒFƒuƒy[ƒW‚É‚Ý•t‚¯‚é‚½‚ß‚ÉA–³—¿ƒEƒFƒuƒXƒy[ƒX‚ÌƒvƒƒoƒCƒ_‚É‚æ‚è‰Á‚¦‚ç‚ê‚Ü‚·B‚»‚Ì‚æ‚¤‚Èƒy[ƒW‚ð–K‚ê‚é‚±‚Æ‚ð‚æ‚èŠy‚µ‚­‚µ‚Ü‚·B
 
 FILTER_153_TITLE    =Kill alert/confirm boxes
-FILTER_153_CATEGORY =Annoyances
 FILTER_153_COMMENT  =‘±‚¯‚é‚½‚ß‚ÉOK‚ð‰Ÿ‚·‚æ‚¤‚É–â‚¢‡‚í‚¹‚éJavaScript‚Ìƒ|ƒbƒvƒAƒbƒvƒƒbƒZ[ƒWƒ{ƒbƒNƒX‚ð–³Œø‰»‚µ‚Ü‚·BOften used for disclaimers of one type or another.
 
 FILTER_154_TITLE    =Kill all Images on selected pages
-FILTER_154_CATEGORY =Ad Removal
 FILTER_154_COMMENT  =‚±‚ÌƒtƒBƒ‹ƒ^‚ÍNoImagesƒŠƒXƒg‚É‚ ‚éƒy[ƒW‚Ì‰æ‘œ‚ð‘S‚Ä’×‚µ‚Ü‚·B‚ ‚È‚½‚ª–K‚ê‚éƒTƒCƒg‚Å‹»–¡‚ðŽ‚Á‚Ä‚¢‚é‚Ì‚ªãY—í‚ÈŠG‚Å‚Í‚È‚­‚Äƒˆ‚Èî•ñ‚¾‚¯‚È‚çAƒŠƒXƒg‚É‚»‚ÌURL‚ð‰Á‚¦‚é‚±‚Æ‚ªo—ˆ‚Ü‚·B
 
 FILTER_155_TITLE    =Kill anti-cache meta tags
-FILTER_155_CATEGORY =Cache Control
 FILTER_155_COMMENT  =ƒuƒ‰ƒEƒU‚ªƒy[ƒW‚ðƒLƒƒƒbƒVƒ“ƒO‚µ‚È‚¢‚æ‚¤‚É‚·‚é×H‚ð–³Œø‰»‚·‚é—L—p‚ÈƒtƒBƒ‹ƒ^‚Å‚·B‚±‚ê‚Íƒy[ƒW‚ð‹­§“I‚ÉÄ“Ç‚Ýž‚Ý‚³‚¹‚é‚±‚Æ‚Å‰{——‚ª’x‚­‚È‚è‚Ü‚·iV‚µ‚¢L‚ð•\Ž¦‚·‚é‚½‚ß‚Éˆê”Ê“I‚É—p‚¢‚ç‚ê‚é•Ê‚Ì•û–@jB‚µ‚©‚µ–{“–‚ÉƒLƒƒƒbƒVƒ“ƒO‚µ‚½‚­‚È‚¢ƒy[ƒW‚ª‚¢‚­‚Â‚©‚ ‚é‚©‚à’m‚ê‚Ü‚¹‚ñB‚»‚ê‚Í‚ ‚È‚½‚ª‚¢‚Â‚àÅV‚Ìƒf[ƒ^‚ðŒ©‚½‚¢A•p”É‚ÉXV‚³‚ê‚éƒy[ƒW‚Å‚·B
 
 FILTER_156_TITLE    =Kill bottom of page frame
-FILTER_156_CATEGORY =Layout
 FILTER_156_COMMENT  ="Kill top of page frame"‚Æ“¯‚¶ƒAƒCƒfƒA‚Å‚·‚ªƒy[ƒW‰º’[‚ÌƒtƒŒ[ƒ€—p‚Å‚·B‚±‚ê‚ç‚ÌƒtƒBƒ‹ƒ^‚Í•Â‚¶‚éƒtƒŒ[ƒ€‚Ì‚‚³‚Ì”ÍˆÍ‚ð’²ß‚·‚é‚±‚Æ‚ªo—ˆ‚Ü‚·B—á‚¦‚ÎA[#10:100]‚Í10`100ƒsƒNƒZƒ‹‚Ì‚‚³‚ÌƒtƒŒ[ƒ€‚ð•Â‚¶‚Ü‚·B
 
 FILTER_157_TITLE    =Kill off-site Images
-FILTER_157_CATEGORY =Ad Removal
 FILTER_157_COMMENT  =‚±‚ÌƒtƒBƒ‹ƒ^‚ÍŽÀÛ‚ÌƒEƒFƒuƒy[ƒW‚ÌƒT[ƒoˆÈŠO‚É‚ ‚é‘½‚­‚Ì‰æ‘œ‚ð’×‚µ‚Ü‚·B‚±‚ÌƒtƒBƒ‹ƒ^‚Í’P“Æ‚Å‚à‘½‚­‚ÌL‚ð’×‚¹‚Ü‚·‚ªAˆÓ}‚³‚ê‚½ˆÈã‚É‰æ‘œ‚ð’×‚µ‚Ä‚µ‚Ü‚¤‚©‚à’m‚ê‚Ü‚¹‚ñ„Ÿ„Ÿ‹­—Í‚È‚Ì‚Å’ˆÓ‚µ‚ÄŽg‚Á‚Ä‰º‚³‚¢B
 
 FILTER_158_TITLE    =Kill pop-up windows
-FILTER_158_CATEGORY =Ad Removal
 FILTER_158_COMMENT  =JavaScript‚É‚æ‚éƒ|ƒbƒvƒAƒbƒvƒEƒBƒ“ƒhƒE‚ÉƒIƒTƒ‰ƒoB‚±‚ê‚ÍƒƒCƒ“‚Ìƒ|ƒbƒvƒAƒbƒvƒtƒBƒ‹ƒ^‚ÅA‘¼‚Ì“ñ‚Â‚Ìƒ|ƒbƒvƒAƒbƒvƒtƒBƒ‹ƒ^‚ª“®ì‚·‚é‚½‚ß‚É‚à•K—v‚Å‚·B‘å’ï‚Í‘¼‚Ì“ñ‚Â‚Ì‚Ç‚¿‚ç‚©‚Æ•¹—p‚µ‚½‚¢‚ÆŽv‚¤‚Å‚µ‚å‚¤B‚µ‚©‚µA‚±‚ÌƒtƒBƒ‹ƒ^‚¾‚¯‚ð—LŒø‚É‚·‚é‚Æ‘S‚Ä‚Ìƒ|ƒbƒvƒAƒbƒv‚ª–³Œø‰»‚³‚ê‚Ü‚·B
 
 FILTER_159_TITLE    =Kill specific Java applets
-FILTER_159_CATEGORY =Ad Removal
 FILTER_159_COMMENT  =‚±‚ÌƒtƒBƒ‹ƒ^‚Í“Á’è‚ÌJavaƒAƒvƒŒƒbƒg‚ð–³Œø‰»‚·‚éˆ×‚ÉÝŒv‚³‚ê‚Ä‚¢‚Ü‚·BV‚µ‚¢ƒAƒvƒŒƒbƒg‚ÍAƒNƒ‰ƒX–¼‚ðƒ}ƒbƒ`ƒ“ƒOƒpƒ^[ƒ“’†‚ÌƒŠƒXƒg‚É‘‚­‚¾‚¯‚Å’Ç‰Á‚·‚é‚±‚Æ‚ªo—ˆ‚Ü‚·B
 
 FILTER_160_TITLE    =Kill top of page frame
-FILTER_160_CATEGORY =Layout
 FILTER_160_COMMENT  =ƒy[ƒWã’[‚Ì‹·‚¢ƒtƒŒ[ƒ€„Ÿ‚µ‚Î‚µ‚ÎL‚âƒwƒbƒ_‚Æ‚µ‚ÄŽg‚í‚ê‚Ü‚·„Ÿ‚ð•Â‚¶‚Ä‰æ–Ê‚ðL‚­‚µ‚Ü‚·B"Allow for frame resizing"‚Æˆê‚ÉŽg‚¦‚ÎA•K—v‚È‚çƒtƒŒ[ƒ€‚ðƒhƒ‰ƒbƒO‚µ‚ÄŠJ‚­‚±‚Æ‚ªo—ˆ‚Ü‚·B
 
 FILTER_161_TITLE    =Kill window.external methods
-FILTER_161_CATEGORY =Annoyances
 FILTER_161_COMMENT  =‚±‚ê‚ç‚ÌJavaScriptƒRƒ}ƒ“ƒh‚ÍƒEƒFƒuƒy[ƒWŠO‚Ì‚à‚Ì‚ÉŒ¾‹y‚µAƒuƒbƒNƒ}[ƒN‚ð•ÏX‚µ‚½‚è‚à‚Á‚Æ“‚¢•s‰õ‚È‚±‚Æ‚ð‚µ‚Ü‚·B‚±‚ÌƒtƒBƒ‹ƒ^[‚Í‚»‚ê‚ç‚ÌŠ±Â‚©‚ç•ÛŒì‚µ‚Ä‚­‚ê‚Ü‚·B
 
 FILTER_162_TITLE    =Link De-Obfuscator
-FILTER_162_CATEGORY =Exposure
 FILTER_162_COMMENT  =ƒXƒe[ƒ^ƒXs‚ÉƒeƒLƒXƒg‚ð•\Ž¦‚·‚é‚±‚Æ‚ÅŽÀÛ‚ÌƒŠƒ“ƒNæURL‚ð"‰B‚·"ƒy[ƒW‚ª‚ ‚è‚Ü‚·B‚±‚ÌƒtƒBƒ‹ƒ^‚ÍURL‚ª‰B‚³‚ê‚È‚¢‚æ‚¤‚É‚µ‚Ü‚·B
 
 FILTER_163_TITLE    =Lynx 2.8 agent
-FILTER_163_CATEGORY =Identification
 FILTER_163_COMMENT  =User-Agentƒwƒbƒ_‚Í’ÊíAƒuƒ‰ƒEƒU‚âOS‚Ìî•ñ‚ðƒEƒFƒuƒTƒCƒg‚É“`‚¦‚Ü‚·B‚±‚ê‚ç‚ÌƒtƒBƒ‹ƒ^‚Í‹U‘•‚µ‚½î•ñ‚ð‘—‚Á‚Ä‘¼‚Ìƒuƒ‰ƒEƒU‚âOS‚ðŽg—p‚µ‚Ä‚¢‚éU‚è‚ð‚µ‚Ü‚·B‚Ç‚ê‚©ˆê‚Â‚¾‚¯‚ÌƒtƒBƒ‹ƒ^‚ð—LŒø‚É‚µ‚Ä‰º‚³‚¢B‚¢‚­‚Â‚©‚ÌƒTƒCƒg‚Å‚Í’¿‚µ‚¢User-Agent‚ðŒ©‚é‚ÆA‹‰Ø‚ÈL‚â‚»‚Ì‘¼‚Ì–À˜f‚ð‘—‚ç‚È‚¢‚æ‚¤‚É‚·‚é‚©‚à’m‚ê‚Ü‚¹‚ñB‚µ‚©‚µ‚ ‚È‚½‚ª‹U‘•‚µ‚½i‘z‘œã‚Ìjƒuƒ‰ƒEƒU‚ðŽó‚¯•t‚¯‚¸A•ÏXo—ˆ‚È‚¢ƒTƒCƒg‚à‚ ‚è‚Ü‚·B
 
 FILTER_164_TITLE    =Make JS & Meta cookies session only
-FILTER_164_CATEGORY =Cookies
 FILTER_164_COMMENT  ="Make all cookies session only"‚Æ“¯‚¶‚Å‚·‚ªAHTMLƒR[ƒh“à‚Å‘‚«ž‚Ü‚ê‚½Cookie‚É—LŒø‚Å‚·B
 
 FILTER_165_TITLE    =Make all cookies session only
-FILTER_165_CATEGORY =Cookies
 FILTER_165_COMMENT  =‚±‚ÌƒtƒBƒ‹ƒ^‚ÍŠúŒÀ•t‚«‚ÌCookie‚ðƒZƒbƒVƒ‡ƒ“ƒIƒ“ƒŠ[‚É•ÏX‚µ‚Ü‚·BƒZƒbƒVƒ‡ƒ“ƒIƒ“ƒŠ[‚ÌCookie‚Íƒn[ƒhƒfƒBƒXƒN‚É‚Í•Û‘¶‚³‚ê‚¸Aƒuƒ‰ƒEƒU‚ðÄ‹N“®‚·‚é‚ÆÁ‚¦‚Ü‚·BƒZƒbƒVƒ‡ƒ“ƒIƒ“ƒŠ[‚É‚·‚é‚ÆƒEƒFƒuƒT[ƒo‚ªAƒuƒ‰ƒEƒU‚ªCookie‚ðŽó‚¯•t‚¯‚È‚¢‚ÆŒx‚·‚é‚Ì‚ð‚Ù‚Æ‚ñ‚Ç–³ŠQ‚É‚µ‚Ü‚·B‚±‚ÌƒtƒBƒ‹ƒ^‚©"Never accept cookies"i‚æ‚èŒµ–§‚É§Œä‚µ‚Ü‚·j‚Ì‚Ç‚¿‚ç‚©‚ðŽg‚¢A“¯Žž‚É‚ÍŽg‚í‚È‚¢‚Å‰º‚³‚¢B‚±‚ÌƒtƒBƒ‹ƒ^‚àA‰i‘±“I‚ÈCookie‚ðŽg‚¢‚½‚¢ƒTƒCƒgi—á‚¦‚ÎŽ©“®ƒƒOƒCƒ“‚âÝ’è‚ð•Û‘¶‚·‚éƒTƒCƒgj‚ðACookieListƒŠƒXƒg‚ÅŽw’è‚Å‚«‚Ü‚·B
 
 FILTER_166_TITLE    =Netscape BEOS agent
-FILTER_166_CATEGORY =Identification
 FILTER_166_COMMENT  =User-Agentƒwƒbƒ_‚Í’ÊíAƒuƒ‰ƒEƒU‚âOS‚Ìî•ñ‚ðƒEƒFƒuƒTƒCƒg‚É“`‚¦‚Ü‚·B‚±‚ê‚ç‚ÌƒtƒBƒ‹ƒ^‚Í‹U‘•‚µ‚½î•ñ‚ð‘—‚Á‚Ä‘¼‚Ìƒuƒ‰ƒEƒU‚âOS‚ðŽg—p‚µ‚Ä‚¢‚éU‚è‚ð‚µ‚Ü‚·B‚Ç‚ê‚©ˆê‚Â‚¾‚¯‚ÌƒtƒBƒ‹ƒ^‚ð—LŒø‚É‚µ‚Ä‰º‚³‚¢B‚¢‚­‚Â‚©‚ÌƒTƒCƒg‚Å‚Í’¿‚µ‚¢User-Agent‚ðŒ©‚é‚ÆA‹‰Ø‚ÈL‚â‚»‚Ì‘¼‚Ì–À˜f‚ð‘—‚ç‚È‚¢‚æ‚¤‚É‚·‚é‚©‚à’m‚ê‚Ü‚¹‚ñB‚µ‚©‚µ‚ ‚È‚½‚ª‹U‘•‚µ‚½i‘z‘œã‚Ìjƒuƒ‰ƒEƒU‚ðŽó‚¯•t‚¯‚¸A•ÏXo—ˆ‚È‚¢ƒTƒCƒg‚à‚ ‚è‚Ü‚·B
 
 FILTER_167_TITLE    =Netscape Linux agent
-FILTER_167_CATEGORY =Identification
 FILTER_167_COMMENT  =User-Agentƒwƒbƒ_‚Í’ÊíAƒuƒ‰ƒEƒU‚âOS‚Ìî•ñ‚ðƒEƒFƒuƒTƒCƒg‚É“`‚¦‚Ü‚·B‚±‚ê‚ç‚ÌƒtƒBƒ‹ƒ^‚Í‹U‘•‚µ‚½î•ñ‚ð‘—‚Á‚Ä‘¼‚Ìƒuƒ‰ƒEƒU‚âOS‚ðŽg—p‚µ‚Ä‚¢‚éU‚è‚ð‚µ‚Ü‚·B‚Ç‚ê‚©ˆê‚Â‚¾‚¯‚ÌƒtƒBƒ‹ƒ^‚ð—LŒø‚É‚µ‚Ä‰º‚³‚¢B‚¢‚­‚Â‚©‚ÌƒTƒCƒg‚Å‚Í’¿‚µ‚¢User-Agent‚ðŒ©‚é‚ÆA‹‰Ø‚ÈL‚â‚»‚Ì‘¼‚Ì–À˜f‚ð‘—‚ç‚È‚¢‚æ‚¤‚É‚·‚é‚©‚à’m‚ê‚Ü‚¹‚ñB‚µ‚©‚µ‚ ‚È‚½‚ª‹U‘•‚µ‚½i‘z‘œã‚Ìjƒuƒ‰ƒEƒU‚ðŽó‚¯•t‚¯‚¸A•ÏXo—ˆ‚È‚¢ƒTƒCƒg‚à‚ ‚è‚Ü‚·B
 
 FILTER_168_TITLE    =Netscape Mac 68k agent
-FILTER_168_CATEGORY =Identification
 FILTER_168_COMMENT  =User-Agentƒwƒbƒ_‚Í’ÊíAƒuƒ‰ƒEƒU‚âOS‚Ìî•ñ‚ðƒEƒFƒuƒTƒCƒg‚É“`‚¦‚Ü‚·B‚±‚ê‚ç‚ÌƒtƒBƒ‹ƒ^‚Í‹U‘•‚µ‚½î•ñ‚ð‘—‚Á‚Ä‘¼‚Ìƒuƒ‰ƒEƒU‚âOS‚ðŽg—p‚µ‚Ä‚¢‚éU‚è‚ð‚µ‚Ü‚·B‚Ç‚ê‚©ˆê‚Â‚¾‚¯‚ÌƒtƒBƒ‹ƒ^‚ð—LŒø‚É‚µ‚Ä‰º‚³‚¢B‚¢‚­‚Â‚©‚ÌƒTƒCƒg‚Å‚Í’¿‚µ‚¢User-Agent‚ðŒ©‚é‚ÆA‹‰Ø‚ÈL‚â‚»‚Ì‘¼‚Ì–À˜f‚ð‘—‚ç‚È‚¢‚æ‚¤‚É‚·‚é‚©‚à’m‚ê‚Ü‚¹‚ñB‚µ‚©‚µ‚ ‚È‚½‚ª‹U‘•‚µ‚½i‘z‘œã‚Ìjƒuƒ‰ƒEƒU‚ðŽó‚¯•t‚¯‚¸A•ÏXo—ˆ‚È‚¢ƒTƒCƒg‚à‚ ‚è‚Ü‚·B
 
 FILTER_169_TITLE    =Never accept cookies
-FILTER_169_CATEGORY =Cookies
 FILTER_169_COMMENT  =CookieListƒŠƒXƒg‚ÅŽw’è‚µ‚½ƒTƒCƒg‚ÌCookie‚¾‚¯‚ð‹–‰Â‚µ‚Ü‚·B"Make cookies session only"ƒtƒBƒ‹ƒ^‚æ‚èŒµ–§‚È§Œä‚É‚È‚è‚Ü‚·B
 
 FILTER_170_TITLE    =OnUnload unloader
-FILTER_170_CATEGORY =Annoyances
 FILTER_170_COMMENT  =ƒEƒFƒuƒy[ƒW‚©‚çˆÚ“®‚³‚ê‚éŽž‚ÉƒXƒNƒŠƒvƒg‚ðŽÀs‚·‚éi‚Â‚Ü‚èƒ|ƒbƒvƒAƒbƒvLƒEƒBƒ“ƒhƒE‚ðŠJ‚­j"onunload"‘®«‚ð–³Œø‰»‚·‚é”ñí‚É—L—p‚ÈƒtƒBƒ‹ƒ^‚Å‚·B"Kill All pop-up windows"‚©"Restore pop-up windows after page loads"‚Æˆê‚ÉŽg‚¤‚ÆA“KØ‚Èƒ|ƒbƒvƒAƒbƒvƒEƒBƒ“ƒhƒE‚Í‹–‰Â‚µ‚½‚Ü‚ÜA"ƒXƒpƒ€"ƒ|ƒbƒvƒAƒbƒvƒEƒBƒ“ƒhƒE‚ð‘S‚Ä–³Œø‰»‚µ‚Ü‚·B
 
 FILTER_171_TITLE    =OnLoad unloader
-FILTER_171_CATEGORY =Annoyances
 FILTER_171_COMMENT  ="onload"‘®«‚ÍƒXƒNƒŠƒvƒg‚ðŽ©“®“I‚ÉŽÀsi‚Ü‚½‚Íƒ|ƒbƒvƒAƒbƒvƒEƒBƒ“ƒhƒE‚ð•\Ž¦‚·‚éj•û–@‚Ìˆê‚Â‚Å‚·B‚±‚ÌƒtƒBƒ‹ƒ^‚Í‚»‚ê‚ð–³Œø‰»‚µ‚Ü‚·B‘å’ï‚Í—ÇD‚É“®ì‚µ‚Ü‚·‚ªA–â‘è‚ª‹N‚«‚éƒy[ƒW‚à‘½­‚ ‚è‚Ü‚·Bƒy[ƒW“à‚Ì‹@”\i“Á‚Éƒvƒ‹ƒ_ƒEƒ“ƒƒjƒ…[‚Ì—Þj‚ª“­‚©‚È‚¢‚Æ‚«‚ÍA‚»‚ÌƒTƒCƒg‚Å‚Í‚±‚ÌƒtƒBƒ‹ƒ^‚Í–³Œø‚É‚µ‚Ä‰º‚³‚¢B
 
 FILTER_172_TITLE    =Opera 5.02 agent
-FILTER_172_CATEGORY =Identification
 FILTER_172_COMMENT  =User-Agentƒwƒbƒ_‚Í’ÊíAƒuƒ‰ƒEƒU‚âOS‚Ìî•ñ‚ðƒEƒFƒuƒTƒCƒg‚É“`‚¦‚Ü‚·B‚±‚ê‚ç‚ÌƒtƒBƒ‹ƒ^‚Í‹U‘•‚µ‚½î•ñ‚ð‘—‚Á‚Ä‘¼‚Ìƒuƒ‰ƒEƒU‚âOS‚ðŽg—p‚µ‚Ä‚¢‚éU‚è‚ð‚µ‚Ü‚·B‚Ç‚ê‚©ˆê‚Â‚¾‚¯‚ÌƒtƒBƒ‹ƒ^‚ð—LŒø‚É‚µ‚Ä‰º‚³‚¢B‚¢‚­‚Â‚©‚ÌƒTƒCƒg‚Å‚Í’¿‚µ‚¢User-Agent‚ðŒ©‚é‚ÆA‹‰Ø‚ÈL‚â‚»‚Ì‘¼‚Ì–À˜f‚ð‘—‚ç‚È‚¢‚æ‚¤‚É‚·‚é‚©‚à’m‚ê‚Ü‚¹‚ñB‚µ‚©‚µ‚ ‚È‚½‚ª‹U‘•‚µ‚½i‘z‘œã‚Ìjƒuƒ‰ƒEƒU‚ðŽó‚¯•t‚¯‚¸A•ÏXo—ˆ‚È‚¢ƒTƒCƒg‚à‚ ‚è‚Ü‚·B
 
 FILTER_173_TITLE    =Prevent webpage encoding
-FILTER_173_CATEGORY =Connection Control
 FILTER_173_COMMENT  ="Allow webpage encoding"‚Ì‹t‚ÌƒtƒBƒ‹ƒ^‚Å‚·BƒEƒFƒuƒT[ƒo‚Éƒy[ƒW‚ðƒGƒ“ƒR[ƒhiˆ³kj‚µ‚È‚¢‚æ‚¤‚É“`‚¦‚Ü‚·B
 
 FILTER_174_TITLE    =Remove Last-Modified header
-FILTER_174_CATEGORY =Cache Control
 FILTER_174_COMMENT  =ƒT[ƒo‚©‚çŽóM‚µ‚½ƒEƒFƒuƒy[ƒW‚ÌÅIXV“úŽž‚ðœ‹Ž‚µ‚Ü‚·Bí—p‚·‚é‚à‚Ì‚Å‚Í‚ ‚è‚Ü‚¹‚ñ‚ªAIE‚ÉV‚µ‚¢ƒy[ƒW‚ð”FŽ¯‚·‚é‚æ‚¤‚É‹­§‚·‚é‚±‚Æ‚ªo—ˆ‚Ü‚·iŽÀÛ‚ÉIE‚ÍŽóM‚µ‚½ƒy[ƒW‚ð–³Ž‹‚µ‚Ä‘ã‚í‚è‚ÉƒLƒƒƒbƒVƒ…‚³‚ê‚½ƒRƒs[‚ðŽg‚¤‚±‚Æ‚ª‚ ‚è‚Ü‚·„Ÿ„Ÿ‚±‚ê‚Í‘Ñˆæ‚ª‘å‚«‚­‚È‚Á‚Ä‚©‚ç‚Í–ð—§‚¿‚Ü‚¹‚ñjB
 
 FILTER_175_TITLE    =Restore pop-ups after a page loads
-FILTER_175_CATEGORY =Ad Removal
 FILTER_175_COMMENT  ="Kill All pop-up windows"ƒtƒBƒ‹ƒ^‚Æˆê‚ÉŽg‚¤‚ÆAƒy[ƒW‚ª•\Ž¦‚³‚ê‚½Œã‚ÉƒNƒŠƒbƒN‚³‚ê‚½ƒŠƒ“ƒN‚Ìƒ|ƒbƒvƒAƒbƒvEƒEƒBƒ“ƒhƒE‚ð—LŒø‚É‚µ‚Ü‚·B‚±‚ÌƒtƒBƒ‹ƒ^‚Íƒ}ƒEƒXƒNƒŠƒbƒNŒã2•bˆÈ“à‚É—v‹‚³‚ê‚½ƒEƒBƒ“ƒhƒE‚Ì‚ÝŠJ‚«‚Ü‚·B‚±‚ê‚Í–À˜f‚Èƒ|ƒbƒvƒAƒbƒv‚ð–h‚¬‚È‚ª‚ç–â‘è‚Ì‚È‚¢ƒ|ƒbƒvƒAƒbƒv‚ð‹–‰Â‚·‚é‚½‚ß‚ÌƒAƒCƒfƒA‚Å‚·B‚±‚ÌƒtƒBƒ‹ƒ^‚Í"Kill all pop-up windows"‚Æˆê‚ÉŽg‚¤•K—v‚ª‚ ‚é‚Ì‚Å’ˆÓ‚µ‚Ä‰º‚³‚¢B—¼•û‚Æ‚à—LŒø‚É‚È‚Á‚Ä‚¢‚é‚©Šm”F‚·‚é‚æ‚¤‚ÉB
 
 FILTER_176_TITLE    =Send password to proxy server
-FILTER_176_CATEGORY =Connection Control
 FILTER_176_COMMENT  ="Example password entry"ƒtƒBƒ‹ƒ^‚ÆŽ—‚Ä‚¢‚Ü‚·‚ªAƒvƒƒNƒVƒT[ƒo‚ÉƒpƒXƒ[ƒh‚ð‘—‚éˆê—á‚Å‚·B
 
 FILTER_177_TITLE    =Show contents of .pac files
-FILTER_177_CATEGORY =Exposure
 FILTER_177_COMMENT  =.pac‚ÅI‚í‚éƒtƒ@ƒCƒ‹‚ÍNetscape‚ÆIE‚ÅƒvƒƒNƒV‚ðÝ’è‚·‚é‚½‚ß‚ÉŽg‚í‚ê‚éJavaScript‚Å‚·BISP‚âƒtƒ@ƒCƒAƒEƒH[ƒ‹‚ÌŠÇ—ŽÒ‚ÍƒvƒƒNƒVÝ’è‚Ì•Ï‚í‚è‚É‚»‚Ìƒtƒ@ƒCƒ‹‚ð’ñ‹Ÿ‚·‚é‚±‚Æ‚ª‚ ‚è‚Ü‚·B‚±‚ÌƒtƒBƒ‹ƒ^‚ÅA‚»‚ê‚ç‚Ìƒtƒ@ƒCƒ‹‚É‰½‚Æ‘‚©‚ê‚Ä‚¢‚é‚©ƒuƒ‰ƒEƒU‚Å•\Ž¦‚³‚¹‚é‚±‚Æ‚ªo—ˆ‚Ü‚·BŽÀÛ‚ÌƒvƒƒNƒVÝ’è‚ª•K—v‚Èê‡‚Í—L—p‚©‚à’m‚ê‚Ü‚¹‚ñ‚ªAí—p‚·‚é‚à‚Ì‚Å‚Í‚ ‚è‚Ü‚¹‚ñB
 
 FILTER_178_TITLE    =Skinnier Table Border
-FILTER_178_CATEGORY =Styles
 FILTER_178_COMMENT  =ƒ}ƒW‚Å‘¾‚¢ƒe[ƒuƒ‹‚Ì‹«ŠEü‚ð×‚­‚µ‚Ü‚·B’P‚È‚é•\Ž¦’²®—pB
 
 FILTER_179_TITLE    =Sound Silencer
-FILTER_179_CATEGORY =Sound
 FILTER_179_COMMENT  ="Sounds to links"‚æ‚èÏ‹É“I‚ÅAƒŠƒ“ƒN‚Ì‚È‚¢MIDIƒtƒ@ƒCƒ‹‚ð’P‚Éœ‹Ž‚µ‚Ü‚·B
 
 FILTER_180_TITLE    =Sounds to links
-FILTER_180_CATEGORY =Sound
 FILTER_180_COMMENT  =<embed c>‚Æ<bgsound c>ƒ^ƒO‚ðƒŠƒ“ƒN‚É’u‚«Š·‚¦‚Ü‚·B‘½‚­‚ÌBGM‚ðŽ~‚ß‚Ä‘ã‚í‚è‚Éƒ_ƒEƒ“ƒ[ƒho—ˆ‚é‚æ‚¤‚É‚µ‚Ü‚·B‘¼‚Ì‘½‚­‚Ìƒvƒ‰ƒOƒCƒ“‚àŽ~‚ß‚é‚Ì‚Å’ˆÓ‚µ‚Ä‰º‚³‚¢B
 
 FILTER_181_TITLE    =SpaceBison agent
-FILTER_181_CATEGORY =Identification
 FILTER_181_COMMENT  =User-Agentƒwƒbƒ_‚Í’ÊíAƒuƒ‰ƒEƒU‚âOS‚Ìî•ñ‚ðƒEƒFƒuƒTƒCƒg‚É“`‚¦‚Ü‚·B‚±‚ê‚ç‚ÌƒtƒBƒ‹ƒ^‚Í‹U‘•‚µ‚½î•ñ‚ð‘—‚Á‚Ä‘¼‚Ìƒuƒ‰ƒEƒU‚âOS‚ðŽg—p‚µ‚Ä‚¢‚éU‚è‚ð‚µ‚Ü‚·B‚Ç‚ê‚©ˆê‚Â‚¾‚¯‚ÌƒtƒBƒ‹ƒ^‚ð—LŒø‚É‚µ‚Ä‰º‚³‚¢B‚¢‚­‚Â‚©‚ÌƒTƒCƒg‚Å‚Í’¿‚µ‚¢User-Agent‚ðŒ©‚é‚ÆA‹‰Ø‚ÈL‚â‚»‚Ì‘¼‚Ì–À˜f‚ð‘—‚ç‚È‚¢‚æ‚¤‚É‚·‚é‚©‚à’m‚ê‚Ü‚¹‚ñB‚µ‚©‚µ‚ ‚È‚½‚ª‹U‘•‚µ‚½i‘z‘œã‚Ìjƒuƒ‰ƒEƒU‚ðŽó‚¯•t‚¯‚¸A•ÏXo—ˆ‚È‚¢ƒTƒCƒg‚à‚ ‚è‚Ü‚·B
 
 FILTER_182_TITLE    =Stop JavaScript Redirects
-FILTER_182_CATEGORY =JavaScript
 FILTER_182_COMMENT  =•Ê‚Ìƒy[ƒW‚ÉƒŠƒ_ƒCƒŒƒNƒg‚·‚éJavaScript‚ð–³Œø‰»‚µ‚Ü‚·B‚±‚ê‚ÍƒXƒ|ƒ“ƒT[‚ð–K‚ê‚é‚æ‚¤‹­§‚µ‚½‚èƒfƒB[ƒvƒŠƒ“ƒN‚ð‹ÖŽ~‚·‚éˆÀ‚Á‚Û‚¢•û–@‚Æ‚µ‚ÄŽg‚í‚ê‚é‚±‚Æ‚ª‚ ‚è‚Ü‚·B‚µ‚©‚µ—U“±‚Ìˆ×‚ÉŽg‚¤ƒTƒCƒg‚à‘½­‚ ‚è‚Ü‚·B
 
 FILTER_183_TITLE    =Stop JavaScript Timers
-FILTER_183_CATEGORY =JavaScript
 FILTER_183_COMMENT  =JavaScript‚Ìƒ^ƒCƒ}[‚ð–³Œø‰»‚µ‚Ü‚·B‚±‚ê‚ÍAƒXƒe[ƒ^ƒXƒo[EƒXƒNƒ[ƒ‰[‚ÆAJavaScript‚É‚æ‚éƒAƒjƒ[ƒVƒ‡ƒ“‚Æ“¯—l‚È’èŠú“I‚ÈLXV‚ðŽ~‚ß‚é—LŒø‚È‚à‚¤ˆê‚Â‚Ì•û–@‚Å‚·B
 
 FILTER_184_TITLE    =Stop OnMouseOver events
-FILTER_184_CATEGORY =Annoyances
 FILTER_184_COMMENT  =ƒ}ƒEƒX‚ðƒŠƒ“ƒNã‚É“®‚©‚µ‚½Žž‚Ì“®ì‚ð–³Œø‰»‚µ‚Ü‚·BŽžŠÔ‚Ìß–ñ‚Æ‹¤‚ÉA‚»‚ê‚ç‚Ì‚Ù‚Æ‚ñ‚Ç‚Í’P‚È‚é‘•ü—p‚Å‚·B
 
 FILTER_185_TITLE    =Stop browser window resizing
-FILTER_185_CATEGORY =Layout
 FILTER_185_COMMENT  =ƒuƒ‰ƒEƒU‚ÌƒEƒBƒ“ƒhƒEƒTƒCƒY‚â•\Ž¦ˆÊ’u‚ð•Ï‚¦‚éJavaScripti‚µ‚Î‚µ‚Î‘S‰æ–Ê‚É‚³‚ê‚Ü‚·j‚ð–³Œø‰»‚µ‚Ü‚·B
 
 FILTER_186_TITLE    =Stop status bar scrollers
-FILTER_186_CATEGORY =Annoyances
 FILTER_186_COMMENT  =ƒXƒe[ƒ^ƒXƒo[‚ð‘‚«Š·‚¦‚éJavaScript‚ð–³Œø‰»‚µ‚Ü‚·BƒXƒNƒ[ƒ‰[‚â‚»‚Ì‘¼‚Ì“‚¢“®ì‚ðœ‹Ž‚µ‚Ü‚·B
 
 FILTER_187_TITLE    =Suppress all JavaScript errors
-FILTER_187_CATEGORY =JavaScript
 FILTER_187_COMMENT  =JavaScriptƒGƒ‰[‚ªƒ|ƒbƒvƒAƒbƒv‚·‚é‚Ì‚ðŽ~‚ß‚Ü‚·B‘½‚­‚ÌJavaScript‚ªŽ©‚çƒGƒ‰[‚ð‹N‚±‚·‚½‚ßAí—p‚Å‚«‚é—Ç‚¢ƒtƒBƒ‹ƒ^‚Å‚·B‘¼‚ÌƒtƒBƒ‹ƒ^‚ªJavaScript‚ª³í‚É“®ì‚µ‚È‚¢‚æ‚¤‚É‚µ‚½ê‡‚à•ÛŒì‚µ‚Ü‚·B‘½‚­‚ÌV‚µ‚¢ƒuƒ‰ƒEƒU‚Å‚ÍÝ’è‚Å“¯‚¶‚±‚Æ‚ª‰Â”\‚Å‚·B
 
 FILTER_188_TITLE    =Table width unlimiter
-FILTER_188_CATEGORY =Layout
 FILTER_188_COMMENT  =ƒe[ƒuƒ‹‚©‚ç‘å‚«‚È•Žw’è‚ðŽæ‚èœ‚«‚Ü‚·„Ÿ„ŸˆÓ}‚³‚ê‚½‰æ–ÊƒTƒCƒY‚æ‚è¬‚³‚¢‰æ–Ê‚Åƒy[ƒW‚ðŒ©‚é‚Æ‚«‚É—L—p‚Å‚·B
 
 FILTER_189_TITLE    =Un-Prefix URLs
-FILTER_189_CATEGORY =Connection Control
 FILTER_189_COMMENT  =‘½‚­‚ÌƒTƒCƒgi“Á‚ÉŒŸõƒGƒ“ƒWƒ“j‚ªƒŠƒ_ƒCƒŒƒNƒgCGI‚ð’Ê‚µ‚ÄƒNƒŠƒbƒN‚µ‚½ƒŠƒ“ƒN‚ð’ÇÕ‚µ‚æ‚¤‚Æ‚µ‚Ä‚¢‚Ü‚·BŽÀÛ‚ÌURL‚Í‚ ‚éŽí‚Ì"Ú“ªŒê"‚ÌŒã‚É–„‚ßž‚Ü‚ê‚é‚Ì‚ÅA‘å’ï‚Í‚»‚ê‚ðŽæ‚èo‚·‚±‚Æ‚ªo—ˆ‚Ü‚·B‚±‚ÌƒtƒBƒ‹ƒ^‚Í‚»‚¤‚¢‚Á‚½Ú“ªŒê‚ðŽæ‚èœ‚«’ÇÕ‚ð–h‚®‚¾‚¯‚Å‚È‚­AƒŠƒ“ƒN‚Ì”½‰ž‚ð‘¬‚­‚µ‚Ü‚·BŽg—p‚·‚é‚É‚ÍƒtƒBƒ‹ƒ^‚ÌURLƒ}ƒbƒ`‚ÉƒTƒCƒg‚ð‘‚«‰Á‚¦‚Ü‚·B•W€‚Å‚¢‚­‚Â‚©‚ÌƒTƒCƒg‚ªŠÜ‚Ü‚ê‚Ü‚·‚ªAˆÀ‘S‚Ìˆ×‚É‚ ‚È‚½‚ª”»’f‚µ‚½ƒTƒCƒg‚¾‚¯‚ð“K—p‚µ‚Ä‰º‚³‚¢B
 
 FILTER_190_TITLE    =Un-Prefixer
-FILTER_190_CATEGORY =Connection Control
 FILTER_190_COMMENT  ="URL unprefixer"ƒEƒFƒuƒy[ƒWEƒtƒBƒ‹ƒ^‚ÉŽ—‚Ä‚¢‚Ü‚·‚ªA‚±‚ê‚ÍƒŠƒ_ƒCƒŒƒNƒg‚ðŽg‚Á‚Äƒwƒbƒ_ƒŒƒxƒ‹‚Å“®ì‚µ‚Ü‚·B‚Ù‚Æ‚ñ‚Ç‚Ìê‡ƒEƒFƒuƒy[ƒWEƒtƒBƒ‹ƒ^”Å‚ðŽg‚¢‚½‚¢‚ÆŽv‚¤‚Å‚µ‚å‚¤‚ªA‚±‚ê‚Í—á‚Æ‚µ‚Ä’ñ‹Ÿ‚³‚ê‚Ä‚¢‚Ü‚·B
 
 FILTER_191_TITLE    =View RealAudio links
-FILTER_191_CATEGORY =Exposure
 FILTER_191_COMMENT  =‚â‚â“ÁŽê‚ÈƒtƒBƒ‹ƒ^‚Å‚·B‚±‚ÌƒtƒBƒ‹ƒ^‚ÍRealAudioƒŠƒ“ƒNi‚½‚¢‚Ä‚¢‚ÍŽÀÛ‚Ì“®‰æ‚â‰¹ºƒtƒ@ƒCƒ‹‚ÌURL‚ðŽw‚µŽ¦‚µ‚Ä‚¢‚Ü‚·j‚Ì’†g‚ð•\Ž¦‚µ‚Ü‚·B‚»‚ê‚ðŒ©‚é‚Ì‚Í—L—p‚È‚±‚Æ‚à‚ ‚è‚Ü‚·‚ªA‚Ù‚Æ‚ñ‚ÇŽg‚¢‚Ü‚¹‚ñB
 
 FILTER_192_TITLE    =Webpage Background Killer
-FILTER_192_CATEGORY =Styles
 FILTER_192_COMMENT  =ƒy[ƒW‚ÌƒƒCƒ“‚Ì”wŒi‰æ‘œ‚ðœ‹Ž‚µ‚Ü‚·‚ªA‘¼‚Ì”wŒi‰æ‘œiƒe[ƒuƒ‹“à‚È‚Çj‚ÍŽc‚µ‚Ü‚·B
 
 FILTER_193_TITLE    =Webpage Background Replacer
-FILTER_193_CATEGORY =Styles
 FILTER_193_COMMENT  =ƒy[ƒW‚ÌƒƒCƒ“‚Ì”wŒi‰æ‘œ‚ðŽw’è‚Ì‚à‚Ì‚É•ÏX‚µ‚Ü‚·BD‚«‚È‰æ‘œ‚ðÝ’è‚·‚é‚É‚Í’uŠ·ƒeƒLƒXƒg‚ð‘‚«Š·‚¦‚Ü‚·B
 
 FILTER_194_TITLE    =Webpage Comment Viewer
-FILTER_194_CATEGORY =Exposure
 FILTER_194_COMMENT  =HTMLƒ\[ƒX“à‚É‰B‚ê‚Ä‚¢‚é‘S‚Ä‚ÌƒRƒƒ“ƒg‚ð•\Ž¦‚µ‚Ü‚·Bí—p‚·‚é‚à‚Ì‚Å‚Í‚ ‚è‚Ü‚¹‚ñ‚ªA–Ê”’‚¢‚Å‚µ‚å‚¤B
 
 FILTER_195_TITLE    =Wordwrap all form textboxes
-FILTER_195_CATEGORY =Styles
 FILTER_195_COMMENT  =ƒeƒLƒXƒgƒ{ƒbƒNƒX‚ÌŽ©“®‰üs‚ð—LŒø‚É‚µ‚Ü‚·B‘‚«ž‚Ý‚É•s‰ÂŒ‡‚ÈBBS‚à‚ ‚è‚Ü‚·B
 
 FILTER_196_TITLE    =iFrame/iLayer to link
-FILTER_196_CATEGORY =Layout
 FILTER_196_COMMENT  =IE‚ÌƒCƒ“ƒ‰ƒCƒ“ƒtƒŒ[ƒ€‚ÆNetscape‚ÌƒCƒ“ƒ‰ƒCƒ“ƒŒƒCƒ„[‚ð’Êí‚ÌƒŠƒ“ƒN‚É’u‚«Š·‚¦‚Ü‚·B‘¼‚Ìƒuƒ‰ƒEƒU‚Å‚»‚¤‚¢‚Á‚½ƒtƒŒ[ƒ€‚ÉƒAƒNƒZƒX‚Å‚«‚é‚æ‚¤‚É‚µ‚Ü‚·‚ªA‘½‚­‚ÌL‚ªƒCƒ“ƒ‰ƒCƒ“ƒtƒŒ[ƒ€‚É‚­‚é‚Ü‚Á‚Ä‚¢‚é‚Ì‚ÅAIE‚Å‚à–ð‚É—§‚¿‚Ü‚·B‘S‚Ä‚Ìƒuƒ‰ƒEƒU‚ª‘Î‰ž‚µ‚Ä‚¢‚é–ó‚Å‚Í‚È‚¢‚Ì‚ÅAƒCƒ“ƒ‰ƒCƒ“ƒtƒŒ[ƒ€‚ª‚ ‚Ä‚É‚³‚ê‚é‚±‚Æ‚Í–Å‘½‚É‚È‚­A³“–‚ÉŽg‚í‚ê‚é‚±‚Æ‚Í‹H‚Å‚·B
 
 FILTER_197_TITLE    =kill-a-URL
-FILTER_197_CATEGORY =Ad Removal
 FILTER_197_COMMENT  =AdListƒŠƒXƒg‚ÅŽw’è‚³‚ê‚½ƒzƒXƒg‚Ö‚ÌÚ‘±‚ðŠ®‘S‚ÉŽÕ’f‚µ‚Ü‚·BŽw’è‚³‚ê‚½ƒzƒXƒg‚É‚ÍŒˆ‚µ‚ÄÚ‘±‚³‚ê‚¸AƒEƒFƒuƒoƒOACookie‚âƒoƒi[ƒtƒBƒ‹ƒ^‚ð‚·‚è”²‚¯‚½‚à‚Ì‚©‚ç’ÇÕ‚³‚ê‚é‚±‚Æ‚Í‚È‚¢‚Æ•ÛØ‚³‚ê‚Ü‚·BÏ‹É“I‚ÉŽÕ’f‚µ‚È‚¢‚È‚ç‚±‚ÌƒtƒBƒ‹ƒ^‚Í–³Œø‚Éo—ˆ‚Ü‚·‚ªA‚Ù‚Æ‚ñ‚Ç‚Ìê‡‚ÍƒŠƒXƒg‚©‚çƒuƒƒbƒN‚µ‚½‚­‚È‚¢ƒTƒCƒg‚ðíœ‚·‚é•û‚ª‚æ‚¢‚Å‚µ‚å‚¤B
+
+Default Folder Names
+
+FOLDER_101_NAME     =•Ö—˜ƒc[ƒ‹
+FOLDER_102_NAME     =ƒŒƒCƒAƒEƒg
+FOLDER_103_NAME     =‘€ì
+FOLDER_104_NAME     =Ú‘±§Œä
+FOLDER_105_NAME     =ƒLƒƒƒbƒVƒ…§Œä
+FOLDER_106_NAME     =Lœ‹Ž
+FOLDER_107_NAME     =ƒXƒ^ƒCƒ‹
+FOLDER_108_NAME     =JavaScript
+FOLDER_109_NAME     =ƒNƒbƒL[
+FOLDER_110_NAME     =‰¹Šy
+FOLDER_111_NAME     =ŒÂlî•ñ
+FOLDER_112_NAME     =–À˜f
+FOLDER_113_NAME     =ŠÅ”j

@@ -12,7 +12,7 @@ ResourceIncludes=C:\Progra~1\Dev-Cpp\wxWidgets-2.5.3-msw-static\include
 MakeIncludes=
 Compiler=
 CppCompiler=-D__WXMSW__ _@@_-DNO_GCC_PRAGMA_@@_-Wall_@@_-O2_@@_
-Linker=-lz_@@_-mwindows _@@_-lwx_msw_core-2.5 _@@_-lwx_base-2.5 _@@_-lwx_base_net-2.5_@@_-lwx_msw_adv-2.5_@@_-lrpcrt4 _@@_-loleaut32 _@@_-lole32 _@@_-luuid _@@_-lwinspool _@@_-lwinmm _@@_-lshell32 _@@_-lcomctl32_@@_-lcomdlg32 _@@_-lctl3d32 _@@_-ladvapi32 _@@_-lwsock32 _@@_-lgdi32_@@_
+Linker=-lz.dll_@@_-lwx_msw_core-2.5_@@_-lwx_base-2.5_@@_-lwx_base_net-2.5_@@_-lwx_msw_adv-2.5_@@_-lrpcrt4 _@@_-loleaut32 _@@_-lole32 _@@_-luuid _@@_-lwinspool _@@_-lwinmm _@@_-lshell32 _@@_-lcomctl32_@@_-lcomdlg32 _@@_-lctl3d32 _@@_-ladvapi32 _@@_-lwsock32 _@@_-lgdi32_@@_
 IsCpp=1
 Icon=Proximodo.ico
 ExeOutput=..\bin
@@ -62,19 +62,19 @@ BuildCmd=
 [VersionInfo]
 Major=0
 Minor=2
-Release=0
+Release=1
 Build=0
 LanguageID=1033
 CharsetID=1252
 CompanyName=(c) Antony Boucher
-FileVersion=0.2
+FileVersion=0.2.1
 FileDescription=Proximodo Project
 InternalName=
 LegalCopyright=Distributed under GNU GPL
 LegalTrademarks=
 OriginalFilename=
 ProductName=Proximodo
-ProductVersion=0.2
+ProductVersion=0.2.1
 AutoIncBuildNr=0
 
 [Unit4]
@@ -588,17 +588,17 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit59]
-FileName=..\..\Progra~1\Dev-Cpp\wxWidgets-2.5.3-msw-static\include\wx\msw\wx.rc
+FileName=zlibbuffer.cpp
 CompileCpp=1
-Folder=GUI
+Folder=proxy
 Compile=1
-Link=0
+Link=1
 Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
 [Unit60]
-FileName=zlibbuffer.cpp
+FileName=zlibbuffer.h
 CompileCpp=1
 Folder=proxy
 Compile=1
@@ -618,9 +618,9 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit61]
-FileName=zlibbuffer.h
+FileName=url.h
 CompileCpp=1
-Folder=proxy
+Folder=filter
 Compile=1
 Link=1
 Priority=1000
@@ -638,7 +638,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit63]
-FileName=giffilter.h
+FileName=giffilter.cpp
 CompileCpp=1
 Folder=filter
 Compile=1
@@ -668,7 +668,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit62]
-FileName=url.h
+FileName=giffilter.h
 CompileCpp=1
 Folder=filter
 Compile=1
@@ -678,11 +678,11 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit64]
-FileName=giffilter.cpp
+FileName=..\..\Progra~1\Dev-Cpp\wxWidgets-2.5.3-msw-static\include\wx\msw\wx.rc
 CompileCpp=1
-Folder=filter
+Folder=GUI
 Compile=1
-Link=1
+Link=0
 Priority=1000
 OverrideBuildCmd=0
 BuildCmd=

@@ -41,8 +41,16 @@ using namespace std;
 class CUtil {
 
 public:
+    // Locates the next end-of-line
+    static bool endOfLine(const string& str, unsigned int start,
+                          unsigned int& pos, unsigned int& len, int nbr=1);
+    
     // Small function replacing C function isdigit()
     static inline bool digit(char c) { return (c<='9' && c>='0'); }
+    
+    // Returns true if character is an hexadecimal digit
+    static inline bool hexa(char c) { return (c<='9' && c>='0' ||
+                                        toupper(c)<='F' && toupper(c)>='A'); }
 
     // Case-insensitive compare
     static bool noCaseEqual(const string& s1, const string& s2);
@@ -136,7 +144,7 @@ public:
     static string decodeBASE64(const string& str);
 
     // Launch default browser (for a Proximodo help page)
-    static void openBrowser(const string& path);
+    static void openBrowser(const string& path = "");
 
     // Launch default text editor (for a list file)
     static void openNotepad(const string& path);
@@ -172,6 +180,9 @@ private:
             return tolower(a) == tolower(b);
         }
     };
+    
+    // Checks that a command contains one of the common browser names
+    static bool containsBrowserCommand(const wxString& command); 
 };
 
 #endif

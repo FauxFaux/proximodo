@@ -116,10 +116,7 @@ string CExpander::expand(const string& pattern, CFilter& filter) {
                 }
                 break;
             case 'k':
-                if (filter.owner.url.getPath().find(".gif") != string::npos)
-                    filter.owner.rdirToHost = "http://file//./html/killed.gif";
-                else
-                    filter.owner.rdirToHost = "http://file//./html/killed.html";
+                filter.killed = true;
                 break;
             // simple escaped codes
             case 't': output << '\t'; break;
@@ -262,15 +259,19 @@ string CExpander::expand(const string& pattern, CFilter& filter) {
 
                 } else if (command == "STOP") {
 
-                    filter.active = false;
+                    filter.bypassed = true;
 
                 } else if (command == "JUMP") {
 
-                    filter.owner.jumpToHost = CUtil::trim(content);
+                    filter.owner.rdirToHost = expand(content, filter);
+                    CUtil::trim(filter.owner.rdirToHost);
+                    filter.owner.rdirMode = 0;
 
                 } else if (command == "RDIR") {
 
-                    filter.owner.rdirToHost = CUtil::trim(content);
+                    filter.owner.rdirToHost = expand(content, filter);
+                    CUtil::trim(filter.owner.rdirToHost);
+                    filter.owner.rdirMode = 1;
 
                 } else if (command == "FILTER") {
 
@@ -364,12 +365,22 @@ string CExpander::expand(const string& pattern, CFilter& filter) {
                 } else if (command == "TST") {
 
                     int end, reached;
-                    unsigned int eq = content.find('=');
-                    if (eq == string::npos) { eq = 0; content = '='; }
+                    unsigned int eq, lev;
+                    for (eq = 0, lev = 0; eq < size; eq++) {
+                        // Left parameter can be some text containing ()
+                        if (content[eq] == '(' && (!eq || content[eq-1]!='\\'))
+                            lev++;
+                        else if (content[eq] == ')' && (!eq || content[eq-1]!='\\'))
+                            lev--;
+                        else if (content[eq] == '=' && !lev)
+                            break;
+                    }
+
+                    if (eq == size) { eq = 0; content = '='; }
                     string value = content.substr(eq + 1);
                     string name = content.substr(0, eq);
                     CUtil::trim(name);
-                    CUtil::lower(name);
+                    if (name[0] != '(') CUtil::lower(name);
                     if (name[0] == '\\') name.erase(0,1);
                     string toMatch;
                     if (name == "#") {
@@ -377,10 +388,14 @@ string CExpander::expand(const string& pattern, CFilter& filter) {
                             toMatch = filter.memoryStack.back().getValue();
                     } else if (name.size() == 1 && CUtil::digit(name[0])) {
                         toMatch = filter.memoryTable[name[0]-'0'].getValue();
+                    } else if (name[0] == '(' && name[name.size()-1] == ')') {
+                        name = name.substr(1, name.size()-2);
+                        toMatch = expand(name, filter);
                     } else {
                         toMatch = filter.owner.variables[name];
                     }
-                    bool ret = CMatcher::match(toMatch, value, filter,
+                    bool ret = !toMatch.empty() &&
+                               CMatcher::match(toMatch, value, filter,
                                                0, toMatch.size(), end, reached);
                     if (!ret || end != (int)toMatch.size()) index = size;
 
@@ -393,7 +408,7 @@ string CExpander::expand(const string& pattern, CFilter& filter) {
                     string name = content.substr(0, colon);
                     CUtil::trim(name);
                     CUtil::lower(name);
-                    string value = filter.owner.inHeaders[name];
+                    string value = CFilterOwner::getHeader(filter.owner.inHeaders, name);
                     if (!CMatcher::match(value, pattern, filter, 0,
                                          value.size(), end, reached))
                         index = size;
@@ -407,7 +422,7 @@ string CExpander::expand(const string& pattern, CFilter& filter) {
                     string name = content.substr(0, colon);
                     CUtil::trim(name);
                     CUtil::lower(name);
-                    string value = filter.owner.outHeaders[name];
+                    string value = CFilterOwner::getHeader(filter.owner.outHeaders, name);
                     if (!CMatcher::match(value, pattern, filter, 0,
                                          value.size(), end, reached))
                         index = size;

@@ -61,3 +61,78 @@ string CFilterOwner::evaluateType(const CUrl& url) {
     if (path == "vbs" || path == "css" || path == "js") return path;
     return "oth";
 }
+
+
+/* Remove headers with empty value from a vector of headers.
+ */
+void CFilterOwner::cleanHeaders(vector<SHeader>& headers) {
+
+    vector<SHeader>::iterator it = headers.begin();
+    while (it != headers.end()) {
+        if (it->value.empty()) {
+            headers.erase(it);
+            it = headers.begin();
+        } else {
+            it++;
+        }
+    }    
+}
+
+
+/* Find the first header with the right name in a vector of headers.
+ */
+string& CFilterOwner::getHeader(vector<SHeader>& headers, const string& name) {
+
+    static string emptyString;
+    for (vector<SHeader>::iterator it = headers.begin(); it != headers.end(); it++) {
+        if (CUtil::noCaseEqual(name, it->name)) return it->value;
+    }
+    return emptyString = "";
+}
+
+
+/* Set the value of header in a vector of headers.
+ * If the header does not exist, it is inserted at the back.
+ * Multiple headers are removed.
+ */
+void CFilterOwner::setHeader(vector<SHeader>& headers, const string& name,
+                                                       const string& value) {
+
+    vector<SHeader>::iterator it;
+    for (it = headers.begin(); it != headers.end(); it++) {
+        if (CUtil::noCaseEqual(name, it->name)) {
+            it->value = value;
+            break;
+        }
+    }
+    if (it == headers.end()) {
+        headers.push_back((SHeader){name, value});
+    } else {
+        ++it;
+        vector<SHeader>::iterator it2 = it;
+        while (it2 != headers.end()) {
+            if (CUtil::noCaseEqual(name, it2->name)) {
+                headers.erase(it2);
+                it2 = it;
+            } else {
+                it2++;
+            }
+        }
+    }
+}
+
+
+/* Remove certain headers from a vector of headers.
+ */
+void CFilterOwner::removeHeader(vector<SHeader>& headers, const string& name) {
+
+    vector<SHeader>::iterator it = headers.begin();
+    while (it != headers.end()) {
+        if (CUtil::noCaseEqual(name, it->name)) {
+            headers.erase(it);
+            it = headers.begin();
+        } else {
+            it++;
+        }
+    }
+}

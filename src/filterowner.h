@@ -33,6 +33,8 @@
 
 using namespace std;
 
+struct SHeader { string name, value; };
+
 /* class CFilterOwner
  * This class only contains and implements what is common to
  * filter owners (such as CRequestManager and filter tester window).
@@ -50,8 +52,8 @@ public:
 
     bool   useSettingsProxy;            // can be overridden by $USEPROXY
     string contactHost;                 // can be overridden by $SETPROXY
-    string rdirToHost;                  // set by $RDIR
-    string jumpToHost;                  // set by $JUMP
+    string rdirToHost;                  // set by $RDIR and $JUMP
+    int    rdirMode;                    // 0: 302 response, 1: transparent
 
     bool   bypassIn;                    // tells if we can filter incoming headers
     bool   bypassOut;                   // tells if we can filter outgoing headers
@@ -60,8 +62,8 @@ public:
 
     map<string,string> variables;       // variables for $SET and $GET
 
-    map<string,string> outHeaders;      // Outgoing headers
-    map<string,string> inHeaders;       // Incoming headers
+    vector<SHeader> outHeaders;         // Outgoing headers
+    vector<SHeader> inHeaders;          // Incoming headers
     
     string fileType;                    // useable by $TYPE
 
@@ -71,6 +73,13 @@ public:
     // Try to find out the type of a piece of data (htm, css, js, vbs, oth)
     static string evaluateType(string data);
     static string evaluateType(const CUrl& url);
+    
+    // Manipulate headers
+    static void    cleanHeaders(vector<SHeader>& headers);
+    static string& getHeader   (vector<SHeader>& headers, const string& name);
+    static void    removeHeader(vector<SHeader>& headers, const string& name);
+    static void    setHeader   (vector<SHeader>& headers, const string& name,
+                                                          const string& value);
 };
 
 #endif

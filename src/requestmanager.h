@@ -147,6 +147,8 @@ private:
     bool   useChain;
     bool   useGifFilter;
     void   endFeeding();
+    bool   dumped;          // incoming data flow is over, don't send anything else in
+    int    redirectedIn;    // number of redirections by incoming headers
     
     // Bypass-URL matcher
     CFilter*  urlFilter;  // needed between *urlMatcher and *this

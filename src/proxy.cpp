@@ -98,17 +98,43 @@ CProxy::~CProxy() {
 }
 
 
-/* Test a port
+/* Test the port configured in settings, using testPort(const string& port).
  */
-bool CProxy::testPort(string port) {
+bool CProxy::testPort() {
+     return testPort(CSettings::ref().proxyPort);
+}
 
+
+/* Tests a port for server usage.
+ * If the port is the one we are using, returns true.
+ * Otherwise check that:
+ * 1. The port is not in use (i.e. you cannot connect to it), and
+ * 2. You can open a server on the port.
+ * If both tests pass, returns true, otherwise false.
+ */
+bool CProxy::testPort(const string& port) {
+
+    // Construct the address
     wxIPV4address addr;
     addr.Service(port.c_str());
     if (server) {
         wxIPV4address local;
         server->GetLocal(local);
+        // Are we already using the port?
         if (addr.Service() == local.Service()) return true;
     }
+    
+    // Is someone already using the port?
+    wxSocketClient *client = new wxSocketClient();
+    client->Connect(addr, FALSE);
+    if (client->WaitOnConnect(1) // Wait 1 second
+        && 
+        client->IsConnected())   // Checked only if connection completes
+    {
+        return false;
+    }
+    
+    // Can we open a server on the port?
     wxSocketServer test(addr);
     return test.Ok();
 }
@@ -232,7 +258,6 @@ void CProxy::refreshManagers() {
 /* Called by server socket's event manager
  */
 void CProxy::OnServerEvent(wxSocketEvent& event) {
-
 
     if (event.GetSocketEvent() == wxSOCKET_LOST) {
         // Error: the server socket closed

@@ -2,6 +2,7 @@
 Language: French
 Author: Antony Boucher
 Contributions by:
+Version: 0.2.1
 ---------------------------------------------------------------------
 
 
@@ -21,6 +22,7 @@ TWO_THREE_INTEGERS            =Il faut 2 ou 3 entiers strictements positifs, sép
 MISSING_COLON                 =Il manque un signe : en position %1
 CROCHET_AT_END                =Crochet ouvert en fin de motif
 MISSING_COMMA                 =Il manque une virgule en position %1
+ERROR_MARKER                  =•
 
 Web Error Messages
 
@@ -33,7 +35,7 @@ Filter Messages
 ADDLSTBOX_MESSAGE             =La ligne suivante va être ajoutée au fichier %1 (jokers autorisés)
 INVALID_FILTER_TITLE          =Le titre du filtre doit être défini.
 INVALID_FILTER_MATCHEMPTY     =Le motif de recherche ne doit pas être vide.
-INVALID_FILTER_WIDTH          =La taille de fenêtre glissante est invalide.
+INVALID_FILTER_WIDTH          =La taille limite est invalide.
 INVALID_FILTER_HEADEREMPTY    =Le nom d'en-tête HTTP doit être défini.
 
 Main Window
@@ -137,6 +139,11 @@ LB_SETTINGS_MAXRANGE          =Fin de l'intervalle
 LB_SETTINGS_APPLY             =Appliquer
 LB_SETTINGS_SAVE              =Enregistrer
 LB_SETTINGS_REVERT            =Rétablir
+LB_SETTINGS_STARTUP_GUI       =Au démarrage, afficher:
+LB_SETTINGS_NO_GUI            =Icône de barre de tâche
+LB_SETTINGS_PROX_GUI          =Proximodo
+LB_SETTINGS_BROWSER_GUI       =Navigateur
+LB_SETTINGS_BOTH_GUI          =Proximodo et Navigateur
 LB_SETTINGS_SHOWONSTARTUP     =Afficher la fenêtre au demarrage
 LB_SETTINGS_LIST              =Listes
 LB_SETTINGS_LISTNAME          =Nom
@@ -162,7 +169,7 @@ LB_EDIT_TYPEIN                =En-tête entrante
 LB_EDIT_TYPEOUT               =En-tête sortante
 LB_EDIT_TYPETEXT              =Filtre texte
 LB_EDIT_VERSION               =Version
-LB_EDIT_WIDTH                 =Taille de Fenêtre
+LB_EDIT_WIDTH                 =Taille limite
 LB_EDIT_PRIORITY              =Priorité
 LB_EDIT_URL                   =Motif d'URL :
 LB_EDIT_BOUNDS                =Motif de Bornes :

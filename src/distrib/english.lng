@@ -1,7 +1,8 @@
 ---------------------------------------------------------------------
 Language: English
 Author: Antony Boucher
-Contributions by:
+Contributions by: Douglas Squirrel
+Version: 0.2.1
 ---------------------------------------------------------------------
 
 
@@ -21,6 +22,7 @@ TWO_THREE_INTEGERS            =There must be 2 or 3 comma-separated strictly pos
 MISSING_COLON                 =Missing colon sign at position %1
 CROCHET_AT_END                =Open crochet at end of pattern
 MISSING_COMMA                 =Missing comma at position %1
+ERROR_MARKER                  =•
 
 Web Error Messages
 
@@ -33,7 +35,7 @@ Filter Messages
 ADDLSTBOX_MESSAGE             =The following entry will be added to %1 (wildcards allowed)
 INVALID_FILTER_TITLE          =The title must be defined.
 INVALID_FILTER_MATCHEMPTY     =The Match pattern should not be empty.
-INVALID_FILTER_WIDTH          =The window width is invalid.
+INVALID_FILTER_WIDTH          =The size limit is invalid.
 INVALID_FILTER_HEADEREMPTY    =The Header name must be defined.
 
 Main Window
@@ -65,7 +67,6 @@ _* wxWidgets (c) 1992-2002 Julian Smart, Robert Roebling,
 _   Vadim Zeitlin and other members of the wxWidgets team
 _   Portions (c) 1996 Artificial Intelligence Applications
 _   Institute
-
 
 Menu Bar
 
@@ -113,10 +114,10 @@ MENU_CONFIGMOVEDOWN           =Move Down	Alt+Down
 Settings Window
 
 SETTINGS_NOT_SAVED            =Settings have changed. Do you want to save them?
-REVERT_SETTINGS               =You will lose your modifications. Do you still want to revert settings?
+REVERT_SETTINGS               =You will lose your modifications. Do you still want to revert? settings?
 APPLY_SETTINGS                =Settings have changed. Do you want to apply them?
 BAD_PATTERN                   =This pattern is malformed.
-PORT_UNAVAILABLE              =This port is currently unavailable.
+PORT_UNAVAILABLE              =This port is currently unavailable. It may in use by another process. Please adjust settings in Proximodo or in the settings.txt file.
 BAD_REMOTE_PROXY              =This address does not seem to work.
 LB_SETTINGS_FILTERING         =Filtering
 LB_SETTINGS_OUTGOING          =Filter Outgoing Headers
@@ -125,7 +126,7 @@ LB_SETTINGS_TEXT              =Filter Text
 LB_SETTINGS_GIF               =Freeze GIF Images
 LB_SETTINGS_ACTIVE            =Active Configuration
 LB_SETTINGS_BYPASS            =Bypass URL Pattern
-LB_SETTINGS_GUI               =GUI
+LB_SETTINGS_GUI               =User Interface
 LB_SETTINGS_LANGUAGE          =Language
 LB_SETTINGS_PROXY             =Proxy
 LB_SETTINGS_PORT              =Port
@@ -138,7 +139,12 @@ LB_SETTINGS_MAXRANGE          =Range stops at
 LB_SETTINGS_APPLY             =Apply
 LB_SETTINGS_SAVE              =Save
 LB_SETTINGS_REVERT            =Revert
-LB_SETTINGS_SHOWONSTARTUP     =Show GUI on startup
+LB_SETTINGS_STARTUP_GUI       =On startup, display:
+LB_SETTINGS_NO_GUI            =Nothing (tray icon)
+LB_SETTINGS_PROX_GUI          =Proximodo screen
+LB_SETTINGS_BROWSER_GUI       =Default browser
+LB_SETTINGS_BOTH_GUI          =Both Proximodo and browser
+LB_SETTINGS_SHOWONSTARTUP     =Display GUI on startup
 LB_SETTINGS_LIST              =Lists
 LB_SETTINGS_LISTNAME          =Name
 LB_SETTINGS_NEWLIST           =New
@@ -163,7 +169,7 @@ LB_EDIT_TYPEIN                =Incoming Header
 LB_EDIT_TYPEOUT               =Outgoing Header
 LB_EDIT_TYPETEXT              =Text filter
 LB_EDIT_VERSION               =Version
-LB_EDIT_WIDTH                 =Window Width
+LB_EDIT_WIDTH                 =Size Limit
 LB_EDIT_PRIORITY              =Priority
 LB_EDIT_URL                   =URL Pattern:
 LB_EDIT_BOUNDS                =Bounds Pattern:
@@ -321,7 +327,7 @@ SETTINGS_GIF_TIP              =Activate GIF image freezing
 SETTINGS_CONFIG_TIP           =Configuration currently used for filtering
 SETTINGS_BYPASS_TIP           =URLs matching this pattern will not be filtered
 SETTINGS_LANGUAGE_TIP         =GUI language. Will take effect on next restart
-SETTINGS_STARTUP_TIP          =Display Proximodo main screen when it starts
+SETTINGS_STARTUPGUI_TIP       =Select what Proximodo should display when you launch it
 SETTINGS_PORT_TIP             =Proximodo listeming port. Put it in your browser's Proxy settings
 SETTINGS_USEPROXY_TIP         =If activated, Proximodo itself will use another proxy to access the internet
 SETTINGS_NEXTPROXY_TIP        =Proxy that Proximodo will use. Listed proxies are available to $SETPROXY commands

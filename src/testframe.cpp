@@ -130,7 +130,7 @@ void CTestFrame::OnCommand(wxCommandEvent& event) {
             CFilterOwner owner;
             string url = "http://www.host.org/path/page.html?query=true#anchor";
             owner.url.parseUrl(url);
-            owner.inHeaders["host"] = "www.host.org";
+            CFilterOwner::setHeader(owner.inHeaders, "Host", "www.host.org");
             owner.cnxNumber = 1;
             CFilter filter(owner);
             string text = testMemo->GetValue().c_str();
@@ -170,7 +170,7 @@ void CTestFrame::OnCommand(wxCommandEvent& event) {
                 int done = 0;
                 int start = 0;
                 int lastEnd = -1;
-                do {
+                while (start < size && !filter.bypassed && !filter.killed) {
                     if (!okayChars[(unsigned char)text[start]]) {
                         ++start;
                         continue;
@@ -191,7 +191,9 @@ void CTestFrame::OnCommand(wxCommandEvent& event) {
                     }
                     matched = matcher.match(start, stop, end, reached);
                     filter.unlock();
-                    if (!matched || current->multipleMatches && end <= lastEnd) {
+                    if (!matched
+                            || !current->boundsPattern.empty() && end != stop
+                            || current->multipleMatches && end <= lastEnd) {
                         ++start;
                         continue;
                     }
@@ -211,12 +213,14 @@ void CTestFrame::OnCommand(wxCommandEvent& event) {
                         else
                             done = start = end;
                     }
-                } while (start < size && filter.active);
-                if (!filter.active) start = size;
-                result << text.substr(done, start-done);
+                }
+                if (!filter.killed) {
+                    if (filter.bypassed) start = size;
+                    result << text.substr(done, start-done);
+                }
                 if (!found) result.str(CSettings::ref().getMessage("TEST_NO_MATCH"));
 
-            // Test of a header filter. Must simpler...
+            // Test of a header filter. Much simpler...
             } else {
 
                 if ((!text.empty() || current->matchPattern.empty())

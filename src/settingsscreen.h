@@ -34,7 +34,7 @@
 using namespace std;
 
 /* This class creates a box sizer to be set as the main frame sizer.
- * It display all Proximodo settings, except filters and configurations.
+ * It displays all Proximodo settings, except filters and configurations.
  */
 class CSettingsScreen : public CWindowContent {
 
@@ -64,6 +64,7 @@ private:
     bool           filterText;
     bool           filterGif;
     bool           showOnStartup;
+    bool           startBrowser;
     map<string,string> listNames;
     
     // GUI variables
@@ -71,7 +72,6 @@ private:
 
     // Controls
     pmCheckBox *allowIPCheckbox;
-    pmCheckBox *showCheckbox;
     pmCheckBox *filterInCheckbox;
     pmCheckBox *filterOutCheckbox;
     pmCheckBox *filterTextCheckbox;
@@ -81,6 +81,7 @@ private:
     pmComboBox *languageDropDown;
     pmComboBox *nextProxyDropdown;
     pmComboBox *listDropDown;
+    pmComboBox *startupGUIDropDown;
     pmTextCtrl *listFileText;
     pmTextCtrl *bypassText;
     pmTextCtrl *maxRangeText;
@@ -95,7 +96,6 @@ private:
         ID_ALLOWIPCHECKBOX = 1300,
         ID_FILTERINCHECKBOX,
         ID_FILTEROUTCHECKBOX,
-        ID_SHOWCHECKBOX,
         ID_FILTERTEXTCHECKBOX,
         ID_FILTERGIFCHECKBOX,
         ID_USEPROXYCHECKBOX,
@@ -113,7 +113,8 @@ private:
         ID_LISTFILETEXT,
         ID_NEWBUTTON,
         ID_OPENBUTTON,
-        ID_CHOOSEBUTTON
+        ID_CHOOSEBUTTON,
+        ID_STARTUPGUIDROPDOWN
     };
 
     // Event table

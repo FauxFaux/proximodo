@@ -77,8 +77,8 @@ changing the value of this setting.</p>
 <p class="option">Bypass URL Pattern</p>
 
 <p class="explain">This field contains a pattern for selecting
-pages that must not be filtered at all. If the URL of a
-document/image matches this pattern, no filter from the current
+pages that must not be filtered at all. If the URL (without :// part)
+of a document/image matches this pattern, no filter from the current
 configuration will alter the request, response or document.
 Meanwhile, all other pages will be filtered with regard to above
 settings. The default is <span class="example">$URL(Bypass)</span>,
@@ -88,7 +88,7 @@ pages in this tiny text field! If there is a page or website you
 want to leave untouched, add a line in the Bypass list once and for
 all instead of deactivating/reactivating Proximodo filters.</p>
 
-<p class="section">GUI Settings</p>
+<p class="section">User Interface</p>
 
 <p class="option">Language</p>
 
@@ -96,14 +96,13 @@ all instead of deactivating/reactivating Proximodo filters.</p>
 interface, filter titles and comments. Changes will take effect
 upon next restart (i.e by quitting/reloading Proximodo).</p>
 
-<p class="option">Show GUI on startup</p>
+<p class="option">On startup, display</p>
 
-<p class="explain">If you uncheck this box, Proximodo window will
-not show when you start the program. You will have to click on the
-system tray icon (bottom-right of your screen) to open the window
-when you need it. Once you have customized filters and
-configurations, you may want to uncheck this box so that you don't
-have to minimize the window every time Proximodo starts.</p>
+<p class="explain">Normally, Proximodo puts itself in the 
+background and opens your default browser - this corresponds
+to the &quot;default browser&quot; choice here. You can
+adjust this behaviour so that Proximodo opens both itself
+and the browser, or just itself.</p>
 
 <p class="section">Proxy Settings</p>
 

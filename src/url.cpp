@@ -47,7 +47,7 @@ void CUrl::parseUrl(const string& str) {
     if (pos4 == string::npos) pos4 = str.length();
 
     url       = str;
-    protocol  = (pos1 ? str.substr(0, pos1-3) : string(""));
+    protocol  = (pos1 ? str.substr(0, pos1-3) : string("http"));
     fromhost  = str.substr(pos1);
     afterhost = str.substr(pos2);
     host      = str.substr(pos1, pos2 - pos1);
