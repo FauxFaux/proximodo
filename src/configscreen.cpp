@@ -656,8 +656,7 @@ void CConfigScreen::OnTreeEvent(wxTreeEvent& event) {
         string text = exportSelection();
         deleteSelection(false);
         selectionId = event.GetItem();
-        if (!selectionId.IsOk() || !tree->GetItemData(selectionId))
-            selectionId = rootId;
+        tree->SelectItem(selectionId);
         importFilters(text);
         showStates(rootId);
 

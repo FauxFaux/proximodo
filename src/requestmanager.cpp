@@ -135,6 +135,7 @@ CRequestManager::~CRequestManager() {
  */
 void CRequestManager::manage(wxSocketBase* browser) {
 
+    clock_t stopTime = 0;
     this->browser = browser;
     browser->GetPeer(addr);
     website = new wxSocketClient();
@@ -165,9 +166,15 @@ void CRequestManager::manage(wxSocketBase* browser) {
                 if (receiveIn())    { rest = false; processIn(); }
                 if (sendIn())       { rest = false; }
                 if (receiveOut())   { rest = false; processOut(); }
-                if (rest) wxThread::Sleep(5);
-                if (!valid && inStep == STEP_START) browser->Close();
-
+                if (rest) {
+                    if (outStep != STEP_START) {
+                        if (stopTime) stopTime = 0;
+                    } else {
+                        if (!stopTime) stopTime = clock() + SOCKET_EXPIRATION * CLK_TCK;
+                        if (!valid || clock() > stopTime) browser->Close();
+                    }
+                    wxThread::Sleep(5);
+                }
             } while (website->IsConnected() && browser->IsConnected());
 
             // Terminate feeding browser
@@ -190,8 +197,15 @@ void CRequestManager::manage(wxSocketBase* browser) {
                 browser->Close();
             }
         }
-        if (rest) wxThread::Sleep(50);
-        if (!valid && inStep == STEP_START) browser->Close();
+        if (rest) {
+            if (outStep != STEP_START) {
+                if (stopTime) stopTime = 0;
+            } else {
+                if (!stopTime) stopTime = clock() + SOCKET_EXPIRATION * CLK_TCK;
+                if (!valid || clock() > stopTime) browser->Close();
+            }
+            wxThread::Sleep(50);
+        }
     }
     destroy();
 }

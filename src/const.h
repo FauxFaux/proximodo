@@ -66,4 +66,7 @@
 // Maximum size of virtual lists
 #define VIRTUAL_LIST_MAXSIZE  1000
 
+// Default socket expiration delay (in seconds)
+#define SOCKET_EXPIRATION   10
+
 #endif

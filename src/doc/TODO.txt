@@ -54,7 +54,6 @@ Engine:
 Proxy:
 
 - Next proxy login/password settings
-- Persistent connections should expire after n seconds
 - Support for 206 response code
 - Fix gzip/deflate output, that seems to be corrupted after a few KB (use another zlib version?)
 - HTML debug info or equivalent (to allow filter designers to troubleshoot their filters)

@@ -8,6 +8,7 @@ Engine
 
 Proxy
 - Don't reorder or concatenate headers (cookies must not be concatenated!)
+- Idle persistent connections expire after 10 seconds
 
 GUI
 - Created a monitoring screen, with checkboxes, statistics and abort button
@@ -15,9 +16,12 @@ GUI
 - Opening default browser on start-up should now work fine under Linux
 - Compatibility with wxWidgets 2.5.4
 - Changed colors and font in Log window
+- Simplified internal management of windows
+- Fixed bad drag&drop in config tree
 
 Other
 - Invalid filters are now loaded too
+- Eliminated memory leaks
 
 --------------------------------------------------------------------------------
 Version 0.2.1 (Jan 8th, 2005)
