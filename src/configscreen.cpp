@@ -300,7 +300,7 @@ int CConfigScreen::populate(wxTreeItemId id) {
         CItemData* data2 = new CItemData(it->first, false, state);
         wxTreeItemId id2 = tree->AppendItem(id, it->second.title.c_str(), state, -1, data2);
         tree->SetItemBold(id2);
-        if (!it->second.isValid()) tree->SetItemTextColour(id2, *wxRED);
+        if (!it->second.errorMsg.empty()) tree->SetItemTextColour(id2, *wxRED);
     }
     data->state = (!states[1] && !states[2] ? 0 : !states[0] && !states[2] ? 1 : 2);
     tree->SetItemImage(id, data->state);
@@ -803,7 +803,7 @@ void CConfigScreen::refreshEditWindow() {
     CItemData* prev = (CItemData*)tree->GetItemData(currentId);
     if (prev && !prev->folder) {
         tree->SetItemText(currentId, filters[prev->id].title.c_str());
-        if (!filters[prev->id].isValid()) {
+        if (!filters[prev->id].errorMsg.empty()) {
             tree->SetItemTextColour(currentId, *wxRED);
         } else {
             tree->SetItemTextColour(currentId, *wxBLACK);

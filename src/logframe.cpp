@@ -177,7 +177,7 @@ void CLogFrame::OnCommand(wxCommandEvent& event) {
 }
 
 
-/* Log event listerners
+/* Log event listeners
  */
 void CLogFrame::OnProxyEvent(CProxyEvent& evt) {
 

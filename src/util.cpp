@@ -347,55 +347,55 @@ string CUtil::decodeBASE64(const string& str) {
 // If path is empty or omitted, just opens the browser to its 
 // default home page
 void CUtil::openBrowser(const string& path) {
+
     // Get file type
-    wxFileType* type = wxTheMimeTypesManager->GetFileTypeFromExtension("html");
+    wxFileType* type = wxTheMimeTypesManager->GetFileTypeFromMimeType("text/html");
     if (!type) return;
 
     // Get path string
     wxString pathString;
     // Get command to open given path, if provided
-    if (0 < path.length()) {
+    if (!path.empty()) {
         wxFileName fn(CUtil::makePath(path).c_str());
         fn.MakeAbsolute();
         pathString = fn.GetFullPath();
-    } else {
-        pathString = "";
-    } 
+    }
     
     // Get command
     wxString command;
     if (!type->GetOpenCommand(&command, pathString)) return;
     
-    // If path empty, reduce to just browser open command
-    if (0 == path.length()) {
-        wxString reducedCommand = command;
-        // Just keep stripping words off the end
-        while (containsBrowserCommand(reducedCommand)) {
-            command = reducedCommand;
-            reducedCommand = command.BeforeLast(' ');
-        }
-    } 
-
+    // Remove parameters from command line if path was empty
+    if (path.empty())
+        command = getExeName(command.c_str()).c_str();
+    
     // Execute command
     wxExecute(command, wxEXEC_ASYNC);
 }
 
-// Checks that a command contains one of the common browser names
-bool CUtil::containsBrowserCommand(const wxString& command) {
-    wxString c = command.Lower();
-    return (0 <= c.Find("firefox")  ||
-            0 <= c.Find("iexplore") ||
-            0 <= c.Find("opera")    ||
-            0 <= c.Find("mozilla")  ||
-            0 <= c.Find("netscape") ||
-            0 <= c.Find("navigator"));
+
+// Extract the executable name from a command line
+string CUtil::getExeName(const string& cmd) {
+
+    string name = cmd;
+    if (name.find("WX_DDE#") == 0) {
+        name.erase(0, 7);
+        name.erase(name.find('#'));
+    }
+    if (name.find('\"') == 0) {
+        name.erase(name.find('\"',1) + 1);
+    }
+    else if (name.find(' ') != string::npos) {
+        name.erase(name.find(' '));
+    }
+    return name;
 }
 
 
 // Launch default text editor (for a list file)
 void CUtil::openNotepad(const string& path) {
 
-    wxFileType* type = wxTheMimeTypesManager->GetFileTypeFromExtension( "txt");
+    wxFileType* type = wxTheMimeTypesManager->GetFileTypeFromMimeType("text/plain");
     if (!type) return;
     wxFileName fn(CUtil::makePath(path).c_str());
     fn.MakeAbsolute();

@@ -51,15 +51,12 @@ BEGIN_EVENT_TABLE(CSettingsScreen, wxEvtHandler)
     EVT_BUTTON     (ID_NEXTPROXYBUTTON,      CSettingsScreen::OnCommand)
     EVT_BUTTON     (ID_NEWBUTTON,            CSettingsScreen::OnCommand)
     EVT_BUTTON     (ID_OPENBUTTON,           CSettingsScreen::OnCommand)
+    EVT_BUTTON     (ID_BROWSERPATHBUTTON,    CSettingsScreen::OnCommand)
     EVT_BUTTON     (ID_CHOOSEBUTTON,         CSettingsScreen::OnCommand)
-    EVT_CHECKBOX   (ID_FILTERINCHECKBOX,     CSettingsScreen::OnCommand)
-    EVT_CHECKBOX   (ID_FILTEROUTCHECKBOX,    CSettingsScreen::OnCommand)
-    EVT_CHECKBOX   (ID_FILTERTEXTCHECKBOX,   CSettingsScreen::OnCommand)
-    EVT_CHECKBOX   (ID_FILTERGIFCHECKBOX,    CSettingsScreen::OnCommand)
     EVT_CHECKBOX   (ID_ALLOWIPCHECKBOX,      CSettingsScreen::OnCommand)
+    EVT_CHECKBOX   (ID_STARTBROWSERCHECKBOX, CSettingsScreen::OnCommand)
+    EVT_CHECKBOX   (ID_SHOWGUICHECKBOX,      CSettingsScreen::OnCommand)
     EVT_CHECKBOX   (ID_USEPROXYCHECKBOX,     CSettingsScreen::OnCommand)
-    EVT_COMBOBOX   (ID_STARTUPGUIDROPDOWN,   CSettingsScreen::OnCommand)
-    EVT_COMBOBOX   (ID_CONFIGDROPDOWN,       CSettingsScreen::OnCommand)
     EVT_COMBOBOX   (ID_LANGUAGEDROPDOWN,     CSettingsScreen::OnCommand)
     EVT_COMBOBOX   (ID_NEXTPROXYDROPDOWN,    CSettingsScreen::OnCommand)
     EVT_COMBOBOX   (ID_LISTNAMEDROPDOWN,     CSettingsScreen::OnCommand)
@@ -68,6 +65,7 @@ BEGIN_EVENT_TABLE(CSettingsScreen, wxEvtHandler)
     EVT_TEXT_ENTER (ID_BYPASSTEXT,           CSettingsScreen::OnCommand)
     EVT_TEXT_ENTER (ID_MAXRANGETEXT,         CSettingsScreen::OnCommand)
     EVT_TEXT_ENTER (ID_MINRANGETEXT,         CSettingsScreen::OnCommand)
+    EVT_TEXT_ENTER (ID_BROWSERPATHTEXT,      CSettingsScreen::OnCommand)
     EVT_TEXT_ENTER (ID_PORTTEXT,             CSettingsScreen::OnCommand)
     EVT_TEXT_ENTER (ID_LISTFILETEXT,         CSettingsScreen::OnCommand)
 END_EVENT_TABLE()
@@ -81,6 +79,11 @@ CSettingsScreen::CSettingsScreen(wxFrame* frame, wxWindow* window) :
     wxBoxSizer* leftBox = new wxBoxSizer(wxVERTICAL);
     Add(leftBox,1,wxGROW | wxALL,0);
 
+    wxBoxSizer* rightBox = new wxBoxSizer(wxVERTICAL);
+    Add(rightBox,1,wxGROW | wxALL,0);
+
+    // Filtering options
+
     wxStaticBox* filterStaticBox_StaticBoxObj = new wxStaticBox(window,wxID_ANY,
         settings.getMessage("LB_SETTINGS_FILTERING").c_str());
     pmStaticBoxSizer* filterStaticBox = new pmStaticBoxSizer(
@@ -89,40 +92,6 @@ CSettingsScreen::CSettingsScreen(wxFrame* frame, wxWindow* window) :
 
     wxBoxSizer* filterBox = new wxBoxSizer(wxVERTICAL);
     filterStaticBox->Add(filterBox,1,wxALIGN_TOP | wxALL,0);
-
-    filterOutCheckbox =  new pmCheckBox(window, ID_FILTEROUTCHECKBOX,
-        settings.getMessage("LB_SETTINGS_OUTGOING").c_str());
-    filterOutCheckbox->SetHelpText(settings.getMessage("SETTINGS_OUTGOING_TIP").c_str());
-    filterBox->Add(filterOutCheckbox,0,wxALIGN_LEFT | wxALL,5);
-
-    filterInCheckbox =  new pmCheckBox(window, ID_FILTERINCHECKBOX,
-        settings.getMessage("LB_SETTINGS_INCOMING").c_str());
-    filterInCheckbox->SetHelpText(settings.getMessage("SETTINGS_INCOMING_TIP").c_str());
-    filterBox->Add(filterInCheckbox,0,wxALIGN_LEFT | wxALL,5);
-
-    filterTextCheckbox =  new pmCheckBox(window, ID_FILTERTEXTCHECKBOX,
-        settings.getMessage("LB_SETTINGS_TEXT").c_str());
-    filterTextCheckbox->SetHelpText(settings.getMessage("SETTINGS_TEXT_TIP").c_str());
-    filterBox->Add(filterTextCheckbox,0,wxALIGN_LEFT | wxALL,5);
-
-    filterGifCheckbox =  new pmCheckBox(window, ID_FILTERGIFCHECKBOX,
-        settings.getMessage("LB_SETTINGS_GIF").c_str());
-    filterGifCheckbox->SetHelpText(settings.getMessage("SETTINGS_GIF_TIP").c_str());
-    filterBox->Add(filterGifCheckbox,0,wxALIGN_LEFT | wxALL,5);
-
-    wxBoxSizer* configBox = new wxBoxSizer(wxHORIZONTAL);
-    filterBox->Add(configBox,0,wxGROW | wxALL,0);
-
-    pmStaticText* configLabel =  new pmStaticText(window, wxID_ANY ,
-        settings.getMessage("LB_SETTINGS_ACTIVE").c_str());
-    configBox->Add(configLabel,0,wxALIGN_CENTER_VERTICAL | wxALL,5);
-
-    wxArrayString choices;
-    configDropdown =  new pmComboBox(window, ID_CONFIGDROPDOWN ,
-        "" , wxDefaultPosition, wxDefaultSize, choices,
-        wxCB_DROPDOWN | wxCB_READONLY | wxCB_SORT   );
-    configDropdown->SetHelpText(settings.getMessage("SETTINGS_CONFIG_TIP").c_str());
-    configBox->Add(configDropdown,1,wxALIGN_CENTER_VERTICAL | wxALL,5);
 
     wxBoxSizer* bypassBox = new wxBoxSizer(wxHORIZONTAL);
     filterBox->Add(bypassBox,0,wxGROW | wxALL,0);
@@ -136,11 +105,13 @@ CSettingsScreen::CSettingsScreen(wxFrame* frame, wxWindow* window) :
     bypassText->SetHelpText(settings.getMessage("SETTINGS_BYPASS_TIP").c_str());
     bypassBox->Add(bypassText,1,wxALIGN_CENTER_VERTICAL | wxALL,5);
 
+    // GUI options
+
     wxStaticBox* guiStaticBox_StaticBoxObj = new wxStaticBox(window,wxID_ANY,
         settings.getMessage("LB_SETTINGS_GUI").c_str());
     pmStaticBoxSizer* guiStaticBox = new pmStaticBoxSizer(
         guiStaticBox_StaticBoxObj,wxHORIZONTAL);
-    leftBox->Add(guiStaticBox,1,wxGROW | wxALL,5);
+    rightBox->Add(guiStaticBox,0,wxGROW | wxALL,5);
 
     wxBoxSizer* guiBox = new wxBoxSizer(wxVERTICAL);
     guiStaticBox->Add(guiBox,1,wxALIGN_TOP | wxALL,0);
@@ -152,30 +123,43 @@ CSettingsScreen::CSettingsScreen(wxFrame* frame, wxWindow* window) :
         settings.getMessage("LB_SETTINGS_LANGUAGE").c_str());
     languageBox->Add(languageLabel,0,wxALIGN_CENTER_VERTICAL | wxALL,5);
 
+    wxArrayString choices;
     languageDropDown =  new pmComboBox(window, ID_LANGUAGEDROPDOWN ,
         "" , wxDefaultPosition, wxDefaultSize, choices,
         wxCB_DROPDOWN | wxCB_READONLY | wxCB_SORT );
     languageDropDown->SetHelpText(settings.getMessage("SETTINGS_LANGUAGE_TIP").c_str());
     languageBox->Add(languageDropDown,0,wxALIGN_CENTER_VERTICAL | wxALL,5);
 
-    pmStaticText* startupGUILabel =  new pmStaticText(window, wxID_ANY ,
-        settings.getMessage("LB_SETTINGS_STARTUP_GUI").c_str());
-    guiBox->Add(startupGUILabel,0,wxALIGN_CENTER_VERTICAL | wxALL,5);
-    
-    startupGUIDropDown =  new pmComboBox(window, ID_STARTUPGUIDROPDOWN,
-        "", wxDefaultPosition, wxDefaultSize, choices,
-        wxCB_DROPDOWN | wxCB_READONLY);
-    startupGUIDropDown->SetHelpText(settings.getMessage("SETTINGS_STARTUPGUI_TIP").c_str());
-    guiBox->Add(startupGUIDropDown,0,wxALIGN_CENTER_VERTICAL | wxALL,5);
+    showGuiCheckbox =  new pmCheckBox(window, ID_SHOWGUICHECKBOX,
+        settings.getMessage("LB_SETTINGS_SHOWGUI").c_str());
+    showGuiCheckbox->SetHelpText(settings.getMessage("SETTINGS_SHOWGUI_TIP").c_str());
+    guiBox->Add(showGuiCheckbox,0,wxALIGN_LEFT | wxALL,5);
 
-    wxBoxSizer* rightBox = new wxBoxSizer(wxVERTICAL);
-    Add(rightBox,1,wxGROW | wxALL,0);
+    startBrowserCheckbox =  new pmCheckBox(window, ID_STARTBROWSERCHECKBOX,
+        settings.getMessage("LB_SETTINGS_STARTBROWSER").c_str());
+    startBrowserCheckbox->SetHelpText(settings.getMessage("SETTINGS_STARTBROWSER_TIP").c_str());
+    guiBox->Add(startBrowserCheckbox,0,wxALIGN_LEFT | wxALL,5);
+
+    wxBoxSizer* browserPathBox = new wxBoxSizer(wxHORIZONTAL);
+    guiBox->Add(browserPathBox,0,wxGROW | wxALL,0);
+
+    browserPathText =  new pmTextCtrl(window, ID_BROWSERPATHTEXT,
+        "" , wxDefaultPosition, wxDefaultSize);
+    browserPathText->SetHelpText(settings.getMessage("SETTINGS_BROWSERPATH_TIP").c_str());
+    browserPathBox->Add(browserPathText,1,wxALIGN_CENTER_VERTICAL | wxALL,5);
+
+    pmBitmapButton* browserButton =  new pmBitmapButton(window, ID_BROWSERPATHBUTTON,
+        wxBitmap(btn_file20_xpm) );
+    browserButton->SetHelpText(settings.getMessage("SETTINGS_BROWSERCHOOSE_TIP").c_str());
+    browserPathBox->Add(browserButton,0,wxALIGN_CENTER_VERTICAL | wxALL,5);
+
+    // Proxy options
 
     wxStaticBox* proxyStaticBox_StaticBoxObj = new wxStaticBox(window,wxID_ANY,
         settings.getMessage("LB_SETTINGS_PROXY").c_str());
     pmStaticBoxSizer* proxyStaticBox = new pmStaticBoxSizer(
         proxyStaticBox_StaticBoxObj,wxHORIZONTAL);
-    rightBox->Add(proxyStaticBox,0,wxGROW | wxALL,5);
+    leftBox->Add(proxyStaticBox,1,wxGROW | wxALL,5);
 
     wxBoxSizer* proxyBox = new wxBoxSizer(wxVERTICAL);
     proxyStaticBox->Add(proxyBox,1,wxALIGN_TOP | wxALL,0);
@@ -245,6 +229,8 @@ CSettingsScreen::CSettingsScreen(wxFrame* frame, wxWindow* window) :
     rangeBox->Add(maxRangeText,0,wxALIGN_CENTER_HORIZONTAL |
         wxALIGN_CENTER_VERTICAL | wxALL,0);
 
+    // List options
+
     wxStaticBox* listStaticBox_StaticBoxObj = new wxStaticBox(window,wxID_ANY,
         settings.getMessage("LB_SETTINGS_LIST").c_str());
     pmStaticBoxSizer* listStaticBox = new pmStaticBoxSizer(
@@ -294,8 +280,10 @@ CSettingsScreen::CSettingsScreen(wxFrame* frame, wxWindow* window) :
     chooseButton->SetHelpText(settings.getMessage("SETTINGS_FILECHOOSE_TIP").c_str());
     listFileBox->Add(chooseButton,0,wxALIGN_CENTER_VERTICAL | wxALL,5);
 
+    // More buttons
+
     wxBoxSizer* buttonBox = new wxBoxSizer(wxHORIZONTAL);
-    leftBox->Add(buttonBox,0,wxALIGN_CENTER_HORIZONTAL | wxALL,0);
+    rightBox->Add(buttonBox,0,wxALIGN_CENTER_HORIZONTAL | wxALL,0);
 
     pmButton* applyButton =  new pmButton(window, ID_APPLYBUTTON,
         settings.getMessage("LB_SETTINGS_APPLY").c_str());
@@ -306,6 +294,8 @@ CSettingsScreen::CSettingsScreen(wxFrame* frame, wxWindow* window) :
         settings.getMessage("LB_SETTINGS_REVERT").c_str());
     revertButton->SetHelpText(settings.getMessage("SETTINGS_REVERT_TIP").c_str());
     buttonBox->Add(revertButton,0,wxALIGN_CENTER_VERTICAL | wxALL,5);
+
+    // Ready
 
     makeSizer();
 }
@@ -340,6 +330,7 @@ bool CSettingsScreen::hasChanged() {
             proxies       != settings.proxies       ||
             showOnStartup != settings.showOnStartup ||
             startBrowser  != settings.startBrowser  ||
+            browserPath   != settings.browserPath   ||
             listNames     != settings.listNames     );
 }
 
@@ -372,27 +363,19 @@ void CSettingsScreen::revert(bool confirm) {
     proxies       = settings.proxies       ;
     showOnStartup = settings.showOnStartup ;
     startBrowser  = settings.startBrowser  ;
+    browserPath   = settings.browserPath   ;
     listNames     = settings.listNames     ;
 
     // Populate controls
     allowIPCheckbox->SetValue(allowIPRange);
-    filterInCheckbox->SetValue(filterIn);
-    filterOutCheckbox->SetValue(filterOut);
-    filterTextCheckbox->SetValue(filterText);
-    filterGifCheckbox->SetValue(filterGif);
+    startBrowserCheckbox->SetValue(startBrowser);
+    showGuiCheckbox->SetValue(showOnStartup);
     useProxyCheckbox->SetValue(useNextProxy);
     bypassText->SetValue(bypass.c_str());
+    browserPathText->SetValue(browserPath.c_str());
     maxRangeText->SetValue(CUtil::toDotted(maxIPRange).c_str());
     minRangeText->SetValue(CUtil::toDotted(minIPRange).c_str());
     portText->SetValue(proxyPort.c_str());
-
-    // Populate configuration list
-    configDropdown->Clear();
-    for (map<string, set<int> >::iterator it = settings.configs.begin();
-             it != settings.configs.end(); it++) {
-        configDropdown->Append(it->first.c_str());
-    }
-    configDropdown->SetValue(currentConfig.c_str());
 
     // Populate proxy list
     nextProxyDropdown->Clear();
@@ -411,22 +394,6 @@ void CSettingsScreen::revert(bool confirm) {
     }
     languageDropDown->SetValue(language.c_str());
     
-    // Populate GUI selection list
-    startupGUIDropDown->Clear();
-    startupGUIDropDown->Append(settings.getMessage("LB_SETTINGS_NO_GUI").c_str());
-    startupGUIDropDown->Append(settings.getMessage("LB_SETTINGS_PROX_GUI").c_str());
-    startupGUIDropDown->Append(settings.getMessage("LB_SETTINGS_BROWSER_GUI").c_str());
-    startupGUIDropDown->Append(settings.getMessage("LB_SETTINGS_BOTH_GUI").c_str());
-    if (false == showOnStartup && false == startBrowser) {
-        startupGUIDropDown->SetValue(settings.getMessage("LB_SETTINGS_NO_GUI").c_str());
-    } else if (true == showOnStartup && false == startBrowser) {
-        startupGUIDropDown->SetValue(settings.getMessage("LB_SETTINGS_PROX_GUI").c_str());
-    } else if (false == showOnStartup && true == startBrowser) {
-        startupGUIDropDown->SetValue(settings.getMessage("LB_SETTINGS_BROWSER_GUI").c_str());
-    } else if (true == showOnStartup && true == startBrowser) {
-        startupGUIDropDown->SetValue(settings.getMessage("LB_SETTINGS_BOTH_GUI").c_str());
-    }
-    
     // Populate lists list
     listDropDown->Clear();
     for (map<string,string>::iterator it = listNames.begin();
@@ -437,7 +404,7 @@ void CSettingsScreen::revert(bool confirm) {
     listDropDown->SetValue("");
     listFileText->SetValue("");
 
-    filterOutCheckbox->SetFocus();
+    allowIPCheckbox->SetFocus();
 }
 
 
@@ -472,6 +439,7 @@ void CSettingsScreen::apply(bool confirm) {
     settings.proxies       = proxies       ;
     settings.showOnStartup = showOnStartup ;
     settings.startBrowser  = startBrowser  ;
+    settings.browserPath   = browserPath   ;
     settings.listNames     = listNames     ;
     settings.modified      = true;
     // Remove lists with no filename
@@ -493,33 +461,20 @@ void CSettingsScreen::apply(bool confirm) {
  */
 void CSettingsScreen::OnCommand(wxCommandEvent& event) {
     string value;
-    int tmp;
     
     switch (event.GetId()) {
-    case ID_FILTERINCHECKBOX:
-        filterIn = filterInCheckbox->GetValue(); break;
-
-    case ID_FILTEROUTCHECKBOX:
-        filterOut = filterOutCheckbox->GetValue(); break;
-
-    case ID_FILTERTEXTCHECKBOX:
-        filterText = filterTextCheckbox->GetValue(); break;
-
-    case ID_FILTERGIFCHECKBOX:
-        filterGif = filterGifCheckbox->GetValue(); break;
-
     case ID_ALLOWIPCHECKBOX:
         allowIPRange = allowIPCheckbox->GetValue(); break;
 
     case ID_USEPROXYCHECKBOX:
         useNextProxy = useProxyCheckbox->GetValue(); break;
 
-    case ID_STARTUPGUIDROPDOWN:
-        tmp = startupGUIDropDown->FindString(startupGUIDropDown->GetValue());
-        showOnStartup = tmp & 1;
-        startBrowser = tmp / 2;
-        break;
-    
+    case ID_SHOWGUICHECKBOX:
+        showOnStartup = showGuiCheckbox->GetValue(); break;
+
+    case ID_STARTBROWSERCHECKBOX:
+        startBrowser = startBrowserCheckbox->GetValue(); break;
+
     case ID_APPLYBUTTON:
         settings.proxyPort.clear(); // (to force apply, in case list files were edited)
         apply(false); break;
@@ -527,12 +482,12 @@ void CSettingsScreen::OnCommand(wxCommandEvent& event) {
     case ID_REVERTBUTTON:
         revert(true); break;
 
-    case ID_CONFIGDROPDOWN:
-        currentConfig = configDropdown->GetValue(); break;
-        
     case ID_LANGUAGEDROPDOWN:
         language = languageDropDown->GetValue(); break;
         
+    case ID_BROWSERPATHTEXT:
+        browserPath = browserPathText->GetValue().c_str(); break;
+
     case ID_BYPASSTEXT:
         {
             string newValue = bypassText->GetValue().c_str();
@@ -689,6 +644,19 @@ void CSettingsScreen::OnCommand(wxCommandEvent& event) {
                     f.Close();
                 }
             }
+            break;
+        }
+    case ID_BROWSERPATHBUTTON:
+        {
+            wxFileDialog fd(window,
+                  settings.getMessage("OPEN_BROWSER_QUESTION").c_str(),
+                  ".", // This is the directory name
+                  "", "All files (*.*)|*.*", wxOPEN);
+            if (fd.ShowModal() != wxID_OK) break;
+            wxString path = fd.GetPath();
+            if (path.Find(' ') >= 0) path = "\"" + path + "\"";
+            browserPathText->SetValue(path);
+            browserPath = path.c_str();
             break;
         }
     default:

@@ -46,7 +46,7 @@ public:
     CFilter(CFilterOwner& owner);
 
     CFilterOwner& owner;
-
+    
     // Is the filter bypassed?
     bool bypassed;
     

@@ -19,22 +19,17 @@ GUI:
 - Stealth mode for use on public computers (or password on tray icon usage? must be secure)
 - Menu option to import a whole Proxomitron configuration (filters, config, lists, proxies, options)
 - Menu option to import/export a whole Proximodo config
-- Move filtering checkboxes and active config dropdown to welcome screen
-- Add 'Abort' button and proxy status info on welcome screen
-- Button to come back to welcome screen
 - Design an "Add to List" dialog
-- Use this dialog in tray icon, and for $ADDLSTBOX()
+- Use this "Add to List" dialog in tray icon, and for $ADDLSTBOX()
 - Make very minor changes in code so that it compiles and runs smoothly on Mac, Linux or Unix platforms
 - Generate .PAC files for easy proxy changes in browsers
 - Additional test window with Pattern field, for testing some expression instead of current filter
-- Replace error marker in error messagebox by a language-defined string
 - Add homepage link and new-version-checker (RSS) to help menu
 - Nicer About window
 - Command line options
 - Show header names for header filters, and priorities, in tree (if a menu option is on)
 - 3-state folders: possibility to restore filter selection after disabling a folder
 - Screen dedicated to lists management and edition
-- Setting to override default browser name to launch on startup
 - Have RW files stored in user's personal folders (install dir should be considered read-only)
 - A way for the filter designer to specify filter dependencies within their packs:
   dependent filters are automatically (de)activated when the end-user checks filters.

@@ -149,6 +149,9 @@ public:
     // Launch default text editor (for a list file)
     static void openNotepad(const string& path);
 
+    // Extract the executable name from a command line
+    static string getExeName(const string& cmd);
+
     // Function for sorting a list control
     static int wxCALLBACK sortFunction(long item1, long item2, long sortData);
 
@@ -180,9 +183,6 @@ private:
             return tolower(a) == tolower(b);
         }
     };
-    
-    // Checks that a command contains one of the common browser names
-    static bool containsBrowserCommand(const wxString& command); 
 };
 
 #endif

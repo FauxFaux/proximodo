@@ -67,6 +67,7 @@ private:
     enum {
         // Buttons
         ID_SETTINGS = 1100,
+        ID_MONITOR,
         ID_LOG,
         ID_FILTERS,
         ID_CONFIG,
@@ -74,6 +75,7 @@ private:
         ID_QUIT,
         // Menu items
         ID_TOOLSSETTINGS,
+        ID_TOOLSMONITOR,
         ID_TOOLSCONFIG,
         ID_TOOLSFILTERS,
         ID_TOOLSLOG,

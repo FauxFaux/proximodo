@@ -100,9 +100,9 @@ public:
     int defaultFilter;
     
     // Check if all data is valid
-    bool isValid() const;
-    bool isValid(string& errmsg) const;
-    
+    void testValidity();
+    string errorMsg;
+
     // Compare filters
     bool operator<(const CFilterDescriptor& d) const;
     bool operator==(const CFilterDescriptor& d) const;

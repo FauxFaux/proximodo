@@ -63,33 +63,38 @@ CRequestManager::CRequestManager() {
         }
     }
     
+    // Sort filters by decreasing priority
     sort(filters.begin(), filters.end());
 
     // Create header filters
     for (vector<CFilterDescriptor>::iterator it = filters.begin();
                 it != filters.end(); it++) {
-        try {
-            if (it->filterType == CFilterDescriptor::HEADOUT)
-                OUTfilters.push_back(new CHeaderFilter(*it, *this));
-            else if (it->filterType == CFilterDescriptor::HEADIN)
-                INfilters.push_back(new CHeaderFilter(*it, *this));
+        if (it->errorMsg.empty()) {
+            try {
+                if (it->filterType == CFilterDescriptor::HEADOUT)
+                    OUTfilters.push_back(new CHeaderFilter(*it, *this));
+                else if (it->filterType == CFilterDescriptor::HEADIN)
+                    INfilters.push_back(new CHeaderFilter(*it, *this));
 
-        } catch (parsing_exception) {
-            // Invalid filters are just ignored
+            } catch (parsing_exception) {
+                // Invalid filters are just ignored
+            }
         }
     }
 
     // Text filters must be created and chained in reverse order;
     for (vector<CFilterDescriptor>::reverse_iterator it = filters.rbegin();
                 it != filters.rend(); it++) {
-        try {
-            if (it->filterType == CFilterDescriptor::TEXT) {
-                CTextFilter* filter = new CTextFilter(*this, *it, chain);
-                TEXTfilters.push_back(filter);
-                chain = filter;
+        if (it->errorMsg.empty()) {
+            try {
+                if (it->filterType == CFilterDescriptor::TEXT) {
+                    CTextFilter* filter = new CTextFilter(*this, *it, chain);
+                    TEXTfilters.push_back(filter);
+                    chain = filter;
+                }
+            } catch (parsing_exception) {
+                // Invalid filters are just ignored
             }
-        } catch (parsing_exception) {
-            // Invalid filters are just ignored
         }
     }
 

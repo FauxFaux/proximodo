@@ -37,21 +37,35 @@ using namespace std;
 
 /* This class contains statistics, and collects technical events.
  * It is implemented as a singleton, because there need be only one.
+ * Each received event is immediately broadcasted to registered event handlers.
  *
- * To send proxy events to the log system, the proxy can use:
+ * To send events to the log system, any function can do:
+ *
+ *       CLog::ref().logFilterEvent(type, reqNum, title, text);
  *       CLog::ref().logProxyEvent(type, addr);
+ *       CLog::ref().logHttpEvent(type, addr, reqNum, text);
  *
- * To listen to proxy events that CLog receives, a CLogViewer class can do:
+ * To listen to them, a class that inherits wxEvtHandler does:
+ *
+ *       CLog::ref().filterListeners.insert(this);
  *       CLog::ref().proxyListeners.insert(this);
+ *       CLog::ref().httpListeners.insert(this);
  *
- * To stop listening, CLogViewer unregisters itself:
+ * To stop listening, the class unregisters itself:
+ *
+ *       CLog::ref().filterListeners.erase(this);
  *       CLog::ref().proxyListeners.erase(this);
+ *       CLog::ref().httpListeners.erase(this);
  *
- * CLogViewer must have in the BEGIN_EVENT_TABLE section a line:
- *       EVT_PROXY (CLogViewer::OnProxyEvent)
+ * The class must have in the BEGIN_EVENT_TABLE section the corresponding lines:
  *
- * The handling function should look like this:
- *       void CLogViewer::OnProxyEvent(CProxyEvent& evt) {
+ *       EVT_FILTER (CLogViewer::OnProxyEvent)
+ *       EVT_PROXY  (CLogViewer::OnProxyEvent)
+ *       EVT_HTTP   (CLogViewer::OnProxyEvent)
+ *
+ * The handling functions should look like this:
+ *
+ *       void myListeningClass::OnProxyEvent(CProxyEvent& evt) {
  *           // ...display or use evt properties...
  *       }
  */

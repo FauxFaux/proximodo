@@ -27,6 +27,7 @@
 #include <sstream>
 #include <wx/file.h>
 #include <wx/msgdlg.h>
+#include <wx/mimetype.h>
 #include "util.h"
 #include "const.h"
 #include "matcher.h"
@@ -236,6 +237,7 @@ void CSettings::saveSettings() {
     addLine (f,"[Settings]");
     addLine (f, "ShowOnStartup = " + string(showOnStartup ? "yes" : "no"));
     addLine (f, "StartBrowser = " + string(startBrowser ? "yes" : "no"));
+    addLine (f, "BrowserPath = " + browserPath);
     addLine (f, "Port = " + proxyPort);        // For file readability only
     addLine (f, "UseProxy = " + string(useNextProxy ? "yes" : "no"));
     addLine (f, "CurrentProxy = " + nextProxy);
@@ -316,6 +318,8 @@ void CSettings::loadSettings() {
             useNextProxy = (toupper(value[0])=='Y');
         else if (label == "CURRENTPROXY")
             nextProxy = value;
+        else if (label == "BROWSERPATH")
+            browserPath = value;
         else if (label == "ALLOWIPRANGE")
             allowIPRange = (toupper(value[0])=='Y');
         else if (label == "FILTERIN")
@@ -387,6 +391,15 @@ void CSettings::loadSettings() {
     
     cleanFolders();
     f.Close();
+    
+    // Define browser executable path on first run
+    if (firstRun && browserPath.empty()) {
+        wxString command;
+        wxFileType* type = wxTheMimeTypesManager->GetFileTypeFromMimeType("text/html");
+        if (type && type->GetOpenCommand(&command, wxString(""))) {
+            browserPath = CUtil::getExeName(command.c_str());
+        }
+    }
 }
 
 

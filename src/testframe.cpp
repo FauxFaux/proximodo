@@ -122,9 +122,8 @@ void CTestFrame::OnCommand(wxCommandEvent& event) {
             break;
         }
         case ID_TEST: {
-            string errmsg;
-            if (!current->isValid(errmsg)) {
-                wxMessageBox(errmsg.c_str(), APP_NAME);
+            if (!current->errorMsg.empty()) {
+                wxMessageBox(current->errorMsg.c_str(), APP_NAME);
                 return;
             }
             CFilterOwner owner;

@@ -40,6 +40,7 @@ INVALID_FILTER_HEADEREMPTY    =The Header name must be defined.
 
 Main Window
 
+BUTTON_MONITOR                =Monitor
 BUTTON_SETTINGS               =Settings
 BUTTON_LOG                    =Log
 BUTTON_FILTERS                =Filters
@@ -74,6 +75,7 @@ MENU_TOOLS                    =Tools
 MENU_FILTERS                  =Filters
 MENU_CONFIG                   =Configurations
 MENU_HELP                     =Help
+MENU_TOOLSMONITOR             =Monitor	Alt+M
 MENU_TOOLSSETTINGS            =Settings	Alt+S
 MENU_TOOLSCONFIG              =Configurations	Alt+G
 MENU_TOOLSFILTERS             =Filters	Alt+F
@@ -151,8 +153,11 @@ LB_SETTINGS_NEWLIST           =New
 LB_SETTINGS_OPENLIST          =Open
 LB_SETTINGS_LISTFILE          =File
 LB_SETTINGS_CHOOSEFILE        =Choose
+LB_SETTINGS_SHOWGUI           =Show GUI on start-up
+LB_SETTINGS_STARTBROWSER      =Launch this app on start-up:
 ASK_CREATE_NEWLIST            =This file does not exist. Do you want to create it?
 OPEN_LISTFILE_QUESTION        =Choose a text file
+OPEN_BROWSER_QUESTION         =Choose an executable file
 
 Edit Filter Window
 
@@ -238,6 +243,13 @@ EVT_PROXY_REFUSE              =>>> Connection refused from port %1
 EVT_PROXY_START               =>>> Proxy started on port %1
 EVT_PROXY_STOP                =>>> Proxy stopped
 
+Monitoring Window
+
+LB_MONITOR_STATISTICS         =Statistics
+LB_MONITOR_OPENCNX            =Open connections:
+LB_MONITOR_OPENREQ            =Running requests:
+LB_MONITOR_ABORT              =Abort
+
 Tray Icon Menu
 
 TRAY_CONFIG                   =Configurations
@@ -301,12 +313,14 @@ MENU_FILTERSPROXOMITRON_TIP   =Import Proxomitron filters from clipboard. Duplic
 MENU_FILTERSEXPORT_TIP        =Export Selected filters to clipboard
 MENU_FILTERSAPPLY_TIP         =Commit all filter modifications
 MENU_FILTERSREVERT_TIP        =Cancel all filter modifications since last apply/revert
+BUTTON_MONITOR_TIP            =Display the monitoring panel
 BUTTON_SETTINGS_TIP           =Display the settings panel
 BUTTON_LOG_TIP                =Open the log window
 BUTTON_FILTERS_TIP            =Display the filter edition panel
 BUTTON_CONFIG_TIP             =Display the configuration edition panel
 BUTTON_HELP_TIP               =Open the help content page in a web browser
 BUTTON_QUIT_TIP               =Stop the proxy and terminate Proximodo
+MENU_TOOLSMONITOR_TIP         =Display the monitoring panel
 MENU_TOOLSSETTINGS_TIP        =Display the settings panel
 MENU_TOOLSCONFIG_TIP          =Display the configuration edition panel
 MENU_TOOLSFILTERS_TIP         =Display the filter edition panel
@@ -342,6 +356,11 @@ SETTINGS_LISTFILE_TIP         =List's file path. If file does not exist, you wil
 SETTINGS_FILECHOOSE_TIP       =Find a file
 SETTINGS_APPLY_TIP            =Commit settings modifications
 SETTINGS_REVERT_TIP           =Cancel settings modifications
+SETTINGS_SHOWGUI_TIP          =Show this window when Proximodo starts (otherwise, only tray icon)
+SETTINGS_STARTBROWSER_TIP     =Will start the following external executable upon start-up
+SETTINGS_BROWSERPATH_TIP      =External executable to run when Proximodo starts (usually, your browser)
+SETTINGS_BROWSERCHOOSE_TIP    =Find the executable on your hard-drive
+MONITOR_ABORT_TIP             =Closes connections (breaks current downloads)
 
 Default Filter Titles
 

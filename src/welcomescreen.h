@@ -26,9 +26,9 @@
 #ifndef __welcomescreen__
 #define __welcomescreen__
 
-#include <wx/window.h>
-#include <wx/frame.h>
+#include "controls.h"
 #include "windowcontent.h"
+#include "events.h"
 
 /* This class create a box sizer to be set as the main frame sizer.
  * It only contains the Proximodo logo, centered in the sizer.
@@ -38,6 +38,35 @@ class CWelcomeScreen : public CWindowContent {
 public:
     CWelcomeScreen(wxFrame* frame, wxWindow* window);
     ~CWelcomeScreen();
+
+private:
+    void revert(bool confirm);
+
+    // Controls
+    pmCheckBox *filterInCheckbox;
+    pmCheckBox *filterOutCheckbox;
+    pmCheckBox *filterTextCheckbox;
+    pmCheckBox *filterGifCheckbox;
+    pmComboBox *configDropdown;
+    pmStaticText* openCnxValue;
+    pmStaticText* openReqValue;
+
+    // Event handling function
+    void OnCommand(wxCommandEvent& event);
+    void OnProxyEvent(CProxyEvent& evt);
+
+    // IDs
+    enum {
+        ID_FILTERINCHECKBOX = 1800,
+        ID_FILTEROUTCHECKBOX,
+        ID_FILTERTEXTCHECKBOX,
+        ID_FILTERGIFCHECKBOX,
+        ID_CONFIGDROPDOWN,
+        ID_ABORTBUTTON
+    };
+
+    // Event table
+    DECLARE_EVENT_TABLE()
 };
 
 #endif

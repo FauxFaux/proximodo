@@ -79,8 +79,6 @@ public:
     
     // Marks all current managers as obsolete (!valid).
     // New connections will be processed by new managers.
-    // Note: CProxy monitors file changes by checking
-    // CSettings::refreshProxy
     void refreshManagers();
     
 protected:

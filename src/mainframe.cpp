@@ -49,6 +49,7 @@
 #include "images/btn_log.xpm"
 #include "images/btn_config.xpm"
 #include "images/btn_help.xpm"
+#include "images/btn_monitor.xpm"
 #include "images/btn_quit.xpm"
 #include "images/icon32.xpm"
 
@@ -107,6 +108,10 @@ CMainFrame::CMainFrame(const wxPoint& position)
 
     // Toolbar
     wxToolBar* toolbar = CreateToolBar(wxTB_TEXT);
+    toolbar->AddTool(ID_MONITOR,
+        settings.getMessage("BUTTON_MONITOR").c_str(), btn_monitor_xpm);
+    toolbar->SetToolLongHelp(ID_MONITOR,
+        settings.getMessage("BUTTON_MONITOR_TIP").c_str());
     toolbar->AddTool(ID_LOG,
         settings.getMessage("BUTTON_LOG").c_str(), btn_log_xpm);
     toolbar->SetToolLongHelp(ID_LOG,
@@ -140,6 +145,9 @@ CMainFrame::CMainFrame(const wxPoint& position)
     // Menu bar
     wxMenuBar* menubar = new wxMenuBar();
     wxMenu* menuTools = new wxMenu();
+    menuTools->Append(ID_TOOLSMONITOR,
+        settings.getMessage("MENU_TOOLSMONITOR").c_str(),
+        settings.getMessage("MENU_TOOLSMONITOR_TIP").c_str());
     menuTools->Append(ID_TOOLSSETTINGS,
         settings.getMessage("MENU_TOOLSSETTINGS").c_str(),
         settings.getMessage("MENU_TOOLSSETTINGS_TIP").c_str());
@@ -278,6 +286,14 @@ void CMainFrame::OnCommand(wxCommandEvent& event) {
     CSettings& settings = CSettings::ref();
     
     switch (event.GetId()) {
+
+    case ID_MONITOR:
+    case ID_TOOLSMONITOR:
+        CUtil::freeze(area);
+        content = new CWelcomeScreen(this, area);
+        computeSize(true);
+        CUtil::thaw(area);
+        break;
 
     case ID_SETTINGS:
     case ID_TOOLSSETTINGS:

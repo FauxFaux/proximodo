@@ -355,6 +355,7 @@ void CEditScreen::OnCommand(wxCommandEvent& event) {
         {
             string value = headerEdit->GetValue().c_str();
             current->headerName = CUtil::trim(value);
+            current->testValidity();
             break;
         }
     case ID_COMMENTEDIT:
@@ -373,6 +374,7 @@ void CEditScreen::OnCommand(wxCommandEvent& event) {
             if (value != current->title)
                 current->defaultFilter = 0;
             current->title = value;
+            current->testValidity();
             break;
         }
     case ID_WIDTHEDIT:
@@ -385,6 +387,7 @@ void CEditScreen::OnCommand(wxCommandEvent& event) {
                 widthEdit->SetValue("256");
             }
             current->windowWidth = n;
+            current->testValidity();
             break;
         }
     case ID_PRIORITYEDIT:
@@ -422,6 +425,7 @@ void CEditScreen::OnCommand(wxCommandEvent& event) {
                 if (!CMatcher::testPattern(current->urlPattern, errmsg))
                     wxMessageBox(errmsg.c_str(), APP_NAME);
             }
+            current->testValidity();
             break;
         }
     case ID_BOUNDSEDIT:
@@ -433,6 +437,7 @@ void CEditScreen::OnCommand(wxCommandEvent& event) {
                 if (!CMatcher::testPattern(current->boundsPattern, errmsg))
                     wxMessageBox(errmsg.c_str(), APP_NAME);
             }
+            current->testValidity();
             break;
         }
     case ID_MATCHMEMO:
@@ -444,6 +449,7 @@ void CEditScreen::OnCommand(wxCommandEvent& event) {
                 if (!CMatcher::testPattern(current->matchPattern, errmsg))
                     wxMessageBox(errmsg.c_str(), APP_NAME);
             }
+            current->testValidity();
             break;
         }
     case ID_REPLACEMEMO:

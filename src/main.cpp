@@ -57,8 +57,9 @@ bool ProximodoApp::OnInit() {
     if (sic->IsAnotherRunning()) // Verifies this user is not running Proximodo
     {
         // If configured, still open the browser
-        if (CSettings::ref().startBrowser) {
-            CUtil::openBrowser();
+        if (CSettings::ref().startBrowser
+                && !CSettings::ref().browserPath.empty()) {
+            wxExecute(CSettings::ref().browserPath.c_str(), wxEXEC_ASYNC);
         }
         return false;
     }
@@ -76,9 +77,10 @@ bool ProximodoApp::OnInit() {
         CSettings::ref().firstRun = false;
         CSettings::ref().save();
         CUtil::openBrowser(CSettings::ref().getMessage("HELP_PAGE_WELCOME"));
-    } else if (CSettings::ref().startBrowser) {
+    } else if (CSettings::ref().startBrowser
+                && !CSettings::ref().browserPath.empty()) {
         // Open browser
-        CUtil::openBrowser();
+        wxExecute(CSettings::ref().browserPath.c_str(), wxEXEC_ASYNC);
     }
 
     return true;

@@ -65,25 +65,23 @@ private:
     bool           filterGif;
     bool           showOnStartup;
     bool           startBrowser;
+    string         browserPath;
     map<string,string> listNames;
     
     // GUI variables
     string currentListName;
 
     // Controls
+    pmCheckBox *showGuiCheckbox;
+    pmCheckBox *startBrowserCheckbox;
     pmCheckBox *allowIPCheckbox;
-    pmCheckBox *filterInCheckbox;
-    pmCheckBox *filterOutCheckbox;
-    pmCheckBox *filterTextCheckbox;
-    pmCheckBox *filterGifCheckbox;
     pmCheckBox *useProxyCheckbox;
-    pmComboBox *configDropdown;
     pmComboBox *languageDropDown;
     pmComboBox *nextProxyDropdown;
     pmComboBox *listDropDown;
-    pmComboBox *startupGUIDropDown;
     pmTextCtrl *listFileText;
     pmTextCtrl *bypassText;
+    pmTextCtrl *browserPathText;
     pmTextCtrl *maxRangeText;
     pmTextCtrl *minRangeText;
     pmTextCtrl *portText;
@@ -94,10 +92,8 @@ private:
     // IDs
     enum {
         ID_ALLOWIPCHECKBOX = 1300,
-        ID_FILTERINCHECKBOX,
-        ID_FILTEROUTCHECKBOX,
-        ID_FILTERTEXTCHECKBOX,
-        ID_FILTERGIFCHECKBOX,
+        ID_SHOWGUICHECKBOX,
+        ID_STARTBROWSERCHECKBOX,
         ID_USEPROXYCHECKBOX,
         ID_APPLYBUTTON,
         ID_REVERTBUTTON,
@@ -105,16 +101,16 @@ private:
         ID_BYPASSTEXT,
         ID_MAXRANGETEXT,
         ID_MINRANGETEXT,
+        ID_LISTFILETEXT,
+        ID_BROWSERPATHTEXT,
         ID_PORTTEXT,
-        ID_CONFIGDROPDOWN,
         ID_LANGUAGEDROPDOWN,
         ID_NEXTPROXYDROPDOWN,
         ID_LISTNAMEDROPDOWN,
-        ID_LISTFILETEXT,
         ID_NEWBUTTON,
         ID_OPENBUTTON,
-        ID_CHOOSEBUTTON,
-        ID_STARTUPGUIDROPDOWN
+        ID_BROWSERPATHBUTTON,
+        ID_CHOOSEBUTTON
     };
 
     // Event table

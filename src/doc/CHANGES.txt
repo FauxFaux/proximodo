@@ -4,9 +4,18 @@ Version 0.3 (???, 2005)
 
 Engine
 - Bypass URL and URL Match now work like in Proxomitron
+- Fixed $TYPE() which was causing hangings
 
 Proxy
 - Don't reorder or concatenate headers (cookies must not be concatenated!)
+
+GUI
+- Created a monitoring screen, with checkboxes, statistics and abort button
+- Can run any external program when Proximodo starts
+- Opening default browser on start-up should now work fine under Linux
+
+Other
+- Invalid filters are now loaded too
 
 --------------------------------------------------------------------------------
 Version 0.2.1 (Jan 8th, 2005)

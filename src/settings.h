@@ -89,6 +89,7 @@ public:
     bool           firstRun;       // only true on first Proximodo run
     bool           settingsChanged;// set to true when settings are modified
     bool           modified;       // set to true when settings/filters are modified
+    string         browserPath;    // path and name of browser's executable
 
     map<int, CFilterDescriptor>  filters;    // filter name, description
     map<int, CFolder>            folders;    // folder id, folder data

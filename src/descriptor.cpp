@@ -40,50 +40,31 @@ CFilterDescriptor::CFilterDescriptor() {
 
 /* Check if all data is valid
  */
-bool CFilterDescriptor::isValid(string& errmsg) const {
+void CFilterDescriptor::testValidity() {
+
+    errorMsg.clear();
     CSettings& settings = CSettings::ref();
     if (title.empty()) {
-        errmsg = settings.getMessage("INVALID_FILTER_TITLE");
-        return false;
-    }
-    if (filterType == TEXT) {
+        errorMsg = settings.getMessage("INVALID_FILTER_TITLE");
+    } else if (filterType == TEXT) {
         if (matchPattern.empty()) {
-            errmsg = settings.getMessage("INVALID_FILTER_MATCHEMPTY");
-            return false;
-        }
-        if (windowWidth <= 0) {
-            errmsg = settings.getMessage("INVALID_FILTER_WIDTH");
-            return false;
-        }
-        if (!CMatcher::testPattern(boundsPattern, errmsg)) {
-            return false;
-        }
-        if (!CMatcher::testPattern(urlPattern, errmsg)) {
-            return false;
-        }
-        if (!CMatcher::testPattern(matchPattern, errmsg)) {
-            return false;
+            errorMsg = settings.getMessage("INVALID_FILTER_MATCHEMPTY");
+        } else if (windowWidth <= 0) {
+            errorMsg = settings.getMessage("INVALID_FILTER_WIDTH");
+        } else {
+            CMatcher::testPattern(boundsPattern, errorMsg) &&
+            CMatcher::testPattern(urlPattern,    errorMsg) &&
+            CMatcher::testPattern(matchPattern,  errorMsg);
         }
     } else {
         if (headerName.empty()) {
-            errmsg = settings.getMessage("INVALID_FILTER_HEADEREMPTY");
-            return false;
-        }
-        if (!CMatcher::testPattern(urlPattern, errmsg)) {
-            return false;
-        }
-        if (!CMatcher::testPattern(matchPattern, errmsg)) {
-            return false;
+            errorMsg = settings.getMessage("INVALID_FILTER_HEADEREMPTY");
+        } else {
+            CMatcher::testPattern(urlPattern,   errorMsg) &&
+            CMatcher::testPattern(matchPattern, errorMsg);
         }
     }
-    return true;
 }
-
-bool CFilterDescriptor::isValid() const {
-    string tmp;
-    return isValid(tmp);
-}
-
 
 /* Clear all content
  */
@@ -188,7 +169,8 @@ int CFilterDescriptor::importFilters(const string& text,
         string line = str.substr(i, j - i);
         unsigned int eq = line.find('=');
         if (!line.empty() && line[0] == '[') {
-            if (d.isValid()) {
+            d.testValidity();
+            if (!d.title.empty()) {
                 if (d.id == -1 || filters.find(d.id) != filters.end())
                     d.id = (filters.empty() ? 1 : filters.rbegin()->second.id + 1);
                 filters[d.id] = d;
@@ -290,7 +272,8 @@ int CFilterDescriptor::importProxomitron(const string& text,
         string line = str.substr(i, j - i);
         unsigned int eq = line.find('=');
         if (line.empty()) {
-            if (d.isValid()) {
+            d.testValidity();
+            if (!d.title.empty()) {
                 d.priority = priority--;
                 d.id = (filters.empty() ? 1 : filters.rbegin()->second.id + 1);
                 filters[d.id] = d;

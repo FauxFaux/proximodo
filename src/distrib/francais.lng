@@ -40,6 +40,7 @@ INVALID_FILTER_HEADEREMPTY    =Le nom d'en-tête HTTP doit être défini.
 
 Main Window
 
+BUTTON_MONITOR                =Contrôles
 BUTTON_SETTINGS               =Paramètres
 BUTTON_LOG                    =Journal
 BUTTON_FILTERS                =Filtres
@@ -74,6 +75,7 @@ MENU_TOOLS                    =Outils
 MENU_FILTERS                  =Filtres
 MENU_CONFIG                   =Configurations
 MENU_HELP                     =Aide
+MENU_TOOLSMONITOR             =Contrôles	Alt+M
 MENU_TOOLSSETTINGS            =Paramètres	Alt+S
 MENU_TOOLSCONFIG              =Configurations	Alt+G
 MENU_TOOLSFILTERS             =Filtres	Alt+F
@@ -151,8 +153,11 @@ LB_SETTINGS_NEWLIST           =Nouveau
 LB_SETTINGS_OPENLIST          =Ouvrir
 LB_SETTINGS_LISTFILE          =Fichier
 LB_SETTINGS_CHOOSEFILE        =Choisir
+LB_SETTINGS_SHOWGUI           =Afficher cette fenêtre au démarrage
+LB_SETTINGS_STARTBROWSER      =Démarrer le programme suivant :
 ASK_CREATE_NEWLIST            =Ce fichier n'existe pas. Voulez-vous le créer ?
 OPEN_LISTFILE_QUESTION        =Choisissez un fichier texte
+OPEN_BROWSER_QUESTION         =Choisissez un fichier exécutable
 
 Edit Filter Window
 
@@ -238,6 +243,13 @@ EVT_PROXY_REFUSE              =>>> Connexion refusée sur le port %1
 EVT_PROXY_START               =>>> Proxy démarré sur le port %1
 EVT_PROXY_STOP                =>>> Proxy arrêté
 
+Monitoring Window
+
+LB_MONITOR_STATISTICS         =Statistiques
+LB_MONITOR_OPENCNX            =Connexions ouvertes :
+LB_MONITOR_OPENREQ            =Requêtes en cours :
+LB_MONITOR_ABORT              =Interrompre
+
 Tray Icon Menu
 
 TRAY_CONFIG                   =Configurations
@@ -301,12 +313,14 @@ MENU_FILTERSPROXOMITRON_TIP   =Importer des filtres Proxomitron depuis le presse
 MENU_FILTERSEXPORT_TIP        =Exporter les filtres sélectionnés vers le presse papier (simplifie pour les échanges)
 MENU_FILTERSAPPLY_TIP         =Valider toutes les modifications de filtres
 MENU_FILTERSREVERT_TIP        =Annuler toutes les modifications de filtres faites depuis la dernière validation/annulation
+BUTTON_MONITOR_TIP            =Afficher l'écran des contrôles
 BUTTON_SETTINGS_TIP           =Afficher l'écran de paramètres
 BUTTON_LOG_TIP                =Ouvrir la fenêtre de journal
 BUTTON_FILTERS_TIP            =Afficher l'écran d'édition de filtre
 BUTTON_CONFIG_TIP             =Afficher l'écran d'édition de configuration
 BUTTON_HELP_TIP               =Ouvrir la page principale d'aide dans le navigateur web par défaut
 BUTTON_QUIT_TIP               =Arrêter le proxy et terminer Proximodo
+MENU_TOOLSMONITOR_TIP         =Afficher l'écran des contrôles
 MENU_TOOLSSETTINGS_TIP        =Afficher l'écran de paramètres
 MENU_TOOLSCONFIG_TIP          =Afficher l'écran d'édition de configuration
 MENU_TOOLSFILTERS_TIP         =Afficher l'écran d'édition de filtre
@@ -342,6 +356,11 @@ SETTINGS_LISTFILE_TIP         =Chemin du fichier contenant la liste. Si le fichi
 SETTINGS_FILECHOOSE_TIP       =Sélectionner un fichier du disque dur
 SETTINGS_APPLY_TIP            =Valider les modifications des paramètres
 SETTINGS_REVERT_TIP           =Annuler les modifications des paramètres
+SETTINGS_SHOWGUI_TIP          =Afficher cette fenêtre quand Proximodo démarre (sinon seulement l'icône de barre de tâches)
+SETTINGS_STARTBROWSER_TIP     =Le programme indiqué ci-dessous démarrera en même temps que Proximodo
+SETTINGS_BROWSERPATH_TIP      =Programme externe à démarrer en même temps que Proximodo (en pratique, votre navigateur)
+SETTINGS_BROWSERCHOOSE_TIP    =Choisir le programme sur le disque dur
+MONITOR_ABORT_TIP             =Fermer les connexions actives (stoppe les téléchargements en cours)
 
 Default Filter Titles
 
