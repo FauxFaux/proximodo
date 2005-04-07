@@ -1,9 +1,22 @@
 CC = g++
+
 # Replace the value below with the output of wx-config --cxxflags
-WXINC = -I/usr/local/lib/wx/include/gtk2-ansi-release-2.5 -I/usr/local/include/wx-2.5 -DGTK_NO_CHECK_CASTS -D__WXGTK__ -D_FILE_OFFSET_BITS=64 -D_LARGE_FILES -DWX_PRECOMP -DNO_GCC_PRAGMA
+WXINC_REL = -I/usr/local/lib/wx/include/gtk2-ansi-release-2.5 -I/usr/local/include/wx-2.5 -DGTK_NO_CHECK_CASTS -D__WXGTK__ -D_FILE_OFFSET_BITS=64 -D_LARGE_FILES -DWX_PRECOMP -DNO_GCC_PRAGMA
 # Replace the value below with the output of wx-config --libs
-WXLIB = -L/usr/local/lib -pthread   -L/usr/X11R6/lib  -lwx_gtk2_xrc-2.5 -lwx_gtk2_html-2.5 -lwx_gtk2_adv-2.5 -lwx_gtk2_core-2.5 -lwx_base_xml-2.5 -lwx_base_net-2.5 -lwx_base-2.5
-CFLAGS = -Wall -g -O2 $(WXINC)
+WXLIB_REL = -L/usr/local/lib -pthread   -L/usr/X11R6/lib  -lwx_gtk2_xrc-2.5 -lwx_gtk2_html-2.5 -lwx_gtk2_adv-2.5 -lwx_gtk2_core-2.5 -lwx_base_xml-2.5 -lwx_base_net-2.5 -lwx_base-2.5
+CFLAGS_REL = -Wall -g -O2
+
+# Replace the value below with the output of wx-config --cxxflags --debug
+WXINC_DBG = -I/usr/local/lib/wx/include/gtk2-ansi-debug-2.5 -I/usr/local/include/wx-2.5 -D__WXDEBUG__ -D__WXGTK__ -D_FILE_OFFSET_BITS=64 -D_LARGE_FILES -DWX_PRECOMP -DNO_GCC_PRAGMA  
+# Replace the value below with the output of wx-config --libs --debug
+WXLIB_DBG = -L/home/devel/wxWidgets/lib -pthread   -L/usr/X11R6/lib  -lwx_gtk2d_xrc-2.5 -lwx_gtk2d_html-2.5 -lwx_gtk2d_adv-2.5 -lwx_gtk2d_core-2.5 -lwx_based_xml-2.5 -lwx_based_net-2.5 -lwx_based-2.5 
+CFLAGS_DBG = -Wall -g -O0
+
+# Use *_REL for release, *_DBG for debug builds
+WXINC = $(WXINC_REL)
+WXLIB = $(WXLIB_REL)
+CFLAGS = $(CFLAGS_REL)
+
 SRC = configscreen.cpp controls.cpp descriptor.cpp editscreen.cpp events.cpp \
 			expander.cpp filter.cpp filterowner.cpp giffilter.cpp headerfilter.cpp \
 			log.cpp logframe.cpp main.cpp mainframe.cpp managerthread.cpp \
