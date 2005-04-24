@@ -23,12 +23,12 @@
 //------------------------------------------------------------------
 
 
-#include <wx/thread.h>
-#include <wx/socket.h>
-#include "requestmanager.h"
-
 #ifndef __managerthread__
 #define __managerthread__
+
+#include <wx/thread.h>
+class CRequestManager;
+class wxSocketBase;
 
 /* This class embeds a thread that runs a request manager on a browser socket.
  * So that socket "events" are really processed _in_ the thread, the request

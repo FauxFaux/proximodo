@@ -26,12 +26,12 @@
 #ifndef __proxy__
 #define __proxy__
 
-#include <vector>
-#include <wx/socket.h>
 #include <wx/event.h>
-#include "requestmanager.h"
-#include "managerthread.h"
-
+#include <vector>
+class CRequestManager;
+class CManagerThread;
+class wxSocketEvent;
+class wxSocketServer;
 
 using namespace std;
 

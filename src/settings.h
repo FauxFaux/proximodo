@@ -26,13 +26,13 @@
 #ifndef __settings__
 #define __settings__
 
+#include "descriptor.h"
 #include <set>
 #include <map>
 #include <string>
 #include <vector>
 #include <deque>
-#include <wx/textfile.h>
-#include "descriptor.h"
+class wxTextFile;
 
 using namespace std;
 

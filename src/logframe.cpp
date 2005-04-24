@@ -25,15 +25,17 @@
 
 
 #include "logframe.h"
-#include <string>
-#include <sstream>
-#include <wx/settings.h>
-#include <wx/colour.h>
-#include <wx/icon.h>
 #include "images/icon32.xpm"
 #include "util.h"
 #include "log.h"
 #include "const.h"
+#include "settings.h"
+#include "controls.h"
+#include <wx/settings.h>
+#include <wx/colour.h>
+#include <wx/icon.h>
+#include <string>
+#include <sstream>
 
 #define  LOG_COLOR_BACKGROUND  255, 255, 255
 #define  LOG_COLOR_DEFAULT     150, 150, 150

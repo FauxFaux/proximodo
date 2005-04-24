@@ -27,7 +27,7 @@
 #define __expander__
 
 #include <string>
-#include "filter.h"
+class CFilter;
 
 using namespace std;
 

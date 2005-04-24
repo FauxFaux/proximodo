@@ -24,12 +24,6 @@
 
 
 #include "configscreen.h"
-#include <set>
-#include <list>
-#include <algorithm>
-#include <wx/msgdlg.h>
-#include <wx/menu.h>
-#include <wx/imaglist.h>
 #include "mainframe.h"
 #include "descriptor.h"
 #include "settings.h"
@@ -37,6 +31,8 @@
 #include "util.h"
 #include "proxy.h"
 #include "testframe.h"
+#include "controls.h"
+#include "editscreen.h"
 #include "images/box_on.xpm"
 #include "images/box_off.xpm"
 #include "images/box_half.xpm"
@@ -46,8 +42,27 @@
 #include "images/btn_edit32.xpm"
 #include "images/btn_ok32.xpm"
 #include "images/btn_undo32.xpm"
+#include <wx/msgdlg.h>
+#include <wx/menu.h>
+#include <wx/imaglist.h>
+#include <set>
+#include <list>
+#include <algorithm>
+#include <sstream>
 
 using namespace std;
+
+
+/* Tree item data
+ */
+class CItemData : public wxTreeItemData {
+public:
+    CItemData(int id, bool folder, int state = 0) :
+                id(id), folder(folder), state(state) {}
+    int id;
+    bool folder;
+    int state;    // 0 unchecked, 1 checked, 2 some children checked
+};
 
 
 /* Events
@@ -195,7 +210,8 @@ CConfigScreen::CConfigScreen(wxFrame* frame) :
 
     makeSizer();
 
-    editWindow = new CEditScreen(&blank);
+    blank = new CFilterDescriptor();
+    editWindow = new CEditScreen(blank);
 }
 
 
@@ -207,6 +223,7 @@ CConfigScreen::~CConfigScreen() {
     apply(true);
     frame->GetMenuBar()->Remove(1);
     delete menuConfig;
+    delete blank;
 }
 
 

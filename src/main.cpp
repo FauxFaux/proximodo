@@ -31,6 +31,7 @@
 #include "mainframe.h"
 #include "util.h"
 #include "log.h"
+#include "trayicon.h"
 
 class ProximodoApp : public wxApp {
 

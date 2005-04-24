@@ -27,8 +27,8 @@
 #define __parser__
 
 #include <string>
-#include "node.h"
-#include "filter.h"
+class CNode;
+class CFilter;
 
 using namespace std;
 
@@ -51,8 +51,7 @@ class parsing_exception {
 class CMatcher {
 
 public:
-    CMatcher(const string& text, const string& pattern, CFilter& filter)
-                                        throw (parsing_exception);
+    CMatcher(const string& text, const string& pattern, CFilter& filter);
     ~CMatcher();
 
     static bool testPattern(const string& pattern, string& errmsg);

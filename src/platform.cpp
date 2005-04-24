@@ -45,6 +45,7 @@ bool CPlatform::isKeyPressed(wxKeyCode keyCode) {
 #else // Unknown platform
 
 bool CPlatform::isKeyPressed(wxKeyCode keyCode) {
+
     return false;
 }
 

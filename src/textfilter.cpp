@@ -24,20 +24,23 @@
 
 
 #include "textfilter.h"
-#include <vector>
-#include <map>
-#include <sstream>
 #include "url.h"
 #include "expander.h"
 #include "const.h"
 #include "log.h"
+#include "descriptor.h"
+#include "filterowner.h"
+#include "matcher.h"
+#include <vector>
+#include <map>
+#include <sstream>
 
 using namespace std;
 
 /* Constructor
  */
 CTextFilter::CTextFilter(CFilterOwner& owner, const CFilterDescriptor& desc,
-                         CDataReceptor* next) throw (parsing_exception) :
+                         CDataReceptor* next) :
         CFilter(owner), nextFilter(next) {
 
     textMatcher = boundsMatcher = urlMatcher = NULL;

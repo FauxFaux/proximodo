@@ -26,16 +26,17 @@
 #ifndef __requestmanager__
 #define __requestmanager__
 
-#include <string>
-#include <vector>
-#include <wx/socket.h>
-#include "zlibbuffer.h"
 #include "receptor.h"
 #include "filterowner.h"
-#include "textfilter.h"
-#include "headerfilter.h"
-#include "descriptor.h"
-#include "giffilter.h"
+#include <wx/socket.h>
+#include <string>
+#include <vector>
+class CMatcher;
+class CTextFilter;
+class CHeaderFilter;
+class CGifFilter;
+class CZlibBuffer;
+class CFilter;
 
 using namespace std;
 
@@ -93,7 +94,7 @@ private:
     // Sockets
     wxSocketBase*   browser;
     wxSocketClient* website;
-    wxIPV4address  addr;
+    wxIPV4address   addr;
     string previousHost;
     void connectWebsite();
     void destroy();
@@ -129,8 +130,8 @@ private:
     bool sendConnectionClose;
     int  recvContentCoding;   // 0: plain/compress, 1: gzip, 2:deflate (zlib)
     int  sendContentCoding;
-    CZlibBuffer decompressor;
-    CZlibBuffer compressor;
+    CZlibBuffer* decompressor;
+    CZlibBuffer* compressor;
 
     // Variables and functions for incoming processing
     STEP   inStep;

@@ -28,7 +28,6 @@
 #define __platform__
 
 #include <wx/event.h>
-#include <wx/socket.h>
 
 /* This file contains platform-specific functions.
  * Theoretically, to port Proximodo on a platform where wxWidgets and
@@ -40,11 +39,12 @@ class CPlatform {
 
 public:
     static bool isKeyPressed(wxKeyCode keyCode);
-#if defined(__WINDOWS__) || defined(__WIN32__)
-    static const wxSocketFlags serverFlags = wxSOCKET_NONE;
-#else
-    static const wxSocketFlags serverFlags = wxSOCKET_REUSEADDR;
-#endif
 };
+
+#if defined(__WINDOWS__) || defined(__WIN32__)
+#define   PLATFORM_SERVERFLAGS   (wxSOCKET_NONE)
+#else
+#define   PLATFORM_SERVERFLAGS   (wxSOCKET_REUSEADDR)
+#endif
 
 #endif

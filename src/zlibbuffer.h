@@ -26,9 +26,9 @@
 #ifndef __zlibbuffer__
 #define __zlibbuffer__
 
+#include <zlib.h>       // (zlib 1.2.2)
 #include <string>
 #include <sstream>
-#include <zlib.h>       // (zlib 1.2.2)
 
 using namespace std;
 

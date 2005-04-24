@@ -24,16 +24,18 @@
 
 
 #include "matcher.h"
-#include <sstream>
-#include <vector>
-#include <map>
-#include <set>
 #include "settings.h"
 #include "nodes.h"
 #include "const.h"
 #include "util.h"
 #include "url.h"
 #include "log.h"
+#include "filter.h"
+#include "filterowner.h"
+#include <sstream>
+#include <vector>
+#include <map>
+#include <set>
 
 using namespace std;
 
@@ -42,8 +44,8 @@ using namespace std;
  * a search tree. An exception is returned if the pattern is
  * malformed.
  */
-CMatcher::CMatcher(const string& text, const string& pattern, CFilter& filter)
-            throw (parsing_exception) : filter(filter), text(text) {
+CMatcher::CMatcher(const string& text, const string& pattern, CFilter& filter) :
+                    filter(filter), text(text) {
 
     // position up to which the pattern is decoded
     int pos = 0;

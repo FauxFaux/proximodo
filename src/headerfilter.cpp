@@ -24,19 +24,22 @@
 
 
 #include "headerfilter.h"
-#include <vector>
-#include <map>
 #include "url.h"
 #include "expander.h"
 #include "util.h"
 #include "log.h"
+#include "descriptor.h"
+#include "filterowner.h"
+#include "matcher.h"
+#include <vector>
+#include <map>
 
 using namespace std;
 
 /* Constructor
  */
-CHeaderFilter::CHeaderFilter(const CFilterDescriptor& desc, CFilterOwner& owner)
-                throw (parsing_exception) : CFilter(owner) {
+CHeaderFilter::CHeaderFilter(const CFilterDescriptor& desc, CFilterOwner& owner) :
+                                CFilter(owner) {
 
     headerName = desc.headerName;
     title = desc.title;

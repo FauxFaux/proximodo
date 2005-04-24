@@ -26,10 +26,13 @@
 #ifndef __settingsscreen__
 #define __settingsscreen__
 
+#include "windowcontent.h"
 #include <string>
 #include <set>
-#include "controls.h"
-#include "windowcontent.h"
+#include <map>
+class pmCheckBox;
+class pmComboBox;
+class pmTextCtrl;
 
 using namespace std;
 

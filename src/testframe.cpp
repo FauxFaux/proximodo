@@ -22,14 +22,8 @@
 //
 //------------------------------------------------------------------
 
+
 #include "testframe.h"
-#include <string>
-#include <sstream>
-#include <wx/sysopt.h>
-#include <wx/settings.h>
-#include <wx/event.h>
-#include <wx/msgdlg.h>
-#include <wx/icon.h>
 #include "settings.h"
 #include "filterowner.h"
 #include "matcher.h"
@@ -37,7 +31,15 @@
 #include "filter.h"
 #include "const.h"
 #include "log.h"
+#include "controls.h"
 #include "images/icon32.xpm"
+#include <wx/sysopt.h>
+#include <wx/settings.h>
+#include <wx/event.h>
+#include <wx/msgdlg.h>
+#include <wx/icon.h>
+#include <string>
+#include <sstream>
 
 using namespace std;
 

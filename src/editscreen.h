@@ -26,14 +26,16 @@
 #ifndef __editscreen__
 #define __editscreen__
 
-#include <wx/sizer.h>
-#include <wx/event.h>
 #include <wx/frame.h>
 #include <string>
 #include <map>
-#include "controls.h"
-#include "descriptor.h"
-#include "testframe.h"
+class pmCheckBox;
+class pmComboBox;
+class pmStaticText;
+class pmTextCtrl;
+class pmListCtrl;
+class CTestFrame;
+class CFilterDescriptor;
 
 using namespace std;
 

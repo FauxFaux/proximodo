@@ -24,9 +24,6 @@
 
 
 #include "util.h"
-
-
-
 #include "controls.h"
 #include "events.h"
 

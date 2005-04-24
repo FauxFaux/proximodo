@@ -26,10 +26,10 @@
 #ifndef __filter__
 #define __filter__
 
+#include "memory.h"
 #include <vector>
 #include <string>
-#include "filterowner.h"
-#include "memory.h"
+class CFilterOwner;
 
 using namespace std;
 

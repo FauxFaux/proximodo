@@ -26,28 +26,19 @@
 #ifndef __configscreen__
 #define __configscreen__
 
-#include <wx/sizer.h>
-#include <wx/event.h>
+#include "windowcontent.h"
+#include "descriptor.h"
+#include <wx/treectrl.h>
 #include <string>
 #include <map>
+#include <set>
 #include <vector>
-#include "controls.h"
-#include "windowcontent.h"
-#include "editscreen.h"
+class pmComboBox;
+class pmTreeCtrl;
+class pmTextCtrl;
+class CEditScreen;
 
 using namespace std;
-
-/* Tree item data
- */
-class CItemData : public wxTreeItemData {
-public:
-    CItemData(int id, bool folder, int state = 0) :
-                id(id), folder(folder), state(state) {}
-    int id;
-    bool folder;
-    int state;    // 0 unchecked, 1 checked, 2 some children checked
-};
-
 
 /* This class creates a box sizer to be set as the main frame sizer.
  * It display the filter bank list and an editable configuration.
@@ -94,7 +85,7 @@ private:
 
     // Non-modal edit window
     CEditScreen* editWindow;
-    CFilterDescriptor blank;
+    CFilterDescriptor* blank;
 
     // Controls
 	pmComboBox *nameEdit;

@@ -26,11 +26,11 @@
 #ifndef __textfilter__
 #define __textfilter__
 
-#include <string>
 #include "filter.h"
-#include "descriptor.h"
 #include "receptor.h"
-#include "matcher.h"
+#include <string>
+class CFilterDescriptor;
+class CMatcher;
 
 using namespace std;
 
@@ -55,7 +55,7 @@ public:
     // I'll later replace CUrl& by reference to the request manager,
     // to be able to interact with it (e.g read/write $SET variables)
     CTextFilter(CFilterOwner& owner, const CFilterDescriptor& desc,
-                CDataReceptor* next) throw (parsing_exception);
+                CDataReceptor* next);
 
     // Destructor
     ~CTextFilter();

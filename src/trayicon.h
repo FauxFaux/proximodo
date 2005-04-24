@@ -27,7 +27,6 @@
 #define __trayicon__
 
 #include <wx/taskbar.h>
-#include <wx/event.h>
 
 /* This class implements Proximodo's tray icon
  */

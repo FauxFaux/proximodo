@@ -26,13 +26,13 @@
 #ifndef __log__
 #define __log__
 
-#include <wx/event.h>
+#include "events.h"
 #include <wx/thread.h>
 #include <set>
 #include <string>
-#include "events.h"
-#include "logframe.h"
-#include "mainframe.h"
+class CLogFrame;
+class CMainFrame;
+class CTrayIcon;
 
 using namespace std;
 

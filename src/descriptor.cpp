@@ -24,10 +24,10 @@
 
 
 #include "descriptor.h"
-#include <sstream>
 #include "matcher.h"
 #include "util.h"
 #include "settings.h"
+#include <sstream>
 
 using namespace std;
 

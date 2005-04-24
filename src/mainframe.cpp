@@ -26,14 +26,6 @@
 
 #include "mainframe.h"
 
-#include <wx/sysopt.h>
-#include <wx/menu.h>
-#include <wx/icon.h>
-#include <wx/statusbr.h>
-#include <wx/settings.h>
-#include <wx/msgdlg.h>
-#include <wx/app.h>
-
 #include "settings.h"
 #include "proxy.h"
 #include "log.h"
@@ -44,6 +36,7 @@
 #include "settingsscreen.h"
 #include "configscreen.h"
 #include "logframe.h"
+#include "trayicon.h"
 
 #include "images/btn_settings.xpm"
 #include "images/btn_log.xpm"
@@ -52,6 +45,16 @@
 #include "images/btn_monitor.xpm"
 #include "images/btn_quit.xpm"
 #include "images/icon32.xpm"
+
+#include <wx/sysopt.h>
+#include <wx/menu.h>
+#include <wx/icon.h>
+#include <wx/statusbr.h>
+#include <wx/settings.h>
+#include <wx/msgdlg.h>
+#include <wx/app.h>
+#include <wx/toolbar.h>
+#include <sstream>
 
 /* Event table
  */

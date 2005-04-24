@@ -25,6 +25,8 @@
 
 #include "windowcontent.h"
 #include "util.h"
+#include "settings.h"
+#include <wx/toolbar.h>
 
 /* Constructor
  */
@@ -40,10 +42,18 @@ CWindowContent::CWindowContent(wxFrame* frame, int orient) :
  */
 void CWindowContent::makeSizer() {
 
+    int minWidth = 6 * frame->GetToolBar()->GetToolSize().GetWidth()
+                 + frame->GetSize().GetWidth()
+                 - frame->GetClientSize().GetWidth();
+
     revert(false);
     wxSize newSize = frame->GetSizer()->GetMinSize()
                    + frame->GetSize()
                    - frame->GetClientSize();
+
+    // make sure all 6 toolbar buttons are visible
+    if (newSize.GetWidth() < minWidth) newSize.SetWidth(minWidth);
+
     frame->SetSizeHints(newSize);
     frame->SetSize(newSize);
     frame->Layout();

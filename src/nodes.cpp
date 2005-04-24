@@ -24,16 +24,20 @@
 
 
 #include "nodes.h"
-#include <algorithm>
-#include <functional>
-#include <wx/msgdlg.h>
-#include <wx/textdlg.h>
 #include "const.h"
 #include "util.h"
 #include "settings.h"
 #include "expander.h"
 #include "log.h"
 #include "logframe.h"
+#include "url.h"
+#include "matcher.h"
+#include "filter.h"
+#include "filterowner.h"
+#include <wx/msgdlg.h>
+#include <wx/textdlg.h>
+#include <algorithm>
+#include <functional>
 
 using namespace std;
 

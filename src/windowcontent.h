@@ -28,9 +28,7 @@
 
 #include <wx/sizer.h>
 #include <wx/event.h>
-#include <wx/frame.h>
-#include <wx/window.h>
-#include "settings.h"
+class CSettings;
 
 /* This class creates a box sizer to be set as the main frame sizer.
  * It is meant to be inherited by all screens that can display within the

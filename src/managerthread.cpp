@@ -26,6 +26,7 @@
 #include "managerthread.h"
 #include "log.h"
 #include "events.h"
+#include "requestmanager.h"
 
 /* Constructor
  */

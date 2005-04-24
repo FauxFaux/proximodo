@@ -26,13 +26,11 @@
 #ifndef __util__
 #define __util__
 
+#include <wx/defs.h>
 #include <string>
 #include <vector>
 #include <map>
-#include <wx/defs.h>
-#include <wx/sizer.h>
-#include <wx/window.h>
-#include <wx/toplevel.h>
+class wxTopLevelWindow;
 
 using namespace std;
 

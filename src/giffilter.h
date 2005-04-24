@@ -26,8 +26,8 @@
 #ifndef __giffilter__
 #define __giffilter__
 
-#include <string>
 #include "receptor.h"
+#include <string>
 
 using namespace std;
 

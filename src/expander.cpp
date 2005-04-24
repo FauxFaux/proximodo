@@ -24,14 +24,6 @@
 
 
 #include "expander.h"
-#include <map>
-#include <vector>
-#include <sstream>
-#include <set> 
-#include <wx/msgdlg.h>
-#include <wx/textdlg.h>
-#include <wx/datetime.h>
-#include <wx/filefn.h>
 #include "url.h"
 #include "memory.h"
 #include "const.h"
@@ -40,6 +32,16 @@
 #include "matcher.h"
 #include "log.h"
 #include "logframe.h"
+#include "filter.h"
+#include "filterowner.h"
+#include <wx/msgdlg.h>
+#include <wx/textdlg.h>
+#include <wx/datetime.h>
+#include <wx/filefn.h>
+#include <map>
+#include <vector>
+#include <sstream>
+#include <set>
 
 using namespace std;
 

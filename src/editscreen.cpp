@@ -24,20 +24,22 @@
 
 
 #include "editscreen.h"
-#include <set>
-#include <list>
-#include <sstream>
-#include <algorithm>
+#include "matcher.h"
+#include "settings.h"
+#include "const.h"
+#include "util.h"
+#include "controls.h"
+#include "testframe.h"
+#include "images/icon32.xpm"
 #include <wx/msgdlg.h>
 #include <wx/icon.h>
 #include <wx/sysopt.h>
 #include <wx/settings.h>
 #include <wx/menu.h>
-#include "matcher.h"
-#include "settings.h"
-#include "const.h"
-#include "util.h"
-#include "images/icon32.xpm"
+#include <set>
+#include <list>
+#include <sstream>
+#include <algorithm>
 
 using namespace std;
 

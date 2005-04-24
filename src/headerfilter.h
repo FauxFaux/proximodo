@@ -26,10 +26,11 @@
 #ifndef __headerfilter__
 #define __headerfilter__
 
+#include "filter.h"
 #include <string>
-#include "descriptor.h"
-#include "matcher.h"
-#include "filterowner.h"
+class CFilterDescriptor;
+class CFilterOwner;
+class CMatcher;
 
 using namespace std;
 
@@ -38,8 +39,7 @@ using namespace std;
 class CHeaderFilter : public CFilter {
 
 public:
-    CHeaderFilter(const CFilterDescriptor& desc, CFilterOwner& owner)
-                                                throw (parsing_exception);
+    CHeaderFilter(const CFilterDescriptor& desc, CFilterOwner& owner);
     ~CHeaderFilter();
     
     // Matches the header (input) and puts same (if no match)

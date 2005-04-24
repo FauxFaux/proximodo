@@ -24,13 +24,14 @@
 
 
 #include "settings.h"
-#include <sstream>
-#include <wx/file.h>
-#include <wx/msgdlg.h>
-#include <wx/mimetype.h>
 #include "util.h"
 #include "const.h"
 #include "matcher.h"
+#include <wx/file.h>
+#include <wx/msgdlg.h>
+#include <wx/mimetype.h>
+#include <wx/textfile.h>
+#include <sstream>
 
 using namespace std;
 

@@ -24,12 +24,6 @@
 
 
 #include "trayicon.h"
-#include <wx/menu.h>
-#include <wx/icon.h>
-#include <wx/app.h>
-#include <vector>
-#include <map>
-#include <string>
 #include "images/icon32.xpm"
 #include "settings.h"
 #include "log.h"
@@ -37,6 +31,13 @@
 #include "mainframe.h"
 #include "util.h"
 #include "const.h"
+#include "logframe.h"
+#include <wx/menu.h>
+#include <wx/icon.h>
+#include <wx/app.h>
+#include <vector>
+#include <map>
+#include <string>
 
 using namespace std;
 

@@ -24,22 +24,27 @@
 
 
 #include "settingsscreen.h"
-#include <map>
-#include <algorithm>
-#include <wx/sizer.h>
-#include <wx/msgdlg.h>
-#include <wx/event.h>
-#include <wx/filedlg.h>
-#include <wx/filename.h>
 #include "mainframe.h"
 #include "settings.h"
 #include "util.h"
 #include "const.h"
 #include "proxy.h"
+#include "controls.h"
+#include "matcher.h"
 #include "images/btn_add20.xpm"
 #include "images/btn_view20.xpm"
 #include "images/btn_file20.xpm"
 #include "images/btn_trash20.xpm"
+#include <wx/sizer.h>
+#include <wx/msgdlg.h>
+#include <wx/event.h>
+#include <wx/filedlg.h>
+#include <wx/filename.h>
+#include <wx/event.h>
+#include <wx/textfile.h>
+#include <map>
+#include <algorithm>
+#include <sstream>
 
 using namespace std;
 

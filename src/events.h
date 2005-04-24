@@ -26,10 +26,9 @@
 #ifndef __events__
 #define __events__
 
-#include <string>
 #include <wx/event.h>
 #include <wx/socket.h>
-//#include <wx/url.h>     // PENDING: wx won't link without this
+#include <string>
 
 using namespace std;
 

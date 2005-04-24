@@ -27,10 +27,10 @@
 #define __mainframe__
 
 #include <wx/frame.h>
-#include <wx/toolbar.h>
-#include "events.h"
-#include "windowcontent.h"
-#include "trayicon.h"
+class CProxyEvent;
+class CStatusEvent;
+class CWindowContent;
+class wxStatusBar;
 
 /* This class creates the main Proximodo window, with toolbar and status bar.
  * The controls displayed within the window are created and managed by a

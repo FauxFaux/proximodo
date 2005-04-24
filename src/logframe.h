@@ -26,11 +26,14 @@
 #ifndef __logscreen__
 #define __logscreen__
 
-#include <wx/sizer.h>
-#include <wx/event.h>
-#include "windowcontent.h"
-#include "events.h"
-#include "controls.h"
+#include <wx/frame.h>
+class pmButton;
+class pmCheckBox;
+class pmTextCtrl;
+class CHttpEvent;
+class CProxyEvent;
+class CFilterEvent;
+class CSettings;
 
 /* This class creates a box sizer to be set as the main frame sizer.
  * It display the filter bank list and an editable configuration.

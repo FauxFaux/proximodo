@@ -24,7 +24,9 @@
 
 
 #include "util.h"
-#include <sstream>
+#include "platform.h"
+#include "const.h"
+#include "settings.h"
 #include <wx/file.h>
 #include <wx/filename.h>
 #include <wx/arrstr.h>
@@ -32,9 +34,7 @@
 #include <wx/clipbrd.h>
 #include <wx/list.h>
 #include <wx/msgdlg.h>
-#include "platform.h"
-#include "const.h"
-#include "settings.h"
+#include <sstream>
 
 using namespace std;
 

@@ -25,13 +25,16 @@
 
 
 #include "proxy.h"
-#include <wx/url.h>
-#include <wx/stream.h>
 #include "util.h"
 #include "settings.h"
 #include "events.h"
 #include "log.h"
 #include "platform.h"
+#include "managerthread.h"
+#include "requestmanager.h"
+#include <wx/url.h>
+#include <wx/stream.h>
+#include <sstream>
 
 using namespace std;
 
@@ -186,7 +189,7 @@ bool CProxy::openProxyPort() {
         addr.Service(CSettings::ref().proxyPort.c_str());
 
         // Create the socket
-        server = new wxSocketServer(addr, CPlatform::serverFlags);
+        server = new wxSocketServer(addr, PLATFORM_SERVERFLAGS);
     }
     
     // Check if the port is open

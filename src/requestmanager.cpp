@@ -24,16 +24,20 @@
 
 
 #include "requestmanager.h"
-#include <sstream>
-#include <map>
-#include <wx/thread.h>
-#include <wx/filefn.h>
-#include <wx/file.h>
 #include "util.h"
 #include "settings.h"
 #include "log.h"
 #include "const.h"
 #include "matcher.h"
+#include "giffilter.h"
+#include "headerfilter.h"
+#include "textfilter.h"
+#include "zlibbuffer.h"
+#include <wx/thread.h>
+#include <wx/filefn.h>
+#include <wx/file.h>
+#include <sstream>
+#include <map>
 
 using namespace std;
 
@@ -47,6 +51,8 @@ CRequestManager::CRequestManager() {
     website = NULL;
     urlMatcher = NULL;
     urlFilter = NULL;
+    compressor = NULL;
+    decompressor = NULL;
     chain = this;
     reqNumber = 0;
     cnxNumber = 0;
@@ -118,6 +124,8 @@ CRequestManager::~CRequestManager() {
 
     if (urlMatcher) delete urlMatcher;
     if (urlFilter)  delete urlFilter;
+    if (compressor) delete compressor;
+    if (decompressor) delete decompressor;
 
     CUtil::deleteVector<CTextFilter>(TEXTfilters);
     CUtil::deleteVector<CHeaderFilter>(OUTfilters);
@@ -344,8 +352,8 @@ void CRequestManager::dataFeed(const string& data) {
 
         // Send a chunk of compressed data
         string tmp;
-        compressor.feed(data);
-        compressor.read(tmp);
+        compressor->feed(data);
+        compressor->read(tmp);
         size = tmp.size();
         if (size)
             sendInBuf += CUtil::makeHex(size) + CRLF + tmp + CRLF;
@@ -369,8 +377,8 @@ void CRequestManager::dataDump() {
         && (useChain || recvContentCoding != sendContentCoding)) {
 
         string tmp;
-        compressor.dump();
-        compressor.read(tmp);
+        compressor->dump();
+        compressor->read(tmp);
         unsigned int size = tmp.size();
         if (size)
             sendInBuf += CUtil::makeHex(size) + CRLF + tmp + CRLF;
@@ -861,11 +869,13 @@ void CRequestManager::processIn() {
             if (CUtil::noCaseContains("gzip",
                         getHeader(inHeaders, "Content-Encoding"))) {
                 recvContentCoding = 1;
-                decompressor.reset(false, true);
+                if (!decompressor) decompressor = new CZlibBuffer();
+                decompressor->reset(false, true);
             } else if (CUtil::noCaseContains("deflate",
                         getHeader(inHeaders, "Content-Encoding"))) {
                 recvContentCoding = 2;
-                decompressor.reset(false, false);
+                if (!decompressor) decompressor = new CZlibBuffer();
+                decompressor->reset(false, false);
             } else if (CUtil::noCaseContains("compress",
                         getHeader(inHeaders, "Content-Encoding"))) {
                 bypassBody = true;
@@ -931,11 +941,13 @@ void CRequestManager::processIn() {
             if (CUtil::noCaseContains("gzip",
                         getHeader(inHeadersFiltered, "Content-Encoding"))) {
                 sendContentCoding = 1;
-                compressor.reset(true, true);
+                if (!compressor) compressor = new CZlibBuffer();
+                compressor->reset(true, true);
             } else if (CUtil::noCaseContains("deflate",
                         getHeader(inHeadersFiltered, "Content-Encoding"))) {
                 sendContentCoding = 2;
-                compressor.reset(true, false);
+                if (!compressor) compressor = new CZlibBuffer();
+                compressor->reset(true, false);
             }
 
             if (inChunked || inSize) {
@@ -967,7 +979,12 @@ void CRequestManager::processIn() {
             fileType.clear();
 
             // Decide what to do next
-            inStep = (inChunked ? STEP_CHUNK : inSize ? STEP_RAW : STEP_FINISH);
+            inStep = (responseLine.code == "204"  ? STEP_FINISH :
+                      responseLine.code == "304"  ? STEP_FINISH :
+                      responseLine.code[0] == '1' ? STEP_FINISH :
+                      inChunked                   ? STEP_CHUNK  :
+                      inSize                      ? STEP_RAW    :
+                                                    STEP_FINISH );
         }
 
         // Read  (CRLF) HexRawLength * CRLF before raw data
@@ -1007,8 +1024,8 @@ void CRequestManager::processIn() {
             // unless bypassed body with same coding
             if (recvContentCoding && (useChain ||
                         recvContentCoding != sendContentCoding)) {
-                decompressor.feed(data);
-                decompressor.read(data);
+                decompressor->feed(data);
+                decompressor->read(data);
             }
 
             if (useChain) {
@@ -1245,8 +1262,8 @@ void CRequestManager::endFeeding() {
     if (recvContentCoding && (useChain ||
                 recvContentCoding != sendContentCoding)) {
         string data;
-        decompressor.dump();
-        decompressor.read(data);
+        decompressor->dump();
+        decompressor->read(data);
         if (useChain) {
             chain->dataFeed(data);
         } else if (useGifFilter) {

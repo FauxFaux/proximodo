@@ -26,9 +26,12 @@
 #ifndef __welcomescreen__
 #define __welcomescreen__
 
-#include "controls.h"
 #include "windowcontent.h"
-#include "events.h"
+class pmCheckBox;
+class pmComboBox;
+class pmStaticText;
+class CProxyEvent;
+
 
 /* This class create a box sizer to be set as the main frame sizer.
  * It only contains the Proximodo logo, centered in the sizer.

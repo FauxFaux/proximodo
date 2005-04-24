@@ -1,4 +1,17 @@
 --------------------------------------------------------------------------------
+Version ?????
+-------------
+
+GUI
+- Wider "active configuration" field on Monitor screen
+
+Proxy
+- Fixed freezing on 304 responses
+
+Other
+- Replaced many includes by forward declarations, to reduce dependencies
+
+--------------------------------------------------------------------------------
 Version 0.2.3 (Apr 20th, 2005)
 -------------
 

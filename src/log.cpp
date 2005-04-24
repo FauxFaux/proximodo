@@ -25,6 +25,9 @@
 
 #include "log.h"
 #include "const.h"
+#include "trayicon.h"
+#include "logframe.h"
+#include "mainframe.h"
 
 /* Functions to log event
  */

@@ -26,14 +26,15 @@
 #ifndef __nodes__
 #define __nodes__
 
+#include "node.h"
+#include "memory.h"
 #include <string>
 #include <vector>
 #include <map>
-#include "node.h"
-#include "memory.h"
-#include "url.h"
-#include "matcher.h"
-#include "filter.h"
+class CUrl;
+class CMatcher;
+class CFilter;
+class CFilterOwner;
 
 using namespace std;
 

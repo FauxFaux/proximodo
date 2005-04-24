@@ -27,10 +27,8 @@
 #define __testframe__
 
 #include <wx/frame.h>
-#include <wx/sizer.h>
-#include <wx/event.h>
-#include "descriptor.h"
-#include "controls.h"
+class CFilterDescriptor;
+class pmTextCtrl;
 
 /* This is a test window, for testing a filter upon some sample html code.
  */
