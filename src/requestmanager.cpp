@@ -36,6 +36,7 @@
 #include <wx/thread.h>
 #include <wx/filefn.h>
 #include <wx/file.h>
+#include <algorithm>
 #include <sstream>
 #include <map>
 
@@ -504,7 +505,8 @@ void CRequestManager::processOut() {
                     string name = recvOutBuf.substr(0, colon);
                     string value = recvOutBuf.substr(colon+1, pos-colon-1);
                     CUtil::trim(value);
-                    outHeaders.push_back((SHeader){name, value});
+                    SHeader header = {name, value};
+                    outHeaders.push_back(header);
                 }
                 logRequest += recvOutBuf.substr(0, pos+len);
                 recvOutBuf.erase(0, pos+len);
@@ -820,7 +822,8 @@ void CRequestManager::processIn() {
                     string name = recvInBuf.substr(0, colon);
                     string value = recvInBuf.substr(colon+1, pos-colon-1);
                     CUtil::trim(value);
-                    inHeaders.push_back((SHeader){name, value});
+                    SHeader header = {name, value};
+                    inHeaders.push_back(header);
                 }
                 logResponse += recvInBuf.substr(0, pos+len);
                 recvInBuf.erase(0, pos+len);

@@ -124,7 +124,8 @@ void CZlibBuffer::dump() {
 
     if (shrink) {
         unsigned int size = buffer.size();
-        char buf1[size], buf2[ZLIB_BLOCK];
+        char* buf1 = new char[size];
+        char buf2[ZLIB_BLOCK];
         stream.next_in = (Byte*)buf1;
         stream.avail_in = size;
         for (unsigned int i=0; i<size; i++) buf1[i] = buffer[i];
@@ -135,6 +136,7 @@ void CZlibBuffer::dump() {
             output << string(buf2, ZLIB_BLOCK - stream.avail_out);
         } while (err == Z_OK);
         free();
+        delete[] buf1;
     }
 }
 

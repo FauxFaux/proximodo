@@ -36,7 +36,7 @@ using namespace std;
 
 /* Events
  */
-BEGIN_EVENT_TABLE(CWelcomeScreen, wxEvtHandler)
+BEGIN_EVENT_TABLE(CWelcomeScreen, CWindowContent)
     EVT_CHECKBOX   (ID_FILTERINCHECKBOX,     CWelcomeScreen::OnCommand)
     EVT_CHECKBOX   (ID_FILTEROUTCHECKBOX,    CWelcomeScreen::OnCommand)
     EVT_CHECKBOX   (ID_FILTERTEXTCHECKBOX,   CWelcomeScreen::OnCommand)

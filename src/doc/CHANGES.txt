@@ -10,6 +10,7 @@ Proxy
 
 Other
 - Replaced many includes by forward declarations, to reduce dependencies
+- Sources now compile with Visual C++
 
 --------------------------------------------------------------------------------
 Version 0.2.3 (Apr 20th, 2005)

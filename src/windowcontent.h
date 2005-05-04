@@ -34,7 +34,7 @@ class CSettings;
  * It is meant to be inherited by all screens that can display within the
  * main frame.
  */
-class CWindowContent : public wxBoxSizer, public wxEvtHandler {
+class CWindowContent : public wxEvtHandler, public wxBoxSizer {
 
 public:
     virtual void revert(bool confirm) { }

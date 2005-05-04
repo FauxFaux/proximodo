@@ -87,7 +87,7 @@ CMainFrame::CMainFrame(const wxPoint& position)
     CSettings& settings = CSettings::ref();
 
     // Toolbar
-    wxToolBar* toolbar = CreateToolBar(wxTB_TEXT);
+    wxToolBar* toolbar = CreateToolBar(wxTB_TEXT | wxTB_FLAT);
     toolbar->AddTool(ID_MONITOR,
         settings.getMessage("BUTTON_MONITOR").c_str(), btn_monitor_xpm);
     toolbar->SetToolLongHelp(ID_MONITOR,

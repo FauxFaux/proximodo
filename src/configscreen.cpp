@@ -67,7 +67,7 @@ public:
 
 /* Events
  */
-BEGIN_EVENT_TABLE(CConfigScreen, wxEvtHandler)
+BEGIN_EVENT_TABLE(CConfigScreen, CWindowContent)
     EVT_BUTTON     (ID_ADDFOLDBUTTON, CConfigScreen::OnCommand)
     EVT_BUTTON     (ID_ADDFILTBUTTON, CConfigScreen::OnCommand)
     EVT_BUTTON     (ID_TRASHBUTTON,   CConfigScreen::OnCommand)
@@ -90,6 +90,9 @@ END_EVENT_TABLE()
  */
 CConfigScreen::CConfigScreen(wxFrame* frame) :
                                 CWindowContent(frame, wxVERTICAL) {
+
+    blank = new CFilterDescriptor();
+    editWindow = new CEditScreen(blank);
 
     wxBoxSizer* nameSizer = new wxBoxSizer(wxHORIZONTAL);
     Add(nameSizer,0,wxGROW | wxALL,0);
@@ -209,9 +212,6 @@ CConfigScreen::CConfigScreen(wxFrame* frame) :
     rootId = tree->AddRoot("Root", -1, -1, new CItemData(0, true));
 
     makeSizer();
-
-    blank = new CFilterDescriptor();
-    editWindow = new CEditScreen(blank);
 }
 
 
@@ -219,10 +219,10 @@ CConfigScreen::CConfigScreen(wxFrame* frame) :
  */
 CConfigScreen::~CConfigScreen() {
 
-    delete editWindow;
     apply(true);
     frame->GetMenuBar()->Remove(1);
     delete menuConfig;
+    delete editWindow;
     delete blank;
 }
 
@@ -517,10 +517,12 @@ void CConfigScreen::OnCommand(wxCommandEvent& event) {
     case ID_EDITBUTTON:
     case ID_FILTERSEDIT:
         {
-            CItemData* data = (CItemData*)tree->GetItemData(currentId);
-            if (data && !data->folder) {
-                editWindow->Show();
-                editWindow->Raise();
+            if (currentId.IsOk()) {
+                CItemData* data = (CItemData*)tree->GetItemData(currentId);
+                if (data && !data->folder) {
+                    editWindow->Show();
+                    editWindow->Raise();
+                }
             }
             break;
         }
@@ -546,7 +548,7 @@ void CConfigScreen::OnCommand(wxCommandEvent& event) {
             selectionId = item;
             refreshEditWindow();
             tree->EditLabel(item);
-            break;
+            return;
         }
     case ID_ADDFILTBUTTON:
     case ID_FILTERSNEW:
@@ -570,7 +572,6 @@ void CConfigScreen::OnCommand(wxCommandEvent& event) {
             tree->EnsureVisible(item);
             tree->SelectItem(item);
             selectionId = item;
-            refreshEditWindow();
             editWindow->Show();
             editWindow->Raise();
             break;
@@ -601,7 +602,9 @@ void CConfigScreen::OnCommand(wxCommandEvent& event) {
         }
     default:
         event.Skip();
+        return;
     }
+    refreshEditWindow();
 }
 
 
@@ -611,7 +614,7 @@ void CConfigScreen::OnTreeEvent(wxTreeEvent& event) {
 
     WXTYPE evt = event.GetEventType();
     wxTreeItemId id = event.GetItem();
-    CItemData* data = (CItemData*)tree->GetItemData(id);
+    CItemData* data = (id.IsOk() ? (CItemData*)tree->GetItemData(id) : NULL);
 
     if (evt == wxEVT_COMMAND_TREE_STATE_IMAGE_CLICK) {
 
@@ -626,7 +629,6 @@ void CConfigScreen::OnTreeEvent(wxTreeEvent& event) {
 
         // Selection changed
         selectionId = id;
-        refreshEditWindow();
 
     } else if (evt == wxEVT_COMMAND_TREE_END_LABEL_EDIT) {
 
@@ -676,11 +678,13 @@ void CConfigScreen::OnTreeEvent(wxTreeEvent& event) {
         tree->SelectItem(selectionId);
         importFilters(text);
         showStates(rootId);
+        editWindow->setCurrent(blank);
 
     } else {
 
         event.Skip();
     }
+    refreshEditWindow();
 }
 
 
@@ -820,26 +824,37 @@ void CConfigScreen::importFilters(const string& text, bool proxo) {
  */
 void CConfigScreen::refreshEditWindow() {
 
-    // update old edited filter
-    CItemData* prev = (CItemData*)tree->GetItemData(currentId);
-    if (prev && !prev->folder) {
-        tree->SetItemText(currentId, filters[prev->id].title.c_str());
-        if (!filters[prev->id].errorMsg.empty()) {
-            tree->SetItemTextColour(currentId, *wxRED);
-        } else {
-            tree->SetItemTextColour(currentId, *wxBLACK);
+    bool stillValid = false;
+
+    // update tree for previously edited filter
+    if (currentId.IsOk()) {
+        CItemData* data = (CItemData*)tree->GetItemData(currentId);
+        if (data && !data->folder) {
+            stillValid = true;
+            tree->SetItemText(currentId, filters[data->id].title.c_str());
+            if (!filters[data->id].errorMsg.empty()) {
+                tree->SetItemTextColour(currentId, *wxRED);
+            } else {
+                tree->SetItemTextColour(currentId, *wxBLACK);
+            }
         }
     }
-    // update comment and edit window
+
+    // if editable item selected: update comment and edit window
     wxTreeItemId id = getSelectionId();
-    CItemData* data = (CItemData*)tree->GetItemData(id);
-    if (!data || data->folder) {
-        commentText->SetValue("");
-    } else {
-        commentText->SetValue(filters[data->id].comment.c_str());
-        currentId = id;
-        editWindow->setCurrent(&filters[data->id]);
+    if (id.IsOk()) {
+        CItemData* data = (CItemData*)tree->GetItemData(id);
+        if (data && !data->folder) {
+            currentId = id;
+            editWindow->setCurrent(&filters[data->id]);
+            commentText->SetValue(filters[data->id].comment.c_str());
+            return;
+        }
     }
+    
+    // non-editable item or no selected: clear comment and edit window
+    commentText->SetValue("");
+    if (!stillValid) editWindow->setCurrent(blank);
 }
 
 
@@ -869,7 +884,7 @@ wxTreeItemId CConfigScreen::getSelectionId() {
 
     wxArrayTreeItemIds list;
     tree->GetSelections(list);
-    CItemData* data = (CItemData*)tree->GetItemData(selectionId);
+    CItemData* data = (selectionId.IsOk() ? (CItemData*)tree->GetItemData(selectionId) : NULL);
     if (list.IsEmpty() || !data)
         selectionId = rootId;
     return selectionId;

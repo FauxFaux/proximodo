@@ -50,7 +50,7 @@ using namespace std;
 
 /* Events
  */
-BEGIN_EVENT_TABLE(CSettingsScreen, wxEvtHandler)
+BEGIN_EVENT_TABLE(CSettingsScreen, CWindowContent)
     EVT_BUTTON     (ID_APPLYBUTTON,          CSettingsScreen::OnCommand)
     EVT_BUTTON     (ID_REVERTBUTTON,         CSettingsScreen::OnCommand)
     EVT_BUTTON     (ID_NEXTPROXYBUTTON,      CSettingsScreen::OnCommand)

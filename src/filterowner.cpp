@@ -107,7 +107,8 @@ void CFilterOwner::setHeader(vector<SHeader>& headers, const string& name,
         }
     }
     if (it == headers.end()) {
-        headers.push_back((SHeader){name, value});
+        SHeader header = {name, value};
+        headers.push_back(header);
     } else {
         ++it;
         vector<SHeader>::iterator it2 = it;

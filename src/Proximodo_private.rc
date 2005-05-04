@@ -3,7 +3,7 @@
 
 #include <windows.h> // include for version info constants
 
-#include "../../MinGW/include/wx/msw/wx.rc"
+#include <wx/msw/wx.rc>
 
 A ICON MOVEABLE PURE LOADONCALL DISCARDABLE "Proximodo.ico"
 

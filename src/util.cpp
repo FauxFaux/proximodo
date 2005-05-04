@@ -235,9 +235,11 @@ string CUtil::getFile(string filename) {
     if (wxFile::Exists(filename.c_str())
             && file.Open(filename.c_str())
                 && (size = file.Length()) > 0) {
-        char buf[size];
+        char* buf = new char[size];
         size = file.Read(buf, size);
-        return string(buf, size);
+        string content(buf, size);
+        delete[] buf;
+        return content;
     }
     return "";
 }

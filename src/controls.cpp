@@ -39,7 +39,8 @@ END_EVENT_TABLE()
 
 pmTextCtrl::pmTextCtrl( wxWindow* parent, wxWindowID id, const wxString& value,
                         const wxPoint& pos, const wxSize& size, long style) :
-        wxTextCtrl(parent, id, value, pos, size, style| wxTE_PROCESS_ENTER) {
+        wxTextCtrl(parent, id, value, pos, size,
+                   (style & wxTE_MULTILINE ? style : style | wxTE_PROCESS_ENTER)) {
 }
 
 void pmTextCtrl::OnKillFocus(wxFocusEvent& event) {
