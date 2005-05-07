@@ -562,7 +562,7 @@ void CRequestManager::processOut() {
                     (*itf)->killed = false;
                     string name = (*itf)->headerName;
 
-                    if (name.substr(0,3) != "url") {
+                    if (!CUtil::noCaseBeginsWith("url", name)) {
 
                         // If header is absent, temporarily create one
                         if (getHeader(outHeadersFiltered, name).empty())

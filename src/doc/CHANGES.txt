@@ -2,8 +2,12 @@
 Version ?????
 -------------
 
+Engine
+- URL pseudo-headers now always work (detection was case-sensitive)
+
 GUI
 - Wider "active configuration" field on Monitor screen
+- Better synchronization between filter edition window and config window
 
 Proxy
 - Fixed freezing on 304 responses
