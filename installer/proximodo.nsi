@@ -110,8 +110,8 @@ LangString PROXY_TITLE    ${LANG_ENGLISH}  "Browser Configuration"
 LangString PROXY_SUBTITLE ${LANG_ENGLISH}  "Configuring your browser to use Proximodo"
 LangString PROXY_TITLE    ${LANG_FRENCH}   "Configuration du navigateur"
 LangString PROXY_SUBTITLE ${LANG_FRENCH}   "Configuration de votre navigateur pour utiliser Proximodo"
-LangString PROXY_TITLE    ${LANG_JAPANESE} "Browser Configuration"
-LangString PROXY_SUBTITLE ${LANG_JAPANESE} "Configuring your browser to use Proximodo"
+LangString PROXY_TITLE    ${LANG_JAPANESE} "ブラウザ設定"
+LangString PROXY_SUBTITLE ${LANG_JAPANESE} "ブラウザからProximodoを使うための設定を行う方法を選択してください。"
 LangString PROXY_TITLE    ${LANG_ITALIAN}  "Configurazione del Browser"
 LangString PROXY_SUBTITLE ${LANG_ITALIAN}  "Configura il vostro browser in modo da usare Proximodo"
 
@@ -234,14 +234,24 @@ Section -Post
 SectionEnd
 
 
+; Header strings for uninstall
+LangString UNINST_SUCCESS ${LANG_ENGLISH}  "$(^Name) was successfully removed from your computer."
+LangString UNINST_CONFIRM ${LANG_ENGLISH}  "Are you sure you want to completely remove $(^Name) and all of its components?"
+LangString UNINST_SUCCESS ${LANG_FRENCH}   "$(^Name) was successfully removed from your computer."
+LangString UNINST_CONFIRM ${LANG_FRENCH}   "Are you sure you want to completely remove $(^Name) and all of its components?"
+LangString UNINST_SUCCESS ${LANG_JAPANESE} "$(^Name)のインストールが完了しました。"
+LangString UNINST_CONFIRM ${LANG_JAPANESE} "$(^Name)をアンインストールして、ファイルを削除してもよろしいですか？"
+LangString UNINST_SUCCESS ${LANG_ITALIAN}  "$(^Name) was successfully removed from your computer."
+LangString UNINST_CONFIRM ${LANG_ITALIAN}  "Are you sure you want to completely remove $(^Name) and all of its components?"
+
 Function un.onUninstSuccess
   HideWindow
-  MessageBox MB_ICONINFORMATION|MB_OK "$(^Name) was successfully removed from your computer."
+  MessageBox MB_ICONINFORMATION|MB_OK $(UNINST_SUCCESS)
 FunctionEnd
 
 Function un.onInit
 !insertmacro MUI_UNGETLANGUAGE
-  MessageBox MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2 "Are you sure you want to completely remove $(^Name) and all of its components?" IDYES +2
+  MessageBox MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2 $(UNINST_CONFIRM) IDYES +2
   Abort
 FunctionEnd
 
