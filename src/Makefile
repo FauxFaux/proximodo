@@ -1,15 +1,12 @@
 CC = g++
+WXCFG = wx-config
 
-# Replace the value below with the output of wx-config --cxxflags
-WXINC_REL = -I/usr/local/lib/wx/include/gtk2-ansi-release-2.5 -I/usr/local/include/wx-2.5 -DGTK_NO_CHECK_CASTS -D__WXGTK__ -D_FILE_OFFSET_BITS=64 -D_LARGE_FILES -DWX_PRECOMP -DNO_GCC_PRAGMA
-# Replace the value below with the output of wx-config --libs
-WXLIB_REL = -L/usr/local/lib -pthread   -L/usr/X11R6/lib  -lwx_gtk2_xrc-2.5 -lwx_gtk2_html-2.5 -lwx_gtk2_adv-2.5 -lwx_gtk2_core-2.5 -lwx_base_xml-2.5 -lwx_base_net-2.5 -lwx_base-2.5
+WXINC_REL = $(shell $(WXCFG) --cxxflags)
+WXLIB_REL = $(shell $(WXCFG) --libs)
 CFLAGS_REL = -Wall -g -O2
 
-# Replace the value below with the output of wx-config --cxxflags --debug
-WXINC_DBG = -I/usr/local/lib/wx/include/gtk2-ansi-debug-2.5 -I/usr/local/include/wx-2.5 -D__WXDEBUG__ -D__WXGTK__ -D_FILE_OFFSET_BITS=64 -D_LARGE_FILES -DWX_PRECOMP -DNO_GCC_PRAGMA  
-# Replace the value below with the output of wx-config --libs --debug
-WXLIB_DBG = -L/home/devel/wxWidgets/lib -pthread   -L/usr/X11R6/lib  -lwx_gtk2d_xrc-2.5 -lwx_gtk2d_html-2.5 -lwx_gtk2d_adv-2.5 -lwx_gtk2d_core-2.5 -lwx_based_xml-2.5 -lwx_based_net-2.5 -lwx_based-2.5 
+WXINC_DBG = $(shell $(WXCFG) --cxxflags --debug)
+WXLIB_DBG = $(shell $(WXCFG) --libs --debug)
 CFLAGS_DBG = -Wall -g -O0
 
 # Use *_REL for release, *_DBG for debug builds
@@ -56,104 +53,64 @@ tags: $(SRC) $(HDR)
 
 # DO NOT DELETE THIS LINE -- make depend depends on it.
 
-configscreen.o: configscreen.h controls.h windowcontent.h settings.h
-configscreen.o: descriptor.h editscreen.h testframe.h mainframe.h events.h
-configscreen.o: trayicon.h const.h util.h proxy.h requestmanager.h
-configscreen.o: zlibbuffer.h receptor.h filterowner.h url.h textfilter.h
-configscreen.o: filter.h memory.h matcher.h node.h headerfilter.h giffilter.h
-configscreen.o: managerthread.h images/box_on.xpm images/box_off.xpm
+configscreen.o: configscreen.h windowcontent.h descriptor.h mainframe.h
+configscreen.o: settings.h const.h util.h proxy.h testframe.h controls.h
+configscreen.o: editscreen.h images/box_on.xpm images/box_off.xpm
 configscreen.o: images/box_half.xpm images/btn_addfold32.xpm
 configscreen.o: images/btn_addfilt32.xpm images/btn_trash32.xpm
 configscreen.o: images/btn_edit32.xpm images/btn_ok32.xpm
 configscreen.o: images/btn_undo32.xpm
 controls.o: util.h controls.h events.h
-descriptor.o: descriptor.h matcher.h node.h filter.h filterowner.h url.h
-descriptor.o: memory.h util.h settings.h
-editscreen.o: editscreen.h controls.h descriptor.h testframe.h matcher.h
-editscreen.o: node.h filter.h filterowner.h url.h memory.h settings.h const.h
-editscreen.o: util.h images/icon32.xpm
+descriptor.o: descriptor.h matcher.h util.h settings.h
+editscreen.o: editscreen.h matcher.h settings.h descriptor.h const.h util.h
+editscreen.o: controls.h testframe.h images/icon32.xpm
 events.o: events.h
-expander.o: expander.h filter.h filterowner.h url.h memory.h const.h util.h
-expander.o: settings.h descriptor.h matcher.h node.h log.h events.h
-expander.o: logframe.h windowcontent.h controls.h mainframe.h trayicon.h
-filter.o: filter.h filterowner.h url.h memory.h log.h events.h logframe.h
-filter.o: windowcontent.h settings.h descriptor.h controls.h mainframe.h
-filter.o: trayicon.h
+expander.o: expander.h url.h memory.h const.h util.h settings.h descriptor.h
+expander.o: matcher.h log.h events.h logframe.h filter.h filterowner.h
+filter.o: filter.h memory.h log.h events.h
 filterowner.o: filterowner.h url.h util.h
 giffilter.o: giffilter.h receptor.h
-headerfilter.o: headerfilter.h descriptor.h matcher.h node.h filter.h
-headerfilter.o: filterowner.h url.h memory.h expander.h util.h log.h events.h
-headerfilter.o: logframe.h windowcontent.h settings.h controls.h mainframe.h
-headerfilter.o: trayicon.h
-log.o: log.h events.h logframe.h windowcontent.h settings.h descriptor.h
-log.o: controls.h mainframe.h trayicon.h const.h
-logframe.o: logframe.h windowcontent.h settings.h descriptor.h events.h
-logframe.o: controls.h images/icon32.xpm util.h log.h mainframe.h trayicon.h
-logframe.o: const.h
-main.o: proxy.h requestmanager.h zlibbuffer.h receptor.h filterowner.h url.h
-main.o: textfilter.h filter.h memory.h descriptor.h matcher.h node.h
-main.o: headerfilter.h giffilter.h managerthread.h const.h settings.h
-main.o: mainframe.h events.h windowcontent.h trayicon.h util.h log.h
-main.o: logframe.h controls.h
-mainframe.o: mainframe.h events.h windowcontent.h settings.h descriptor.h
-mainframe.o: trayicon.h proxy.h requestmanager.h zlibbuffer.h receptor.h
-mainframe.o: filterowner.h url.h textfilter.h filter.h memory.h matcher.h
-mainframe.o: node.h headerfilter.h giffilter.h managerthread.h log.h
-mainframe.o: logframe.h controls.h util.h const.h welcomescreen.h
-mainframe.o: settingsscreen.h configscreen.h editscreen.h testframe.h
-mainframe.o: images/btn_settings.xpm images/btn_log.xpm images/btn_config.xpm
-mainframe.o: images/btn_help.xpm images/btn_monitor.xpm images/btn_quit.xpm
-mainframe.o: images/icon32.xpm
-managerthread.o: managerthread.h requestmanager.h zlibbuffer.h receptor.h
-managerthread.o: filterowner.h url.h textfilter.h filter.h memory.h
-managerthread.o: descriptor.h matcher.h node.h headerfilter.h giffilter.h
-managerthread.o: log.h events.h logframe.h windowcontent.h settings.h
-managerthread.o: controls.h mainframe.h trayicon.h
-matcher.o: matcher.h node.h filter.h filterowner.h url.h memory.h settings.h
-matcher.o: descriptor.h nodes.h const.h util.h log.h events.h logframe.h
-matcher.o: windowcontent.h controls.h mainframe.h trayicon.h
-nodes.o: nodes.h node.h memory.h url.h matcher.h filter.h filterowner.h
-nodes.o: const.h util.h settings.h descriptor.h expander.h log.h events.h
-nodes.o: logframe.h windowcontent.h controls.h mainframe.h trayicon.h
+headerfilter.o: headerfilter.h filter.h memory.h url.h expander.h util.h
+headerfilter.o: log.h events.h descriptor.h filterowner.h matcher.h
+log.o: log.h events.h const.h trayicon.h logframe.h mainframe.h
+logframe.o: logframe.h images/icon32.xpm util.h log.h events.h const.h
+logframe.o: settings.h descriptor.h controls.h
+main.o: proxy.h const.h settings.h descriptor.h mainframe.h util.h log.h
+main.o: events.h trayicon.h
+mainframe.o: mainframe.h settings.h descriptor.h proxy.h log.h events.h
+mainframe.o: util.h const.h welcomescreen.h windowcontent.h settingsscreen.h
+mainframe.o: configscreen.h logframe.h trayicon.h images/btn_settings.xpm
+mainframe.o: images/btn_log.xpm images/btn_config.xpm images/btn_help.xpm
+mainframe.o: images/btn_monitor.xpm images/btn_quit.xpm images/icon32.xpm
+managerthread.o: managerthread.h log.h events.h requestmanager.h receptor.h
+managerthread.o: filterowner.h url.h
+matcher.o: matcher.h settings.h descriptor.h nodes.h node.h memory.h const.h
+matcher.o: util.h url.h log.h events.h filter.h filterowner.h
+nodes.o: nodes.h node.h memory.h const.h util.h settings.h descriptor.h
+nodes.o: expander.h log.h events.h logframe.h url.h matcher.h filter.h
+nodes.o: filterowner.h
 platform.o: platform.h
-proxy.o: proxy.h requestmanager.h zlibbuffer.h receptor.h filterowner.h url.h
-proxy.o: textfilter.h filter.h memory.h descriptor.h matcher.h node.h
-proxy.o: headerfilter.h giffilter.h managerthread.h util.h settings.h
-proxy.o: events.h log.h logframe.h windowcontent.h controls.h mainframe.h
-proxy.o: trayicon.h platform.h
-requestmanager.o: requestmanager.h zlibbuffer.h receptor.h filterowner.h
-requestmanager.o: url.h textfilter.h filter.h memory.h descriptor.h matcher.h
-requestmanager.o: node.h headerfilter.h giffilter.h util.h settings.h log.h
-requestmanager.o: events.h logframe.h windowcontent.h controls.h mainframe.h
-requestmanager.o: trayicon.h const.h
-settings.o: settings.h descriptor.h util.h const.h matcher.h node.h filter.h
-settings.o: filterowner.h url.h memory.h
-settingsscreen.o: settingsscreen.h controls.h windowcontent.h settings.h
-settingsscreen.o: descriptor.h mainframe.h events.h trayicon.h util.h const.h
-settingsscreen.o: proxy.h requestmanager.h zlibbuffer.h receptor.h
-settingsscreen.o: filterowner.h url.h textfilter.h filter.h memory.h
-settingsscreen.o: matcher.h node.h headerfilter.h giffilter.h managerthread.h
+proxy.o: proxy.h util.h settings.h descriptor.h events.h log.h platform.h
+proxy.o: managerthread.h requestmanager.h receptor.h filterowner.h url.h
+requestmanager.o: requestmanager.h receptor.h filterowner.h url.h util.h
+requestmanager.o: settings.h descriptor.h log.h events.h const.h matcher.h
+requestmanager.o: giffilter.h headerfilter.h filter.h memory.h textfilter.h
+requestmanager.o: zlibbuffer.h
+settings.o: settings.h descriptor.h util.h const.h matcher.h
+settingsscreen.o: settingsscreen.h windowcontent.h mainframe.h settings.h
+settingsscreen.o: descriptor.h util.h const.h proxy.h controls.h matcher.h
 settingsscreen.o: images/btn_add20.xpm images/btn_view20.xpm
 settingsscreen.o: images/btn_file20.xpm images/btn_trash20.xpm
-testframe.o: testframe.h descriptor.h controls.h settings.h filterowner.h
-testframe.o: url.h matcher.h node.h filter.h memory.h expander.h const.h
-testframe.o: log.h events.h logframe.h windowcontent.h mainframe.h trayicon.h
-testframe.o: images/icon32.xpm
-textfilter.o: textfilter.h filter.h filterowner.h url.h memory.h descriptor.h
-textfilter.o: receptor.h matcher.h node.h expander.h const.h log.h events.h
-textfilter.o: logframe.h windowcontent.h settings.h controls.h mainframe.h
-textfilter.o: trayicon.h
+testframe.o: testframe.h settings.h descriptor.h filterowner.h url.h
+testframe.o: matcher.h expander.h filter.h memory.h const.h log.h events.h
+testframe.o: controls.h images/icon32.xpm
+textfilter.o: textfilter.h filter.h memory.h receptor.h url.h expander.h
+textfilter.o: const.h log.h events.h descriptor.h filterowner.h matcher.h
 trayicon.o: trayicon.h images/icon32.xpm settings.h descriptor.h log.h
-trayicon.o: events.h logframe.h windowcontent.h controls.h mainframe.h
-trayicon.o: proxy.h requestmanager.h zlibbuffer.h receptor.h filterowner.h
-trayicon.o: url.h textfilter.h filter.h memory.h matcher.h node.h
-trayicon.o: headerfilter.h giffilter.h managerthread.h util.h const.h
+trayicon.o: events.h proxy.h mainframe.h util.h const.h logframe.h
 url.o: url.h
 util.o: util.h platform.h const.h settings.h descriptor.h
-welcomescreen.o: welcomescreen.h controls.h windowcontent.h settings.h
-welcomescreen.o: descriptor.h events.h proxy.h requestmanager.h zlibbuffer.h
-welcomescreen.o: receptor.h filterowner.h url.h textfilter.h filter.h
-welcomescreen.o: memory.h matcher.h node.h headerfilter.h giffilter.h
-welcomescreen.o: managerthread.h log.h logframe.h mainframe.h trayicon.h
-windowcontent.o: windowcontent.h settings.h descriptor.h util.h
+welcomescreen.o: welcomescreen.h windowcontent.h proxy.h log.h events.h
+welcomescreen.o: settings.h descriptor.h controls.h
+windowcontent.o: windowcontent.h util.h settings.h descriptor.h
 zlibbuffer.o: zlibbuffer.h const.h
