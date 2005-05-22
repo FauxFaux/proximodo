@@ -1,8 +1,8 @@
 ---------------------------------------------------------------------
 Language: “ú–{Œê
-Author: Shimazaki Ryo  (2004/12/01)
+Author: Shimazaki Ryo  (2005/05/22)
 Contributions by: 
-Version: 0.2
+Version: 0.2.3
 ---------------------------------------------------------------------
 
 
@@ -18,11 +18,11 @@ UNKNOWN_COMMAND               =ƒRƒ}ƒ“ƒh–¼‚ªŠÔˆá‚Á‚Ä‚¢‚Ü‚·i%1•¶Žš–Új
 MISSING_EQUAL                 =Š‡ŒÊ“à‚É = ‚ª‚ ‚è‚Ü‚¹‚ñi%1•¶Žš–Új
 NEED_TRUE_FALSE               =true ‚Ü‚½‚Í false ‚ðŽw’è‚µ‚Ä‰º‚³‚¢i%1•¶Žš–Új
 NEED_TEXT                     =•¶Žš‚ÌŽw’è‚ª•K—v‚Å‚·i%1•¶Žš–Új
-TWO_THREE_INTEGERS            =, ‚Å‹æØ‚Á‚Ä2ŒÂ‚©3ŒÂ‚Ì³‚Ì®”‚ðŽw’è‚µ‚Ä‰º‚³‚¢i%1•¶Žš–Új
+TWO_THREE_INTEGERS            =, ‚Å‹æØ‚Á‚Ä2`3ŒÂ‚Ì³‚Ì®”‚ðŽw’è‚µ‚Ä‰º‚³‚¢i%1•¶Žš–Új
 MISSING_COLON                 =Š‡ŒÊ“à‚É : ‚ª‚ ‚è‚Ü‚¹‚ñi%1•¶Žš–Új
 CROCHET_AT_END                =ƒpƒ^[ƒ“––”ö‚É [ ‚ª‚ ‚è‚Ü‚·
 MISSING_COMMA                 =, ‚ª‚ ‚è‚Ü‚¹‚ñi%1•¶Žš–Új
-ERROR_MARKER                  =___
+ERROR_MARKER                  =Ÿ
 
 Web Error Messages
 
@@ -40,19 +40,20 @@ INVALID_FILTER_HEADEREMPTY    =ƒwƒbƒ_–¼‚ª•K—v‚Å‚·B
 
 Main Window
 
+BUTTON_MONITOR                =ó‹µ
 BUTTON_SETTINGS               =Ý’è
 BUTTON_LOG                    =ƒƒO
 BUTTON_FILTERS                =ƒtƒBƒ‹ƒ^
 BUTTON_CONFIG                 =\¬
 BUTTON_HELP                   =ƒwƒ‹ƒv
 BUTTON_QUIT                   =I—¹
-STAT_ACTIVE_REQS              =ƒAƒNƒeƒBƒu‚ÈÚ‘±: %1
-STAT_ACTIVE_REQ               =ƒAƒNƒeƒBƒu‚ÈÚ‘±: %1
-HELP_PAGE_CONTENT             =./help/en/f_content.html
-HELP_PAGE_SYNTAX              =./help/en/f_syntax.html
-HELP_PAGE_WELCOME             =./help/en/f_welcome.html
-HELP_PAGE_LICENSE             =./help/en/f_license.html
-HELP_PAGE_FILTERS             =./help/en/f_filters.html
+STAT_ACTIVE_REQS              =Ú‘±”: %1
+STAT_ACTIVE_REQ               =Ú‘±”: %1
+HELP_PAGE_CONTENT             =./help/ja/f_content.html
+HELP_PAGE_SYNTAX              =./help/ja/f_syntax.html
+HELP_PAGE_WELCOME             =./help/ja/f_welcome.html
+HELP_PAGE_LICENSE             =./help/ja/f_license.html
+HELP_PAGE_FILTERS             =./help/ja/f_filters.html
 HELP_ABOUT_TEXT               =Proximodo version %1
 _2004 (c) Antony Boucher
 _
@@ -67,17 +68,18 @@ MENU_TOOLS                    =ƒc[ƒ‹(&T)
 MENU_FILTERS                  =ƒtƒBƒ‹ƒ^(&E)
 MENU_CONFIG                   =\¬(&C)
 MENU_HELP                     =ƒwƒ‹ƒv(&H)
+MENU_TOOLSMONITOR             =ó‹µ	Alt+M
 MENU_TOOLSSETTINGS            =Ý’è	Alt+S
 MENU_TOOLSCONFIG              =\¬	Alt+G
 MENU_TOOLSFILTERS             =ƒtƒBƒ‹ƒ^	Alt+F
 MENU_TOOLSLOG                 =ƒƒOƒEƒBƒ“ƒhƒE	Alt+L
 MENU_TOOLSSAVE                =•Û‘¶	Ctrl+S
 MENU_TOOLSRELOAD              =Ä“Ç‚Ýž‚Ý	Ctrl+Y
-MENU_TOOLSQUIT                =I—¹	Ctrl+Q
+MENU_TOOLSQUIT                =I—¹(&X)	Ctrl+Q
 MENU_TOOLSICONIZE             =ƒAƒCƒRƒ“‰»	F4
 MENU_HELPABOUT                =ƒo[ƒWƒ‡ƒ“î•ñ(&A)
 MENU_HELPCONTENT              =–ÚŽŸ(&H)	F1
-MENU_HELPSYNTAX               =ƒR[ƒh‚ÆƒRƒ}ƒ“ƒh(&C)
+MENU_HELPSYNTAX               =ƒƒ^ƒLƒƒƒ‰ƒNƒ^‚ÆƒRƒ}ƒ“ƒh(&C)
 MENU_HELPLICENSE              =ƒ‰ƒCƒZƒ“ƒX(&L)
 MENU_HELPFILTERS              =ƒtƒBƒ‹ƒ^•ÒW(&E)
 MENU_FILTERSEDIT              =ƒtƒBƒ‹ƒ^•ÒW(&J)	Enter
@@ -110,7 +112,7 @@ SETTINGS_NOT_SAVED            =Ý’è‚ª•ÏX‚³‚ê‚Ä‚¢‚Ü‚·B•Û‘¶‚µ‚Ü‚·‚©H
 REVERT_SETTINGS               =•ÏX‚µ‚½Ý’è‚ÍŽ¸‚í‚ê‚Ü‚·BŒ³‚É–ß‚µ‚Ü‚·‚©H
 APPLY_SETTINGS                =Ý’è‚ª•ÏX‚³‚ê‚Ä‚¢‚Ü‚·B“K—p‚µ‚Ü‚·‚©H
 BAD_PATTERN                   =ƒpƒ^[ƒ“‚ÉŠÔˆá‚¢‚ª‚ ‚è‚Ü‚·B
-PORT_UNAVAILABLE              =Žw’è‚Ìƒ|[ƒg‚ÍŠù‚ÉŽg—p‚³‚ê‚Ä‚¢‚Ü‚·B
+PORT_UNAVAILABLE              =Žw’è‚Ìƒ|[ƒg‚ÍŠù‚É‘¼‚ÌƒvƒƒZƒX‚ÅŽg—p‚³‚ê‚Ä‚¢‚Ü‚·BProximodo‚ÌÝ’è‰æ–Ê‚©Asettings.txt‚ÅÝ’è‚ð•ÏX‚µ‚Ä‰º‚³‚¢B
 BAD_REMOTE_PROXY              =Žg—p‚Å‚«‚È‚¢ƒvƒƒNƒV‚Ì‚æ‚¤‚Å‚·B
 LB_SETTINGS_FILTERING         =ƒtƒBƒ‹ƒ^
 LB_SETTINGS_OUTGOING          =‘—Mƒwƒbƒ_
@@ -119,7 +121,7 @@ LB_SETTINGS_TEXT              =ƒEƒFƒuƒy[ƒW
 LB_SETTINGS_GIF               =GIFƒAƒjƒ[ƒVƒ‡ƒ“‚ðŽ~‚ß‚é
 LB_SETTINGS_ACTIVE            =Œ»Ý‚ÌƒtƒBƒ‹ƒ^\¬
 LB_SETTINGS_BYPASS            =ƒoƒCƒpƒXURLƒpƒ^[ƒ“
-LB_SETTINGS_GUI               =GUI
+LB_SETTINGS_GUI               =ƒ†[ƒUƒCƒ“ƒ^[ƒtƒFƒCƒX
 LB_SETTINGS_LANGUAGE          =Œ¾Œê
 LB_SETTINGS_PROXY             =ƒvƒƒNƒV
 LB_SETTINGS_PORT              =ƒ|[ƒg
@@ -132,37 +134,45 @@ LB_SETTINGS_MAXRANGE          =Å‘åƒAƒhƒŒƒX
 LB_SETTINGS_APPLY             =“K—p
 LB_SETTINGS_SAVE              =•Û‘¶
 LB_SETTINGS_REVERT            =Œ³‚É–ß‚·
-LB_SETTINGS_SHOWONSTARTUP     =‹N“®Žž‚ÉƒEƒBƒ“ƒhƒE‚ðŠJ‚­
+LB_SETTINGS_STARTUP_GUI       =‹N“®Žž‚Ì•\Ž¦F
+LB_SETTINGS_NO_GUI            =‚È‚µiƒgƒŒƒCƒAƒCƒRƒ“‚Ì‚Ýj
+LB_SETTINGS_PROX_GUI          =Proximodo
+LB_SETTINGS_BROWSER_GUI       =•W€‚Ìƒuƒ‰ƒEƒU
+LB_SETTINGS_BOTH_GUI          =Proximodo‚Æƒuƒ‰ƒEƒU
+LB_SETTINGS_SHOWONSTARTUP     =‹N“®Žž‚ÉProximodo‚ÌƒEƒBƒ“ƒhƒE‚ðŠJ‚­
 LB_SETTINGS_LIST              =ƒŠƒXƒg
 LB_SETTINGS_LISTNAME          =–¼Ì
 LB_SETTINGS_NEWLIST           =V‹K
 LB_SETTINGS_OPENLIST          =ŠJ‚­
 LB_SETTINGS_LISTFILE          =ƒtƒ@ƒCƒ‹
 LB_SETTINGS_CHOOSEFILE        =ŽQÆ
+LB_SETTINGS_SHOWGUI           =‹N“®Žž‚ÉProximodo‚ÌƒEƒBƒ“ƒhƒE‚ðŠJ‚­
+LB_SETTINGS_STARTBROWSER      =‹N“®Žž‚ÉƒvƒƒOƒ‰ƒ€‚ðŽÀs‚·‚éF
 ASK_CREATE_NEWLIST            =ƒtƒ@ƒCƒ‹‚ª‚ ‚è‚Ü‚¹‚ñBì¬‚µ‚Ü‚·‚©H
 OPEN_LISTFILE_QUESTION        =ƒeƒLƒXƒgƒtƒ@ƒCƒ‹‚Ì‘I‘ð
+OPEN_BROWSER_QUESTION         =ŽÀsƒtƒ@ƒCƒ‹‚Ì‘I‘ð
 
 Edit Filter Window
 
 LB_EDIT_COL1                  =ƒtƒBƒ‹ƒ^–¼
 LB_EDIT_COL2                  =•ª—Þ
-LB_EDIT_AUTHOR                =ìŽÒ
-LB_EDIT_COMMENT               =à–¾
-LB_EDIT_HEADERNAME            =ƒwƒbƒ_–¼
-LB_EDIT_MULTIMATCH            =Ä‹Aƒ}ƒbƒ`ƒ“ƒO‚ð‹–‰Â‚·‚é
-LB_EDIT_TITLE                 =ƒtƒBƒ‹ƒ^–¼
+LB_EDIT_AUTHOR                =ìŽÒ(&A)
+LB_EDIT_COMMENT               =à–¾(&C)
+LB_EDIT_HEADERNAME            =ƒwƒbƒ_–¼(&H)
+LB_EDIT_MULTIMATCH            =Ä‹Aƒ}ƒbƒ`ƒ“ƒO‚ð‹–‰Â‚·‚é(&S)
+LB_EDIT_TITLE                 =ƒtƒBƒ‹ƒ^–¼(&N)
 LB_EDIT_CATEGORY              =•ª—Þ
 LB_EDIT_TYPE                  =ƒtƒBƒ‹ƒ^Ží•Ê
 LB_EDIT_TYPEIN                =ŽóMƒwƒbƒ_
 LB_EDIT_TYPEOUT               =‘—Mƒwƒbƒ_
 LB_EDIT_TYPETEXT              =ƒEƒFƒuƒy[ƒW
-LB_EDIT_VERSION               =Version
-LB_EDIT_WIDTH                 =ãŒÀƒoƒCƒg”
-LB_EDIT_PRIORITY              =—Dæ“x
-LB_EDIT_URL                   =URLƒpƒ^[ƒ“:
-LB_EDIT_BOUNDS                =”ÍˆÍŽw’èƒpƒ^[ƒ“:
-LB_EDIT_MATCH                 =ƒ}ƒbƒ`ƒ“ƒOƒpƒ^[ƒ“:
-LB_EDIT_REPLACE               =’uŠ·‚·‚éƒeƒLƒXƒg:
+LB_EDIT_VERSION               =&Version
+LB_EDIT_WIDTH                 =ãŒÀƒoƒCƒg”(&W)
+LB_EDIT_PRIORITY              =—Dæ“x(&P)
+LB_EDIT_URL                   =&URLƒpƒ^[ƒ“F
+LB_EDIT_BOUNDS                =”ÍˆÍŽw’èƒpƒ^[ƒ“(&B)F
+LB_EDIT_MATCH                 =ƒ}ƒbƒ`ƒ“ƒOƒpƒ^[ƒ“(&M)F
+LB_EDIT_REPLACE               =’uŠ·‚·‚éƒeƒLƒXƒg(&R)F
 REVERT_EDITFILTERS            =•ÏX‚µ‚½ƒtƒBƒ‹ƒ^‚ÍŽ¸‚í‚ê‚Ü‚·BƒtƒBƒ‹ƒ^ƒŠƒXƒg‚ðŒ³‚É–ß‚µ‚Ü‚·‚©H
 APPLY_EDITFILTERS             =ƒtƒBƒ‹ƒ^‚ª•ÏX‚³‚ê‚Ä‚¢‚Ü‚·B“K—p‚µ‚Ü‚·‚©H
 DEFAULT_FILTER_NAME           =V‚µ‚¢ƒtƒBƒ‹ƒ^
@@ -198,10 +208,10 @@ LOG_BUTTON_STOP               =’âŽ~(&S)
 LOG_BUTTON_CLEAR              =Á‹Ž(&R)
 LOG_CKB_HTTP                  =HTTPƒCƒxƒ“ƒg(&H)
 LOG_CKB_POST                  =POSTƒf[ƒ^(&D)
-LOG_CKB_PROXY                 =ProxyƒCƒxƒ“ƒg(&P)
+LOG_CKB_PROXY                 =ƒvƒƒNƒVƒCƒxƒ“ƒg(&P)
 LOG_CKB_FILTER                =ƒtƒBƒ‹ƒ^ƒCƒxƒ“ƒg(&F)
 LOG_CKB_LOG                   =$LOG()ƒCƒxƒ“ƒg(&L)
-LOG_CKB_BROWSER               =ƒuƒ‰ƒEƒU‘¤ƒ_ƒCƒAƒƒO(&B)
+LOG_CKB_BROWSER               =ƒuƒ‰ƒEƒU‘Î˜bƒ‚[ƒh(&B)
 EVT_FILTER_HMATCH             =>>> Req #%1: ƒwƒbƒ_ƒtƒBƒ‹ƒ^ "%2" ‚ª "%3" ‚Éƒ}ƒbƒ`
 EVT_FILTER_HREPLACE           =>>> Req #%1: ƒwƒbƒ_ƒtƒBƒ‹ƒ^ "%2" ‚ª "%3" ‚É’uŠ·
 EVT_FILTER_LOG                =>>> Req #%1: ƒtƒBƒ‹ƒ^ "%2" ‚ÌƒƒO:
@@ -223,8 +233,15 @@ EVT_PROXY_ENDSOCK             =>>> ƒ|[ƒg %1 ‚Ìƒ\ƒPƒbƒg‚ð•Â‚¶‚Ü‚µ‚½
 EVT_PROXY_NEWREQ              =>>> ƒ|[ƒg %1 ‚©‚çV‚µ‚¢ƒŠƒNƒGƒXƒg‚ðŽóM‚µ‚Ü‚µ‚½
 EVT_PROXY_NEWSOCK             =>>> ƒ|[ƒg %1 ‚ÉV‚µ‚¢ƒ\ƒPƒbƒg‚ðì¬‚µ‚Ü‚µ‚½
 EVT_PROXY_REFUSE              =>>> ƒ|[ƒg %1 ‚ÌÚ‘±‚ª‹‘”Û‚³‚ê‚Ü‚µ‚½
-EVT_PROXY_START               =>>> ƒ|[ƒg %1 ‚ÅƒvƒƒLƒVÚ‘±‚ðŠJŽn‚µ‚Ü‚·
-EVT_PROXY_STOP                =>>> ƒvƒƒLƒV‚ð’âŽ~‚µ‚Ü‚µ‚½
+EVT_PROXY_START               =>>> ƒ|[ƒg %1 ‚ÅƒvƒƒNƒVÚ‘±‚ðŠJŽn‚µ‚Ü‚·
+EVT_PROXY_STOP                =>>> ƒvƒƒNƒV‚ð’âŽ~‚µ‚Ü‚µ‚½
+
+Monitoring Window
+
+LB_MONITOR_STATISTICS         =“Œv
+LB_MONITOR_OPENCNX            =Ú‘±”F
+LB_MONITOR_OPENREQ            =ˆ—’†F
+LB_MONITOR_ABORT              =’†Ž~
 
 Tray Icon Menu
 
@@ -240,6 +257,10 @@ TRAY_LOG                      =ƒƒOƒEƒBƒ“ƒhƒE‚ðŠJ‚­
 TRAY_OPEN                     =ƒƒCƒ“ƒEƒBƒ“ƒhƒE‚ðŠJ‚­
 TRAY_EXIT                     =I—¹
 TRAY_USEPROXY                 =ƒŠƒ‚[ƒgƒvƒƒNƒVŽg—p
+
+Other Messages
+
+UTIL_OPEN_FILE                =ƒvƒƒOƒ‰ƒ€ %1 ‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñB
 
 Tool Tips
 
@@ -274,7 +295,7 @@ EDIT_MULTIMATCH_TIP           =ƒ`ƒFƒbƒN‚ð“ü‚ê‚é‚ÆA’uŠ·‚µ‚½ƒeƒLƒXƒg‚àŒJ‚è•Ô‚µƒtƒ
 EDIT_BOUNDS_TIP               =‚±‚Ìƒpƒ^[ƒ“‚Éƒ}ƒbƒ`‚µ‚½•”•ª‚¾‚¯‚ªƒ}ƒbƒ`ƒ“ƒOƒpƒ^[ƒ“‚Å”äŠr‚³‚ê‚Ü‚·iŽw’èŽž‚Ì‚ÝjB‰Â”\‚ÈŒÀ‚èŽg‚¤‚±‚Æi‚æ‚è‘¬‚­‚È‚è‚Ü‚·jB
 EDIT_URL_TIP                  =URL‚ªƒ}ƒbƒ`‚µ‚½ê‡‚Ì‚Ý—LŒø‚É‚È‚è‚Ü‚·iŽw’èŽž‚Ì‚ÝjB‰Â”\‚ÈŒÀ‚èŽg‚¤‚±‚Æi‚æ‚è‘¬‚­‚È‚è‚Ü‚·jB
 EDIT_MATCH_TIP                =ŒŸõ‚·‚éƒpƒ^[ƒ“BÚ×‚Íƒwƒ‹ƒv‚ðŽQÆ‚µ‚Ä‰º‚³‚¢B
-EDIT_REPLACE_TIP              =ƒ}ƒbƒ`ƒ“ƒO‚µ‚½•”•ª‚ð’uŠ·‚·‚éƒeƒLƒXƒgiƒR[ƒh‚âƒRƒ}ƒ“ƒh‚àŽg—p‚Å‚«‚Ü‚·jB
+EDIT_REPLACE_TIP              =ƒ}ƒbƒ`ƒ“ƒO‚µ‚½•”•ª‚ð’uŠ·‚·‚éƒeƒLƒXƒgiƒƒ^ƒLƒƒƒ‰ƒNƒ^‚âƒRƒ}ƒ“ƒh‚àŽg—p‚Å‚«‚Ü‚·jB
 MENU_FOLDERSNEW_TIP           =‘I‘ð‚µ‚½êŠ‚ÉƒtƒHƒ‹ƒ_‚ðì¬‚µ‚Ü‚·B
 MENU_FILTERSEDIT_TIP          =ƒtƒBƒ‹ƒ^•ÒWƒEƒBƒ“ƒhƒE‚ðŠJ‚«‚Ü‚·B
 MENU_FILTERSCHECK_TIP         =‘I‘ð‚µ‚½€–Ú‚Ìƒ`ƒFƒbƒNó‘Ô‚ð”½“]‚µ‚Ü‚·B
@@ -289,12 +310,14 @@ MENU_FILTERSPROXOMITRON_TIP   =ƒNƒŠƒbƒvƒ{[ƒh‚©‚çProxomitron‚ÌƒtƒBƒ‹ƒ^‚ðŽæ‚èž‚Ý
 MENU_FILTERSEXPORT_TIP        =‘I‘ð‚µ‚½ƒtƒBƒ‹ƒ^‚ðƒNƒŠƒbƒvƒ{[ƒh‚É‘—‚è‚Ü‚·B
 MENU_FILTERSAPPLY_TIP         =‘S‚Ä‚ÌƒtƒBƒ‹ƒ^‚Ì•ÏX‚ð“K—p‚µ‚Ü‚·B
 MENU_FILTERSREVERT_TIP        =‘O‰ñ‚Ì“K—pEŒ³‚É–ß‚·Œã‚É‰Á‚¦‚½•ÏX‚ðŒ³‚É–ß‚µ‚Ü‚·B
+BUTTON_MONITOR_TIP            =ó‹µŠÄŽ‹‰æ–Ê‚ð•\Ž¦‚µ‚Ü‚·B
 BUTTON_SETTINGS_TIP           =Ý’è‰æ–Ê‚ð•\Ž¦‚µ‚Ü‚·B
 BUTTON_LOG_TIP                =ƒƒOƒEƒBƒ“ƒhƒE‚ðŠJ‚«‚Ü‚·B
 BUTTON_FILTERS_TIP            =ƒtƒBƒ‹ƒ^•ÒW‰æ–Ê‚ð•\Ž¦‚µ‚Ü‚·B
 BUTTON_CONFIG_TIP             =ƒtƒBƒ‹ƒ^\¬‚Ì•ÒW‰æ–Ê‚ð•\Ž¦‚µ‚Ü‚·B
 BUTTON_HELP_TIP               =ƒuƒ‰ƒEƒU‚Åƒwƒ‹ƒv‚ð•\Ž¦‚µ‚Ü‚·B
 BUTTON_QUIT_TIP               =ƒvƒƒNƒV‚ð’âŽ~‚µ‚ÄProximodo‚ðI—¹‚µ‚Ü‚·B
+MENU_TOOLSMONITOR_TIP         =ó‹µŠÄŽ‹‰æ–Ê‚ð•\Ž¦‚µ‚Ü‚·B
 MENU_TOOLSSETTINGS_TIP        =Ý’è‰æ–Ê‚ð•\Ž¦‚µ‚Ü‚·B
 MENU_TOOLSCONFIG_TIP          =ƒtƒBƒ‹ƒ^\¬‚Ì•ÒW‰æ–Ê‚ð•\Ž¦‚µ‚Ü‚·B
 MENU_TOOLSFILTERS_TIP         =ƒtƒBƒ‹ƒ^•ÒW‰æ–Ê‚ð•\Ž¦‚µ‚Ü‚·B
@@ -305,7 +328,7 @@ MENU_TOOLSICONIZE_TIP         =Proximodo‚ð’Ê’m—Ìˆæ‚ÉƒAƒCƒRƒ“‰»‚µ‚Ü‚·B
 MENU_TOOLSQUIT_TIP            =ƒvƒƒNƒV‚ð’âŽ~‚µ‚ÄProximodo‚ðI—¹‚µ‚Ü‚·B
 MENU_HELPABOUT_TIP            =Proximodo‚Ìƒo[ƒWƒ‡ƒ“î•ñ‚ð•\Ž¦‚µ‚Ü‚·B
 MENU_HELPCONTENT_TIP          =ƒuƒ‰ƒEƒU‚Åƒwƒ‹ƒv‚ð•\Ž¦‚µ‚Ü‚·B
-MENU_HELPSYNTAX_TIP           =ƒuƒ‰ƒEƒU‚ÅƒR[ƒh‚ÆƒRƒ}ƒ“ƒh‚Ìƒwƒ‹ƒv‚ð•\Ž¦‚µ‚Ü‚·B
+MENU_HELPSYNTAX_TIP           =ƒuƒ‰ƒEƒU‚Åƒƒ^ƒLƒƒƒ‰ƒNƒ^‚ÆƒRƒ}ƒ“ƒh‚Ìƒwƒ‹ƒv‚ð•\Ž¦‚µ‚Ü‚·B
 MENU_HELPLICENSE_TIP          =Proximodo‚Ì•¡»E”z•zE•ÏX‚ÉŠÖ‚·‚éƒ‰ƒCƒZƒ“ƒX‚ð•\Ž¦‚µ‚Ü‚·B
 MENU_HELPFILTERS_TIP          =ƒuƒ‰ƒEƒU‚ÅƒtƒBƒ‹ƒ^•ÒW‚Ìƒwƒ‹ƒv‚ð•\Ž¦‚µ‚Ü‚·B
 SETTINGS_OUTGOING_TIP         =‘—Mƒwƒbƒ_ƒtƒBƒ‹ƒ^‚ð—LŒø‚É‚µ‚Ü‚·B
@@ -315,7 +338,7 @@ SETTINGS_GIF_TIP              =GIFƒAƒjƒ[ƒVƒ‡ƒ“‚Ì’âŽ~‚ð—LŒø‚É‚µ‚Ü‚·B
 SETTINGS_CONFIG_TIP           =Œ»ÝŽg—p‚³‚ê‚Ä‚¢‚éƒtƒBƒ‹ƒ^\¬B
 SETTINGS_BYPASS_TIP           =URL‚ªƒ}ƒbƒ`‚µ‚½ê‡‚ÍƒtƒBƒ‹ƒ^ƒŠƒ“ƒO‚³‚ê‚Ü‚¹‚ñB
 SETTINGS_LANGUAGE_TIP         =GUI ‚ÅŽg—p‚·‚éŒ¾ŒêBÄ‹N“®Œã‚É“K—p‚³‚ê‚Ü‚·B
-SETTINGS_STARTUP_TIP          =‹N“®Žž‚ÉProximodo‚ÌƒEƒBƒ“ƒhƒE‚ðŠJ‚«‚Ü‚·B
+SETTINGS_STARTUPGUI_TIP       =Proximodo‚ð‹N“®‚µ‚½Žž‚É•\Ž¦‚·‚éƒEƒBƒ“ƒhƒE‚ð‘I‘ð‚µ‚Ü‚·B
 SETTINGS_PORT_TIP             =Proximodo‚Ì‘Ò‚¿Žó‚¯ƒ|[ƒg”Ô†Bƒuƒ‰ƒEƒU‚ÌƒvƒƒNƒVÝ’è‚É“¯‚¶”Ô†‚ðŽw’è‚µ‚Ä‰º‚³‚¢B
 SETTINGS_USEPROXY_TIP         =ƒ`ƒFƒbƒN‚ð“ü‚ê‚é‚ÆAProximodo‚ªƒCƒ“ƒ^[ƒlƒbƒg‚ÉÚ‘±‚·‚éŽž‚ÉƒŠƒ‚[ƒgƒvƒƒNƒV‚ðŽg‚¢‚Ü‚·B
 SETTINGS_NEXTPROXY_TIP        =Žg—p‚·‚éƒŠƒ‚[ƒgƒvƒƒNƒVBŽw’è‚µ‚½ƒvƒƒNƒV‚ª$SETPROXYƒRƒ}ƒ“ƒh‚ÅŽg—p‚Å‚«‚Ü‚·B
@@ -330,6 +353,11 @@ SETTINGS_LISTFILE_TIP         =ƒŠƒXƒg‚Ìƒtƒ@ƒCƒ‹–¼‚Å‚·B‘¶Ý‚µ‚È‚¢ê‡‚Íì¬‚·‚é‚
 SETTINGS_FILECHOOSE_TIP       =ƒtƒ@ƒCƒ‹‚ðŽQÆ‚µ‚Ü‚·B
 SETTINGS_APPLY_TIP            =•ÏX‚µ‚½Ý’è‚ð“K—p‚µ‚Ü‚·B
 SETTINGS_REVERT_TIP           =•ÏX‚µ‚½Ý’è‚ðŒ³‚É–ß‚µ‚Ü‚·B
+SETTINGS_SHOWGUI_TIP          =Proximodo‹N“®Žž‚ÉƒEƒBƒ“ƒhƒE‚ð•\Ž¦‚µ‚Ü‚·iƒ`ƒFƒbƒN‚È‚µ‚Ìê‡A’Ê’m—ÌˆæƒAƒCƒRƒ“‚Ì‚ÝjB
+SETTINGS_STARTBROWSER_TIP     =Proximodo‹N“®Žž‚ÉŽw’è‚µ‚½ŠO•”ƒvƒƒOƒ‰ƒ€‚ðŽÀs‚µ‚Ü‚·B
+SETTINGS_BROWSERPATH_TIP      =Proximodo‹N“®Žž‚ÉŽÀs‚·‚éƒvƒƒOƒ‰ƒ€i•’Ê‚Íƒuƒ‰ƒEƒUjB
+SETTINGS_BROWSERCHOOSE_TIP    =ƒvƒƒOƒ‰ƒ€‚ðŽQÆ‚µ‚Ü‚·B
+MONITOR_ABORT_TIP             =Ú‘±‚ð‘Å‚¿Ø‚è‚Ü‚·iƒ_ƒEƒ“ƒ[ƒh’†‚ÌÚ‘±‚àØ’f‚³‚ê‚Ü‚·j
 
 Default Filter Titles
 
