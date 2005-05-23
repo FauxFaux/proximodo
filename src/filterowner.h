@@ -1,7 +1,8 @@
 //------------------------------------------------------------------
 //
 //this file is part of Proximodo
-//Copyright (C) 2004 Antony BOUCHER ( kuruden@users.sourceforge.net )
+//Copyright (C) 2004-2005 Antony BOUCHER ( kuruden@users.sourceforge.net )
+//                        Paul Rupe ( prupe@users.sourceforge.net )
 //
 //This program is free software; you can redistribute it and/or
 //modify it under the terms of the GNU General Public License
@@ -70,10 +71,6 @@ public:
     // Clear Variables
     void clearVariables();
 
-    // Try to find out the type of a piece of data (htm, css, js, vbs, oth)
-    static string evaluateType(string data);
-    static string evaluateType(const CUrl& url);
-    
     // Manipulate headers
     static void    cleanHeaders(vector<SHeader>& headers);
     static string& getHeader   (vector<SHeader>& headers, const string& name);

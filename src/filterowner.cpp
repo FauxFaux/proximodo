@@ -1,7 +1,8 @@
 //------------------------------------------------------------------
 //
 //this file is part of Proximodo
-//Copyright (C) 2004 Antony BOUCHER ( kuruden@users.sourceforge.net )
+//Copyright (C) 2004-2005 Antony BOUCHER ( kuruden@users.sourceforge.net )
+//                        Paul Rupe ( prupe@users.sourceforge.net )
 //
 //This program is free software; you can redistribute it and/or
 //modify it under the terms of the GNU General Public License
@@ -25,43 +26,6 @@
 
 #include "filterowner.h"
 #include "util.h"
-
-/* Evaluate the type of data by checking a few characteristic features.
- * Currently the tests are really minimum. A better way, if improvement
- * is needed, would be to count features from each type and choose the
- * most represented one.
- */
-string CFilterOwner::evaluateType(string data) {
-
-    CUtil::lower(data);
-
-    if (data.find("<html")) return "htm";
-
-    if (data.find("dim ") ||
-        data.find("\n' ")    ) return "vbs";
-
-    if (data.find("var ") ||
-        data.find("\n/*")    ) return "js";
-
-    if (data.find("a:link") ||
-        data.find("font-size:") ) return "css";
-
-    return "oth";
-}
-
-string CFilterOwner::evaluateType(const CUrl& url) {
-
-    string path = url.getPath();
-    unsigned int slash = path.rfind('/');
-    unsigned int dot = path.rfind('.');
-    if (dot == string::npos || dot < slash) return "htm";
-    path = path.substr(dot + 1);
-    CUtil::lower(path);
-    if (path.find("htm") != string::npos ||
-        path == "asp" || path == "php" || path == "jsp" ) return "htm";
-    if (path == "vbs" || path == "css" || path == "js") return path;
-    return "oth";
-}
 
 
 /* Remove headers with empty value from a vector of headers.

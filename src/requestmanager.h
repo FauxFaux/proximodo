@@ -1,7 +1,8 @@
 //------------------------------------------------------------------
 //
 //this file is part of Proximodo
-//Copyright (C) 2004 Antony BOUCHER ( kuruden@users.sourceforge.net )
+//Copyright (C) 2004-2005 Antony BOUCHER ( kuruden@users.sourceforge.net )
+//                        Paul Rupe ( prupe@users.sourceforge.net )
 //
 //This program is free software; you can redistribute it and/or
 //modify it under the terms of the GNU General Public License
@@ -156,7 +157,7 @@ private:
     CMatcher* urlMatcher;
 
     // verify Content-Type header
-    bool   canFilter(string& content);
+    bool   verifyContentType(string& content);
     
     // fake a website response
     void fakeResponse(string code, string filename, bool replace = false,

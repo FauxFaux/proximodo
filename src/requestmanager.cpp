@@ -1,7 +1,8 @@
 //------------------------------------------------------------------
 //
 //this file is part of Proximodo
-//Copyright (C) 2004 Antony BOUCHER ( kuruden@users.sourceforge.net )
+//Copyright (C) 2004-2005 Antony BOUCHER ( kuruden@users.sourceforge.net )
+//                        Paul Rupe ( prupe@users.sourceforge.net )
 //
 //This program is free software; you can redistribute it and/or
 //modify it under the terms of the GNU General Public License
@@ -400,16 +401,42 @@ void CRequestManager::dataReset() {
 }
 
 
-/* Determine if a MIME type can go through body filters
+/* Determine if a MIME type can go through body filters.  Also set $TYPE()
+ * accordingly.
  */
-bool CRequestManager::canFilter(string& content) {
-    unsigned int end = content.find(';');
-    if (end == string::npos) end = content.size();
-    string type = content.substr(0, end);
+bool CRequestManager::verifyContentType(string& ctype) {
+    unsigned int end = ctype.find(';');
+    if (end == string::npos)  end = ctype.size();
+
+    // Remove top-level type, e.g., text/html -> html
+    unsigned int slash = ctype.find('/');
+    if (slash == string::npos || slash >= end) {
+      fileType = "oth";
+      return false;
+    }
+    slash++;
+
+    // Strip off any x- before the type (e.g., x-javascript)
+    if (ctype[slash] == 'x' && ctype[slash + 1] == '-')
+      slash += 2;
+    string type = ctype.substr(slash, end - slash);
     CUtil::lower(type);
-    return (type == "text/html" ||
-            type == "application/x-javascript" ||
-            type == "text/asp");
+
+    if (type == "html") {
+      fileType = "htm";
+      return true;
+    } else if (type == "javascript") {
+      fileType = "js";
+      return true;
+    } else if (type == "css") {
+      fileType = "css";
+      return true;
+    } else if (type == "vbscript") {
+      fileType = "vbs";
+      return true;
+    }
+    fileType = "oth";
+    return false;
 }
 
 
@@ -521,7 +548,6 @@ void CRequestManager::processOut() {
 
             // Get the URL and the host to contact (unless we use a proxy)
             url.parseUrl(requestLine.url);
-            fileType = evaluateType(url);
             useSettingsProxy = CSettings::ref().useNextProxy;
             contactHost = url.getHostPort();
             setHeader(outHeaders, "Host", url.getHost());
@@ -590,7 +616,6 @@ void CRequestManager::processOut() {
                             bool changeHost = (contactHost == url.getHostPort());
                             // update URL
                             url.parseUrl(test);
-                            fileType = evaluateType(url);
                             if (changeHost) contactHost = url.getHostPort();
                         }
                     }
@@ -853,7 +878,7 @@ void CRequestManager::processIn() {
                     inSize = BIG_NUMBER;
                 }
                 // Check for filterable MIME types
-                if (!canFilter(getHeader(inHeaders, "Content-Type"))
+                if (!verifyContentType(getHeader(inHeaders, "Content-Type"))
                             && !bypassBodyForced) {
                     bypassBody = true;
                 }
@@ -1032,9 +1057,6 @@ void CRequestManager::processIn() {
             }
 
             if (useChain) {
-                // For the first block of data to filter, we'll evaluate
-                // the content type
-                if (fileType.empty()) fileType = evaluateType(data);
                 // provide filter chain with raw unfiltered data
                 chain->dataFeed(data);
             } else if (useGifFilter) {
@@ -1152,7 +1174,6 @@ void CRequestManager::connectWebsite() {
 
         // Change URL
         url.parseUrl(rdirToHost);
-        fileType = evaluateType(url);
         useSettingsProxy = CSettings::ref().useNextProxy;
         contactHost = url.getHostPort();
         setHeader(outHeaders, "Host", url.getHost());
