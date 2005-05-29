@@ -322,33 +322,44 @@ CNode_Range::CNode_Range(const string& text, int& reached, int min, int max,
 
 int CNode_Range::consume() {
     retry = false;
-    int index = start;
-    int token = text[index];
+    // Check if there is a quote
+    char quote = 0;
+    if (start < stop && (text[start] == '\'' || text[start] == '\"')) {
+        quote = text[start++];
+    }
     // Check if there is a minus sign
     int sign = 1;
-    if (token == '-' && start < stop) {
-        token = text[++index];
-        UPDATE_REACHED(index);
+    if (start < stop && text[start] == '-') {
         sign = -1;
+        start++;
     }
     // Check if there is a digit
-    if (!CUtil::digit(token) || index>=stop) return -1;
+    if (start >= stop || !CUtil::digit(text[start])) {
+        UPDATE_REACHED(start);
+        return -1;
+    }
     // Read the number
     int num = 0;
-    while (CUtil::digit(token) && index<stop) {
-        num = num*10 + token - '0';
-        token = text[++index];
+    while (start < stop && CUtil::digit(text[start])) {
+        num = num*10 + text[start++] - '0';
     }
     num *= sign;
-    UPDATE_REACHED(index);
+    // Check if optional quotes correspond
+    if (quote && start < stop && text[start] == quote) {
+        quote = 0;
+        start++;
+    }
+    UPDATE_REACHED(start);
     // Rule: [#]
-    // Check if the number is in the range
-    return (allow ^ (num < min || num > max)) ? index : -1;
+    // Check if the number is in the range. Optional quote must be closed
+    return quote ? -1 : (allow ^ (num < min || num > max)) ? start : -1;
 }
 
 bool CNode_Range::mayMatch(bool* tab) {
     for (int i='0'; i<='9'; i++) tab[i] = true;
     tab['-'] = true;
+    tab['\''] = true;
+    tab['\"'] = true;
     return false;
 }
 
