@@ -59,7 +59,7 @@ Proxy:
 - HTML debug info or equivalent (to allow filter designers to troubleshoot their filters)
 - maximum HTTP 1.1 compliance
 - HTTP 1.0 option
-- SSL support (https) including CONNECT method
+- Filter html pages going through SSL tunneling
 - Let FTP through (currently, only works when HTTP request is redirected to next proxy)
 - Act as a real proxy when not forwarding to a next proxy
 - Add more %%name%% variables for html error page

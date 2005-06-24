@@ -107,6 +107,7 @@ private:
                 STEP_DECODE,    // check and filter headers
                 STEP_CHUNK,     // read chunk size / trailers
                 STEP_RAW,       // read raw message body
+                STEP_TUNNELING, // read data until disconnection
                 STEP_FINISH };  // marks the end of a request/response
 
     // Variables and functions for outgoing processing

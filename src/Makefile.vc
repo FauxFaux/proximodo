@@ -50,8 +50,8 @@ CPP = cl.exe /nologo
 
 RC = rc.exe
 
-CXXFLAGS_RELEASE = /MD  /Ox /G5
-CXXFLAGS_DEBUG   = /MDd /Zi
+CXXFLAGS_RELEASE = /MT  /Ox /G5
+CXXFLAGS_DEBUG   = /MTd /Zi
 CXXFLAGS = /c /GR /EHsc $(CXXFLAGS_RELEASE)
 
 LIBS_RELEASE = wxmsw26_core.lib wxbase26.lib wxbase26_net.lib wxmsw26_adv.lib

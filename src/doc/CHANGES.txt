@@ -11,6 +11,7 @@ GUI
 
 Proxy
 - Fixed freezing on 304 responses
+- SSL tunneling (https can now go through Proximodo, though not filtered)
 
 Other
 - Replaced many includes by forward declarations, to reduce dependencies

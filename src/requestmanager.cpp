@@ -287,8 +287,8 @@ bool CRequestManager::receiveOut() {
 bool CRequestManager::sendOut() {
 
     bool ret = false;
-    // Send everything to website, if connected and waiting
-    if (!sendOutBuf.empty() && website->IsConnected() && inStep == STEP_START) {
+    // Send everything to website, if connected
+    if (!sendOutBuf.empty() && website->IsConnected() /* && inStep == STEP_START */) {
         ret = true;
         website->SetFlags(wxSOCKET_WAITALL);
         website->Write(sendOutBuf.c_str(), sendOutBuf.size());
@@ -670,6 +670,9 @@ void CRequestManager::processOut() {
             if (requestLine.method == "HEAD") {
                 // HEAD requests have no body, even if a size is provided
                 outStep = STEP_FINISH;
+            } else if (requestLine.method == "CONNECT") {
+                // SSL Tunneling (we won't process exchanged data)
+                outStep = STEP_TUNNELING;
             } else {
                 outStep = (outChunked ? STEP_CHUNK : outSize ? STEP_RAW : STEP_FINISH);
             }
@@ -734,6 +737,14 @@ void CRequestManager::processOut() {
             // We shouldn't send anything to website if it is not expecting
             // data (i.e we obtained a faked response)
             if (inStep == STEP_FINISH) sendOutBuf.clear();
+        }
+
+        // Forward outgoing data to website
+        else if (outStep == STEP_TUNNELING) {
+
+            sendOutBuf += recvOutBuf;
+            recvOutBuf.clear();
+            return;
         }
 
         // We'll wait for response completion
@@ -1080,6 +1091,14 @@ void CRequestManager::processIn() {
             }
         }
 
+        // Forward incoming data to browser
+        else if (inStep == STEP_TUNNELING) {
+
+            sendInBuf += recvInBuf;
+            recvInBuf.clear();
+            return;
+        }
+
         // A few things have to be done before we go back to start state...
         else if (inStep == STEP_FINISH) {
 
@@ -1230,6 +1249,14 @@ void CRequestManager::connectWebsite() {
                          CSettings::ref().getMessage("503_UNAVAILABLE"),
                          contactHost);
             return;
+        }
+        if (requestLine.method == "CONNECT") {
+            // for CONNECT method, incoming data is encrypted from start
+            sendInBuf = "HTTP/1.0 200 Connection established" CRLF
+                        "Proxy-agent: " APP_NAME " " APP_VERSION CRLF CRLF;
+            CLog::ref().logHttpEvent(pmEVT_HTTP_TYPE_SENDIN, addr,
+                                     reqNumber, sendInBuf);
+            inStep = STEP_TUNNELING;
         }
     }
     
