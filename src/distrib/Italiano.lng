@@ -2,7 +2,7 @@
 Language: Italiano
 Author: Armando R. La Mura <a_lamura@hotmail.com>
 Contributions by:
-Version: 0.2.1
+Version: 0.2.3
 ---------------------------------------------------------------------
 
 
@@ -40,6 +40,7 @@ INVALID_FILTER_HEADEREMPTY    =E' necessario definire il nome dell'intestazione.
 
 Main Window
 
+BUTTON_MONITOR                =Controllo
 BUTTON_SETTINGS               =Impostazioni
 BUTTON_LOG                    =Registro
 BUTTON_FILTERS                =Filtri
@@ -71,12 +72,13 @@ _   Porzioni (c) 1996 Artificial Intelligence Applications
 _   Institute 
     
 
-menù Bar
+Menu Bar
 
 MENU_TOOLS                    =Strumenti
 MENU_FILTERS                  =Filtri
 MENU_CONFIG                   =Configurazioni
 MENU_HELP                     =Aiuto
+MENU_TOOLSMONITOR             =Controllo	Alt+M
 MENU_TOOLSSETTINGS            =Impostazioni	Alt+S
 MENU_TOOLSCONFIG              =Configurazioni	Alt+G
 MENU_TOOLSFILTERS             =Filtri	Alt+F
@@ -154,8 +156,11 @@ LB_SETTINGS_NEWLIST           =Nuovo
 LB_SETTINGS_OPENLIST          =Apri
 LB_SETTINGS_LISTFILE          =File
 LB_SETTINGS_CHOOSEFILE        =Sfoglia
+LB_SETTINGS_SHOWGUI           =Mostra Interfaccia all'avvio
+LB_SETTINGS_STARTBROWSER      =Lancia quest'applicazione all'avvio
 ASK_CREATE_NEWLIST            =Questo file non esiste. Si desidera crearlo?
 OPEN_LISTFILE_QUESTION        =Scegliere un file di testo
+OPEN_BROWSER_QUESTION         =Scegliere un file eseguibile
 
 Edit Filter Window
 
@@ -241,7 +246,14 @@ EVT_PROXY_REFUSE              =>>> Connessione rifiutata dalla porta %1
 EVT_PROXY_START               =>>> Proxy avviato alla porta %1
 EVT_PROXY_STOP                =>>> Proxy fermato
 
-Tray Icon menù
+Monitoring Window
+
+LB_MONITOR_STATISTICS         =Statistiche
+LB_MONITOR_OPENCNX            =Connessioni aperte:
+LB_MONITOR_OPENREQ            =Richieste attive:
+LB_MONITOR_ABORT              =Interrompi
+
+Tray Icon Menu
 
 TRAY_CONFIG                   =Configurazioni
 TRAY_FILTER                   =Filtri
@@ -255,6 +267,10 @@ TRAY_LOG                      =Finestra Registro
 TRAY_OPEN                     =Apri
 TRAY_EXIT                     =Chiudi
 TRAY_USEPROXY                 =Usa proxy remoto
+
+Other Messages
+
+UTIL_OPEN_FILE                =Impossibile trovare il programma da aprire %1
 
 Tool Tips
 
@@ -304,6 +320,7 @@ MENU_FILTERSPROXOMITRON_TIP   =Importa i filtri di Proxomitron dagli appunti di 
 MENU_FILTERSEXPORT_TIP        =Esporta i filtri selezionati negli appunti di windows
 MENU_FILTERSAPPLY_TIP         =Salva tutte le modifiche ai filtri
 MENU_FILTERSREVERT_TIP        =Elimina tutte le modifiche ai filtri dall'ultimo applica/ripristina
+BUTTON_MONITOR_TIP            =Mostra il pannello di controllo
 BUTTON_SETTINGS_TIP           =Mostra il pannello delle impostazioni
 BUTTON_LOG_TIP                =Apre la finestra del Registro
 BUTTON_FILTERS_TIP            =Mostra il pannello di modifica dei filtri
@@ -346,6 +363,12 @@ SETTINGS_LISTFILE_TIP         =Indica il percorso di un file. Se il file non esi
 SETTINGS_FILECHOOSE_TIP       =Trova un file
 SETTINGS_APPLY_TIP            =Salva le modifiche alle impostazioni
 SETTINGS_REVERT_TIP           =Annulla le modifiche alle impostazioni
+SETTINGS_SHOWGUI_TIP          =Mostra questa finestra quando Proximodo viene eseguito
+SETTINGS_STARTBROWSER_TIP     =Lancerà la seguente applicazione esterna all'avvio di Proximodo
+SETTINGS_BROWSERPATH_TIP      =Applicazione esterna da lanciare all'avvio di Proximodo
+SETTINGS_BROWSERCHOOSE_TIP    =Cerca l'applicazione esterna da lanciare sul disco fisso 
+MONITOR_ABORT_TIP             =Chiude le connessioni (Interrompe i download in esecuzione)
+
 
 Default Filter Titles
 
