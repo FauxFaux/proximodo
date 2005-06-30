@@ -604,12 +604,14 @@ bool CNode_And::mayMatch(bool* tab) {
     for (int i=0; i<256; i++) tabL[i] = tabR[i] = false;
     retL = nodeL->mayMatch(tabL);
     retR = nodeR->mayMatch(tabR);
-    if (!retL && !retR) {
-        for (int i=0; i<256; i++)
-            if (tabL[i] && tabR[i]) tab[i] = true;
-    } else {
-        for (int i=0; i<256; i++)
-            if (retR && tabL[i] || retL && tabR[i]) tab[i] = true;
+    if (tab) {
+        if (!retL && !retR) {
+            for (int i=0; i<256; i++)
+                if (tabL[i] && tabR[i]) tab[i] = true;
+        } else {
+            for (int i=0; i<256; i++)
+                if (retR && tabL[i] || retL && tabR[i]) tab[i] = true;
+        }
     }
     return retL && retR;
 }
