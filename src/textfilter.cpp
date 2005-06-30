@@ -51,7 +51,7 @@ CTextFilter::CTextFilter(CFilterOwner& owner, const CFilterDescriptor& desc,
     replacePattern  =  desc.replacePattern;
 
     if (!desc.urlPattern.empty()) {
-        urlMatcher = new CMatcher(owner.url.getFromHost(), desc.urlPattern, *this);
+        urlMatcher = new CMatcher(desc.urlPattern, *this);
         // (it can throw a parsing_exception)
     }
 
@@ -65,7 +65,7 @@ CTextFilter::CTextFilter(CFilterOwner& owner, const CFilterDescriptor& desc,
     }
     
     try {
-        textMatcher = new CMatcher(buffer, desc.matchPattern, *this);
+        textMatcher = new CMatcher(desc.matchPattern, *this);
         textMatcher->mayMatch(okayChars);
     } catch (parsing_exception e) {
         if (urlMatcher) delete urlMatcher;
@@ -74,7 +74,7 @@ CTextFilter::CTextFilter(CFilterOwner& owner, const CFilterDescriptor& desc,
 
     if (!desc.boundsPattern.empty()) {
         try {
-            boundsMatcher = new CMatcher(buffer, desc.boundsPattern, *this);
+            boundsMatcher = new CMatcher(desc.boundsPattern, *this);
             bool tab[256];
             boundsMatcher->mayMatch(tab);
             for (int i=0; i<256; i++) okayChars[i] = okayChars[i] && tab[i];
@@ -105,8 +105,10 @@ void CTextFilter::dataReset() {
     
     if (urlMatcher) {
         // The filter will be inactive if the URL does not match
-        int end, reached;
-        bypassed = !urlMatcher->match(0, owner.url.getFromHost().size(), end, reached);
+        const char *tStart, *tStop, *tEnd, *tReached;
+        tStart = owner.url.getFromHost().c_str();
+        tStop = tStart + owner.url.getFromHost().size();
+        bypassed = !urlMatcher->match(tStart, tStop, tEnd, tReached);
         unlock();
     }
     
@@ -199,66 +201,68 @@ void CTextFilter::process(const string& data, bool feeding) {
     // output buffer
     ostringstream output;
 
-    int done = 0;       // index up to which we sent to output
-    int start = 0;      // index where we currently look for a match
+    const char* bufHead = buffer.c_str();
+    const char* bufTail = bufHead + size;
+    const char* index   = bufHead; // index where we currently look for a match
+    const char* done    = bufHead; // index up to which we sent to output
     
     // scan buffer
-    while ((start<size || start==size && !feeding) && !killed && !bypassed) {
+    while ((index<bufTail || index==bufTail && !feeding) && !killed && !bypassed) {
 
         // pass characters that cannot match
-        if (start<size && !okayChars[(unsigned char)buffer[start]]) {
-            ++start;
+        if (index<bufTail && !okayChars[(unsigned char)(*index)]) {
+            ++index;
             continue;
         }
         
         bool matched;
-        int end, reached;
+        const char *end, *reached;
         
         // compute up to where we want to match
-        int stop = start + windowWidth;
-        if (stop > size) stop = size;
+        const char* stop = index + windowWidth;
+        if (stop > bufTail) stop = bufTail;
 
         // clear memory
         clearMemory();
 
         if (boundsMatcher) {
             // let's try and find the bounds first
-            matched = boundsMatcher->match(start, stop, end, reached);
+            matched = boundsMatcher->match(index, stop, end, reached);
             unlock();
             // could have had a different result with more data,
             // we'll wait for it
-            if (reached == size && feeding) break;
+            if (reached == bufTail && feeding) break;
             // bounds not matching
             if (!matched) {
-                ++start;
+                ++index;
                 continue;
             }
             stop = end;
         }
 
         // try matching
-        matched = textMatcher->match(start, stop, end, reached);
+        matched = textMatcher->match(index, stop, end, reached);
         unlock();
-        if (reached == size && feeding) break;
+        if (reached == bufTail && feeding) break;
 
         // pattern not matching (and condition for avoiding infinite loop)
         if (!matched
-                || boundsMatcher && end != stop
-                || multipleMatches && end <= lastEnd) {
-            ++start;
+                || boundsMatcher   && end != stop
+                || multipleMatches && end <= bufHead+lastEnd) {
+            ++index;
             continue;
         }
 
         // send preceding data to output
-        output << buffer.substr(done, start-done);
-        done = start;
+        output << string(done, (size_t)(index-done));
+        done = index;
 
         // compute replacement text
         string str = CExpander::expand(replacePattern, *this);
         unlock();
         
         // log events
-        string replaced = buffer.substr(start, end-start);
+        string replaced(index, (size_t)(end-index));
         CLog::ref().logFilterEvent(pmEVT_FILTER_TYPE_TEXTMATCH,
                                    owner.reqNumber, title, replaced);
         CLog::ref().logFilterEvent(pmEVT_FILTER_TYPE_TEXTREPLACE,
@@ -266,20 +270,25 @@ void CTextFilter::process(const string& data, bool feeding) {
 
         // replace
         if (multipleMatches) {
-            buffer.replace(start, end-start, str);
-            size = buffer.size();
-            lastEnd = start + str.size();
+            int pos = index - bufHead;
+            int len = end - index;
+            buffer.replace(pos, len, str);
+            size    = buffer.size();
+            bufHead = buffer.c_str();
+            bufTail = bufHead + size;
+            index   = bufHead + pos;
+            lastEnd = pos + str.size();
         } else {
             output << str;
-            if (start == end)
-                ++start;        // avoid infinite loop
+            if (end == index)
+                ++index;        // avoid infinite loop
             else
-                done = start = end;
+                done = index = end;
         }
     }
     
-    // Set start back to size if it went over (end of file)
-    if (start > size) start = size;
+    // Set index back to size if it went over (end of file)
+    if (index > bufTail) index = bufTail;
     
     // If the filter has been killed at some point,
     // send the processed text then dump next filters
@@ -293,18 +302,18 @@ void CTextFilter::process(const string& data, bool feeding) {
 
     // If the filter has been deactivated in the loop, the rest of
     // the buffer is considered unmatching
-    if (bypassed) start = size;
+    if (bypassed) index = bufTail;
 
     // decide how much data we'll then wait for
     needed = CTF_THRESHOLD2;
-    if (size-start > CTF_THRESHOLD1 && feeding) needed += windowWidth;
+    if (bufTail-index > CTF_THRESHOLD1 && feeding) needed += windowWidth;
 
     // output the last scanned characters
-    output << buffer.substr(done, start-done);
+    output << string(done, (size_t)(index-done));
 
     // clear buffer
-    buffer.erase(0, start);
-    lastEnd -= start;
+    lastEnd -= (size_t)(index-bufHead);
+    buffer.erase(0, (size_t)(index-bufHead));
 
     // send output to next filter
     string str = output.str();

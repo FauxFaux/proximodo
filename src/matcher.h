@@ -51,19 +51,21 @@ class parsing_exception {
 class CMatcher {
 
 public:
-    CMatcher(const string& text, const string& pattern, CFilter& filter);
+    CMatcher(const string& pattern, CFilter& filter);
     ~CMatcher();
 
     static bool testPattern(const string& pattern, string& errmsg);
     static bool testPattern(const string& pattern);
 
-    bool match(int start, int stop, int& end, int& reached);
-
     void mayMatch(bool* tab);
-    
+
+    bool match(const char* start, const char* stop,
+               const char*& end, const char*& reached);
+
     // Static version, that builds a search tree at each call
-    static bool match(const string& text, const string& pattern, CFilter& filter,
-                        int start, int stop, int& end, int& reached);
+    static bool match(const string& pattern, CFilter& filter,
+                      const char* start, const char* stop,
+                      const char*& end, const char*& reached);
 
     // Filter that contains memory stack and table
     CFilter& filter;
@@ -72,14 +74,11 @@ public:
     bool isStar();
 
 private:
-    // Text string on which the matcher will operate
-    const string& text;
-    
     // Root of the Search Tree
     CNode* root;
     
     // Farthest position reached during matching
-    int reached;
+    const char* reached;
     
     // Decodes n,m in a pattern
     void readMinMax(const string& pattern, int& pos, int stop,

@@ -50,12 +50,10 @@ private:
     bool useTab;
 
 public:
-    CNode_Star(const string& text, int& reached);
+    CNode_Star(const char*& reached);
     ~CNode_Star() { }
-    int consume();
     bool mayMatch(bool* tab);
-    NODE_ID(STAR)
-    void setNextNode(CNode* node, bool eop);
+    void setNextNode(CNode* node);
     NODE_MATCH()
 };
 
@@ -75,13 +73,11 @@ private:
     CMemory backup;
 
 public:
-    CNode_MemStar(const string& text, int& reached, CMemory& mem);
-    CNode_MemStar(const string& text, int& reached, vector<CMemory>& st);
+    CNode_MemStar(const char*& reached, CMemory& mem);
+    CNode_MemStar(const char*& reached, vector<CMemory>& st);
     ~CNode_MemStar() { }
-    int consume();
     bool mayMatch(bool* tab);
-    NODE_ID(MEMSTAR)
-    void setNextNode(CNode* node, bool eop);
+    void setNextNode(CNode* node);
     NODE_MATCH()
 };
 
@@ -92,11 +88,9 @@ public:
 class CNode_Space : public CNode {
 
 public:
-    CNode_Space(const string& text, int& reached);
+    CNode_Space(const char*& reached);
     ~CNode_Space() { }
-    int consume();
     bool mayMatch(bool* tab);
-    NODE_ID(SPACE)
     NODE_SETNEXTNODE()
     NODE_MATCH()
 };
@@ -108,11 +102,9 @@ public:
 class CNode_Equal : public CNode {
 
 public:
-    CNode_Equal(const string& text, int& reached);
+    CNode_Equal(const char*& reached);
     ~CNode_Equal() { }
-    int consume();
     bool mayMatch(bool* tab);
-    NODE_ID(EQUAL)
     NODE_SETNEXTNODE()
     NODE_MATCH()
 };
@@ -129,12 +121,10 @@ private:
     CNode_Quote *openingQuote;  // points to next ' in run, if any
 
 public:
-    CNode_Quote(const string& text, int& reached, char q);
+    CNode_Quote(const char*& reached, char q);
     ~CNode_Quote() { }
     void setOpeningQuote(CNode_Quote *node);
-    int consume();
     bool mayMatch(bool* tab);
-    NODE_ID(QUOTE)
     NODE_SETNEXTNODE()
     NODE_MATCH()
 };
@@ -149,12 +139,10 @@ private:
     char byte;
 
 public:
-    CNode_Char(const string& text, int& reached, char c);
+    CNode_Char(const char*& reached, char c);
     ~CNode_Char() { }
     char getChar();
-    int consume();
     bool mayMatch(bool* tab);
-    NODE_ID(CHAR)
     NODE_SETNEXTNODE()
     NODE_MATCH()
 };
@@ -170,12 +158,10 @@ private:
     bool allow;
 
 public:
-    CNode_Range(const string& text, int& reached,
+    CNode_Range(const char*& reached,
                 int min, int max, bool allow=true);
     ~CNode_Range() { }
-    int consume();
     bool mayMatch(bool* tab);
-    NODE_ID(RANGE)
     NODE_SETNEXTNODE()
     NODE_MATCH()
 };
@@ -191,12 +177,10 @@ private:
     int size;
 
 public:
-    CNode_String(const string& text, int& reached, const string& s);
+    CNode_String(const char*& reached, const string& s);
     ~CNode_String() { }
     void append(char c);
-    int consume();
     bool mayMatch(bool* tab);
-    NODE_ID(STRING)
     NODE_SETNEXTNODE()
     NODE_MATCH()
 };
@@ -212,12 +196,10 @@ private:
     bool allow;
 
 public:
-    CNode_Chars(const string& text, int& reached, string c, bool allow=true);
+    CNode_Chars(const char*& reached, string c, bool allow=true);
     ~CNode_Chars() { }
     void add(unsigned char c);
-    int consume();
     bool mayMatch(bool* tab);
-    NODE_ID(CHARS)
     NODE_SETNEXTNODE()
     NODE_MATCH()
 };
@@ -229,14 +211,12 @@ public:
 class CNode_Empty : public CNode {
 
 private:
-    bool ret;
+    bool accept;
 
 public:
-    CNode_Empty(const string& text, int& reached, bool ret=true);
+    CNode_Empty(const char*& reached, bool ret=true);
     ~CNode_Empty() { }
-    int consume();
     bool mayMatch(bool* tab);
-    NODE_ID(EMPTY)
     NODE_SETNEXTNODE()
     NODE_MATCH()
 };
@@ -248,11 +228,9 @@ public:
 class CNode_Any : public CNode {
 
 public:
-    CNode_Any(const string& text, int& reached);
+    CNode_Any(const char*& reached);
     ~CNode_Any() { }
-    int consume();
     bool mayMatch(bool* tab);
-    NODE_ID(ANY)
     NODE_SETNEXTNODE()
     NODE_MATCH()
 };
@@ -268,12 +246,11 @@ private:
     CNode* firstNode;
 
 public:
-    CNode_Run(const string& text, int& reached, vector<CNode*> *vect);
+    CNode_Run(const char*& reached, vector<CNode*> *vect);
     ~CNode_Run();
     bool mayMatch(bool* tab);
-    NODE_ID(RUN)
-    void setNextNode(CNode* node, bool eop);
-    int match();
+    void setNextNode(CNode* node);
+    NODE_MATCH()
 };
 
 
@@ -284,15 +261,13 @@ class CNode_Or : public CNode {
 
 private:
     vector<CNode*> *nodes;
-    vector<CNode*>::iterator iter;
 
 public:
-    CNode_Or(const string& text, int& reached, vector<CNode*> *vect);
+    CNode_Or(const char*& reached, vector<CNode*> *vect);
     ~CNode_Or();
     bool mayMatch(bool* tab);
-    NODE_ID(OR)
-    void setNextNode(CNode* node, bool eop);
-    int match();
+    void setNextNode(CNode* node);
+    NODE_MATCH()
 };
 
 
@@ -307,13 +282,12 @@ private:
     bool force;
 
 public:
-    CNode_And(const string& text, int& reached,
+    CNode_And(const char*& reached,
                 CNode *L, CNode *R, bool force=false);
     ~CNode_And();
     bool mayMatch(bool* tab);
-    NODE_ID(AND)
-    void setNextNode(CNode* node, bool eop);
-    int match();
+    void setNextNode(CNode* node);
+    NODE_MATCH()
 };
 
 
@@ -324,17 +298,15 @@ class CNode_Repeat : public CNode {
 
 private:
     CNode *node;
-    int rmin, rmax, rcount, pos;
+    int rmin, rmax;
     bool iterate;
 
 public:
-    CNode_Repeat(const string& text, int& reached, CNode *node,
+    CNode_Repeat(const char*& reached, CNode *node,
                 int rmin, int rmax, bool iter=false);
     ~CNode_Repeat();
-    int consume();
     bool mayMatch(bool* tab);
-    NODE_ID(REPEAT)
-    void setNextNode(CNode* node, bool eop);
+    void setNextNode(CNode* node);
     NODE_MATCH()
 };
 
@@ -349,15 +321,15 @@ private:
     CMemory* memory;
     vector<CMemory>* stack;
     CMemory backup;
+    CNode_Memory* memorizer;
+    const char* recordPos;
 
 public:
-    CNode_Memory(const string& text, int& reached, CNode *node, CMemory& mem);
-    CNode_Memory(const string& text, int& reached, CNode *node, vector<CMemory>& st);
+    CNode_Memory(const char*& reached, CNode *node, CMemory& mem);
+    CNode_Memory(const char*& reached, CNode *node, vector<CMemory>& st);
     ~CNode_Memory();
-    int consume();
     bool mayMatch(bool* tab);
-    NODE_ID(MEMORY)
-    void setNextNode(CNode* node, bool eop);
+    void setNextNode(CNode* node);
     NODE_MATCH()
 };
 
@@ -371,12 +343,10 @@ private:
     CNode* node;
 
 public:
-    CNode_Negate(const string& text, int& reached, CNode *node);
+    CNode_Negate(const char*& reached, CNode *node);
     ~CNode_Negate();
-    int consume();
     bool mayMatch(bool* tab);
-    NODE_ID(NEGATE)
-    void setNextNode(CNode* node, bool eop);
+    void setNextNode(CNode* node);
     NODE_MATCH()
 };
 
@@ -391,12 +361,10 @@ private:
     bool isAVQ;
 
 public:
-    CNode_AV(const string& text, int& reached, CNode *node, bool isAVQ);
+    CNode_AV(const char*& reached, CNode *node, bool isAVQ);
     ~CNode_AV();
-    int consume();
     bool mayMatch(bool* tab);
-    NODE_ID(AV)
-    void setNextNode(CNode* node, bool eop);
+    void setNextNode(CNode* node);
     NODE_MATCH()
 };
 
@@ -411,11 +379,9 @@ private:
     char token;
 
 public:
-    CNode_Url(const string& text, int& reached, const CUrl& url, char token);
+    CNode_Url(const char*& reached, const CUrl& url, char token);
     ~CNode_Url() { }
-    int consume();
     bool mayMatch(bool* tab);
-    NODE_ID(URL)
     NODE_SETNEXTNODE()
     NODE_MATCH()
 };
@@ -435,12 +401,10 @@ private:
     bool isEnd;
 
 public:
-    CNode_List(const string& text, int& reached, string name, CMatcher& matcher);
+    CNode_List(const char*& reached, string name, CMatcher& matcher);
     ~CNode_List();
-    int consume();
     bool mayMatch(bool* tab);
-    NODE_ID(LIST)
-    void setNextNode(CNode* node, bool eop);
+    void setNextNode(CNode* node);
     NODE_MATCH()
 };
 
@@ -473,15 +437,12 @@ private:
     CFilterOwner& owner;
     string toMatch;
     CMatcher* matcher;
-    bool done;
 
 public:
-    CNode_Command(const string& text, int& reached,
+    CNode_Command(const char*& reached,
                   CMD_ID num, string name, string content, CFilter& filter);
     ~CNode_Command();
-    int consume();
     bool mayMatch(bool* tab);
-    NODE_ID(COMMAND)
     NODE_SETNEXTNODE()
     NODE_MATCH()
 };
@@ -497,11 +458,9 @@ private:
     int& num;
 
 public:
-    CNode_Cnx(const string& text, int& reached, int x, int y, int z, int& num);
+    CNode_Cnx(const char*& reached, int x, int y, int z, int& num);
     ~CNode_Cnx() { }
-    int consume();
     bool mayMatch(bool* tab);
-    NODE_ID(CNX)
     NODE_SETNEXTNODE()
     NODE_MATCH()
 };
@@ -518,13 +477,11 @@ private:
     bool inest;
 
 public:
-    CNode_Nest(const string& text, int& reached,
+    CNode_Nest(const char*& reached,
                 CNode* left, CNode* middle, CNode* right, bool inest);
     ~CNode_Nest();
-    int consume();
     bool mayMatch(bool* tab);
-    NODE_ID(NEST)
-    void setNextNode(CNode* node, bool eop);
+    void setNextNode(CNode* node);
     NODE_MATCH()
 };
 
@@ -539,11 +496,9 @@ private:
     CFilter& filter;
 
 public:
-    CNode_Test(const string& text, int& reached, string name, CFilter& filter);
+    CNode_Test(const char*& reached, string name, CFilter& filter);
     ~CNode_Test() { }
-    int consume();
     bool mayMatch(bool* tab);
-    NODE_ID(TEST)
     NODE_SETNEXTNODE()
     NODE_MATCH()
 };
@@ -561,13 +516,11 @@ private:
     string toMatch; // for matchers
 
 public:
-    CNode_Ask(const string& text, int& reached, CFilter& filter,
+    CNode_Ask(const char*& reached, CFilter& filter,
                 string allowName, string denyName, string question,
                 string item, string pattern);
     ~CNode_Ask();
-    int consume();
     bool mayMatch(bool* tab);
-    NODE_ID(ASK)
     NODE_SETNEXTNODE()
     NODE_MATCH()
 };

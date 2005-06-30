@@ -4,6 +4,8 @@ Version ?????
 
 Engine
 - URL pseudo-headers now always work (detection was case-sensitive)
+- Improved processing (less function calls while scanning text)
+- Bug fix: pattern "(f*)\1bar" was not matching "foobar"
 
 GUI
 - Wider "active configuration" field on Monitor screen

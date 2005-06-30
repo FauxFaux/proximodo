@@ -155,8 +155,7 @@ void CTestFrame::OnCommand(wxCommandEvent& event) {
             CFilter filter(owner);
             string text = testMemo->GetValue().c_str();
             stringstream result;
-            int end, reached;
-            CMatcher matcher(text, current->matchPattern, filter);
+            CMatcher matcher(current->matchPattern, filter);
 
             // Test of a text filter.
             // We don't take URL pattern into account, otherwise the process
@@ -180,68 +179,78 @@ void CTestFrame::OnCommand(wxCommandEvent& event) {
                 bool found = false;
                 bool okayChars[256];
                 matcher.mayMatch(okayChars);
-                CMatcher boundsMatcher(text, current->boundsPattern, filter);
+                CMatcher boundsMatcher(current->boundsPattern, filter);
                 if (!current->boundsPattern.empty()) {
                     bool tab[256];
                     boundsMatcher.mayMatch(tab);
                     for (int i=0; i<256; i++) okayChars[i] = okayChars[i] && tab[i];
                 }
-                int size = text.size();
-                int done = 0;
-                int start = 0;
                 int lastEnd = -1;
-                while (start <= size && !filter.bypassed && !filter.killed) {
-                    if (start<size && !okayChars[(unsigned char)text[start]]) {
-                        ++start;
+                int size = text.size();
+                const char* bufHead = text.c_str();
+                const char* bufTail = bufHead + size;
+                const char* index   = bufHead;
+                const char* done    = bufHead;
+                while (index<=bufTail && !filter.killed && !filter.bypassed) {
+                    if (index<bufTail && !okayChars[(unsigned char)(*index)]) {
+                        ++index;
                         continue;
                     }
                     bool matched;
-                    int end, reached;
-                    int stop = start + current->windowWidth;
-                    if (stop > size) stop = size;
+                    const char *end, *reached;
+                    const char *stop = index + current->windowWidth;
+                    if (stop > bufTail) stop = bufTail;
                     filter.clearMemory();
                     if (!current->boundsPattern.empty()) {
-                        matched = boundsMatcher.match(start, stop, end, reached);
+                        matched = boundsMatcher.match(index, stop, end, reached);
                         filter.unlock();
                         if (!matched) {
-                            ++start;
+                            ++index;
                             continue;
                         }
                         stop = end;
                     }
-                    matched = matcher.match(start, stop, end, reached);
+                    matched = matcher.match(index, stop, end, reached);
                     filter.unlock();
                     if (!matched
                             || !current->boundsPattern.empty() && end != stop
-                            || current->multipleMatches && end <= lastEnd) {
-                        ++start;
+                            || current->multipleMatches && end <= bufHead+lastEnd) {
+                        ++index;
                         continue;
                     }
                     found = true;
-                    result << text.substr(done, start-done);
-                    done = start;
+                    result << string(done, (size_t)(index-done));
+                    done = index;
                     string str = CExpander::expand(current->replacePattern, filter);
                     filter.unlock();
                     if (current->multipleMatches) {
-                        text.replace(start, end-start, str);
-                        size = text.size();
-                        lastEnd = start + str.size();
+                        int pos = index - bufHead;
+                        int len = end - index;
+                        text.replace(pos, len, str);
+                        size    = text.size();
+                        bufHead = text.c_str();
+                        bufTail = bufHead + size;
+                        index   = bufHead + pos;
+                        lastEnd = pos + str.size();
                     } else {
                         result << str;
-                        if (start == end)
-                            ++start;
+                        if (end == index)
+                            ++index;
                         else
-                            done = start = end;
+                            done = index = end;
                     }
                 }
-                if (!filter.killed) result << text.substr(done, size-done);
+                if (!filter.killed) result << string(done, (size_t)(bufTail-done));
                 if (!found) result.str(CSettings::ref().getMessage("TEST_NO_MATCH"));
 
             // Test of a header filter. Much simpler...
             } else {
 
+                const char *index, *stop, *end, *reached;
+                index = text.c_str();
+                stop  = index + text.size();
                 if ((!text.empty() || current->matchPattern.empty())
-                    && matcher.match(0, text.size(), end, reached)) {
+                    && matcher.match(index, stop, end, reached)) {
 
                     result << CExpander::expand(current->replacePattern, filter);
                 } else {

@@ -46,11 +46,11 @@ CHeaderFilter::CHeaderFilter(const CFilterDescriptor& desc, CFilterOwner& owner)
     urlMatcher = textMatcher = NULL;
     replacePattern = desc.replacePattern;
     if (!desc.urlPattern.empty()) {
-        urlMatcher = new CMatcher(owner.url.getFromHost(), desc.urlPattern, *this);
+        urlMatcher = new CMatcher(desc.urlPattern, *this);
     }
     if (!desc.matchPattern.empty()) {
         try {
-            textMatcher = new CMatcher(content, desc.matchPattern, *this);
+            textMatcher = new CMatcher(desc.matchPattern, *this);
         } catch (parsing_exception e) {
             if (urlMatcher) delete urlMatcher;
             throw e;
@@ -80,19 +80,23 @@ bool CHeaderFilter::filter(string& content) {
 
     // check if URL matches
     if (urlMatcher) {
-        int end, reached;
+        const char *start = owner.url.getFromHost().c_str();
+        const char *stop  = start + owner.url.getFromHost().size();
+        const char *end, *reached;
         bool ret;
-        ret = urlMatcher->match(0, owner.url.getFromHost().size(), end, reached);
+        ret = urlMatcher->match(start, stop, end, reached);
         unlock();
         if (!ret) return false;
     }
 
     // Check if content matches
     if (textMatcher) {
-        int end, reached;
+        const char *start = content.c_str();
+        const char *stop  = start + content.size();
+        const char *end, *reached;
         bool ret;
         this->content = content;
-        ret = textMatcher->match(0, content.size(), end, reached);
+        ret = textMatcher->match(start, stop, end, reached);
         unlock();
         if (!ret) return false;
     }

@@ -110,7 +110,7 @@ CRequestManager::CRequestManager() {
     urlFilter = new CFilter(*this);
     if (!se.bypass.empty()) {
         try {
-            urlMatcher = new CMatcher(url.getFromHost(), se.bypass, *urlFilter);
+            urlMatcher = new CMatcher(se.bypass, *urlFilter);
         } catch (parsing_exception e) {
             // Ignore invalid bypass pattern
         }
@@ -555,8 +555,10 @@ void CRequestManager::processOut() {
             // Test URL with bypass-URL matcher, if matches we'll bypass all
             if (urlMatcher) {
                 urlFilter->clearMemory();
-                int tmp1, tmp2;
-                if (urlMatcher->match(0, url.getUrl().size(), tmp1, tmp2)) {
+                const char *start = url.getFromHost().c_str();
+                const char *stop  = start + url.getFromHost().size();
+                const char *end, *reached;
+                if (urlMatcher->match(start, stop, end, reached)) {
                     bypassOut = bypassIn = bypassBody = true;
                 }
             }

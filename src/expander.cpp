@@ -349,24 +349,28 @@ string CExpander::expand(const string& pattern, CFilter& filter) {
 
                 } else if (command == "URL") {
 
-                    int end, reached;
+                    const char *tStart, *tStop, *tEnd, *tReached;
                     const string& url = filter.owner.url.getUrl();
+                    tStart = url.c_str();
+                    tStop = tStart + url.size();
                     // Here we use the static matching function
-                    bool ret = CMatcher::match(url, content, filter,
-                                               0, url.size(), end, reached);
+                    bool ret = CMatcher::match(content, filter,
+                                               tStart, tStop, tEnd, tReached);
                     if (!ret) index = size;
 
                 } else if (command == "RESP") {
 
-                    int end, reached;
+                    const char *tStart, *tStop, *tEnd, *tReached;
                     string& resp = filter.owner.responseCode;
-                    bool ret = CMatcher::match(resp, content, filter,
-                                               0, resp.size(), end, reached);
+                    tStart = resp.c_str();
+                    tStop = tStart + resp.size();
+                    bool ret = CMatcher::match(content, filter,
+                                               tStart, tStop, tEnd, tReached);
                     if (!ret) index = size;
 
                 } else if (command == "TST") {
 
-                    int end, reached;
+                    const char *tStart, *tStop, *tEnd, *tReached;
                     unsigned int eq, lev;
                     for (eq = 0, lev = 0; eq < size; eq++) {
                         // Left parameter can be some text containing ()
@@ -396,14 +400,17 @@ string CExpander::expand(const string& pattern, CFilter& filter) {
                     } else {
                         toMatch = filter.owner.variables[name];
                     }
+
+                    tStart = toMatch.c_str();
+                    tStop = tStart + toMatch.size();
                     bool ret = !toMatch.empty() &&
-                               CMatcher::match(toMatch, value, filter,
-                                               0, toMatch.size(), end, reached);
-                    if (!ret || end != (int)toMatch.size()) index = size;
+                               CMatcher::match(value, filter,
+                                               tStart, tStop, tEnd, tReached);
+                    if (!ret || tEnd != tStop) index = size;
 
                 } else if (command == "IHDR") {
 
-                    int end, reached;
+                    const char *tStart, *tStop, *tEnd, *tReached;
                     unsigned int colon = content.find(':');
                     if (colon == string::npos) { pos=0; content = ":"; }
                     string pattern = content.substr(colon + 1);
@@ -411,13 +418,15 @@ string CExpander::expand(const string& pattern, CFilter& filter) {
                     CUtil::trim(name);
                     CUtil::lower(name);
                     string value = CFilterOwner::getHeader(filter.owner.inHeaders, name);
-                    if (!CMatcher::match(value, pattern, filter, 0,
-                                         value.size(), end, reached))
+                    tStart = value.c_str();
+                    tStop = tStart + value.size();
+                    if (!CMatcher::match(pattern, filter,
+                                         tStart, tStop, tEnd, tReached))
                         index = size;
 
                 } else if (command == "OHDR") {
 
-                    int end, reached;
+                    const char *tStart, *tStop, *tEnd, *tReached;
                     unsigned int colon = content.find(':');
                     if (colon == string::npos) { pos=0; content = ":"; }
                     string pattern = content.substr(colon + 1);
@@ -425,8 +434,10 @@ string CExpander::expand(const string& pattern, CFilter& filter) {
                     CUtil::trim(name);
                     CUtil::lower(name);
                     string value = CFilterOwner::getHeader(filter.owner.outHeaders, name);
-                    if (!CMatcher::match(value, pattern, filter, 0,
-                                         value.size(), end, reached))
+                    tStart = value.c_str();
+                    tStop = tStart + value.size();
+                    if (!CMatcher::match(pattern, filter,
+                                         tStart, tStop, tEnd, tReached))
                         index = size;
 
                 } else if (command == "DTM") {

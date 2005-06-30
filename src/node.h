@@ -39,21 +39,16 @@ using namespace std;
  * branch nodes: 'or', 'and', 'sequentially', 'a number of times'.
  *
  * The tree is generated at the construction of a CMatcher, with respect to a
- * given pattern. When CMatcher is used to test data, it resets the root of the
- * tree (function reset()) then asks it the end position of the match (function
- * next()).
+ * given pattern. When CMatcher is used to test data, it asks the root node
+ * for the end position of the whole matched text.
  *
- * Each node resets its children and asks the length of their next match, or
- * tests the data, wrt its mode of operation. Most leaf nodes will match or
- * will not (in this case next() returns -1); those nodes need to be invoked
- * only once, so the retry bool will immediately be set to false to tell the
- * parent node that it should not be asked again (but if reset). The node that
- * tests '*' may match for several lengths, in that case retry will be set to
- * false only once all lengths have been returned. Some branch nodes can match
- * several times (e.g 'or' can match with one alternative or another). So their
- * retry bool will be set to false after they returned all their possible
- * matching lengths. The memory nodes encapsulate a node with an added
- * functionality of storing the match (or undoing it).
+ * Each leaf node is linked to the node that is supposed to match the text on its
+ * right. When a leaf node matches, it asks the next node for a match, and
+ * returns the end position provided by the next node.
+ *
+ * Branch node may pass match request to their children, which may be linked
+ * to the branch's next node or not. If they are not, the branch node must
+ * ask its next node after its children matched.
  */
 class CNode {
 
@@ -68,7 +63,7 @@ public:
     // will scan the text after itself. This is needed for correct processing
     // of "&" and "&&", which try right pattern on the first left match that
     // _do_ let remaining pattern match.
-    virtual void setNextNode(CNode* node = NULL, bool eop = true) =0;
+    virtual void setNextNode(CNode* node = NULL) =0;
 
     // The mayMatch() function updates a table of expected characters
     // at the beginning of the text to match. It is called just after
@@ -80,31 +75,16 @@ public:
     // The function returns true if the node may consume nothing yet match.
     virtual bool mayMatch(bool* tab) =0;
 
-    // Reset function.
-    // This non-virtual function updates start/stop/retry/first variables
-    // to prepare matching at the current position in the text.
-    // Subclasses that need more initialisation will test 'first' at
-    // beginning of match().
-    inline void reset(int i, int j) { start = i; stop = j; retry = first = true; }
-
     // Match function.
     // Returns the end position of text matched by the whole chain of nodes
     // (wrt. nextNode) up to the last one (the one having nextNode==NULL).
     // The implementation must set 'consumed' to the end position match by
     // the pattern represented by the node itself.
-    // Subclasses that use the NODE_MATCH() macro should have a
-    // int consume() function that provides the next match length.
-    // Nodes that can match several times (e.g "*" and "|") will return
-    // those lengths at repeated consume() calls.
-    virtual int match() =0;
+    virtual const char* match(const char* start, const char* stop) =0;
 
-    // This bool indicates if match() can be called again. One should
-    // not call match (thus saving a function call) if retry==false
-    bool retry;
-
-    // If match() returned a value != -1, this variable contains the
+    // If match() returned a value != NULL, this variable contains the
     // position corresponding to the end of what just the node itself matched.
-    int consumed;
+    const char* consumed;
 
     // Enumeration for id()
     enum type { AND,      ANY,      ASK,      AV,       CHAR,     CHARS,
@@ -113,25 +93,15 @@ public:
                 REPEAT,   RUN,      SPACE,    STAR,     STRING,   TEST,
                 URL     };
 
-    // Function to compare node types without RTTI
-    virtual type id() =0;
+    // Node type (for upcasting)
+    type id;
 
 protected:
-    const string& text;
-    int&   reached;
-    int    start;
-    int    stop;
-    bool   first;
-    CNode* nextNode;
+    const char* reached;
+    CNode*      nextNode;
 
-    // The text string used as a buffer is known when we construct the
-    // CMatcher for it. So we'll record it in nodes only once, when
-    // building the tree.
-    // The 'reached' variable will be set by match() to the end position of
-    // scanned text. It is different to match() return value, in that in can
-    // equals the end of text buffer while match() failed and returned -1.
-    // Test it to know if buffer size may have changed the outcome.
-    CNode(const string& text, int& reached) : text(text), reached(reached) { }
+    // Protected construtor
+    CNode(const char* reached, type id) : id(id), reached(reached), nextNode(NULL) { }
 };
 
 
@@ -139,27 +109,13 @@ protected:
  * subclasses.
  */
 
-#define NODE_ID(ID) \
-type id() {         \
-    return ID;      \
+#define NODE_SETNEXTNODE()      \
+void setNextNode(CNode* node) { \
+    nextNode = node;            \
 }
 
-#define NODE_SETNEXTNODE()                \
-void setNextNode(CNode* node, bool eop) { \
-    nextNode = node;                      \
-}
-
-#define NODE_MATCH()                               \
-int match() {                                      \
-    while (retry && (consumed = consume()) >= 0) { \
-        if (!nextNode) return consumed;            \
-        nextNode->reset(consumed, stop);           \
-        int pos = nextNode->match();               \
-        if (pos >= 0) return pos;                  \
-    }                                              \
-    retry = false;                                 \
-    return consumed = -1;                          \
-}
+#define NODE_MATCH()                                    \
+const char* match(const char* start, const char* stop);
 
 #endif
 

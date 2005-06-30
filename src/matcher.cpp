@@ -44,8 +44,8 @@ using namespace std;
  * a search tree. An exception is returned if the pattern is
  * malformed.
  */
-CMatcher::CMatcher(const string& text, const string& pattern, CFilter& filter) :
-                    filter(filter), text(text) {
+CMatcher::CMatcher(const string& pattern, CFilter& filter) :
+                    filter(filter) {
 
     // position up to which the pattern is decoded
     int pos = 0;
@@ -53,7 +53,7 @@ CMatcher::CMatcher(const string& text, const string& pattern, CFilter& filter) :
     root = NULL;
     if (!pattern.empty() && pattern[0] == '^') {
         // special case: inverted pattern
-        root = new CNode_Negate(this->text, reached,
+        root = new CNode_Negate(reached,
                        expr(pattern, ++pos, pattern.size()));
     } else {
         // (this call may throw an exception)
@@ -80,7 +80,7 @@ CMatcher::~CMatcher() {
 /* Tells if pattern is * or \0-9
  */
 bool CMatcher::isStar() {
-    return (root && (root->id() == CNode::STAR || root->id() == CNode::MEMSTAR));
+    return (root && (root->id == CNode::STAR || root->id == CNode::MEMSTAR));
 }
 
 
@@ -92,7 +92,7 @@ bool CMatcher::testPattern(const string& pattern) {
     CFilter filter(owner);
     string text;
     try {
-        CMatcher(text, pattern, filter);
+        CMatcher(pattern, filter);
     } catch (parsing_exception e) {
         return false;
     }
@@ -105,7 +105,7 @@ bool CMatcher::testPattern(const string& pattern, string& errmsg) {
     CFilter filter(owner);
     string text;
     try {
-        CMatcher(text, pattern, filter);
+        CMatcher(pattern, filter);
     } catch (parsing_exception e) {
         stringstream mess;
         mess << CSettings::ref().getMessage(e.message, e.position) << endl;
@@ -136,14 +136,14 @@ bool CMatcher::testPattern(const string& pattern, string& errmsg) {
  * locked. It cannot be done from inside CMatcher (nor CExpander) because
  * of possible recursive calls.
  */
-bool CMatcher::match(int start, int stop, int& end, int& reached) {
+bool CMatcher::match(const char* start, const char* stop,
+                     const char*& end, const char*& reached) {
 
     if (!root) return false;
     this->reached = start;
-    root->reset(start, stop);
-    end = root->match();
+    end = root->match(start, stop);
     reached = this->reached;
-    return (end>=0);
+    return end != NULL;
 }
 
 
@@ -152,10 +152,11 @@ bool CMatcher::match(int start, int stop, int& end, int& reached) {
  * are not supposed to be called too often (only after a match has
  * been found with an instantiated CMatcher).
  */
-bool CMatcher::match(const string& text, const string& pattern, CFilter& filter,
-                     int start, int stop, int& end, int& reached) {
+bool CMatcher::match(const string& pattern, CFilter& filter,
+                     const char* start, const char* stop,
+                     const char*& end, const char*& reached) {
     try {
-        CMatcher matcher(text, pattern, filter);
+        CMatcher matcher(pattern, filter);
         return matcher.match(start, stop, end, reached);
     } catch (parsing_exception e) {
         return false;
@@ -197,7 +198,7 @@ CNode* CMatcher::expr(const string& pattern, int& pos, int stop, int level) {
             }
             
             // Build the CNode_Or will all the alternatives.
-            node = new CNode_Or(text, reached, vect);
+            node = new CNode_Or(reached, vect);
         }
         return node;
     }
@@ -215,7 +216,7 @@ CNode* CMatcher::expr(const string& pattern, int& pos, int stop, int level) {
         try {
             CNode *node2 = expr(pattern, pos, stop, level + 1); // &'s right run
             // Build the CNode_And with left and right runs.
-            node = new CNode_And(text, reached, node, node2, (level == 0));
+            node = new CNode_And(reached, node, node2, (level == 0));
         } catch (parsing_exception e) {
             delete node;
             throw e;
@@ -275,18 +276,18 @@ CNode* CMatcher::run(const string& pattern, int& pos, int stop) {
                 }
             }
             // Embed node in a repetition node
-            node = new CNode_Repeat(text, reached, node, rmin, rmax, iter);
+            node = new CNode_Repeat(reached, node, rmin, rmax, iter);
         }
 
         // Let's do now an obvious optimization: consecutive
         // chars will not be matched one by one (too many function
         // calls) but as single string.
-        if (node->id() == CNode::CHAR && !v->empty()) {
+        if (node->id == CNode::CHAR && !v->empty()) {
             CNode_Char *nodeChar = (CNode_Char*)node;
             char newChar = nodeChar->getChar();
 
             CNode *prevNode = v->back();
-            if (prevNode->id() == CNode::CHAR) {
+            if (prevNode->id == CNode::CHAR) {
                 CNode_Char *prevNodeChar = (CNode_Char*)prevNode;
 
                 // consecutive CNode_Char's become one CNode_String
@@ -296,9 +297,9 @@ CNode* CMatcher::run(const string& pattern, int& pos, int stop) {
                 delete prevNode;
                 v->pop_back();
                 delete node;
-                node = new CNode_String(text, reached, str);
+                node = new CNode_String(reached, str);
 
-            } else if (prevNode->id() == CNode::STRING) {
+            } else if (prevNode->id == CNode::STRING) {
                 CNode_String *prevNodeString = (CNode_String *)prevNode;
 
                 // append CNode_Char to previous CNode_String
@@ -324,7 +325,7 @@ CNode* CMatcher::run(const string& pattern, int& pos, int stop) {
 
         // Empty run, just record that as an empty node
         delete v;
-        return new CNode_Empty(text, reached);
+        return new CNode_Empty(reached);
         
     } else if (v->size() == 1) {
 
@@ -342,7 +343,7 @@ CNode* CMatcher::run(const string& pattern, int& pos, int stop) {
         // given a reference to first (resp. third).
         CNode_Quote* quote = NULL; // this points to the previous unpaired quote
         for (vector<CNode*>::iterator it=v->begin(); it!=v->end(); it++) {
-            if ((*it)->id() == CNode::QUOTE) {
+            if ((*it)->id == CNode::QUOTE) {
                 if (quote) {
                     ((CNode_Quote*)(*it))->setOpeningQuote(quote);
                     quote = NULL;
@@ -353,7 +354,7 @@ CNode* CMatcher::run(const string& pattern, int& pos, int stop) {
         }
         
         // Returns a CNode_Run embedding the vector of Nodes
-        return new CNode_Run(text, reached, v);
+        return new CNode_Run(reached, v);
     }
 }
 
@@ -389,42 +390,42 @@ CNode* CMatcher::code(const string& pattern, int& pos, int stop) {
         switch (token) {
             case 't':
                 // Rule: \t
-                return new CNode_Char(text, reached, '\t');
+                return new CNode_Char(reached, '\t');
             case 'r':
                 // Rule: \r
-                return new CNode_Char(text, reached, '\r');
+                return new CNode_Char(reached, '\r');
             case 'n':
                 // Rule: \n
-                return new CNode_Char(text, reached, '\n');
+                return new CNode_Char(reached, '\n');
             case 's':
                 // Rule: \s
-                return new CNode_Repeat(text, reached,
-                        new CNode_Chars(text, reached, " \t\r\n"),
+                return new CNode_Repeat(reached,
+                        new CNode_Chars(reached, " \t\r\n"),
                         1, BIG_NUMBER);
             case 'w':
                 // Rule: \w
-                return new CNode_Repeat(text, reached,
-                        new CNode_Chars(text, reached, " \t\r\n>", false),
+                return new CNode_Repeat(reached,
+                        new CNode_Chars(reached, " \t\r\n>", false),
                         0, BIG_NUMBER);
             case '#':
                 // Rule: \#
-                return new CNode_MemStar(text, reached, filter.memoryStack);
+                return new CNode_MemStar(reached, filter.memoryStack);
             case 'k':
                 // Rule: \k
-                return new CNode_Command(text, reached, CMD_KILL, "", "", filter);
+                return new CNode_Command(reached, CMD_KILL, "", "", filter);
             default:
                 // Rule: \0-9
                 if (CUtil::digit(token))
-                    return new CNode_MemStar(text, reached,
+                    return new CNode_MemStar(reached,
                                              filter.memoryTable[token-'0']);
 
                 // Rules: \u \h \p \a \q
                 if (string("uhpaq").find(token, 0) != string::npos)
-                    return new CNode_Url(text, reached,
+                    return new CNode_Url(reached,
                                     filter.owner.url, token);
 
                 // Rule: backslash
-                return new CNode_Char(text, reached, token);
+                return new CNode_Char(reached, token);
         }
         
     // Range or list of characters
@@ -450,7 +451,7 @@ CNode* CMatcher::code(const string& pattern, int& pos, int stop) {
                 throw parsing_exception("MISSING_CROCHET", pos);
             ++pos;
             // Rule: \n
-            return new CNode_Range(text, reached, rmin, rmax, allow);
+            return new CNode_Range(reached, rmin, rmax, allow);
 
         // Alternative of characters
         } else {
@@ -458,7 +459,7 @@ CNode* CMatcher::code(const string& pattern, int& pos, int stop) {
             // Rule: []
             // We create a clear CNode_Chars then provide it with
             // characters one by one.
-            CNode_Chars *node = new CNode_Chars(text, reached, "", allow);
+            CNode_Chars *node = new CNode_Chars(reached, "", allow);
             
             unsigned char prev = 0, code;
             bool prevCase = false, codeCase, inRange = false;
@@ -556,7 +557,7 @@ CNode* CMatcher::code(const string& pattern, int& pos, int stop) {
         if (endContent<0) {
             // Do as if it was not a command, the token is a normal char
             ++pos;
-            return new CNode_Char(text, reached, '$');
+            return new CNode_Char(reached, '$');
         }
 
         // The pattern will continue after the closing )
@@ -569,7 +570,7 @@ CNode* CMatcher::code(const string& pattern, int& pos, int stop) {
                 // Transform content of () in a tree and embed it in
                 // a fast quote searcher
                 int start = 0;
-                return new CNode_AV(text, reached,
+                return new CNode_AV(reached,
                                     expr(content, start, contentSize), false);
 
             } else if (command == "AVQ") {
@@ -578,7 +579,7 @@ CNode* CMatcher::code(const string& pattern, int& pos, int stop) {
                 // Transform content of () in a tree and embed it in a fast
                 // quote searcher
                 int start = 0;
-                return new CNode_AV(text, reached,
+                return new CNode_AV(reached,
                                     expr(content, start, contentSize), true);
 
             } else if (command == "LST") {
@@ -586,7 +587,7 @@ CNode* CMatcher::code(const string& pattern, int& pos, int stop) {
                 // Command to try a list of patterns.
                 // The patterns are found in CSettings, and nodes are created
                 // at need, and kept until the matcher is destroyed.
-                return new CNode_List(text, reached, content, *this);
+                return new CNode_List(reached, content, *this);
 
             } else if (command == "SET") {
 
@@ -600,13 +601,13 @@ CNode* CMatcher::code(const string& pattern, int& pos, int stop) {
                 CUtil::lower(name);
                 if (name[0] == '\\') name.erase(0,1);
                 if (name == "#") {
-                    return new CNode_Command(text, reached, CMD_SETSHARP,
+                    return new CNode_Command(reached, CMD_SETSHARP,
                                              "", value, filter);
                 } else if (name.length() == 1 && CUtil::digit(name[0])) {
-                    return new CNode_Command(text, reached, CMD_SETDIGIT,
+                    return new CNode_Command(reached, CMD_SETDIGIT,
                                              name, value, filter);
                 } else {
-                    return new CNode_Command(text, reached, CMD_SETVAR,
+                    return new CNode_Command(reached, CMD_SETVAR,
                                              name, value, filter);
                 }
 
@@ -628,7 +629,7 @@ CNode* CMatcher::code(const string& pattern, int& pos, int stop) {
                     CUtil::trim(content);
                     if (content[0] != '(') CUtil::lower(content);
                     if (content[0] == '\\') content.erase(0,1);
-                    return new CNode_Test(text, reached, content, filter);
+                    return new CNode_Test(reached, content, filter);
                 }
                 startContent += eq + 1;
                 string name = content.substr(0, eq);
@@ -637,17 +638,17 @@ CNode* CMatcher::code(const string& pattern, int& pos, int stop) {
                 if (name[0] != '(') CUtil::lower(name);
                 if (name[0] == '\\') name.erase(0,1);
                 if (name == "#") {
-                    return new CNode_Command(text, reached, CMD_TSTSHARP,
+                    return new CNode_Command(reached, CMD_TSTSHARP,
                                              "", value, filter);
                 } else if (name.length() == 1 && CUtil::digit(name[0])) {
-                    return new CNode_Command(text, reached, CMD_TSTDIGIT,
+                    return new CNode_Command(reached, CMD_TSTDIGIT,
                                              name, value, filter);
                 } else if (name[0] == '(' && name[name.size()-1] == ')') {
                     name = name.substr(1, name.size()-2);
-                    return new CNode_Command(text, reached, CMD_TSTEXPAND,
+                    return new CNode_Command(reached, CMD_TSTEXPAND,
                                              name, value, filter);
                 } else {
-                    return new CNode_Command(text, reached, CMD_TSTVAR,
+                    return new CNode_Command(reached, CMD_TSTVAR,
                                              name, value, filter);
                 }
 
@@ -660,7 +661,7 @@ CNode* CMatcher::code(const string& pattern, int& pos, int stop) {
                 string name = content.substr(0, comma);
                 string value = content.substr(comma + 1);
                 CUtil::trim(name);
-                return new CNode_Command(text, reached, CMD_ADDLST,
+                return new CNode_Command(reached, CMD_ADDLST,
                                          name, value, filter);
 
             } else if (command == "ADDLSTBOX") {
@@ -672,13 +673,13 @@ CNode* CMatcher::code(const string& pattern, int& pos, int stop) {
                 string value = content.substr(comma + 1);
                 string name = content.substr(0, comma);
                 CUtil::trim(name);
-                return new CNode_Command(text, reached, CMD_ADDLSTBOX,
+                return new CNode_Command(reached, CMD_ADDLSTBOX,
                                          name, value, filter);
 
             } else if (command == "URL") {
 
                 // Command to try and match the document URL
-                return new CNode_Command(text, reached, CMD_URL,
+                return new CNode_Command(reached, CMD_URL,
                                          "", content, filter);
 
             } else if (command == "TYPE") {
@@ -686,7 +687,7 @@ CNode* CMatcher::code(const string& pattern, int& pos, int stop) {
                 // Command to check the downloaded file type
                 CUtil::trim(content);
                 CUtil::lower(content);
-                return new CNode_Command(text, reached, CMD_TYPE,
+                return new CNode_Command(reached, CMD_TYPE,
                                          "", content, filter);
 
             } else if (command == "IHDR") {
@@ -699,7 +700,7 @@ CNode* CMatcher::code(const string& pattern, int& pos, int stop) {
                 string value = content.substr(colon+1);
                 CUtil::trim(name);
                 CUtil::lower(name);
-                return new CNode_Command(text, reached, CMD_IHDR,
+                return new CNode_Command(reached, CMD_IHDR,
                                          name, value, filter);
 
             } else if (command == "OHDR") {
@@ -712,31 +713,31 @@ CNode* CMatcher::code(const string& pattern, int& pos, int stop) {
                 string value = content.substr(colon+1);
                 CUtil::trim(name);
                 CUtil::lower(name);
-                return new CNode_Command(text, reached, CMD_OHDR,
+                return new CNode_Command(reached, CMD_OHDR,
                                          name, value, filter);
 
             } else if (command == "RESP") {
 
                 // Command to try and match the response line
-                return new CNode_Command(text, reached, CMD_RESP,
+                return new CNode_Command(reached, CMD_RESP,
                                          "", content, filter);
 
             } else if (command == "ALERT") {
 
                 // Command to display a message box
-                return new CNode_Command(text, reached, CMD_ALERT,
+                return new CNode_Command(reached, CMD_ALERT,
                                          "", content, filter);
 
             } else if (command == "CONFIRM") {
 
                 // Command to ask the user for a choice (Y/N)
-                return new CNode_Command(text, reached, CMD_CONFIRM,
+                return new CNode_Command(reached, CMD_CONFIRM,
                                          "", content, filter);
 
             } else if (command == "STOP") {
 
                 // Command to stop the filter from filtering
-                return new CNode_Command(text, reached, CMD_STOP,
+                return new CNode_Command(reached, CMD_STOP,
                                          "", "", filter);
 
             } else if (command == "USEPROXY") {
@@ -746,7 +747,7 @@ CNode* CMatcher::code(const string& pattern, int& pos, int stop) {
                 CUtil::lower(content);
                 if (content != "true" && content != "false")
                     throw parsing_exception("NEED_TRUE_FALSE", 0);
-                return new CNode_Command(text, reached, CMD_USEPROXY,
+                return new CNode_Command(reached, CMD_USEPROXY,
                                          "", content, filter);
 
             } else if (command == "SETPROXY") {
@@ -757,7 +758,7 @@ CNode* CMatcher::code(const string& pattern, int& pos, int stop) {
                 CUtil::trim(content);
                 if (content.empty())
                     throw parsing_exception("NEED_TEXT", 0);
-                return new CNode_Command(text, reached, CMD_SETPROXY,
+                return new CNode_Command(reached, CMD_SETPROXY,
                                          "", content, filter);
                 
             } else if (command == "CON") {
@@ -790,27 +791,27 @@ CNode* CMatcher::code(const string& pattern, int& pos, int stop) {
                 } catch (int err) {
                     throw parsing_exception("TWO_THREE_INTEGERS", 0);
                 }
-                return new CNode_Cnx(text, reached, x, y, z,
+                return new CNode_Cnx(reached, x, y, z,
                                      filter.owner.cnxNumber);
 
             } else if (command == "LOG") {
 
                 // Command to send an log event to the log system
-                return new CNode_Command(text, reached, CMD_LOG,
+                return new CNode_Command(reached, CMD_LOG,
                                          "", content, filter);
 
             } else if (command == "JUMP") {
 
                 // Command to tell the browser to go to another URL
                 CUtil::trim(content);
-                return new CNode_Command(text, reached, CMD_JUMP,
+                return new CNode_Command(reached, CMD_JUMP,
                                          "", content, filter);
 
             } else if (command == "RDIR") {
 
                 // Command to transparently redirect to another URL
                 CUtil::trim(content);
-                return new CNode_Command(text, reached, CMD_RDIR,
+                return new CNode_Command(reached, CMD_RDIR,
                                          "", content, filter);
 
             } else if (command == "FILTER") {
@@ -820,26 +821,26 @@ CNode* CMatcher::code(const string& pattern, int& pos, int stop) {
                 CUtil::lower(content);
                 if (content != "true" && content != "false")
                     throw parsing_exception("NEED_TRUE_FALSE", 0);
-                return new CNode_Command(text, reached, CMD_FILTER,
+                return new CNode_Command(reached, CMD_FILTER,
                                          "", content, filter);
 
             } else if (command == "LOCK") {
 
                 // Command to lock the filter mutex
-                return new CNode_Command(text, reached, CMD_LOCK,
+                return new CNode_Command(reached, CMD_LOCK,
                                          "", "", filter);
 
             } else if (command == "UNLOCK") {
 
                 // Command to lock the filter mutex
-                return new CNode_Command(text, reached, CMD_UNLOCK,
+                return new CNode_Command(reached, CMD_UNLOCK,
                                          "", "", filter);
 
             } else if (command == "KEYCHK") {
 
                 // Command to lock the filter mutex
                 CUtil::upper(content);
-                return new CNode_Command(text, reached, CMD_KEYCHK,
+                return new CNode_Command(reached, CMD_KEYCHK,
                                          "", content, filter);
 
             } else if (command == "NEST" ||
@@ -871,7 +872,7 @@ CNode* CMatcher::code(const string& pattern, int& pos, int stop) {
                     if (right)  delete right;
                     throw e;
                 }
-                return new CNode_Nest(text, reached, left, middle, right,
+                return new CNode_Nest(reached, left, middle, right,
                                       command == "INEST");
 
             } else if (command == "ASK") {
@@ -903,7 +904,7 @@ CNode* CMatcher::code(const string& pattern, int& pos, int stop) {
                 CUtil::trim(question);
                 CUtil::trim(item);
                 CUtil::trim(pattern);
-                return new CNode_Ask(text, reached, filter, allowName,
+                return new CNode_Ask(reached, filter, allowName,
                                      denyName, question, item, pattern);
 
             } else {
@@ -942,20 +943,20 @@ CNode* CMatcher::code(const string& pattern, int& pos, int stop) {
         // Rule: (^ )
         // If the expression must be negated, embed it in a CNode_Negate
         if (negate)
-            node = new CNode_Negate(text, reached, node);
+            node = new CNode_Negate(reached, node);
 
         if (pos+1 < stop && pattern[pos]=='\\') {
             if (CUtil::digit(pattern[pos+1])) {
                 // Rule: ()\0-9
                 // The code will be embedded in a memory node
                 int num = pattern[pos+1]-'0';
-                node = new CNode_Memory(text, reached, node,
+                node = new CNode_Memory(reached, node,
                                         filter.memoryTable[num]);
                 pos += 2;
             } else if (pattern[pos+1] == '#') {
                 // Rule: ()\#
                 // The code will be embedded in a stacked-memory node
-                node = new CNode_Memory(text, reached, node,
+                node = new CNode_Memory(reached, node,
                                         filter.memoryStack);
                 pos += 2;
             }
@@ -987,7 +988,7 @@ CNode* CMatcher::single(const string& pattern, int& pos, int stop) {
     if (token == '?') {
 
         // Rule: ?
-        return new CNode_Any(text, reached);
+        return new CNode_Any(reached);
         
     } else if (token == ' ' || token == '\t') {
 
@@ -999,29 +1000,29 @@ CNode* CMatcher::single(const string& pattern, int& pos, int stop) {
             return single(pattern, pos, stop);
             
         // Rule: space
-        return new CNode_Space(text, reached);
+        return new CNode_Space(reached);
 
     } else if (token == '=') {
 
         // Rule: =
         while (pos < stop && pattern[pos] <= ' ') ++pos;
-        return new CNode_Equal(text, reached);
+        return new CNode_Equal(reached);
 
     } else if (token == '*') {
 
         // Rule: *
-        return new CNode_Star(text, reached);
+        return new CNode_Star(reached);
 
     } else if (token == '\'' || token == '\"') {
 
         // Rule: "
         // Rule: '
-        return new CNode_Quote(text, reached, token);
+        return new CNode_Quote(reached, token);
 
     } else {
 
         // ascii character
-        return new CNode_Char(text, reached, tolower(token));
+        return new CNode_Char(reached, tolower(token));
     }
 }
 

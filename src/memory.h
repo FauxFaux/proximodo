@@ -37,9 +37,8 @@ using namespace std;
 class CMemory {
 
 private:
-    const string* text; // pointer to text buffer markers refer to
-    int     posStart;   // start position in text buffer
-    int     posEnd;     // end position in text
+    const char* posStart;   // start position in text buffer
+    const char* posEnd;     // end position in text
     string* content;    // (pointer so that we don't construct string if not used)
 
 public:
@@ -50,7 +49,7 @@ public:
     inline CMemory(const string& value);
 
     // Constructor (by markers)
-    inline CMemory(const string* text, int posStart, int posEnd);
+    inline CMemory(const char* posStart, const char* posEnd);
 
     // Copy constructor
     inline CMemory(const CMemory& mem);
@@ -66,7 +65,7 @@ public:
 
     // Change operators
     inline CMemory& operator()(const string& value);
-    inline CMemory& operator()(const string* text, int posStart, int posEnd);
+    inline CMemory& operator()(const char* posStart, const char* posEnd);
 
     // Clear content
     inline void clear();
@@ -78,7 +77,7 @@ public:
 
 /* Default constructor
  */
-CMemory::CMemory() : posStart(0), posEnd(0), content(NULL) {
+CMemory::CMemory() : posStart(NULL), posEnd(NULL), content(NULL) {
 }
 
 
@@ -91,8 +90,8 @@ CMemory::CMemory(const string& value) {
 
 /* Constructor (by markers)
  */
-CMemory::CMemory(const string* text, int posStart, int posEnd) :
-        text(text), posStart(posStart), posEnd(posEnd), content(NULL) {
+CMemory::CMemory(const char* posStart, const char* posEnd) :
+        posStart(posStart), posEnd(posEnd), content(NULL) {
 }
 
 
@@ -103,7 +102,6 @@ CMemory::CMemory(const CMemory& mem) {
         content = new string(*mem.content);
     } else {
         content  = NULL;
-        text     = mem.text;
         posStart = mem.posStart;
         posEnd   = mem.posEnd;
     }
@@ -128,7 +126,7 @@ bool CMemory::isByValue() {
  */
 string CMemory::getValue() {
     return (content ? *content : posStart < posEnd ?
-            text->substr(posStart, posEnd - posStart) : string("") );
+            string(posStart, posEnd - posStart) : string("") );
 }
 
 
@@ -144,7 +142,6 @@ CMemory& CMemory::operator=(const CMemory& mem) {
     } else {
         if (content) delete content;
         content  = NULL;
-        text     = mem.text;
         posStart = mem.posStart;
         posEnd   = mem.posEnd;
     }
@@ -163,9 +160,8 @@ CMemory& CMemory::operator()(const string& value) {
     return *this;
 }
 
-CMemory& CMemory::operator()(const string* text, int posStart, int posEnd) {
+CMemory& CMemory::operator()(const char* posStart, const char* posEnd) {
     if (content) { delete content; content = NULL; }
-    this->text     = text;
     this->posStart = posStart;
     this->posEnd   = posEnd;
     return *this;
@@ -176,7 +172,7 @@ CMemory& CMemory::operator()(const string* text, int posStart, int posEnd) {
  */
 void CMemory::clear() {
     if (content) { delete content; content = NULL; }
-    posStart = posEnd = 0;
+    posStart = posEnd = NULL;
 }
 
 #endif
