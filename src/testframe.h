@@ -2,6 +2,7 @@
 //
 //this file is part of Proximodo
 //Copyright (C) 2004 Antony BOUCHER ( kuruden@users.sourceforge.net )
+//              2005 Paul Rupe      ( prupe@users.sourceforge.net )
 //
 //This program is free software; you can redistribute it and/or
 //modify it under the terms of the GNU General Public License
@@ -43,13 +44,13 @@ private:
     // Event functions
     void OnClose(wxCloseEvent& event);
     void OnCommand(wxCommandEvent& event);
-    
+
     // Filter to test
     CFilterDescriptor* current;
-    
+
     // Controls
-	pmTextCtrl *resultMemo;
-	pmTextCtrl *testMemo;
+    pmTextCtrl *resultMemo;
+    pmTextCtrl *testMemo;
 
     // Saved window position
     static int savedX, savedY, savedW, savedH;
@@ -58,6 +59,7 @@ private:
     enum {
         // Buttons
         ID_TEST = 1500,
+        ID_PROFILE,
         ID_TESTTEXT
     };
 

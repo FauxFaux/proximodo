@@ -88,7 +88,7 @@ MENU_HELPABOUT                =About
 MENU_HELPCONTENT              =Content	F1
 MENU_HELPSYNTAX               =Codes and Commands
 MENU_HELPLICENSE              =License
-MENU_HELPFILTERS              =Filter Edition
+MENU_HELPFILTERS              =Filter Editor
 MENU_FILTERSEDIT              =Edit Filter	Enter
 MENU_FILTERSCHECK             =Check	Alt+Space
 MENU_FOLDERSNEW               =New Folder	Alt+F
@@ -185,14 +185,20 @@ APPLY_EDITFILTERS             =Filters have changed. Do you want to apply them?
 DEFAULT_FILTER_NAME           =New Filter
 DEFAULT_FOLDER_NAME           =New Folder
 PROXOMITRON_CATEGORY          =Proxomitron
-EDIT_WINDOW_TITLE             =Proximodo - Edition Window
+EDIT_WINDOW_TITLE             =Proximodo - Editor Window
 
 Test Window
 
 TEST_WINDOW_TEST_BUTTON       =Test
+TEST_WINDOW_PROF_BUTTON       =Profile
 TEST_WINDOW_CLOSE_BUTTON      =Close
 TEST_WINDOW_TITLE             =Proximodo - Test Window
 TEST_NO_MATCH                 =(No match found)
+TEST_PROFILE_RESULTS          =Profile results...
+_  Sample text:  %1 bytes
+_  Successful matches:  %2
+_  Average time:  %3 microseconds
+_  Throughput:  %4 KB/s
 
 Configuration Window
 

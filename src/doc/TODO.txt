@@ -10,9 +10,7 @@ GUI:
 - Log window: timestamps
 - Log window: search field
 - Test window: show text length
-- Test window: Profile button (1000 runs or 5 seconds, then display text size, nb matches and time/run)
 - Test window: dropdown to choose what to test (url, bounds, match, bounds+match)
-- Test window: a timer that reports the time per run, averaged over several runs
 - Test window: save text to settings.txt
 - Order filters and folders by name
 - Syntax highlighting: special chars, command names, open ( or )

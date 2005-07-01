@@ -10,6 +10,8 @@ Engine
 GUI
 - Wider "active configuration" field on Monitor screen
 - Better synchronization between filter edition window and config window
+- Profile button in filter test dialog; shows input length, number of matches,
+  average time per run, approximate data throughput in kbps
 
 Proxy
 - Fixed freezing on 304 responses
