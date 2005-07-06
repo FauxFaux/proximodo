@@ -58,6 +58,8 @@ private:
     void OnCommand(wxCommandEvent& event);
     void OnProxyEvent(CProxyEvent& evt);
 
+    void updateStatus();
+
     // IDs
     enum {
         ID_FILTERINCHECKBOX = 1800,

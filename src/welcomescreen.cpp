@@ -128,7 +128,7 @@ CWelcomeScreen::CWelcomeScreen(wxFrame* frame) : CWindowContent(frame, wxVERTICA
     statsGrid->Add(openReqLabel, 0, wxALIGN_LEFT |
         wxALIGN_CENTER_VERTICAL| wxALL, 0);
 
-    openReqValue =  new pmStaticText(frame, wxID_ANY, "0");
+    openReqValue =  new pmStaticText(frame, wxID_ANY, "");
     statsGrid->Add(openReqValue, 0, wxALIGN_LEFT |
         wxALIGN_CENTER_VERTICAL| wxALL, 0);
 
@@ -137,9 +137,10 @@ CWelcomeScreen::CWelcomeScreen(wxFrame* frame) : CWindowContent(frame, wxVERTICA
     statsGrid->Add(openCnxLabel, 0, wxALIGN_LEFT |
         wxALIGN_CENTER_VERTICAL| wxALL, 0);
 
-    openCnxValue =  new pmStaticText(frame, wxID_ANY, "0");
+    openCnxValue =  new pmStaticText(frame, wxID_ANY, "");
     statsGrid->Add(openCnxValue, 0, wxALIGN_LEFT |
         wxALIGN_CENTER_VERTICAL| wxALL, 0);
+    updateStatus();
 
     pmButton* abortButton =  new pmButton(frame, ID_ABORTBUTTON,
         settings.getMessage("LB_MONITOR_ABORT").c_str());
@@ -213,13 +214,18 @@ void CWelcomeScreen::OnCommand(wxCommandEvent& event) {
 }
 
 
-/* Proxy event listener
- */
-void CWelcomeScreen::OnProxyEvent(CProxyEvent& evt) {
+void CWelcomeScreen::updateStatus() {
 
     stringstream s1, s2;
     s1 << CLog::ref().numOpenSockets;
     s2 << CLog::ref().numActiveRequests;
     openCnxValue->SetLabel(s1.str().c_str());
     openReqValue->SetLabel(s2.str().c_str());
+}
+
+/* Proxy event listener
+ */
+void CWelcomeScreen::OnProxyEvent(CProxyEvent& evt) {
+
+    updateStatus();
 }
