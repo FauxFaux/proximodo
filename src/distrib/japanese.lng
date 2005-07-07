@@ -1,6 +1,6 @@
 ---------------------------------------------------------------------
 Language: 日本語
-Author: Shimazaki Ryo  (2005/05/22)
+Author: Shimazaki Ryo  (2005/07/07)
 Contributions by: 
 Version: 0.2.3
 ---------------------------------------------------------------------
@@ -183,9 +183,15 @@ EDIT_WINDOW_TITLE             =編集ウィンドウ - Proximodo
 Test Window
 
 TEST_WINDOW_TEST_BUTTON       =テスト(&T)
+TEST_WINDOW_PROF_BUTTON       =分析(&P)
 TEST_WINDOW_CLOSE_BUTTON      =閉じる
 TEST_WINDOW_TITLE             =テストウィンドウ - Proximodo
 TEST_NO_MATCH                 =(マッチなし)
+TEST_PROFILE_RESULTS          =分析結果...
+_  サンプルテキスト： %1 バイト
+_  一致回数： %2
+_  平均時間： %3 ミリ秒
+_  処理速度： %4 KB/s
 
 Configuration Window
 
