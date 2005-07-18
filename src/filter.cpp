@@ -28,8 +28,7 @@
 
 /* Constructor
  */
-CFilter::CFilter(CFilterOwner& owner) : owner(owner),
-            bypassed(false), killed(false), locked(false) {
+CFilter::CFilter(CFilterOwner& owner) : owner(owner), bypassed(false), locked(false) {
 }
 
 

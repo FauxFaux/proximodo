@@ -29,7 +29,7 @@
 #
 # Note: if you don't have RC.EXE, you can use GNU windres.exe instead.
 # In that case you would replace the "$(RC) /r /fo=" line by:
-# 	windres -i Proximodo_private.rc --input-format=rc -o ../obj/Proximodo_private.res --include-dir C:/MinGW/include
+# 	windres -i Proximodo_private.rc --input-format=rc -o ../obj/Proximodo_vc.res --include-dir C:/MinGW/include
 #
 
 #
@@ -38,9 +38,9 @@
 
 BIN = ..\bin\prox.exe
 
-RES = ..\obj\Proximodo_private.res
+RES = ..\obj\Proximodo_vc.res
 
-OBJ = ..\obj\main.obj ..\obj\nodes.obj ..\obj\url.obj ..\obj\matcher.obj ..\obj\expander.obj ..\obj\textfilter.obj ..\obj\headerfilter.obj ..\obj\requestmanager.obj ..\obj\proxy.obj ..\obj\log.obj ..\obj\settings.obj ..\obj\descriptor.obj ..\obj\events.obj ..\obj\managerthread.obj ..\obj\filter.obj ..\obj\platform.obj ..\obj\util.obj ..\obj\filterowner.obj ..\obj\mainframe.obj ..\obj\welcomescreen.obj ..\obj\settingsscreen.obj ..\obj\controls.obj ..\obj\editscreen.obj ..\obj\testframe.obj ..\obj\configscreen.obj ..\obj\windowcontent.obj ..\obj\logframe.obj ..\obj\trayicon.obj ..\obj\zlibbuffer.obj ..\obj\giffilter.obj
+OBJ = ..\obj\main.obj ..\obj\nodes.obj ..\obj\url.obj ..\obj\matcher.obj ..\obj\expander.obj ..\obj\textfilter.obj ..\obj\headerfilter.obj ..\obj\requestmanager.obj ..\obj\proxy.obj ..\obj\log.obj ..\obj\settings.obj ..\obj\descriptor.obj ..\obj\events.obj ..\obj\managerthread.obj ..\obj\filter.obj ..\obj\platform.obj ..\obj\util.obj ..\obj\filterowner.obj ..\obj\mainframe.obj ..\obj\welcomescreen.obj ..\obj\settingsscreen.obj ..\obj\controls.obj ..\obj\editscreen.obj ..\obj\testframe.obj ..\obj\configscreen.obj ..\obj\windowcontent.obj ..\obj\logframe.obj ..\obj\trayicon.obj ..\obj\zlibbuffer.obj ..\obj\giffilter.obj ..\obj\textbuffer.obj
 
 #
 # DEVELOPMENT ENVIRONMENT
@@ -50,17 +50,26 @@ CPP = cl.exe /nologo
 
 RC = rc.exe
 
-CXXFLAGS_RELEASE = /MT  /Ox /G5
-CXXFLAGS_DEBUG   = /MTd /Zi
-CXXFLAGS = /c /GR /EHsc $(CXXFLAGS_RELEASE)
+!IF "$(DEBUG)" != ""
+CXXFLAGS = /MTd /Zi
+!ELSE
+CXXFLAGS = /MT  /Ox /G5
+!ENDIF
+CXXFLAGS = /c /W3 /GR /EHsc $(CXXFLAGS)
 
-LIBS_RELEASE = wxmsw26_core.lib wxbase26.lib wxbase26_net.lib wxmsw26_adv.lib
-LIBS_DEBUG = wxmsw26d_core.lib wxbase26d.lib wxbase26d_net.lib wxmsw26d_adv.lib 
-LIBS = $(LIBS_RELEASE) zlib.lib rpcrt4.lib oleaut32.lib ole32.lib uuid.lib winspool.lib winmm.lib shell32.lib comctl32.lib comdlg32.lib ctl3d32.lib advapi32.lib wsock32.lib gdi32.lib user32.lib kernel32.lib
+!IF "$(DEBUG)" != ""
+LIBS = wxmsw26d_core.lib wxbase26d.lib wxbase26d_net.lib wxmsw26d_adv.lib 
+!ELSE
+LIBS = wxmsw26_core.lib wxbase26.lib wxbase26_net.lib wxmsw26_adv.lib
+!ENDIF
+LIBS = $(LIBS) zlib.lib rpcrt4.lib oleaut32.lib ole32.lib uuid.lib winspool.lib winmm.lib shell32.lib comctl32.lib comdlg32.lib ctl3d32.lib advapi32.lib wsock32.lib gdi32.lib user32.lib kernel32.lib
 
-LINKOPT_RELEASE = /nodefaultlib:LIBC
-LINKOPT_DEBUG = /nodefaultlib:LIBC /nodefaultlib:MSVCRT /debug
-LINKOPT = /link $(LINKOPT_RELEASE)
+!IF "$(DEBUG)" != ""
+LINKOPT = /nodefaultlib:LIBC /nodefaultlib:MSVCRT /debug
+!ELSE
+LINKOPT = /nodefaultlib:LIBC
+!ENDIF
+LINKOPT = /link $(LINKOPT)
 
 LINKOBJ = $(OBJ) $(RES)
 
@@ -84,9 +93,9 @@ $(BIN): $(OBJ) $(RES)
 # RESOURCES
 #
 
-..\obj\Proximodo_private.res: Proximodo_private.rc
-	REM $(RC) /r /fo=..\obj\Proximodo_private.res Proximodo_private.rc
-	windres -i Proximodo_private.rc --input-format=rc -o ../obj/Proximodo_private.res --include-dir C:/MinGW/include
+..\obj\Proximodo_vc.res: Proximodo_private.rc
+	REM $(RC) /r /fo=..\obj\Proximodo_vc.res Proximodo_private.rc
+	windres -i Proximodo_private.rc --input-format=rc -o ../obj/Proximodo_vc.res --include-dir C:/MinGW/include
 
 #
 # OBJECTS
@@ -110,10 +119,13 @@ $(BIN): $(OBJ) $(RES)
 ..\obj\textfilter.obj: textfilter.cpp textfilter.h filter.h memory.h receptor.h url.h expander.h const.h log.h events.h descriptor.h filterowner.h matcher.h
 	$(CPP) $(CXXFLAGS) textfilter.cpp /Fo..\obj\textfilter.obj
 
+..\obj\textbuffer.obj: textbuffer.cpp textbuffer.h descriptor.h events.h filter.h filterowner.h log.h matcher.h memory.h receptor.h settings.h textfilter.h url.h util.h
+	$(CPP) $(CXXFLAGS) textbuffer.cpp /Fo..\obj\textbuffer.obj
+
 ..\obj\headerfilter.obj: headerfilter.cpp headerfilter.h filter.h memory.h url.h expander.h util.h log.h events.h descriptor.h filterowner.h matcher.h
 	$(CPP) $(CXXFLAGS) headerfilter.cpp /Fo..\obj\headerfilter.obj
 
-..\obj\requestmanager.obj: requestmanager.cpp requestmanager.h receptor.h filterowner.h url.h util.h settings.h descriptor.h log.h events.h const.h matcher.h giffilter.h headerfilter.h filter.h memory.h textfilter.h zlibbuffer.h
+..\obj\requestmanager.obj: requestmanager.cpp requestmanager.h receptor.h filterowner.h url.h util.h settings.h descriptor.h log.h events.h const.h matcher.h giffilter.h headerfilter.h filter.h memory.h zlibbuffer.h textbuffer.h
 	$(CPP) $(CXXFLAGS) requestmanager.cpp /Fo..\obj\requestmanager.obj
 
 ..\obj\proxy.obj: proxy.cpp proxy.h util.h settings.h descriptor.h events.h log.h platform.h managerthread.h requestmanager.h receptor.h filterowner.h url.h

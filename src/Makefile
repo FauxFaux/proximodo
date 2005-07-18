@@ -20,14 +20,15 @@ SRC = configscreen.cpp controls.cpp descriptor.cpp editscreen.cpp events.cpp \
 			matcher.cpp nodes.cpp platform.cpp proxy.cpp requestmanager.cpp \
 			settings.cpp settingsscreen.cpp testframe.cpp textfilter.cpp \
 			trayicon.cpp url.cpp util.cpp welcomescreen.cpp windowcontent.cpp \
-			zlibbuffer.cpp
+			zlibbuffer.cpp textbuffer.cpp
 OBJ = $(SRC:.cpp=.o)
 HDR = configscreen.h const.h controls.h descriptor.h editscreen.h events.h \
 			expander.h filter.h filterowner.h giffilter.h headerfilter.h logframe.h \
 			log.h logviewer.h mainframe.h managerthread.h matcher.h memory.h node.h \
 			nodes.h platform.h Proximodo_private.h proxy.h receptor.h \
 			requestmanager.h settings.h settingsscreen.h testframe.h textfilter.h \
-			trayicon.h url.h util.h welcomescreen.h windowcontent.h zlibbuffer.h
+			trayicon.h url.h util.h welcomescreen.h windowcontent.h zlibbuffer.h \
+			textbuffer.h
 PROXIMODO = distrib/proximodo
 
 .phony: default all
@@ -104,6 +105,8 @@ settingsscreen.o: images/btn_file20.xpm images/btn_trash20.xpm
 testframe.o: testframe.h settings.h descriptor.h filterowner.h url.h
 testframe.o: matcher.h expander.h filter.h memory.h const.h log.h events.h
 testframe.o: controls.h images/icon32.xpm
+textbuffer.o: textbuffer.h descriptor.h events.h filter.h filterowner.h log.h
+textbuffer.o: matcher.h memory.h receptor.h settings.h textfilter.h url.h util.h
 textfilter.o: textfilter.h filter.h memory.h receptor.h url.h expander.h
 textfilter.o: const.h log.h events.h descriptor.h filterowner.h matcher.h
 trayicon.o: trayicon.h images/icon32.xpm settings.h descriptor.h log.h

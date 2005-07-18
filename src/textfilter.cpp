@@ -39,9 +39,8 @@ using namespace std;
 
 /* Constructor
  */
-CTextFilter::CTextFilter(CFilterOwner& owner, const CFilterDescriptor& desc,
-                         CDataReceptor* next) :
-        CFilter(owner), nextFilter(next) {
+CTextFilter::CTextFilter(CFilterOwner& owner, const CFilterDescriptor& desc) :
+                                CFilter(owner), owner(owner) {
 
     textMatcher = boundsMatcher = urlMatcher = NULL;
 
@@ -55,12 +54,15 @@ CTextFilter::CTextFilter(CFilterOwner& owner, const CFilterDescriptor& desc,
         // (it can throw a parsing_exception)
     }
 
-    isForStart = isForEnd = false;
+    isForStart = isSpecial = false;
     if (desc.matchPattern == "<start>") {
+        isSpecial = true;
         isForStart = true;
+        memset(okayChars, 0xFF, sizeof(okayChars)); // match whatever the first char is
         return;
     } else if (desc.matchPattern == "<end>") {
-        isForEnd = true;
+        isSpecial = true;
+        memset(okayChars, 0x00, sizeof(okayChars)); // can't match as long as there is a char
         return;
     }
     
@@ -87,7 +89,7 @@ CTextFilter::CTextFilter(CFilterOwner& owner, const CFilterDescriptor& desc,
 }
 
 
-/* Desctructor
+/* Destructor
  */
 CTextFilter::~CTextFilter() {
 
@@ -97,12 +99,24 @@ CTextFilter::~CTextFilter() {
 }
 
 
-/* Reset internal state and get ready for a new flow
+/* Generates the replacement text for the previous occurrence
  */
-void CTextFilter::dataReset() {
+string CTextFilter::getReplaceText() {
 
+    string text = CExpander::expand(replacePattern, *this);
+    unlock();
+    return text;
+}
+
+
+/* Reset internal state and get ready for a new stream
+ */
+void CTextFilter::reset() {
+
+    clearMemory();
     bypassed = false;
-    
+    isComplete = false;
+
     if (urlMatcher) {
         // The filter will be inactive if the URL does not match
         const char *tStart, *tStop, *tEnd, *tReached;
@@ -111,211 +125,52 @@ void CTextFilter::dataReset() {
         bypassed = !urlMatcher->match(tStart, tStop, tEnd, tReached);
         unlock();
     }
+}
+
+
+/* Informs the filter that 'stop' in match() is the end of stream
+ */
+void CTextFilter::endReached() {
+
+    isComplete = true;
+}
+
+
+/* Run the filter on string [start,stop)
+ */
+int CTextFilter::match(const char* index, const char* bufTail) {
+
+    // for special <start> and <end> filters
+    if (isSpecial) {
+        endOfMatched = index;
+        return (isForStart || isComplete && index == bufTail ? (bypassed = true, 1) : 0);
+    }
     
-    killed = false;
-    isStarted = false;
-    needed = CTF_THRESHOLD2;
-    lastEnd = -1;
-    buffer.clear();
+    // compute up to where we want to match
+    const char *reached, *stop = index + windowWidth;
+    if (stop > bufTail) stop = bufTail;
+
+    // clear memory
     clearMemory();
 
-    // Forward reset to following filters
-    nextFilter->dataReset();
-}
-
-
-/* Receive data
- */
-void CTextFilter::dataFeed(const string& data) {
-    if (killed) return;
-    process(data, true);
-}
-
-
-/* Process data still in the buffer
- */
-void CTextFilter::dataDump() {
-    if (killed) return;
-    string str = "";
-    process(str, false);
-    nextFilter->dataDump();
-    killed = true;
-}
-
-
-/* Process data
- * It puts data in the buffer, and does process it only it the buffer is big
- * enough (unless dumping). Running through it character by character, it tries
- * and match the pattern (or first the bounds, if specified).
- * If if matches, the replacement string is computed and sent to output
- * buffer or replaced in input buffer, depending on 'allowMultiple'.
- * To avoid adding characters one by one to output buffer, it waits for
- * a match or the end before adding them in one <<. The loop continues
- * to the end of buffer, or the filter is inactivated (in which case
- * the rest of buffer is passed), or match() reaches end of buffer
- * (whether it succeeds or fails), whichever comes first. But the later
- * condition does not apply if we are dumping the buffer.
- * The expected buffer size is CTF_THRESHOLD2 most of the time, but if
- * match() reached the end of buffer after it processed more than
- * CTF_THRESHOLD1 characters, the next expected size will be CTF_THRESHOLD2 + 
- * window size (so that next time we try, the buffer is big enough for a full
- * attempt).
- */
-void CTextFilter::process(const string& data, bool feeding) {
-
-    // if filter has been deactivated (i.e by $STOP() or
-    // mismatched URL), forward the text unfiltered
-    if (bypassed) {
-        // buffer should be empty
-        if (!buffer.empty()) {
-            // buffer has not yet been emptied
-            nextFilter->dataFeed(buffer);
-            buffer.clear();
-        }
-        // directly send data to next filter
-        nextFilter->dataFeed(data);
-        return;
-    }
-    
-    // for special <start> and <end> filters
-    if (isForStart || isForEnd) {
-        if (isForStart && isStarted || isForEnd && feeding) {
-            nextFilter->dataFeed(data);
-        } else {
-            string str = CExpander::expand(replacePattern, *this);
-            unlock();
-            str += data;
-            if (!str.empty()) nextFilter->dataFeed(str);
-        }
-        isStarted = true;
-        return;
-    }
-    
-    // add data to buffer
-    buffer += data;
-    int size = buffer.size();
-
-    // do we have enough to start scanning?
-    if (size < needed && feeding) return;
-
-    // output buffer
-    ostringstream output;
-
-    const char* bufHead = buffer.c_str();
-    const char* bufTail = bufHead + size;
-    const char* index   = bufHead; // index where we currently look for a match
-    const char* done    = bufHead; // index up to which we sent to output
-    
-    // scan buffer
-    while ((index<bufTail || index==bufTail && !feeding) && !killed && !bypassed) {
-
-        // pass characters that cannot match
-        if (index<bufTail && !okayChars[(unsigned char)(*index)]) {
-            ++index;
-            continue;
-        }
-        
-        bool matched;
-        const char *end, *reached;
-        
-        // compute up to where we want to match
-        const char* stop = index + windowWidth;
-        if (stop > bufTail) stop = bufTail;
-
-        // clear memory
-        clearMemory();
-
-        if (boundsMatcher) {
-            // let's try and find the bounds first
-            matched = boundsMatcher->match(index, stop, end, reached);
-            unlock();
-            // could have had a different result with more data,
-            // we'll wait for it
-            if (reached == bufTail && feeding) break;
-            // bounds not matching
-            if (!matched) {
-                ++index;
-                continue;
-            }
-            stop = end;
-        }
-
-        // try matching
-        matched = textMatcher->match(index, stop, end, reached);
-        unlock();
-        if (reached == bufTail && feeding) break;
-
-        // pattern not matching (and condition for avoiding infinite loop)
-        if (!matched
-                || boundsMatcher   && end != stop
-                || multipleMatches && end <= bufHead+lastEnd) {
-            ++index;
-            continue;
-        }
-
-        // send preceding data to output
-        output << string(done, (size_t)(index-done));
-        done = index;
-
-        // compute replacement text
-        string str = CExpander::expand(replacePattern, *this);
+    if (boundsMatcher) {
+        // let's try and find the bounds first
+        bool matched = boundsMatcher->match(index, stop, endOfMatched, reached);
         unlock();
         
-        // log events
-        string replaced(index, (size_t)(end-index));
-        CLog::ref().logFilterEvent(pmEVT_FILTER_TYPE_TEXTMATCH,
-                                   owner.reqNumber, title, replaced);
-        CLog::ref().logFilterEvent(pmEVT_FILTER_TYPE_TEXTREPLACE,
-                                   owner.reqNumber, title, str);
-
-        // replace
-        if (multipleMatches) {
-            int pos = index - bufHead;
-            int len = end - index;
-            buffer.replace(pos, len, str);
-            size    = buffer.size();
-            bufHead = buffer.c_str();
-            bufTail = bufHead + size;
-            index   = bufHead + pos;
-            lastEnd = pos + str.size();
-        } else {
-            output << str;
-            if (end == index)
-                ++index;        // avoid infinite loop
-            else
-                done = index = end;
-        }
-    }
-    
-    // Set index back to size if it went over (end of file)
-    if (index > bufTail) index = bufTail;
-    
-    // If the filter has been killed at some point,
-    // send the processed text then dump next filters
-    if (killed) {
-        string str = output.str();
-        nextFilter->dataFeed(str);
-        nextFilter->dataDump();
-        buffer.clear();
-        return;
+        // could have had a different result with more data, we'll wait for it
+        if (reached == bufTail && !isComplete) return -1;
+        // bounds not matching
+        if (!matched) return 0;
+        // bounds matching: we'll limit matching to what was found
+        stop = endOfMatched;
     }
 
-    // If the filter has been deactivated in the loop, the rest of
-    // the buffer is considered unmatching
-    if (bypassed) index = bufTail;
+    // try matching
+    bool matched = textMatcher->match(index, stop, endOfMatched, reached);
+    unlock();
 
-    // decide how much data we'll then wait for
-    needed = CTF_THRESHOLD2;
-    if (bufTail-index > CTF_THRESHOLD1 && feeding) needed += windowWidth;
-
-    // output the last scanned characters
-    output << string(done, (size_t)(index-done));
-
-    // clear buffer
-    lastEnd -= (size_t)(index-bufHead);
-    buffer.erase(0, (size_t)(index-bufHead));
-
-    // send output to next filter
-    string str = output.str();
-    if (!str.empty()) nextFilter->dataFeed(str);
+    if (reached == bufTail && !isComplete) return -1;
+    if (!matched || boundsMatcher && endOfMatched != stop) return 0;
+    return 1;
 }

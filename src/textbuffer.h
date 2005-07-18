@@ -1,7 +1,7 @@
 //------------------------------------------------------------------
 //
 //this file is part of Proximodo
-//Copyright (C) 2004 Antony BOUCHER ( kuruden@users.sourceforge.net )
+//Copyright (C) 2004-2005 Antony BOUCHER ( kuruden@users.sourceforge.net )
 //
 //This program is free software; you can redistribute it and/or
 //modify it under the terms of the GNU General Public License
@@ -22,46 +22,51 @@
 //
 //------------------------------------------------------------------
 
+#ifndef __textbuffer__
+#define __textbuffer__
 
-#ifndef __filter__
-#define __filter__
-
-#include "memory.h"
+#include "receptor.h"
 #include <vector>
 #include <string>
 class CFilterOwner;
+class CTextFilter;
 
 using namespace std;
 
-/* class CFilter
- * This class only contains and implements what is common to
- * text and header filters. It allows CMatcher and CGenerator
- * to interact with the filter, be it text ou header filter.
- * It also gives access to the filter owner, where variables
- * and URL lie.
+/* This class encapsulates a string buffer and processes data
+ * with the text filters. Processed data is automatically forwarded
+ * to the provided CDataReceptor object.
  */
-class CFilter {
+class CTextBuffer : public CDataReceptor {
 
 public:
-    CFilter(CFilterOwner& owner);
+    // Constructor
+    CTextBuffer(CFilterOwner& owner, CDataReceptor* output);
+    
+    // Destructor
+    ~CTextBuffer();
 
+    // CDataReceptor methods
+    void dataReset();
+    void dataFeed(const string& data);
+    void dataDump();
+
+private:
+    // the object which contains header values and variables
     CFilterOwner& owner;
     
-    // Is the filter bypassed?
-    bool bypassed;
-    
-    // Filter title (mainly for log events)
-    string title;
+    // where to send processed data
+    CDataReceptor* output;
 
-    // CMemory for \0-9 and \#
-    CMemory memoryTable[10];
-    vector<CMemory> memoryStack;
-    void clearMemory();
+    // the filters
+    vector<CTextFilter*> TEXTfilters;
     
-    // Indicates that the filter mutex has been locked, and should
-    // be unlocked after matching/replacing
-    bool locked;
-    void unlock();  // to call after each match() or expand() in a filter
+    // the next filter to try (if a filter needs more data,
+    // we'll start with it on next data arrival)
+    vector<CTextFilter*>::iterator currentFilter;
+
+    // the actual buffer
+    string buffer;
 };
 
 #endif

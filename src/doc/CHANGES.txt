@@ -6,6 +6,8 @@ Engine
 - URL pseudo-headers now always work (detection was case-sensitive)
 - Improved processing (less function calls while scanning text)
 - Bug fix: pattern "(f*)\1bar" was not matching "foobar"
+- There is now only 1 buffer, shared by all filters (like in Proxomitron)
+- The "Allow Multiple Match" indicator now has the same meaning as in Proxomitron
 
 GUI
 - Wider "active configuration" field on Monitor screen

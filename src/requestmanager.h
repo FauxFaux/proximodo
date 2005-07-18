@@ -86,7 +86,6 @@ public:
 
 private:
     // Filter instances
-    vector<CTextFilter*> TEXTfilters;
     vector<CHeaderFilter*> INfilters;
     vector<CHeaderFilter*> OUTfilters;
     CGifFilter* GIFfilter;

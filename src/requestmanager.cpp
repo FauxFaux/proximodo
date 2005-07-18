@@ -32,7 +32,7 @@
 #include "matcher.h"
 #include "giffilter.h"
 #include "headerfilter.h"
-#include "textfilter.h"
+#include "textbuffer.h"
 #include "zlibbuffer.h"
 #include <wx/thread.h>
 #include <wx/filefn.h>
@@ -55,10 +55,10 @@ CRequestManager::CRequestManager() {
     urlFilter = NULL;
     compressor = NULL;
     decompressor = NULL;
-    chain = this;
     reqNumber = 0;
     cnxNumber = 0;
     GIFfilter = new CGifFilter(this);
+    chain = new CTextBuffer(*this, this);
 
     // Retrieve filter descriptions to embed
     CSettings& se = CSettings::ref();
@@ -66,11 +66,12 @@ CRequestManager::CRequestManager() {
     set<int> ids = se.configs[se.currentConfig];
     for (set<int>::iterator it = ids.begin(); it != ids.end(); it++) {
         map<int,CFilterDescriptor>::iterator itm = se.filters.find(*it);
-        if (itm != se.filters.end()) {
+        if (itm != se.filters.end()
+                && itm->second.filterType != CFilterDescriptor::TEXT) {
             filters.push_back(itm->second);
         }
     }
-    
+
     // Sort filters by decreasing priority
     sort(filters.begin(), filters.end());
 
@@ -84,22 +85,6 @@ CRequestManager::CRequestManager() {
                 else if (it->filterType == CFilterDescriptor::HEADIN)
                     INfilters.push_back(new CHeaderFilter(*it, *this));
 
-            } catch (parsing_exception) {
-                // Invalid filters are just ignored
-            }
-        }
-    }
-
-    // Text filters must be created and chained in reverse order;
-    for (vector<CFilterDescriptor>::reverse_iterator it = filters.rbegin();
-                it != filters.rend(); it++) {
-        if (it->errorMsg.empty()) {
-            try {
-                if (it->filterType == CFilterDescriptor::TEXT) {
-                    CTextFilter* filter = new CTextFilter(*this, *it, chain);
-                    TEXTfilters.push_back(filter);
-                    chain = filter;
-                }
             } catch (parsing_exception) {
                 // Invalid filters are just ignored
             }
@@ -129,10 +114,10 @@ CRequestManager::~CRequestManager() {
     if (compressor) delete compressor;
     if (decompressor) delete decompressor;
 
-    CUtil::deleteVector<CTextFilter>(TEXTfilters);
     CUtil::deleteVector<CHeaderFilter>(OUTfilters);
     CUtil::deleteVector<CHeaderFilter>(INfilters);
     delete GIFfilter;
+    delete chain;
 }
 
 
@@ -231,6 +216,7 @@ void CRequestManager::abort() {
 
     if (browser && browser->IsConnected()) {
         browser->Close();
+        while (browser) wxThread::Sleep(5);
     }
 }
 
@@ -240,14 +226,6 @@ void CRequestManager::abort() {
 void CRequestManager::destroy() {
 
     if (!browser) return; // (already done)
-
-    // Destroy sockets
-    browser->Close();
-    website->Close();
-    browser->Destroy();
-    website->Destroy();
-    browser = NULL;
-    website = NULL;
 
     // Update statistics
     --CLog::ref().numOpenSockets;
@@ -259,6 +237,14 @@ void CRequestManager::destroy() {
         --CLog::ref().numActiveRequests;
         CLog::ref().logProxyEvent(pmEVT_PROXY_TYPE_ENDREQ, addr);
     }
+
+    // Destroy sockets
+    browser->Close();
+    website->Close();
+    browser->Destroy();
+    website->Destroy();
+    browser = NULL;
+    website = NULL;
 }
 
 
@@ -271,7 +257,7 @@ bool CRequestManager::receiveOut() {
     browser->SetFlags(wxSOCKET_NOWAIT);
     browser->Read(buf, CRM_READSIZE);
     int count = browser->LastCount();
-    bool ret = count;
+    bool ret = (count != 0);
     while (count > 0 && browser) {
         recvOutBuf += string(buf, count);
         browser->SetFlags(wxSOCKET_NOWAIT);
@@ -311,7 +297,7 @@ bool CRequestManager::receiveIn() {
     website->SetFlags(wxSOCKET_NOWAIT);
     website->Read(buf, CRM_READSIZE);
     int count = website->LastCount();
-    bool ret = count;
+    bool ret = (count != 0);
     while (count > 0) {
         recvInBuf += string(buf, count);
         website->SetFlags(wxSOCKET_NOWAIT);
@@ -465,6 +451,7 @@ void CRequestManager::processOut() {
             bypassIn = false;
             bypassBody = false;
             bypassBodyForced = false;
+            killed = false;
             variables.clear();
             reqNumber = ++CLog::ref().numRequests;
             rdirMode = 0;
@@ -587,7 +574,6 @@ void CRequestManager::processOut() {
                         OUTfilters.begin(); itf != OUTfilters.end(); itf++) {
 
                     (*itf)->bypassed = false;
-                    (*itf)->killed = false;
                     string name = (*itf)->headerName;
 
                     if (!CUtil::noCaseBeginsWith("url", name)) {
@@ -622,7 +608,7 @@ void CRequestManager::processOut() {
                         }
                     }
                     
-                    if ((*itf)->killed) {
+                    if (killed) {
                         // There has been a \k in a header filter, so we
                         // redirect to an empty file and stop processing headers
                         if (url.getPath().find(".gif") != string::npos)
@@ -937,7 +923,6 @@ void CRequestManager::processIn() {
                         INfilters.begin(); itf != INfilters.end(); itf++) {
 
                     (*itf)->bypassed = false;
-                    (*itf)->killed = false;
                     string name = (*itf)->headerName;
 
                     // If header is absent, temporarily create one
@@ -953,7 +938,7 @@ void CRequestManager::processIn() {
                     // Remove null headers
                     cleanHeaders(inHeadersFiltered);
 
-                    if ((*itf)->killed) {
+                    if (killed) {
                         // There has been a \k in a header filter, so we
                         // redirect to an empty file and stop processing headers
                         if (url.getPath().find(".gif") != string::npos)

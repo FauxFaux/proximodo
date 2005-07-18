@@ -118,7 +118,7 @@ string CExpander::expand(const string& pattern, CFilter& filter) {
                 }
                 break;
             case 'k':
-                filter.killed = true;
+                filter.owner.killed = true;
                 break;
             // simple escaped codes
             case 't': output << '\t'; break;

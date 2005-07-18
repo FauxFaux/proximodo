@@ -151,67 +151,80 @@ void CTestFrame::OnClose(wxCloseEvent& event) {
 void CTestFrame::OnCommand(wxCommandEvent& event) {
     bool prof = false;
     switch (event.GetId()) {
+
         case ID_TESTTEXT: {
             CLog::ref().testString = testMemo->GetValue().c_str();
             break;
         }
+
         case ID_PROFILE: prof = true;
         case ID_TEST: {
+
+            // ensure there is no parsing error in this filter
             if (!current->errorMsg.empty()) {
                 wxMessageBox(current->errorMsg.c_str(), APP_NAME);
                 return;
             }
-            stringstream result;
-            int run = 0;
-            int numMatch = 0;
+
+            // create a fake text filter (would normally be a
+            // resident CRequestManager + CTextBuffer + CTextFilter).
+            // This instanciation is not profiled, because it the real
+            // world this only happens when Proximodo starts up and
+            // processes the first few pages.
             CFilterOwner owner;
+            CFilterOwner::setHeader(owner.inHeaders, "Host", "www.host.org");
             string url = "http://www.host.org/path/page.html?query=true#anchor";
             owner.url.parseUrl(url);
-            CFilterOwner::setHeader(owner.inHeaders, "Host", "www.host.org");
             owner.cnxNumber = 1;
+            CFilter filter(owner);
+            bool okayChars[256];
+            CMatcher matcher(current->matchPattern, filter);
+            matcher.mayMatch(okayChars);
+            CMatcher* boundsMatcher = NULL;
+            if (current->filterType == CFilterDescriptor::TEXT && !current->boundsPattern.empty()) {
+                boundsMatcher = new CMatcher(current->boundsPattern, filter);
+                bool tab[256];
+                boundsMatcher->mayMatch(tab);
+                for (int i=0; i<256; i++) okayChars[i] = okayChars[i] && tab[i];
+            }
+
+            // special processing for <start> and <end> filters
+            if (current->matchPattern == "<start>" || current->matchPattern == "<end>") {
+                string str = CExpander::expand(current->replacePattern, filter);
+                filter.unlock();
+                if (current->matchPattern == "<start>") {
+                    str += testMemo->GetValue().c_str();
+                } else {
+                    str = testMemo->GetValue().c_str() + str;
+                }
+                resultMemo->SetValue(str.c_str());
+                return;
+            }
+
+            stringstream result;
+            string text;
+            int size = 0;
+            int run = 0;
+            int numMatch = 0;
             wxStopWatch timer;
+            
             do {
-                CFilter filter(owner);
-                string text = testMemo->GetValue().c_str();
+                text = testMemo->GetValue().c_str();
+                size = text.size();
                 result.str("");
-                CMatcher matcher(current->matchPattern, filter);
+                owner.killed = false;
+                filter.bypassed = false;
 
                 // Test of a text filter.
-                // We don't take URL pattern into account, otherwise the process
-                // is the same as in CTextFilter (without incomplete buffer
-                // considerations)
+                // We don't take URL pattern into account.
                 if (current->filterType == CFilterDescriptor::TEXT) {
 
-                    // for special <start> and <end> filters
-                    if (current->matchPattern == "<start>" ||
-                        current->matchPattern == "<end>") {
-                        string str = CExpander::expand(current->replacePattern, filter);
-                        filter.unlock();
-                        if (current->matchPattern == "<start>") {
-                            str += text;
-                        } else {
-                            str = text + str;
-                        }
-                        resultMemo->SetValue(str.c_str());
-                        return;
-                    }
-
                     bool found = false;
-                    bool okayChars[256];
-                    matcher.mayMatch(okayChars);
-                    CMatcher boundsMatcher(current->boundsPattern, filter);
-                    if (!current->boundsPattern.empty()) {
-                        bool tab[256];
-                        boundsMatcher.mayMatch(tab);
-                        for (int i=0; i<256; i++) okayChars[i] = okayChars[i] && tab[i];
-                    }
-                    int lastEnd = -1;
-                    int size = text.size();
                     const char* bufHead = text.c_str();
                     const char* bufTail = bufHead + size;
                     const char* index   = bufHead;
                     const char* done    = bufHead;
-                    while (index<=bufTail && !filter.killed && !filter.bypassed) {
+                    while (index<=bufTail && !owner.killed && !filter.bypassed) {
                         if (index<bufTail && !okayChars[(unsigned char)(*index)]) {
                             ++index;
                             continue;
@@ -221,8 +234,8 @@ void CTestFrame::OnCommand(wxCommandEvent& event) {
                         const char *stop = index + current->windowWidth;
                         if (stop > bufTail) stop = bufTail;
                         filter.clearMemory();
-                        if (!current->boundsPattern.empty()) {
-                            matched = boundsMatcher.match(index, stop, end, reached);
+                        if (boundsMatcher) {
+                            matched = boundsMatcher->match(index, stop, end, reached);
                             filter.unlock();
                             if (!matched) {
                                 ++index;
@@ -232,36 +245,19 @@ void CTestFrame::OnCommand(wxCommandEvent& event) {
                         }
                         matched = matcher.match(index, stop, end, reached);
                         filter.unlock();
-                        if (!matched
-                                || !current->boundsPattern.empty() && end != stop
-                                || current->multipleMatches && end <= bufHead+lastEnd) {
+                        if (!matched || boundsMatcher && end != stop) {
                             ++index;
                             continue;
                         }
                         found = true;
                         if (run == 0) numMatch++;
                         result << string(done, (size_t)(index-done));
-                        done = index;
-                        string str = CExpander::expand(current->replacePattern, filter);
+                        result << CExpander::expand(current->replacePattern, filter);
                         filter.unlock();
-                        if (current->multipleMatches) {
-                            int pos = index - bufHead;
-                            int len = end - index;
-                            text.replace(pos, len, str);
-                            size    = text.size();
-                            bufHead = text.c_str();
-                            bufTail = bufHead + size;
-                            index   = bufHead + pos;
-                            lastEnd = pos + str.size();
-                        } else {
-                            result << str;
-                            if (end == index)
-                                ++index;
-                            else
-                                done = index = end;
-                        }
+                        done = end;
+                        if (end == index) ++index; else index = end;
                     }
-                    if (!filter.killed) result << string(done, (size_t)(bufTail-done));
+                    if (!owner.killed) result << string(done, (size_t)(bufTail-done));
                     if (!found) result.str(CSettings::ref().getMessage("TEST_NO_MATCH"));
 
                 // Test of a header filter. Much simpler...
@@ -283,6 +279,7 @@ void CTestFrame::OnCommand(wxCommandEvent& event) {
             // If profiling, repeat this loop 1000 times or 10 seconds,
             // whichever comes first.
             } while (prof && run++ < profileRuns && timer.Time() < 10000);
+            if (boundsMatcher) delete boundsMatcher;
             timer.Pause();
             if (prof) {
                 stringstream ss[4];

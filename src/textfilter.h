@@ -35,54 +35,53 @@ class CMatcher;
 using namespace std;
 
 /* class CTextFilter
- * this class buffers incoming data, and when there is enough of it
- * scans it byte after byte looking for a match. The scan only starts
- * if there are 32 bytes available, or, if it previously stopped
- * because of a match on less that window sixe bytes, window size + 32.
- * The filter does not need to call CMatcher::match() if the first byte
- * is not in the list of bytes that may start a match.
- * The scan continues until match() consumes the rest of the buffer being
- * smaller than window size.
- * CTextFilter are chained up, using virtual class CReceptor.
- * Unmatched data, or replaced data, is added to a ostringstream before
- * the filter gives it to the next CTextFilter.
  */
-class CTextFilter : public CDataReceptor, public CFilter {
+class CTextFilter : public CFilter {
 
 public:
+
     // Constructor
-    // It needs a reference to the filter descriptor
-    // I'll later replace CUrl& by reference to the request manager,
-    // to be able to interact with it (e.g read/write $SET variables)
-    CTextFilter(CFilterOwner& owner, const CFilterDescriptor& desc,
-                CDataReceptor* next);
+    CTextFilter(CFilterOwner& owner, const CFilterDescriptor& desc);
 
     // Destructor
     ~CTextFilter();
     
-    // reset filter for new dataflow
-    void dataReset();
-
-    // receive new data
-    void dataFeed(const string& data);
-
-    // process buffer to the end (end of data stream)
-    void dataDump();
-
-private:
-    // Next filter in the chain (can be a filter or the request manager)
-    CDataReceptor* nextFilter;
+    // Reset the filter (tests the URL for self-disabling)
+    void reset();
     
-    // input buffer
-    string buffer;
+    // Informs the filter that 'stop' in match() is the end of stream
+    void endReached();
+
+    // Run the filter on string [index,bufTail)
+    // Returns 1 (match), 0 (fail) or -1 (needs more data)
+    int match(const char* index, const char* bufTail);
     
-    // for multiple-matching, end of last inserted text in buffer
-    int lastEnd;
-    
+    // Generates the replacement text for the previous occurrence
+    string getReplaceText();
+
+    // If we match, end position of occurrence
+    const char* endOfMatched;
+
     // If we match, shall we replace the matched text in the buffer
     // instead of sending it to the output stream?
     bool multipleMatches;
-    
+
+    // Characters at which the filter is worth trying. The CTextBuffer
+    // will look at it before calling match()
+    bool okayChars[256];
+
+private:
+
+    // For special <start> and <end> match patterns
+    bool isSpecial;
+    bool isForStart;
+
+    // true if we are reached the end of the stream
+    bool isComplete;
+
+    // filter owner (the object which contains header values and variables)
+    CFilterOwner& owner;
+
     // Window size
     int windowWidth;
     
@@ -97,20 +96,6 @@ private:
     
     // Replace pattern
     string replacePattern;
-    
-    // For special <start> and <end> match patterns
-    bool isForStart;
-    bool isForEnd;
-    bool isStarted;
-    
-    // How much data do we wait for?
-    int needed;
-    
-    // Characters that may match
-    bool okayChars[256];
-    
-    // Main data processing function
-    void process(const string& data, bool feeding);
 };
 
 #endif

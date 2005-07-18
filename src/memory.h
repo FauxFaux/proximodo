@@ -118,7 +118,7 @@ CMemory::~CMemory() {
 /* created with a value? (then it must be expanded)
  */
 bool CMemory::isByValue() {
-    return content;
+    return (content != NULL);
 }
 
 

@@ -1,18 +1,18 @@
 [Project]
 FileName=Proximodo.dev
 Name=Proximodo
-UnitCount=64
-Type=0
+UnitCount=66
+Type=1
 Ver=1
 ObjFiles=
 Includes=
 Libs=
 PrivateResource=Proximodo_private.rc
-ResourceIncludes=C:\Progra~1\Dev-Cpp\wxWidgets-2.5.3-msw-static\include
+ResourceIncludes=C:\MinGW\include
 MakeIncludes=
 Compiler=
-CppCompiler=-D__WXMSW__ _@@_-DNO_GCC_PRAGMA_@@_-Wall_@@_-O2_@@_
-Linker=-lz.dll_@@_-lwx_msw_core-2.5_@@_-lwx_base-2.5_@@_-lwx_base_net-2.5_@@_-lwx_msw_adv-2.5_@@_-lrpcrt4 _@@_-loleaut32 _@@_-lole32 _@@_-luuid _@@_-lwinspool _@@_-lwinmm _@@_-lshell32 _@@_-lcomctl32_@@_-lcomdlg32 _@@_-lctl3d32 _@@_-ladvapi32 _@@_-lwsock32 _@@_-lgdi32_@@_
+CppCompiler=-mthreads_@@_-D__WXMSW__ _@@_-DNO_GCC_PRAGMA_@@_-Wall_@@_-O3_@@_
+Linker=-lz_@@_-lwx_msw_core-2.6_@@_-lwx_base-2.6_@@_-lwx_base_net-2.6_@@_-lwx_msw_adv-2.6_@@_-lrpcrt4 _@@_-loleaut32 _@@_-lole32 _@@_-luuid _@@_-lwinspool _@@_-lwinmm _@@_-lshell32 _@@_-lcomctl32_@@_-lcomdlg32 _@@_-lctl3d32 _@@_-ladvapi32 _@@_-lwsock32 _@@_-lgdi32_@@_
 IsCpp=1
 Icon=Proximodo.ico
 ExeOutput=..\bin
@@ -27,7 +27,7 @@ CustomMakefile=
 IncludeVersionInfo=1
 SupportXPThemes=1
 CompilerSet=0
-CompilerSettings=00000110000000000001ea
+CompilerSettings=00000010000000010000e1
 
 [Unit1]
 FileName=main.cpp
@@ -62,19 +62,19 @@ BuildCmd=
 [VersionInfo]
 Major=0
 Minor=2
-Release=1
+Release=3
 Build=0
 LanguageID=1033
 CharsetID=1252
 CompanyName=(c) Antony Boucher
-FileVersion=0.2.1
+FileVersion=0.2.3
 FileDescription=Proximodo Project
 InternalName=
 LegalCopyright=Distributed under GNU GPL
 LegalTrademarks=
 OriginalFilename=
 ProductName=Proximodo
-ProductVersion=0.2.1
+ProductVersion=0.2.3
 AutoIncBuildNr=0
 
 [Unit4]
@@ -678,11 +678,31 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit64]
-FileName=..\..\Progra~1\Dev-Cpp\wxWidgets-2.5.3-msw-static\include\wx\msw\wx.rc
+FileName=..\..\MinGW\include\wx\msw\wx.rc
 CompileCpp=1
 Folder=GUI
 Compile=1
 Link=0
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit65]
+FileName=textbuffer.h
+CompileCpp=1
+Folder=filter
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit66]
+FileName=textbuffer.cpp
+CompileCpp=1
+Folder=filter
+Compile=1
+Link=1
 Priority=1000
 OverrideBuildCmd=0
 BuildCmd=

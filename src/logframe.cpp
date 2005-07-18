@@ -157,12 +157,12 @@ CLogFrame::CLogFrame()
     } else {
         Move(savedX, savedY);
         SetSize(savedW, savedH);
-        logCheckbox->SetValue(savedOpt & 32);
-        httpCheckbox->SetValue(savedOpt & 16);
-        postCheckbox->SetValue(savedOpt & 8);
-        proxyCheckbox->SetValue(savedOpt & 4);
-        filterCheckbox->SetValue(savedOpt & 2);
-        browserCheckbox->SetValue(savedOpt & 1);
+        logCheckbox->SetValue((savedOpt & 32) != 0);
+        httpCheckbox->SetValue((savedOpt & 16) != 0);
+        postCheckbox->SetValue((savedOpt & 8) != 0);
+        proxyCheckbox->SetValue((savedOpt & 4) != 0);
+        filterCheckbox->SetValue((savedOpt & 2) != 0);
+        browserCheckbox->SetValue((savedOpt & 1) != 0);
     }
 
     CLog::ref().httpListeners.insert(this);

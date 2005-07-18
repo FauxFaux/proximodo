@@ -1042,7 +1042,7 @@ const char* CNode_Command::match(const char* start, const char* stop) {
     case CMD_KILL:
         // \k acts as a command (it changes variables and does not consume)
         // so it is processed by CNode_Command.
-        filter.killed = true;
+        owner.killed = true;
         break;
 
     case CMD_ADDLST:

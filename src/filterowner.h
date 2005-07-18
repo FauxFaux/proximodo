@@ -61,6 +61,8 @@ public:
     bool   bypassBody;                  // will tell if we can filter the body or not
     bool   bypassBodyForced;            // set to true if $FILTER changed bypassBody
 
+    bool   killed;                      // Has a pattern executed a \k ?
+
     map<string,string> variables;       // variables for $SET and $GET
 
     vector<SHeader> outHeaders;         // Outgoing headers
