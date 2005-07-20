@@ -95,7 +95,7 @@ proxy.o: proxy.h util.h settings.h descriptor.h events.h log.h platform.h
 proxy.o: managerthread.h requestmanager.h receptor.h filterowner.h url.h
 requestmanager.o: requestmanager.h receptor.h filterowner.h url.h util.h
 requestmanager.o: settings.h descriptor.h log.h events.h const.h matcher.h
-requestmanager.o: giffilter.h headerfilter.h filter.h memory.h textfilter.h
+requestmanager.o: giffilter.h headerfilter.h filter.h memory.h textbuffer.h
 requestmanager.o: zlibbuffer.h
 settings.o: settings.h descriptor.h util.h const.h matcher.h
 settingsscreen.o: settingsscreen.h windowcontent.h mainframe.h settings.h
@@ -105,8 +105,6 @@ settingsscreen.o: images/btn_file20.xpm images/btn_trash20.xpm
 testframe.o: testframe.h settings.h descriptor.h filterowner.h url.h
 testframe.o: matcher.h expander.h filter.h memory.h const.h log.h events.h
 testframe.o: controls.h images/icon32.xpm
-textbuffer.o: textbuffer.h descriptor.h events.h filter.h filterowner.h log.h
-textbuffer.o: matcher.h memory.h receptor.h settings.h textfilter.h url.h util.h
 textfilter.o: textfilter.h filter.h memory.h receptor.h url.h expander.h
 textfilter.o: const.h log.h events.h descriptor.h filterowner.h matcher.h
 trayicon.o: trayicon.h images/icon32.xpm settings.h descriptor.h log.h
@@ -117,3 +115,6 @@ welcomescreen.o: welcomescreen.h windowcontent.h proxy.h log.h events.h
 welcomescreen.o: settings.h descriptor.h controls.h
 windowcontent.o: windowcontent.h util.h settings.h descriptor.h
 zlibbuffer.o: zlibbuffer.h const.h
+textbuffer.o: textbuffer.h receptor.h textfilter.h filter.h memory.h
+textbuffer.o: matcher.h filterowner.h url.h util.h settings.h descriptor.h
+textbuffer.o: log.h events.h
