@@ -8,7 +8,7 @@
 #define VER_STRING	"0.2.4.0"
 #define VER_MAJOR	0
 #define VER_MINOR	2
-#define VER_RELEASE	3
+#define VER_RELEASE	4
 #define VER_BUILD	0
 #define COMPANY_NAME	"(c) Antony Boucher"
 #define FILE_VERSION	"0.2.4"
