@@ -433,21 +433,13 @@ string CSettings::getMessage(string name,
     if (messages.find(name) == messages.end()) return name;
     string mess = messages[name];
     unsigned int pos = 0;
-    while ((pos = mess.find("%1", pos)) != string::npos) {
-        mess.replace(pos, 2, param1);
-        pos += param1.size();
-    }
-    while ((pos = mess.find("%2", pos)) != string::npos) {
-        mess.replace(pos, 2, param2);
-        pos += param2.size();
-    }
-    while ((pos = mess.find("%3", pos)) != string::npos) {
-        mess.replace(pos, 2, param3);
-        pos += param3.size();
-    }
-    while ((pos = mess.find("%4", pos)) != string::npos) {
-        mess.replace(pos, 2, param4);
-        pos += param4.size();
+    while ((pos = mess.find('%', pos)) != string::npos && pos+1 < mess.size()) {
+        switch (mess[pos+1]) {
+            case '1': mess.replace(pos, 2, param1); pos += param1.size(); break;
+            case '2': mess.replace(pos, 2, param2); pos += param2.size(); break;
+            case '3': mess.replace(pos, 2, param3); pos += param3.size(); break;
+            case '4': mess.replace(pos, 2, param4); pos += param4.size(); break;
+        }
     }
     return mess;
 }
