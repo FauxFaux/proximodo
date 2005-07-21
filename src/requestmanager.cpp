@@ -598,7 +598,7 @@ void CRequestManager::processOut() {
                         (*itf)->filter(test);
                         CUtil::trim(test);
                         // if filter changed the url, update variables
-                        if (!test.empty() && test != url.getUrl()) {
+                        if (!killed && !test.empty() && test != url.getUrl()) {
                             // We won't change contactHost if it has been
                             // set to a proxy address by a $SETPROXY command
                             bool changeHost = (contactHost == url.getHostPort());
@@ -1289,6 +1289,7 @@ void CRequestManager::fakeResponse(string code, string filename, bool replace,
     CLog::ref().logHttpEvent(pmEVT_HTTP_TYPE_SENDIN, addr,
                              reqNumber, sendInBuf);
     sendInBuf += CRLF + content;
+    sendConnectionClose = true;
 }
 
 
