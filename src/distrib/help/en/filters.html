@@ -85,13 +85,17 @@ long).</p>
 
 <p class="option">Allow Multiple Matches</p>
 
-<p class="explain">If you want to allow your filter to match some
-of its own replacement strings, check this option: instead of
-sending replacement text to the filter output, Proximodo will
-re-insert it in the filter's own input buffer. This option should
-not be used unless really needed, because a filter that is not
-meant to recurse could output unexpected things. Hopefully,
-Proximodo has an infinite loop prevention mechanism.</p>
+<p class="explain">Usually, when a filter finds an occurrence,
+the replacement text is sent to the browser and the scanning
+continues after the occurrence. Neither the filter, nor other
+filters, will scan the replacement text. But if you check this
+option, the replacement text replaces the occurrence in the
+memory buffer, and the following filters will scan it. The filter
+will be able to match its own replacement text (except the first
+character, since the scanning process will have moved a byte to
+the right when the filter tries and matches again.) Use this option
+only when you really need it, for example when you have several
+filters that are supposed to match and modify the same tag.</p>
 
 <p class="option">Filter Type</p>
 
