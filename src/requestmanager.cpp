@@ -180,7 +180,7 @@ void CRequestManager::manage(wxSocketBase* browser) {
                 inStep = STEP_FINISH;
                 endFeeding();
                 processIn();
-            } 
+            }
             sendIn();
             if (outStep == STEP_FINISH) {
                 // The website aborted connection before sending the body
@@ -254,17 +254,18 @@ bool CRequestManager::receiveOut() {
 
     // Read socket by blocks
     char buf[CRM_READSIZE];
+    int ret = 0;
+    int count;
     browser->SetFlags(wxSOCKET_NOWAIT);
-    browser->Read(buf, CRM_READSIZE);
-    int count = browser->LastCount();
-    bool ret = (count != 0);
-    while (count > 0 && browser) {
-        recvOutBuf += string(buf, count);
-        browser->SetFlags(wxSOCKET_NOWAIT);
+    while (browser->IsConnected() && !browser->WaitForLost(0, 0)) {
         browser->Read(buf, CRM_READSIZE);
         count = browser->LastCount();
+        if (!count)
+            break;
+        ret += count;
+        recvOutBuf += string(buf, count);
     }
-    return ret;
+    return ret > 0;
 }
 
 
@@ -294,17 +295,18 @@ bool CRequestManager::receiveIn() {
 
     // Read socket by blocks
     char buf[CRM_READSIZE];
+    int ret = 0;
+    int count;
     website->SetFlags(wxSOCKET_NOWAIT);
-    website->Read(buf, CRM_READSIZE);
-    int count = website->LastCount();
-    bool ret = (count != 0);
-    while (count > 0) {
-        recvInBuf += string(buf, count);
-        website->SetFlags(wxSOCKET_NOWAIT);
+    while (website->IsConnected() && !website->WaitForLost(0, 0)) {
         website->Read(buf, CRM_READSIZE);
         count = website->LastCount();
+        if (!count)
+            break;
+        ret += count;
+        recvInBuf += string(buf, count);
     }
-    return ret;
+    return ret > 0;
 }
 
 
@@ -333,7 +335,7 @@ bool CRequestManager::sendIn() {
 void CRequestManager::dataFeed(const string& data) {
 
     if (dumped) return;
-    
+
     unsigned int size = data.size();
     if (size && sendContentCoding
         && (useChain || recvContentCoding != sendContentCoding)) {
@@ -360,7 +362,7 @@ void CRequestManager::dataDump() {
 
     if (dumped) return;
     dumped = true;
-    
+
     if (sendContentCoding
         && (useChain || recvContentCoding != sendContentCoding)) {
 
@@ -371,7 +373,7 @@ void CRequestManager::dataDump() {
         if (size)
             sendInBuf += CUtil::makeHex(size) + CRLF + tmp + CRLF;
     }
-    
+
     if (inStep != STEP_FINISH) {
         // Data has been dumped by a filter, not by this request manager.
         // So we must disconnect the website to stop downloading.
@@ -607,7 +609,7 @@ void CRequestManager::processOut() {
                             if (changeHost) contactHost = url.getHostPort();
                         }
                     }
-                    
+
                     if (killed) {
                         // There has been a \k in a header filter, so we
                         // redirect to an empty file and stop processing headers
@@ -703,7 +705,7 @@ void CRequestManager::processOut() {
             int copySize = recvOutBuf.size();
             if (copySize > outSize) copySize = outSize;
             if (!copySize && outSize) return;
-            
+
             string postData = recvOutBuf.substr(0, copySize);
             sendOutBuf += postData;
             logPostData += postData;
@@ -892,7 +894,7 @@ void CRequestManager::processIn() {
                         || CUtil::noCaseBeginsWith("HTTP/1.0", responseLine.ver)) {
                 recvConnectionClose = true;
             }
-            
+
             if (CUtil::noCaseContains("gzip",
                         getHeader(inHeaders, "Content-Encoding"))) {
                 recvContentCoding = 1;
@@ -907,7 +909,7 @@ void CRequestManager::processIn() {
                         getHeader(inHeaders, "Content-Encoding"))) {
                 bypassBody = true;
             }
-            
+
             if (CUtil::noCaseBeginsWith("206", responseCode)) {
                 bypassBody = true;
             }
@@ -1020,7 +1022,7 @@ void CRequestManager::processIn() {
             unsigned int pos, len;
             while (CUtil::endOfLine(recvInBuf, 0, pos, len) && pos == 0)
                 recvInBuf.erase(0,len);
-                
+
             if (!CUtil::endOfLine(recvInBuf, 0, pos, len)) return;
             inSize = CUtil::readHex(recvInBuf.substr(0,pos));
 
@@ -1141,7 +1143,7 @@ void CRequestManager::connectWebsite() {
     }
 
     // Test for redirection __to file__
-    // ($JUMP to file will behave like a transparent redirection, 
+    // ($JUMP to file will behave like a transparent redirection,
     // since the browser may not be on the same file system)
     if (CUtil::noCaseBeginsWith("http://file//", rdirToHost)) {
 
@@ -1183,7 +1185,7 @@ void CRequestManager::connectWebsite() {
         useSettingsProxy = CSettings::ref().useNextProxy;
         contactHost = url.getHostPort();
         setHeader(outHeaders, "Host", url.getHost());
-        
+
         rdirToHost.clear();
     }
 
@@ -1246,7 +1248,7 @@ void CRequestManager::connectWebsite() {
             inStep = STEP_TUNNELING;
         }
     }
-    
+
     // Prepare and send a simple request, if we did a transparent redirection
     if (outStep != STEP_DECODE && inStep == STEP_START) {
         if (contactHost == url.getHostPort())
@@ -1321,4 +1323,3 @@ void CRequestManager::endFeeding() {
     // Write last chunk (size 0)
     sendInBuf += "0" CRLF CRLF;
 }
-
