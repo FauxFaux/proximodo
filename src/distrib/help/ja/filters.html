@@ -155,21 +155,28 @@ long).</p>
 <p class="en option">Allow Multiple Matches</p>
 <p class="ja option">再帰マッチングを許可する</p>
 
-<p class="en explain">If you want to allow your filter to match some
-of its own replacement strings, check this option: instead of
-sending replacement text to the filter output, Proximodo will
-re-insert it in the filter's own input buffer. This option should
-not be used unless really needed, because a filter that is not
-meant to recurse could output unexpected things. Hopefully,
-Proximodo has an infinite loop prevention mechanism.</p>
-<p class="ja explain">置換テキストを再度フィルタリングさせたい場合にチェックを入れます。
-置換結果のテキストをブラウザに出力する代わりに、
-フィルタの入力バッファに再挿入します。</p>
-<p class="ja explain">再帰マッチングを考慮していないフィルタでこのオプションを使うと、
-予期しない結果を出力するかも知れないので、
-本当に必要な場合以外は使うべきではありません。</p>
-<p class="ja explain">Proximodoには、
-無限ループ防止メカニズムが備わっています。</p>
+<p class="en explain">Usually, when a filter finds an occurrence,
+the replacement text is sent to the browser and the scanning
+continues after the occurrence. Neither the filter, nor other
+filters, will scan the replacement text. But if you check this
+option, the replacement text replaces the occurrence in the
+memory buffer, and the following filters will scan it. The filter
+will be able to match its own replacement text (except the first
+character, since the scanning process will have moved a byte to
+the right when the filter tries and matches again.) Use this option
+only when you really need it, for example when you have several
+filters that are supposed to match and modify the same tag.</p>
+<p class="ja explain">通常、フィルタがマッチすると置換テキストはブラウザに送られ、
+一致した部分の後ろから検索が続けられます。一致したフィルタもそれ以外のフィルタも、
+置換テキストの中は検索しません。</p>
+<p class="ja explain">しかしこの項目にチェックを入れると、
+一致した部分は入力バッファの中で置換テキストに置き換えられ、
+引き続くフィルタの検索対象になります。置換テキストは、
+それを出力したフィルタ自身にもマッチします（繰り返しの検索処理は1バイト右から行われるため、
+最初の文字は除きます）。</p>
+<p class="ja explain">この機能は本当に必要な時、
+例えば同じタグにマッチして書き換えを行うようになっているフィルタが他にある場合などに限り、
+使用して下さい。</p>
 
 <p class="en option">Filter Type</p>
 <p class="ja option">フィルタ種別</p>
