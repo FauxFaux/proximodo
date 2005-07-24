@@ -39,6 +39,23 @@
 
 using namespace std;
 
+/* Searches a comma outside parentheses, within a command
+ */
+unsigned int findParamEnd(const string& str, char c) {
+    int level = 0;
+    unsigned int size = str.size();
+    for (unsigned int pos = 0; pos < size; pos++) {
+        switch (str[pos]) {
+            case '\\': pos++;   break;
+            case  '(': level++; break;
+            case  ')': level--; break;
+            case  ',': if (level<1) return pos; break;
+        }
+    }
+    return string::npos;
+}
+
+
 /* Constructor
  * It stores the requested url and transforms the pattern into
  * a search tree. An exception is returned if the pattern is
@@ -847,14 +864,14 @@ CNode* CMatcher::code(const string& pattern, int& pos, int stop) {
                        command == "INEST") {
 
                 // Command to match nested tags (with optional content)
-                unsigned int colon = CUtil::findUnescaped(content, ',');
+                unsigned int colon = findParamEnd(content, ',');
                 if (colon == string::npos)
                     throw parsing_exception("MISSING_COMMA", 0);
                 bool hasMiddle = false;
                 string text1 = content.substr(0, colon);
                 string text2;
                 string text3 = content.substr(colon + 1);
-                colon = CUtil::findUnescaped(text3, ',');
+                colon = findParamEnd(text3, ',');
                 if (colon != string::npos) {
                     text2 = text3.substr(0, colon);
                     text3 = text3.substr(colon + 1);
@@ -888,13 +905,13 @@ CNode* CMatcher::code(const string& pattern, int& pos, int stop) {
                     throw parsing_exception("MISSING_COMMA", 0);
                 string denyName = content.substr(0, colon);
                 content.erase(0, colon + 1);
-                colon = CUtil::findUnescaped(content, ',');
+                colon = findParamEnd(content, ',');
                 if (colon == string::npos)
                     throw parsing_exception("MISSING_COMMA", 0);
                 string question = content.substr(0, colon);
                 string item = content.substr(colon + 1);
                 string pattern = "\\h\\p\\q\\a";
-                colon = CUtil::findUnescaped(item, ',');
+                colon = findParamEnd(item, ',');
                 if (colon != string::npos) {
                     pattern = item.substr(colon + 1);
                     item = item.substr(0, colon);
