@@ -832,6 +832,15 @@ void CRequestManager::processIn() {
                 if (pos == 0) {
                     recvInBuf.erase(0, len);
                     inStep = STEP_DECODE;
+                    // In case of 'HTTP 100 Continue,' expect another set of
+                    // response headers before the data
+                    if (responseLine.code == "100") {
+                        inStep = STEP_FIRSTLINE;
+                        responseLine.ver.clear();
+                        responseLine.code.clear();
+                        responseLine.msg.clear();
+                        responseCode.clear();
+                    }
                     break;
                 }
 
