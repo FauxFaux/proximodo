@@ -4,34 +4,41 @@ WXCFG = wx-config
 WXINC_REL = $(shell $(WXCFG) --cxxflags)
 WXLIB_REL = $(shell $(WXCFG) --libs)
 CFLAGS_REL = -Wall -g -O2
+LDFLAGS_REL =
 
 WXINC_DBG = $(shell $(WXCFG) --cxxflags --debug)
 WXLIB_DBG = $(shell $(WXCFG) --libs --debug)
 CFLAGS_DBG = -Wall -g -O0
+LDFLAGS_DBG =
+
+# Uncomment these for profiling with gprof
+#CFLAGS_DBG += -pg
+#LDFLAGS_DBG += -pg
 
 # Use *_REL for release, *_DBG for debug builds
 WXINC = $(WXINC_REL)
 WXLIB = $(WXLIB_REL)
 CFLAGS = $(CFLAGS_REL)
+LDFLAGS = $(LDFLAGS_REL)
 
 SRC = configscreen.cpp controls.cpp descriptor.cpp editscreen.cpp events.cpp \
 			expander.cpp filter.cpp filterowner.cpp giffilter.cpp headerfilter.cpp \
 			log.cpp logframe.cpp main.cpp mainframe.cpp managerthread.cpp \
 			matcher.cpp nodes.cpp platform.cpp proxy.cpp requestmanager.cpp \
-			settings.cpp settingsscreen.cpp testframe.cpp textfilter.cpp \
-			trayicon.cpp url.cpp util.cpp welcomescreen.cpp windowcontent.cpp \
-			zlibbuffer.cpp textbuffer.cpp
+			settings.cpp settingsscreen.cpp testframe.cpp textbuffer.cpp \
+			textfilter.cpp trayicon.cpp url.cpp util.cpp welcomescreen.cpp \
+			windowcontent.cpp zlibbuffer.cpp
 OBJ = $(SRC:.cpp=.o)
 HDR = configscreen.h const.h controls.h descriptor.h editscreen.h events.h \
 			expander.h filter.h filterowner.h giffilter.h headerfilter.h logframe.h \
 			log.h logviewer.h mainframe.h managerthread.h matcher.h memory.h node.h \
 			nodes.h platform.h Proximodo_private.h proxy.h receptor.h \
-			requestmanager.h settings.h settingsscreen.h testframe.h textfilter.h \
-			trayicon.h url.h util.h welcomescreen.h windowcontent.h zlibbuffer.h \
-			textbuffer.h
+			requestmanager.h settings.h settingsscreen.h testframe.h textbuffer.h \
+			textfilter.h trayicon.h url.h util.h welcomescreen.h windowcontent.h \
+			zlibbuffer.h
 PROXIMODO = distrib/proximodo
 
-.phony: default all
+.phony: default all depend clean
 
 default: all
 
@@ -44,7 +51,7 @@ clean:
 	rm -f $(OBJ) $(PROXIMODO) tags
 
 $(PROXIMODO): $(OBJ)
-	$(CC) -o $@ $(OBJ) $(WXLIB)
+	$(CC) -o $@ $(LDFLAGS) $(OBJ) $(WXLIB)
 
 .cpp.o:
 	$(CC) $(CFLAGS) $(WXINC) -c -o $@ $<
@@ -105,6 +112,9 @@ settingsscreen.o: images/btn_file20.xpm images/btn_trash20.xpm
 testframe.o: testframe.h settings.h descriptor.h filterowner.h url.h
 testframe.o: matcher.h expander.h filter.h memory.h const.h log.h events.h
 testframe.o: controls.h images/icon32.xpm
+textbuffer.o: textbuffer.h receptor.h textfilter.h filter.h memory.h
+textbuffer.o: matcher.h filterowner.h url.h util.h settings.h descriptor.h
+textbuffer.o: log.h events.h
 textfilter.o: textfilter.h filter.h memory.h receptor.h url.h expander.h
 textfilter.o: const.h log.h events.h descriptor.h filterowner.h matcher.h
 trayicon.o: trayicon.h images/icon32.xpm settings.h descriptor.h log.h
@@ -115,6 +125,3 @@ welcomescreen.o: welcomescreen.h windowcontent.h proxy.h log.h events.h
 welcomescreen.o: settings.h descriptor.h controls.h
 windowcontent.o: windowcontent.h util.h settings.h descriptor.h
 zlibbuffer.o: zlibbuffer.h const.h
-textbuffer.o: textbuffer.h receptor.h textfilter.h filter.h memory.h
-textbuffer.o: matcher.h filterowner.h url.h util.h settings.h descriptor.h
-textbuffer.o: log.h events.h
