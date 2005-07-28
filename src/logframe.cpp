@@ -38,17 +38,17 @@
 #include <sstream>
 
 #define  LOG_COLOR_BACKGROUND  255, 255, 255
-#define  LOG_COLOR_DEFAULT     150, 150, 150
-#define  LOG_COLOR_FILTER      150, 150, 150
+#define  LOG_COLOR_DEFAULT     140, 140, 140
+#define  LOG_COLOR_FILTER      140, 140, 140
 #define  LOG_COLOR_REQUEST     240, 100,   0
-#define  LOG_COLOR_RESPONSE      0, 200,   0
+#define  LOG_COLOR_RESPONSE      0, 150,   0
 #define  LOG_COLOR_PROXY         0,   0,   0
 #define  LOG_COLOR_R           255,   0,   0
 #define  LOG_COLOR_W             0,   0,   0
 #define  LOG_COLOR_B             0,   0, 255
-#define  LOG_COLOR_G            50, 150,   0
-#define  LOG_COLOR_C             0, 200, 200
-#define  LOG_COLOR_w           150, 150, 150
+#define  LOG_COLOR_G             0, 150,   0
+#define  LOG_COLOR_C             0, 150, 150
+#define  LOG_COLOR_w           140, 140, 140
 #define  LOG_COLOR_Y           230, 200,   0
 #define  LOG_COLOR_V           150,   0, 150
 
@@ -98,7 +98,7 @@ CLogFrame::CLogFrame()
     logText->SetBackgroundColour(wxColour(LOG_COLOR_BACKGROUND));
     logText->SetDefaultStyle(wxTextAttr(wxColour(LOG_COLOR_DEFAULT),
                                         wxColour(LOG_COLOR_BACKGROUND),
-                                        wxFont(10, wxROMAN, wxNORMAL, wxBOLD)));
+                                        wxFont(10, wxMODERN, wxNORMAL, wxBOLD)));
     vertSizer->Add(logText,1,wxGROW | wxALL,5);
 
     wxBoxSizer* lowerSizer = new wxBoxSizer(wxHORIZONTAL);
