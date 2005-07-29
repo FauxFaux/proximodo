@@ -1,3 +1,11 @@
+Version 0.2.x
+-------------
+
+Proxy
+- Support for URL commands
+- HTML debug info (to allow filter designers to troubleshoot their filters)
+
+
 --------------------------------------------------------------------------------
 Version 0.2.4 (July 20th, 2005)
 -------------

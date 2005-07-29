@@ -1000,26 +1000,67 @@ void CRequestManager::processIn() {
             }
 
             // Now we can put everything in the filtered buffer
-            // (1.1 is necessary to have the browser understand chunked transfer)
-            sendInBuf = "HTTP/1.1 " +
-                        responseLine.code + " " +
-                        responseLine.msg  + CRLF ;
-            string name;
-            for (vector<SHeader>::iterator it = inHeadersFiltered.begin();
-                    it != inHeadersFiltered.end(); it++) {
-                sendInBuf += it->name + ": " + it->value + CRLF;
+            // (1.1 is necessary to have the browser understand chunked
+            // transfer)
+            if (url.getDebug()) {
+                sendInBuf += "HTTP/1.1 200 OK" CRLF
+                    "Content-Type: text/html" CRLF
+                    "Connection: close" CRLF
+                    "Transfer-Encoding: chunked" CRLF CRLF;
+                string buf =
+                    "<?xml version=\"1.0\" encoding=\"iso-8859-1\"?>\n"
+                    "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\""
+                    " \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n"
+                    "<html>\n<head>\n<title>Source of ";
+                CUtil::htmlEscape(buf, url.getProtocol() + "://" +
+                                       url.getFromHost());
+                buf += "</title>\n"
+                    "<link rel=\"stylesheet\" media=\"all\" "
+                    "href=\"http://local.ptron/ViewSource.css\" />\n"
+                    "</head>\n\n<body>\n<div id=\"headers\">\n";
+                buf += "<div class=\"res\">";
+                CUtil::htmlEscape(buf, responseLine.ver);
+                buf += " ";
+                CUtil::htmlEscape(buf, responseLine.code);
+                buf += " ";
+                CUtil::htmlEscape(buf, responseLine.msg);
+                buf += "</div>\n";
+                string name;
+                for (vector<SHeader>::iterator it = inHeadersFiltered.begin();
+                        it != inHeadersFiltered.end(); it++) {
+                    buf += "<div class=\"hdr\">";
+                    CUtil::htmlEscape(buf, it->name);
+                    buf += ": <span class=\"val\">";
+                    CUtil::htmlEscape(buf, it->value);
+                    buf += "</span></div>\n";
+                }
+                buf += "</div><div id=\"body\">\n";
+                useChain = true;
+                useGifFilter = false;
+                chain->dataReset();
+                dataReset();
+                dataFeed(buf);
+            } else {
+                sendInBuf = "HTTP/1.1 " +
+                            responseLine.code + " " +
+                            responseLine.msg  + CRLF ;
+                string name;
+                for (vector<SHeader>::iterator it = inHeadersFiltered.begin();
+                        it != inHeadersFiltered.end(); it++) {
+                    sendInBuf += it->name + ": " + it->value + CRLF;
+                }
+                CLog::ref().logHttpEvent(pmEVT_HTTP_TYPE_SENDIN, addr,
+                                         reqNumber, sendInBuf);
+                sendInBuf += CRLF;
+
+                // Tell text filters to see whether they should work on it
+                useChain = (!bypassBody && CSettings::ref().filterText);
+                if (useChain) chain->dataReset(); else dataReset();
+                if (useGifFilter) GIFfilter->dataReset();
+
+                // File type will be reevaluated using first block of data
+                fileType.clear();
             }
-            CLog::ref().logHttpEvent(pmEVT_HTTP_TYPE_SENDIN, addr,
-                                     reqNumber, sendInBuf);
-            sendInBuf += CRLF;
-
-            // Tell text filters to see whether they should work on it
-            useChain = (!bypassBody && CSettings::ref().filterText);
-            if (useChain) chain->dataReset(); else dataReset();
-            if (useGifFilter) GIFfilter->dataReset();
-
-            // File type will be reevaluated using first block of data
-            fileType.clear();
 
             // Decide what to do next
             inStep = (responseLine.code == "204"  ? STEP_FINISH :
@@ -1332,6 +1373,8 @@ void CRequestManager::endFeeding() {
         }
     }
     if (useChain) {
+        if (url.getDebug())
+            dataFeed("\n</div>\n</body>\n</html>\n");
         chain->dataDump();
     } else if (useGifFilter) {
         GIFfilter->dataDump();

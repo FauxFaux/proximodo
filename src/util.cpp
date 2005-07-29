@@ -1,7 +1,8 @@
 //------------------------------------------------------------------
 //
 //this file is part of Proximodo
-//Copyright (C) 2004 Antony BOUCHER ( kuruden@users.sourceforge.net )
+//Copyright (C) 2004-2005 Antony BOUCHER ( kuruden@users.sourceforge.net )
+//                        Paul Rupe ( prupe@users.sourceforge.net )
 //
 //This program is free software; you can redistribute it and/or
 //modify it under the terms of the GNU General Public License
@@ -27,6 +28,7 @@
 #include "platform.h"
 #include "const.h"
 #include "settings.h"
+#include <ctype.h>
 #include <wx/file.h>
 #include <wx/filename.h>
 #include <wx/arrstr.h>
@@ -75,11 +77,78 @@ unsigned int CUtil::readHex(const string& s) {
     return n;
 }
 
-// Make a hex representation of a number;
+// Make a hex representation of a number
 string CUtil::makeHex(unsigned int n) {
     stringstream ss;
     ss << uppercase << hex << n;
     return ss.str();
+}
+
+// Append b to a, escaping HTML chars (< > &) as needed; also do some crude
+// syntax highlighting
+void CUtil::htmlEscape(string& a, const string& b) {
+    enum { outside, tag, attr, val } state = outside;
+    bool quote = false;
+    for (unsigned i = 0; i < b.length(); i++) {
+        switch (b[i]) {
+            case '<':
+                if (state == outside && i < b.length() - 1 &&
+                    !isspace(b[i + 1])) {
+                    state = tag;
+                    quote = false;
+                    a += "<span class=\"tag\">";
+                }
+                a += "&lt;";
+                break;
+
+            case '>':
+                if (state != outside) {
+                    state = outside;
+                    quote = false;
+                    a += "</span>";
+                }
+                a += "&gt;";
+                break;
+
+            case '&':
+                a += "&amp;";
+                break;
+
+            case ' ':
+                if (!quote && state != outside) {
+                    state = attr;
+                    a += "</span><span class=\"attr\">";
+                }
+                a += b[i];
+                break;
+
+            case '=':
+                a += b[i];
+                if (state == attr) {
+                    state = val;
+                    quote = false;
+                    a += "</span><span class=\"aval\">";
+                }
+                break;
+
+            case '\n':
+                a += "<br />\n";
+                break;
+
+            case '\r':
+                break;
+
+            case '\"':
+            case '\'':
+                quote = !quote;
+                // fall through
+            default:
+                a += b[i];
+                break;
+        }
+    }
+    if (state != outside)
+        a += "</span>";
 }
 
 // Put string in uppercase
@@ -537,4 +606,4 @@ bool CUtil::endOfLine(const string& str, unsigned int start,
         }
     }
 }
-
+// vi:ts=4:sw=4:et

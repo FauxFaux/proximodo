@@ -2,6 +2,7 @@
 //
 //this file is part of Proximodo
 //Copyright (C) 2004-2005 Antony BOUCHER ( kuruden@users.sourceforge.net )
+//                        Paul Rupe ( prupe@users.sourceforge.net )
 //
 //This program is free software; you can redistribute it and/or
 //modify it under the terms of the GNU General Public License
@@ -101,6 +102,18 @@ void CTextBuffer::dataDump() {
 }
 
 
+void CTextBuffer::escapeOutput(stringstream& out, const char *data,
+                               size_t len) {
+    if (owner.url.getDebug()) {
+        string buf;
+        CUtil::htmlEscape(buf, string(data, len));
+        out << buf;
+    } else {
+        out << string(data, len);
+    }
+}
+
+
 void CTextBuffer::dataFeed(const string& data) {
 
     if (owner.killed) return;
@@ -129,7 +142,7 @@ void CTextBuffer::dataFeed(const string& data) {
                 if (owner.killed) {
 
                     // filter would like more data, but killed the stream anyway
-                    out << string(done, (size_t)(index - done));
+                    escapeOutput(out, done, (size_t)(index - done));
                     buffer.clear();
                     output->dataFeed(out.str());
                     output->dataDump();
@@ -138,7 +151,7 @@ void CTextBuffer::dataFeed(const string& data) {
                 } else {
 
                     // filter does not have enough data to provide an accurate result
-                    out << string(done, (size_t)(index - done));
+                    escapeOutput(out, done, (size_t)(index - done));
                     buffer.erase(0, (size_t)(index - bufStart));
                     output->dataFeed(out.str());
                     return;         // when more data arrives, same filter, same position
@@ -157,10 +170,23 @@ void CTextBuffer::dataFeed(const string& data) {
                                            owner.reqNumber,
                                            (*currentFilter)->title, replaceText);
 
+                escapeOutput(out, done, (size_t)(index - done));
+                if (owner.url.getDebug()) {
+                    string buf = "<div class=\"match\">\n"
+                        "<div class=\"filter\">Match: ";
+                    CUtil::htmlEscape(buf, (*currentFilter)->title);
+                    buf += "</div>\n<div class=\"in\">";
+                    CUtil::htmlEscape(buf, occurrence);
+                    buf += "</div>\n<div class=\"repl\">";
+                    CUtil::htmlEscape(buf, replaceText);
+                    buf += "</div>\n</div>\n";
+                    out << buf;
+                }
                 if (owner.killed) {
 
                     // filter matched and killed the stream
-                    out << string(done, (size_t)(index - done)) << replaceText;
+                    if (!owner.url.getDebug())
+                        out << replaceText;
                     buffer.clear();
                     output->dataFeed(out.str());
                     output->dataDump();
@@ -169,7 +195,6 @@ void CTextBuffer::dataFeed(const string& data) {
                 } else if ((*currentFilter)->multipleMatches) {
 
                     // filter matched, insert replace text in buffer
-                    out << string(done, (size_t)(index - done));
                     buffer.replace(0, (size_t)((*currentFilter)->endOfMatched - bufStart),
                                    replaceText);
                     bufStart = buffer.data();
@@ -181,7 +206,8 @@ void CTextBuffer::dataFeed(const string& data) {
                 } else {
 
                     // filter matched, output replace text.
-                    out << string(done, (size_t)(index - done)) << replaceText;
+                    if (!owner.url.getDebug())
+                        out << replaceText;
                     done = (*currentFilter)->endOfMatched;
                     // If the occurrence is length 0, we'll try next filters
                     // then move 1 byte, to avoid infinite loop on the filter.
@@ -193,7 +219,7 @@ void CTextBuffer::dataFeed(const string& data) {
             } else if (owner.killed) {
 
                 // filter did not match but killed the stream
-                out << string(done, (size_t)(index - done));
+                escapeOutput(out, done, (size_t)(index - done));
                 buffer.clear();
                 output->dataFeed(out.str());
                 output->dataDump();
@@ -204,7 +230,8 @@ void CTextBuffer::dataFeed(const string& data) {
     
     // we processed all the available data.
     // Add unmatching data left and send everything.
-    out << string(done, (size_t)(bufEnd - done));
+    escapeOutput(out, done, (size_t)(bufEnd - done));
     buffer.clear();
     output->dataFeed(out.str());
 }
+// vi:ts=4:sw=4:et

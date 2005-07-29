@@ -2,6 +2,7 @@
 //
 //this file is part of Proximodo
 //Copyright (C) 2004-2005 Antony BOUCHER ( kuruden@users.sourceforge.net )
+//                        Paul Rupe ( prupe@users.sourceforge.net )
 //
 //This program is free software; you can redistribute it and/or
 //modify it under the terms of the GNU General Public License
@@ -65,8 +66,12 @@ private:
     // we'll start with it on next data arrival)
     vector<CTextFilter*>::iterator currentFilter;
 
+    // pass string to output, escaping HTML chars as needed
+    void escapeOutput(stringstream& out, const char *data, size_t len);
+    
     // the actual buffer
     string buffer;
 };
 
 #endif
+// vi:ts=4:sw=4:et

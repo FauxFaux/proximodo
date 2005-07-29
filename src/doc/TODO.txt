@@ -39,7 +39,6 @@ Engine:
   (ex: filter name, last matched $LST pattern, time in seconds, time of last config change)
 - Estimate and improve performance and stability
 - Global variables accessed with $GSET and $GGET (beware multithreaded access!)
-- URL commands
 - \xhh \b \B \S \d \D macros (see Perl regexp)
 - New commands:
 	$INC(var[,num]) $DEC(var)           change variable content and match without consuming/inserting
@@ -54,7 +53,6 @@ Proxy:
 - Next proxy login/password settings
 - Support for 206 response code
 - Fix gzip/deflate output, that seems to be corrupted after a few KB (use another zlib version?)
-- HTML debug info or equivalent (to allow filter designers to troubleshoot their filters)
 - maximum HTTP 1.1 compliance
 - HTTP 1.0 option
 - Filter html pages going through SSL tunneling

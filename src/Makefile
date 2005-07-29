@@ -119,7 +119,7 @@ textfilter.o: textfilter.h filter.h memory.h receptor.h url.h expander.h
 textfilter.o: const.h log.h events.h descriptor.h filterowner.h matcher.h
 trayicon.o: trayicon.h images/icon32.xpm settings.h descriptor.h log.h
 trayicon.o: events.h proxy.h mainframe.h util.h const.h logframe.h
-url.o: url.h
+url.o: settings.h descriptor.h url.h
 util.o: util.h platform.h const.h settings.h descriptor.h
 welcomescreen.o: welcomescreen.h windowcontent.h proxy.h log.h events.h
 welcomescreen.o: settings.h descriptor.h controls.h

@@ -1,7 +1,8 @@
 //------------------------------------------------------------------
 //
 //this file is part of Proximodo
-//Copyright (C) 2004 Antony BOUCHER ( kuruden@users.sourceforge.net )
+//Copyright (C) 2004-2005 Antony BOUCHER ( kuruden@users.sourceforge.net )
+//                        Paul Rupe ( prupe@users.sourceforge.net )
 //
 //This program is free software; you can redistribute it and/or
 //modify it under the terms of the GNU General Public License
@@ -65,8 +66,11 @@ public:
     // Decode hexadecimal number at string start
     static unsigned int readHex(const string& s);
 
-    // Make a hex representation of a number;
+    // Make a hex representation of a number
     static string makeHex(unsigned int n);
+
+    // Append b to a, escaping HTML chars (< > &) as needed
+    static void htmlEscape(string& a, const string& b);
 
     // Deletes the dynamic content of a vector
     template <typename V>
@@ -178,4 +182,4 @@ private:
 };
 
 #endif
-
+// vi:ts=4:sw=4:et
