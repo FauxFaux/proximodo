@@ -1,7 +1,8 @@
 //------------------------------------------------------------------
 //
 //this file is part of Proximodo
-//Copyright (C) 2004 Antony BOUCHER ( kuruden@users.sourceforge.net )
+//Copyright (C) 2004-2005 Antony BOUCHER ( kuruden@users.sourceforge.net )
+//                        Paul Rupe      ( prupe@users.sourceforge.net )
 //
 //This program is free software; you can redistribute it and/or
 //modify it under the terms of the GNU General Public License
@@ -68,6 +69,8 @@ CSettings::CSettings() {
 
     // Default values
     proxyPort     = "8080";
+    enableUrlCmd  = false;
+    urlCmdPrefix  = "";
     useNextProxy  = false;
     nextProxy     = "localhost:8088";
     allowIPRange  = false;
@@ -240,6 +243,8 @@ void CSettings::saveSettings() {
     addLine (f, "StartBrowser = " + string(startBrowser ? "yes" : "no"));
     addLine (f, "BrowserPath = " + browserPath);
     addLine (f, "Port = " + proxyPort);        // For file readability only
+    addLine (f, "EnableUrlCommands = " + string(enableUrlCmd ? "yes" : "no"));
+    addLine (f, "UrlCommandPrefix = " + urlCmdPrefix);
     addLine (f, "UseProxy = " + string(useNextProxy ? "yes" : "no"));
     addLine (f, "CurrentProxy = " + nextProxy);
     addLine (f, "AllowIPRange = " + string(allowIPRange ? "yes" : "no"));
@@ -309,6 +314,10 @@ void CSettings::loadSettings() {
         
         if      (label == "PORT")
             proxyPort = value;
+        else if (label == "ENABLEURLCOMMANDS")
+            enableUrlCmd = (toupper(value[0])=='Y');
+        else if (label == "URLCOMMANDPREFIX")
+            urlCmdPrefix = value;
         else if (label == "SHOWONSTARTUP")
             showOnStartup = (toupper(value[0])=='Y');
         else if (label == "STARTBROWSER")
@@ -602,4 +611,4 @@ void CSettings::loadFilters() {
 
     cleanConfigs();
 }
-
+// vi:ts=4:sw=4:et

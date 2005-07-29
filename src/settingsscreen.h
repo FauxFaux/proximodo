@@ -1,7 +1,8 @@
 //------------------------------------------------------------------
 //
 //this file is part of Proximodo
-//Copyright (C) 2004 Antony BOUCHER ( kuruden@users.sourceforge.net )
+//Copyright (C) 2004-2005 Antony BOUCHER ( kuruden@users.sourceforge.net )
+//                        Paul Rupe      ( prupe@users.sourceforge.net )
 //
 //This program is free software; you can redistribute it and/or
 //modify it under the terms of the GNU General Public License
@@ -54,6 +55,8 @@ private:
     // Managed variables
     string         language;
     string         proxyPort;
+    bool           enableUrlCmd;
+    string         urlCmdPrefix;
     bool           useNextProxy;
     string         nextProxy;
     set<string>    proxies;
@@ -74,6 +77,7 @@ private:
     pmCheckBox *startBrowserCheckbox;
     pmCheckBox *allowIPCheckbox;
     pmCheckBox *useProxyCheckbox;
+    pmCheckBox *urlCmdCheckbox;
     pmComboBox *languageDropDown;
     pmComboBox *nextProxyDropdown;
     pmComboBox *listDropDown;
@@ -83,6 +87,7 @@ private:
     pmTextCtrl *maxRangeText;
     pmTextCtrl *minRangeText;
     pmTextCtrl *portText;
+    pmTextCtrl *urlCmdPrefixText;
 
     // Event handling function
     void OnCommand(wxCommandEvent& event);
@@ -93,6 +98,7 @@ private:
         ID_SHOWGUICHECKBOX,
         ID_STARTBROWSERCHECKBOX,
         ID_USEPROXYCHECKBOX,
+        ID_URLCMDCHECKBOX,
         ID_APPLYBUTTON,
         ID_REVERTBUTTON,
         ID_NEXTPROXYBUTTON,
@@ -102,6 +108,7 @@ private:
         ID_LISTFILETEXT,
         ID_BROWSERPATHTEXT,
         ID_PORTTEXT,
+        ID_URLCMDPREFIXTEXT,
         ID_LANGUAGEDROPDOWN,
         ID_NEXTPROXYDROPDOWN,
         ID_LISTNAMEDROPDOWN,
@@ -116,4 +123,4 @@ private:
 };
 
 #endif
-
+// vi:ts=4:sw=4:et

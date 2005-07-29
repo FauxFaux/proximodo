@@ -537,6 +537,9 @@ void CRequestManager::processOut() {
 
             // Get the URL and the host to contact (unless we use a proxy)
             url.parseUrl(requestLine.url);
+            if (url.getBypassIn())    bypassIn   = true;
+            if (url.getBypassOut())   bypassOut  = true;
+            if (url.getBypassText())  bypassBody = true;
             useSettingsProxy = CSettings::ref().useNextProxy;
             contactHost = url.getHostPort();
             setHeader(outHeaders, "Host", url.getHost());
@@ -606,6 +609,9 @@ void CRequestManager::processOut() {
                             bool changeHost = (contactHost == url.getHostPort());
                             // update URL
                             url.parseUrl(test);
+                            if (url.getBypassIn())    bypassIn   = true;
+                            if (url.getBypassOut())   bypassOut  = true;
+                            if (url.getBypassText())  bypassBody = true;
                             if (changeHost) contactHost = url.getHostPort();
                         }
                     }
@@ -1191,6 +1197,9 @@ void CRequestManager::connectWebsite() {
 
         // Change URL
         url.parseUrl(rdirToHost);
+        if (url.getBypassIn())    bypassIn   = true;
+        if (url.getBypassOut())   bypassOut  = true;
+        if (url.getBypassText())  bypassBody = true;
         useSettingsProxy = CSettings::ref().useNextProxy;
         contactHost = url.getHostPort();
         setHeader(outHeaders, "Host", url.getHost());
@@ -1332,3 +1341,4 @@ void CRequestManager::endFeeding() {
     // Write last chunk (size 0)
     sendInBuf += "0" CRLF CRLF;
 }
+// vi:ts=4:sw=4:et

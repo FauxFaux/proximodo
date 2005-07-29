@@ -1,7 +1,8 @@
 //------------------------------------------------------------------
 //
 //this file is part of Proximodo
-//Copyright (C) 2004 Antony BOUCHER ( kuruden@users.sourceforge.net )
+//Copyright (C) 2004-2005 Antony BOUCHER ( kuruden@users.sourceforge.net )
+//                        Paul Rupe      ( prupe@users.sourceforge.net )
 //
 //This program is free software; you can redistribute it and/or
 //modify it under the terms of the GNU General Public License
@@ -23,6 +24,7 @@
 //------------------------------------------------------------------
 
 
+#include "settings.h"
 #include "url.h"
 
 /* Constructor with parsing
@@ -38,7 +40,46 @@ CUrl::CUrl(const string& str) {
 void CUrl::parseUrl(const string& str) {
 
     unsigned int pos1 = str.find("://");
-    if (pos1 == string::npos) pos1 = 0; else pos1 +=3;
+    if (pos1 == string::npos) pos1 = 0; else pos1 += 3;
+    url       = str;
+    protocol  = (pos1 ? str.substr(0, pos1-3) : string("http"));
+
+    bypassIn = bypassOut = bypassText = debug = source = false;
+    if (CSettings::ref().enableUrlCmd &&
+        str.substr(pos1, CSettings::ref().urlCmdPrefix.length()) ==
+        CSettings::ref().urlCmdPrefix) {
+        bool foundUrlCmd = false;
+        pos1 += CSettings::ref().urlCmdPrefix.length();
+        while (1) {
+            string s5 = str.substr(pos1, 5);
+            string s6;
+            if (s5 == "bin..") {
+                bypassIn = true;
+                pos1 += 5;
+            } else if ((s6 = str.substr(pos1, 6)) == "bout..") {
+                bypassOut = true;
+                pos1 += 6;
+            } else if (s6 == "bweb..") {
+                bypassText = true;
+                pos1 += 6;
+            } else if (str.substr(pos1, 8) == "bypass..") {
+                bypassIn = bypassOut = bypassText = true;
+                pos1 += 8;
+            } else if (s6 == "dbug..") {
+                debug = true;
+                pos1 += 6;
+            } else if (s5 == "src..") {
+                source = true;
+                pos1 += 5;
+            } else {
+                break;
+            }
+            foundUrlCmd = true;
+        }
+        if (!foundUrlCmd)
+            pos1 -= CSettings::ref().urlCmdPrefix.length();
+    }
+
     unsigned int pos2 = str.find_first_of("/?#", pos1);
     if (pos2 == string::npos) pos2 = str.length();
     unsigned int pos3 = str.find_first_of("?#", pos2);
@@ -46,8 +87,6 @@ void CUrl::parseUrl(const string& str) {
     unsigned int pos4 = str.find_first_of("#", pos3);
     if (pos4 == string::npos) pos4 = str.length();
 
-    url       = str;
-    protocol  = (pos1 ? str.substr(0, pos1-3) : string("http"));
     fromhost  = str.substr(pos1);
     afterhost = str.substr(pos2);
     host      = str.substr(pos1, pos2 - pos1);
@@ -58,4 +97,4 @@ void CUrl::parseUrl(const string& str) {
     if (hostport.find(":") == string::npos)
         hostport += ':' + protocol;
 }
-
+// vi:ts=4:sw=4:et

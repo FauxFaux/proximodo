@@ -1,7 +1,8 @@
 //------------------------------------------------------------------
 //
 //this file is part of Proximodo
-//Copyright (C) 2004 Antony BOUCHER ( kuruden@users.sourceforge.net )
+//Copyright (C) 2004-2005 Antony BOUCHER ( kuruden@users.sourceforge.net )
+//                        Paul Rupe      ( prupe@users.sourceforge.net )
 //
 //This program is free software; you can redistribute it and/or
 //modify it under the terms of the GNU General Public License
@@ -37,7 +38,8 @@ using namespace std;
 class CUrl {
 
 public:
-    CUrl() { }
+    CUrl() : bypassIn(false), bypassOut(false), bypassText(false),
+             debug(false), source(false) { }
     CUrl(const string& str);
     void parseUrl(const string& str);
     
@@ -50,11 +52,18 @@ public:
     inline const string& getQuery()     const { return query;     }
     inline const string& getAnchor()    const { return anchor;    }
     inline const string& getHostPort()  const { return hostport;  }
+    inline bool getBypassIn()           const { return bypassIn;  }
+    inline bool getBypassOut()          const { return bypassOut; }
+    inline bool getBypassText()         const { return bypassText;}
+    inline bool getDebug()              const { return debug;     }
+    inline bool getSource()             const { return source;    }
 
 private:
     // fromhost is the URL without http://
     // hostport is host:port
     string url, protocol, fromhost, host, afterhost, path, query, anchor, hostport;
+    bool bypassIn, bypassOut, bypassText, debug, source;
 };
 
 #endif
+// vi:ts=4:sw=4:et

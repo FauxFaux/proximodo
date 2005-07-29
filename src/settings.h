@@ -1,7 +1,8 @@
 //------------------------------------------------------------------
 //
 //this file is part of Proximodo
-//Copyright (C) 2004 Antony BOUCHER ( kuruden@users.sourceforge.net )
+//Copyright (C) 2004-2005 Antony BOUCHER ( kuruden@users.sourceforge.net )
+//                        Paul Rupe      ( prupe@users.sourceforge.net )
 //
 //This program is free software; you can redistribute it and/or
 //modify it under the terms of the GNU General Public License
@@ -72,6 +73,8 @@ public:
     
     string         currentConfig;  // active configuration
     string         proxyPort;      // proxy server's listening port
+    bool           enableUrlCmd;   // allow URL commands (dbug.., bweb.., etc.)
+    string         urlCmdPrefix;   // prefix for URL commands
     bool           useNextProxy;   // does Proximodo connects through another proxy
     string         nextProxy;      // proxy through which Proximodo connects to internet
     set<string>    proxies;        // list of known proxies. ':nnnn' is mandatory
@@ -146,3 +149,4 @@ private:
 };
 
 #endif
+// vi:ts=4:sw=4:et

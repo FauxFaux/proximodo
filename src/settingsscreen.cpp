@@ -1,7 +1,8 @@
 //------------------------------------------------------------------
 //
 //this file is part of Proximodo
-//Copyright (C) 2004 Antony BOUCHER ( kuruden@users.sourceforge.net )
+//Copyright (C) 2004-2005 Antony BOUCHER ( kuruden@users.sourceforge.net )
+//                        Paul Rupe      ( prupe@users.sourceforge.net )
 //
 //This program is free software; you can redistribute it and/or
 //modify it under the terms of the GNU General Public License
@@ -62,6 +63,7 @@ BEGIN_EVENT_TABLE(CSettingsScreen, CWindowContent)
     EVT_CHECKBOX   (ID_STARTBROWSERCHECKBOX, CSettingsScreen::OnCommand)
     EVT_CHECKBOX   (ID_SHOWGUICHECKBOX,      CSettingsScreen::OnCommand)
     EVT_CHECKBOX   (ID_USEPROXYCHECKBOX,     CSettingsScreen::OnCommand)
+    EVT_CHECKBOX   (ID_URLCMDCHECKBOX,       CSettingsScreen::OnCommand)
     EVT_COMBOBOX   (ID_LANGUAGEDROPDOWN,     CSettingsScreen::OnCommand)
     EVT_COMBOBOX   (ID_NEXTPROXYDROPDOWN,    CSettingsScreen::OnCommand)
     EVT_COMBOBOX   (ID_LISTNAMEDROPDOWN,     CSettingsScreen::OnCommand)
@@ -73,6 +75,7 @@ BEGIN_EVENT_TABLE(CSettingsScreen, CWindowContent)
     EVT_TEXT_ENTER (ID_BROWSERPATHTEXT,      CSettingsScreen::OnCommand)
     EVT_TEXT_ENTER (ID_PORTTEXT,             CSettingsScreen::OnCommand)
     EVT_TEXT_ENTER (ID_LISTFILETEXT,         CSettingsScreen::OnCommand)
+    EVT_TEXT_ENTER (ID_URLCMDPREFIXTEXT,     CSettingsScreen::OnCommand)
 END_EVENT_TABLE()
 
 
@@ -175,12 +178,29 @@ CSettingsScreen::CSettingsScreen(wxFrame* frame) : CWindowContent(frame) {
         settings.getMessage("LB_SETTINGS_PORT").c_str());
     portBox->Add(portLabel,0,wxALIGN_CENTER_VERTICAL | wxALL,5);
 
-    portText =  new pmTextCtrl(frame, ID_PORTTEXT,
+    urlCmdCheckbox = new pmCheckBox(frame, ID_URLCMDCHECKBOX,
+        settings.getMessage("LB_SETTINGS_URLCMD").c_str());
+    urlCmdCheckbox->SetHelpText(settings.getMessage("SETTINGS_URLCMD_TIP").c_str());
+    proxyBox->Add(urlCmdCheckbox,0,wxALIGN_LEFT | wxALL,5);
+
+    wxBoxSizer* urlCmdBox = new wxBoxSizer(wxHORIZONTAL);
+    proxyBox->Add(urlCmdBox,0,wxALIGN_LEFT | wxALL,0);
+
+    pmStaticText* urlCmdLabel =  new pmStaticText(frame, wxID_ANY ,
+        settings.getMessage("LB_SETTINGS_URLCMD_PREFIX").c_str());
+    urlCmdBox->Add(urlCmdLabel,0,wxALIGN_CENTER_VERTICAL | wxALL,5);
+
+    urlCmdPrefixText = new pmTextCtrl(frame, ID_URLCMDPREFIXTEXT,
+        "" , wxDefaultPosition, wxSize(100, 21));
+    urlCmdPrefixText->SetHelpText(settings.getMessage("SETTINGS_URLCMD_PREFIX_TIP").c_str());
+    urlCmdBox->Add(urlCmdPrefixText,0,wxALIGN_CENTER_VERTICAL | wxALL,5);
+
+    portText = new pmTextCtrl(frame, ID_PORTTEXT,
         "" , wxDefaultPosition, wxSize(50, 21));
     portText->SetHelpText(settings.getMessage("SETTINGS_PORT_TIP").c_str());
     portBox->Add(portText,0,wxALIGN_CENTER_VERTICAL | wxALL,5);
 
-    useProxyCheckbox =  new pmCheckBox(frame, ID_USEPROXYCHECKBOX,
+    useProxyCheckbox = new pmCheckBox(frame, ID_USEPROXYCHECKBOX,
         settings.getMessage("LB_SETTINGS_USEPROXY").c_str());
     useProxyCheckbox->SetHelpText(settings.getMessage("SETTINGS_USEPROXY_TIP").c_str());
     proxyBox->Add(useProxyCheckbox,0,wxALIGN_LEFT | wxALL,5);
@@ -320,6 +340,8 @@ bool CSettingsScreen::hasChanged() {
     commitText();
     return (language      != settings.language      ||
             proxyPort     != settings.proxyPort     ||
+            enableUrlCmd  != settings.enableUrlCmd  ||
+            urlCmdPrefix  != settings.urlCmdPrefix  ||
             useNextProxy  != settings.useNextProxy  ||
             nextProxy     != settings.nextProxy     ||
             allowIPRange  != settings.allowIPRange  ||
@@ -348,6 +370,8 @@ void CSettingsScreen::revert(bool confirm) {
     // Load variables
     language      = settings.language      ;
     proxyPort     = settings.proxyPort     ;
+    enableUrlCmd  = settings.enableUrlCmd  ;
+    urlCmdPrefix  = settings.urlCmdPrefix  ;
     useNextProxy  = settings.useNextProxy  ;
     nextProxy     = settings.nextProxy     ;
     allowIPRange  = settings.allowIPRange  ;
@@ -365,11 +389,13 @@ void CSettingsScreen::revert(bool confirm) {
     startBrowserCheckbox->SetValue(startBrowser);
     showGuiCheckbox->SetValue(showOnStartup);
     useProxyCheckbox->SetValue(useNextProxy);
+    urlCmdCheckbox->SetValue(enableUrlCmd);
     bypassText->SetValue(bypass.c_str());
     browserPathText->SetValue(browserPath.c_str());
     maxRangeText->SetValue(CUtil::toDotted(maxIPRange).c_str());
     minRangeText->SetValue(CUtil::toDotted(minIPRange).c_str());
     portText->SetValue(proxyPort.c_str());
+    urlCmdPrefixText->SetValue(urlCmdPrefix.c_str());
 
     // Populate proxy list
     nextProxyDropdown->Clear();
@@ -420,6 +446,8 @@ void CSettingsScreen::apply(bool confirm) {
     settings.useNextProxy  = useNextProxy  ;
     settings.language      = language      ;
     settings.proxyPort     = proxyPort     ;
+    settings.enableUrlCmd  = enableUrlCmd  ;
+    settings.urlCmdPrefix  = urlCmdPrefix  ;
     settings.nextProxy     = nextProxy     ;
     settings.allowIPRange  = allowIPRange  ;
     settings.minIPRange    = minIPRange    ;
@@ -459,6 +487,9 @@ void CSettingsScreen::OnCommand(wxCommandEvent& event) {
         if (nextProxyDropdown->GetValue().IsEmpty())
             useProxyCheckbox->SetValue(false);
         useNextProxy = useProxyCheckbox->GetValue(); break;
+
+    case ID_URLCMDCHECKBOX:
+        enableUrlCmd = urlCmdCheckbox->GetValue(); break;
 
     case ID_SHOWGUICHECKBOX:
         showOnStartup = showGuiCheckbox->GetValue(); break;
@@ -516,6 +547,11 @@ void CSettingsScreen::OnCommand(wxCommandEvent& event) {
                 }
             }
             portText->SetValue(proxyPort.c_str());
+            break;
+        }
+    case ID_URLCMDPREFIXTEXT:
+        {
+            urlCmdPrefix = urlCmdPrefixText->GetValue();
             break;
         }
     case ID_NEXTPROXYBUTTON:
@@ -659,4 +695,4 @@ void CSettingsScreen::OnCommand(wxCommandEvent& event) {
         event.Skip();
     }
 }
-
+// vi:ts=4:sw=4:et

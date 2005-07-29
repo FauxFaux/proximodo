@@ -2,6 +2,8 @@
 ShowOnStartup = yes
 StartBrowser = yes
 Port = 8080
+EnableUrlCommands = no
+UrlCommandPrefix = 
 UseProxy = no
 CurrentProxy = proxy.yourprovider.com:8080
 AllowIPRange = no
@@ -13,7 +15,7 @@ FilterText = yes
 FilterGif = yes
 Language = english
 CurrentConfig = Default
-Bypass = $URL(Bypass)
+Bypass = $LST(Bypass)
 FirstRun= yes
 
 [Proxies]
