@@ -585,8 +585,10 @@ void CSettingsScreen::OnCommand(wxCommandEvent& event) {
                     }
                     if (!newListName.empty()) {
                         // Create/Rename list
-                        listNames[newListName] = listFileText->GetValue();
-                        CUtil::trim(listNames[newListName]);
+                        if (!listFileText->GetValue().empty()) {
+                            listNames[newListName] = listFileText->GetValue();
+                            CUtil::trim(listNames[newListName]);
+                        }
                         listDropDown->Append(newListName.c_str());
                     } else {
                         listFileText->SetValue("");
@@ -597,7 +599,8 @@ void CSettingsScreen::OnCommand(wxCommandEvent& event) {
             } else if (event.GetEventType() == wxEVT_COMMAND_COMBOBOX_SELECTED) {
 
                 currentListName = event.GetString();
-                listFileText->SetValue(listNames[currentListName].c_str());
+                if (!currentListName.empty())
+                    listFileText->SetValue(listNames[currentListName].c_str());
             }
             break;
         }
