@@ -48,6 +48,7 @@ private:
     void OnCommand(wxCommandEvent& event);
     void OnProxyEvent(CProxyEvent& event);
     void OnStatusEvent(CStatusEvent& event);
+    void OnMoveEvent(wxMoveEvent& event);
 
     // Variables
     wxStatusBar* statusbar;

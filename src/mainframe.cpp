@@ -73,6 +73,20 @@ int CMainFrame::savedX = BIG_NUMBER,
     CMainFrame::savedY = 0;
 
 
+/* Records window position when the user moves the window
+ */
+void CMainFrame::OnMoveEvent(wxMoveEvent& event) {
+
+    // Save window position
+    int x,y;
+    GetPosition(&x, &y);
+    if (x>=0 && y>=0) {
+        savedX = x;
+        savedY = y;
+    }
+}
+
+
 /* Constructor
  */
 CMainFrame::CMainFrame(const wxPoint& position)
@@ -180,6 +194,9 @@ CMainFrame::CMainFrame(const wxPoint& position)
     } else {
         Move(savedX, savedY);
     }
+    
+    // Start monitoring the window moving
+    Connect(wxID_ANY, wxEVT_MOVE, wxMoveEventHandler(CMainFrame::OnMoveEvent));
 }
 
 
@@ -187,9 +204,7 @@ CMainFrame::CMainFrame(const wxPoint& position)
  */
 CMainFrame::~CMainFrame() {
 
-    // Save window position
-    GetPosition(&savedX, &savedY);
-    
+    Disconnect(wxID_ANY, wxEVT_MOVE, wxMoveEventHandler(CMainFrame::OnMoveEvent));
     CLog::ref().proxyListeners.erase(this);
     SetSizer(content = NULL);
     CLog::ref().mainFrame = NULL;
