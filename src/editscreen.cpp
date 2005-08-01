@@ -61,7 +61,10 @@ BEGIN_EVENT_TABLE(CEditScreen, wxFrame)
     EVT_TEXT_ENTER (ID_MATCHMEMO,     CEditScreen::OnCommand)
     EVT_TEXT_ENTER (ID_REPLACEMEMO,   CEditScreen::OnCommand)
     EVT_MENU_RANGE (ID_FILTERSENCODE, ID_HELPSYNTAX, CEditScreen::OnCommand)
+    EVT_COMMAND    (wxID_ANY,  wxEVT_PM_RAISE_EVENT, CEditScreen::OnCommand)
 END_EVENT_TABLE()
+
+DEFINE_EVENT_TYPE(wxEVT_PM_RAISE_EVENT)
 
 
 /* Saved window position
@@ -355,6 +358,14 @@ void CEditScreen::enableFields() {
  */
 void CEditScreen::OnCommand(wxCommandEvent& event) {
 
+    if (event.GetEventType() == wxEVT_PM_RAISE_EVENT) {
+        // at some point in the config screen, we want to "post" a raise event.
+        // wxWidgets does not have such event, so we use a custom event type.
+        Raise();
+        event.Skip();
+        return;
+    }
+    
     switch (event.GetId()) {
     case ID_MULTICHECKBOX:
         {

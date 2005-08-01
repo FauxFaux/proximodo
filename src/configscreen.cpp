@@ -655,7 +655,10 @@ void CConfigScreen::OnTreeEvent(wxTreeEvent& event) {
         // The user double-clicked on the current item
         if (data && !data->folder) {
             editWindow->Show();
-            editWindow->Raise();
+            // we can't raise the edit window now, because the main window
+            // will raise again after it. So we need a posted custom event.
+            wxCommandEvent ev(wxEVT_PM_RAISE_EVENT);
+            editWindow->AddPendingEvent(ev);
         }
 
     } else if (evt == wxEVT_COMMAND_TREE_BEGIN_DRAG) {

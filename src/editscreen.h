@@ -110,5 +110,7 @@ private:
     DECLARE_EVENT_TABLE()
 };
 
+DECLARE_EVENT_TYPE(wxEVT_PM_RAISE_EVENT, -1)
+
 #endif
 
