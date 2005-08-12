@@ -814,7 +814,8 @@ void CConfigScreen::importFilters(const string& text, bool proxo) {
         data = (CItemData*)tree->GetItemData(folderId);
     }
     if (proxo) {
-        CFilterDescriptor::importProxomitron(text, folders, filters, data->id);
+        CFilterDescriptor::importProxomitron(text, folders, filters, data->id,
+                                             &configs[editedConfigName]);
     } else {
         CFilterDescriptor::importFilters(text, folders, filters, data->id);
     }

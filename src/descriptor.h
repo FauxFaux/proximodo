@@ -130,7 +130,8 @@ public:
     static int importProxomitron(const string& text,
                     map<int,CFolder>& folders,
                     map<int,CFilterDescriptor>& filters,
-                    int root = 0);
+                    int root = 0,
+                    set<int>* config = NULL);
 };
 
 #endif

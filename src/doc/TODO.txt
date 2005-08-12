@@ -31,6 +31,7 @@ GUI:
 - Have RW files stored in user's personal folders (install dir should be considered read-only)
 - A way for the filter designer to specify filter dependencies within their packs:
   dependent filters are automatically (de)activated when the end-user checks filters.
+- Store all filters, settings and lists in a database (SQLite), exposed via the GUI
 
 Engine:
 

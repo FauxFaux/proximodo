@@ -252,7 +252,7 @@ int CFilterDescriptor::importFilters(const string& text,
  */
 int CFilterDescriptor::importProxomitron(const string& text,
                 map<int,CFolder>& folders,
-                map<int,CFilterDescriptor>& filters, int root) {
+                map<int,CFilterDescriptor>& filters, int root, set<int>* config) {
 
     // Process text: lines will be terminated by \n (even from Mac text files)
     // and multiline values will have \r for inner newlines. The text will end
@@ -265,6 +265,7 @@ int CFilterDescriptor::importProxomitron(const string& text,
     int priority = 999;
 
     CFilterDescriptor d;
+    bool isActive = false;
     d.folder = root;
     unsigned int i = 0, max = str.size(), count = 0;
     while (i < max) {
@@ -277,9 +278,11 @@ int CFilterDescriptor::importProxomitron(const string& text,
                 d.priority = priority--;
                 d.id = (filters.empty() ? 1 : filters.rbegin()->second.id + 1);
                 filters[d.id] = d;
+                if (isActive && config) config->insert(d.id);
                 count++;
             }
             d.clear();
+            isActive = false;
             d.folder = root;
         } else if (eq != string::npos) {
             string label = line.substr(0, eq);
@@ -291,10 +294,21 @@ int CFilterDescriptor::importProxomitron(const string& text,
             value = CUtil::replaceAll(value, "\r", "\n");
 
             if (label == "IN") {
-                if (value == "TRUE") d.filterType = HEADIN;
+                if (value == "TRUE") {
+                    d.filterType = HEADIN;
+                    isActive = true;
+                }
             }
             else if (label == "OUT") {
-                if (value == "TRUE") d.filterType = HEADOUT;
+                if (value == "TRUE") {
+                    d.filterType = HEADOUT;
+                    isActive = true;
+                }
+            }
+            else if (label == "ACTIVE") {
+                if (value == "TRUE") {
+                    isActive = true;
+                }
             }
             else if (label == "KEY") {
                 unsigned int colon = value.find(':');
