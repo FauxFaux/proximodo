@@ -39,7 +39,7 @@ bool CPlatform::isKeyPressed(wxKeyCode keyCode) {
     else if (key == WXK_MENU) key = VK_MENU;
     else if (key == WXK_TAB) key = VK_TAB;
     else if (key >= WXK_F1 && key <= WXK_F12) key += VK_F1 - WXK_F1;
-    return ((GetKeyState(key) & 0x8000) != 0);
+    return ((GetAsyncKeyState(key) & 0x8000) != 0);
 }
 
 #else // Unknown platform
