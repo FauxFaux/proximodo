@@ -1,7 +1,8 @@
 //------------------------------------------------------------------
 //
 //this file is part of Proximodo
-//Copyright (C) 2004 Antony BOUCHER ( kuruden@users.sourceforge.net )
+//Copyright (C) 2004-2005 Antony BOUCHER ( kuruden@users.sourceforge.net )
+//                        Paul Rupe ( prupe@users.sourceforge.net )
 //
 //This program is free software; you can redistribute it and/or
 //modify it under the terms of the GNU General Public License
@@ -884,6 +885,29 @@ bool CNode_Url::mayMatch(bool* tab) {
  */
 CNode_List::CNode_List(const char*& reached, string name, CMatcher& matcher) :
             CNode(reached, LIST), matcher(matcher), name(name) {
+    deque<string>& list = CSettings::ref().lists[name];
+    for (deque<string>::iterator it = list.begin(); it != list.end(); it++) {
+        CNode* node;
+        if (nodes.find(*it) == nodes.end()) { // we have to build this node
+            int cur = 0;
+            node = nodes[*it] = matcher.expr(*it, cur, it->size());
+            node->setNextNode(NULL);
+
+            switch ((*it)[0]) {
+            case '\\':  case '[':  case '$':  case '(':  case ')':
+            case '|':   case '&':  case '?':  case ' ':  case '\t':
+            case '=':   case '*':  case '\'': case '\"': case '^':
+                // Expressions that start with a special char cannot be hashed
+                // Push them on the unhashed list and test on every match
+                unhashed.push_back(node);
+                break;
+            default:
+                // All other expression go into a bin based on their first char
+                hashed[(int)(*it)[0] & 0xff].push_back(node);
+                break;
+            }
+        }
+    }
 }
 
 CNode_List::~CNode_List() {
@@ -891,31 +915,39 @@ CNode_List::~CNode_List() {
 }
 
 const char* CNode_List::match(const char* start, const char* stop) {
-    deque<string>& list = CSettings::ref().lists[name];
-    for (deque<string>::iterator it = list.begin(); it != list.end(); it++) {
+    deque<CNode*> *lists[2] = { NULL, NULL };
+    if (start < stop) {
+        // Check the hashed list corresponding to the first char
+        lists[0] = hashed + ((int)start[0] & 0xff);
+    }
+    // The unhashed list is unpredictable, we must always check it
+    lists[1] = &unhashed;
 
-        CNode* node;
-        if (nodes.find(*it) == nodes.end()) { // we have to build this node
-            int cur = 0;
-            node = nodes[*it] = matcher.expr(*it, cur, it->size());
-            node->setNextNode(NULL);
-        } else {
-            node = nodes[*it];
-        }
-        const char* ptr = node->match(start, stop);
-        if (ptr) {
-            start = ptr;
-            const char* ret = nextNode ? nextNode->match(start, stop) : start;
-            consumed = start;
-            return ret;
+    for (int i = 0; i < 2; i++) {
+        if (!lists[i])
+            continue;
+        for (deque<CNode*>::iterator it = lists[i]->begin();
+             it != lists[i]->end(); it++) {
+            const char* ptr = (*it)->match(start, stop);
+            if (ptr) {
+                start = ptr;
+                const char* ret = nextNode ? nextNode->match(start, stop) :
+                                             start;
+                consumed = start;
+                return ret;
+            }
         }
     }
+
     return NULL;
 }
 
 bool CNode_List::mayMatch(bool* tab) {
     if (tab) {
-        for (int i=0; i<256; i++) tab[i] = true; // The list may evolve unpredictably
+        for (int i = 0; i < 256; i++)
+            // If the list has any unhashed entries, tab must be uniformly
+            // set to true, otherwise look at hashed[i]
+            tab[i] = !unhashed.empty() || !hashed[i].empty();
     }
     return !nextNode || nextNode->mayMatch(NULL);
 }
@@ -1358,5 +1390,4 @@ const char* CNode_Ask::match(const char* start, const char* stop) {
 bool CNode_Ask::mayMatch(bool* tab) {
     return !nextNode || nextNode->mayMatch(NULL);
 }
-
-
+// vi:ts=4:sw=4:et

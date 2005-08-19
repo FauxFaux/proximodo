@@ -9,6 +9,11 @@ GUI
 - Imported Proxomitron filters are activated in the edited configuration if they
   were active in the Proxomitron file.
 
+Engine
+- Hashing of blocklist entries that start with a constant string (e.g. foo*,
+  but not *foo, or even [fg]oo).  Unhashed entries are checked sequentially as
+  before.  Proxomitron's 'NoHash' hint has no effect.
+
 
 --------------------------------------------------------------------------------
 Version 0.2.4 (July 20th, 2005)
