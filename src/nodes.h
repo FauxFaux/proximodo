@@ -405,6 +405,9 @@ private:
     deque<CNode*> hashed[256];          // sublist of nodes that start with a
                                         // constant char; indexed by first char
     deque<CNode*> unhashed;             // nodes that do not start with a const
+    size_t lastCount;
+    bool *lastTab;
+    void refreshList();
 
 public:
     CNode_List(const char*& reached, string name, CMatcher& matcher);

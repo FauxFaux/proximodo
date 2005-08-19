@@ -884,7 +884,17 @@ bool CNode_Url::mayMatch(bool* tab) {
  * Corresponds to $LST() command.
  */
 CNode_List::CNode_List(const char*& reached, string name, CMatcher& matcher) :
-            CNode(reached, LIST), matcher(matcher), name(name) {
+            CNode(reached, LIST), matcher(matcher), name(name), lastCount(0),
+            lastTab(NULL) {
+    refreshList();
+}
+
+CNode_List::~CNode_List() {
+    CUtil::deleteMap<string,CNode>(nodes);
+}
+
+void CNode_List::refreshList() {
+    CUtil::deleteMap<string,CNode>(nodes);
     deque<string>& list = CSettings::ref().lists[name];
     for (deque<string>::iterator it = list.begin(); it != list.end(); it++) {
         CNode* node;
@@ -902,20 +912,20 @@ CNode_List::CNode_List(const char*& reached, string name, CMatcher& matcher) :
                 unhashed.push_back(node);
                 break;
             default:
-                // All other expression go into a bin based on their first char
+                // All other expressions go into a bin based on their first char
                 hashed[(int)(*it)[0] & 0xff].push_back(node);
                 break;
             }
         }
     }
-}
-
-CNode_List::~CNode_List() {
-    CUtil::deleteMap<string,CNode>(nodes);
+    lastCount = list.size();
+    mayMatch(lastTab);
 }
 
 const char* CNode_List::match(const char* start, const char* stop) {
     deque<CNode*> *lists[2] = { NULL, NULL };
+    if (lastCount != CSettings::ref().lists[name].size())
+        refreshList();
     if (start < stop) {
         // Check the hashed list corresponding to the first char
         lists[0] = hashed + ((int)start[0] & 0xff);
@@ -943,6 +953,7 @@ const char* CNode_List::match(const char* start, const char* stop) {
 }
 
 bool CNode_List::mayMatch(bool* tab) {
+    lastTab = tab;
     if (tab) {
         for (int i = 0; i < 256; i++)
             // If the list has any unhashed entries, tab must be uniformly
