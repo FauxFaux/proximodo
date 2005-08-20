@@ -404,10 +404,12 @@ private:
 
     deque<CNode*> hashed[256];          // sublist of nodes that start with a
                                         // constant char; indexed by first char
-    deque<CNode*> unhashed;             // nodes that do not start with a const
+                                        // unhashable entries go on every list
     size_t lastCount;
     bool *lastTab;
     void refreshList();
+    static inline int hashBucket(const char *s)
+        { return (int)tolower(s[0]) & 0xff; }
 
 public:
     CNode_List(const char*& reached, string name, CMatcher& matcher);

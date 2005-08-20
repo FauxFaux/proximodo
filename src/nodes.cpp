@@ -896,6 +896,8 @@ CNode_List::~CNode_List() {
 void CNode_List::refreshList() {
     CUtil::deleteMap<string,CNode>(nodes);
     deque<string>& list = CSettings::ref().lists[name];
+    for (size_t i = 0; i < sizeof(hashed) / sizeof(hashed[0]); i++)
+        hashed[i].clear();
     for (deque<string>::iterator it = list.begin(); it != list.end(); it++) {
         CNode* node;
         if (nodes.find(*it) == nodes.end()) { // we have to build this node
@@ -908,44 +910,38 @@ void CNode_List::refreshList() {
             case '|':   case '&':  case '?':  case ' ':  case '\t':
             case '=':   case '*':  case '\'': case '\"': case '^':
                 // Expressions that start with a special char cannot be hashed
-                // Push them on the unhashed list and test on every match
-                unhashed.push_back(node);
+                // Push them on the every hashed list and test on every match
+                for (size_t i = 0; i < sizeof(hashed) / sizeof(hashed[0]); i++)
+                    if (!isupper((char)i))
+                        hashed[i].push_back(node);
                 break;
             default:
                 // All other expressions go into a bin based on their first char
-                hashed[(int)(*it)[0] & 0xff].push_back(node);
+                hashed[hashBucket((*it).c_str())].push_back(node);
                 break;
             }
         }
     }
     lastCount = list.size();
-    mayMatch(lastTab);
+    mayMatch(lastTab);  // mayMatch must be refreshed too
 }
 
 const char* CNode_List::match(const char* start, const char* stop) {
-    deque<CNode*> *lists[2] = { NULL, NULL };
+    deque<CNode*> *list = hashed;
     if (lastCount != CSettings::ref().lists[name].size())
         refreshList();
     if (start < stop) {
         // Check the hashed list corresponding to the first char
-        lists[0] = hashed + ((int)start[0] & 0xff);
+        list += hashBucket(start);
     }
-    // The unhashed list is unpredictable, we must always check it
-    lists[1] = &unhashed;
 
-    for (int i = 0; i < 2; i++) {
-        if (!lists[i])
-            continue;
-        for (deque<CNode*>::iterator it = lists[i]->begin();
-             it != lists[i]->end(); it++) {
-            const char* ptr = (*it)->match(start, stop);
-            if (ptr) {
-                start = ptr;
-                const char* ret = nextNode ? nextNode->match(start, stop) :
-                                             start;
-                consumed = start;
-                return ret;
-            }
+    for (deque<CNode*>::iterator it = list->begin(); it != list->end(); it++) {
+        const char* ptr = (*it)->match(start, stop);
+        if (ptr) {
+            start = ptr;
+            const char* ret = nextNode ? nextNode->match(start, stop) : start;
+            consumed = start;
+            return ret;
         }
     }
 
@@ -954,12 +950,12 @@ const char* CNode_List::match(const char* start, const char* stop) {
 
 bool CNode_List::mayMatch(bool* tab) {
     lastTab = tab;
-    if (tab) {
+    if (tab)
         for (int i = 0; i < 256; i++)
-            // If the list has any unhashed entries, tab must be uniformly
-            // set to true, otherwise look at hashed[i]
-            tab[i] = !unhashed.empty() || !hashed[i].empty();
-    }
+            // If there are no entries in hashed[i] (including unhashable
+            // entries, which are duplicated in every list) then the char
+            // cannot possibly match.
+            tab[i] = !hashed[tolower((char)i)].empty();
     return !nextNode || nextNode->mayMatch(NULL);
 }
 
