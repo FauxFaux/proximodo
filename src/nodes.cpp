@@ -884,8 +884,8 @@ bool CNode_Url::mayMatch(bool* tab) {
  * Corresponds to $LST() command.
  */
 CNode_List::CNode_List(const char*& reached, string name, CMatcher& matcher) :
-            CNode(reached, LIST), matcher(matcher), name(name), lastCount(0),
-            lastTab(NULL) {
+            CNode(reached, LIST), matcher(matcher),
+            list(CSettings::ref().lists[name]), lastCount(0), lastTab(NULL) {
     refreshList();
 }
 
@@ -895,7 +895,6 @@ CNode_List::~CNode_List() {
 
 void CNode_List::refreshList() {
     CUtil::deleteMap<string,CNode>(nodes);
-    deque<string>& list = CSettings::ref().lists[name];
     for (size_t i = 0; i < sizeof(hashed) / sizeof(hashed[0]); i++)
         hashed[i].clear();
     for (deque<string>::iterator it = list.begin(); it != list.end(); it++) {
@@ -917,7 +916,7 @@ void CNode_List::refreshList() {
                 break;
             default:
                 // All other expressions go into a bin based on their first char
-                hashed[hashBucket((*it).c_str())].push_back(node);
+                hashed[hashBucket((*it)[0])].push_back(node);
                 break;
             }
         }
@@ -927,15 +926,15 @@ void CNode_List::refreshList() {
 }
 
 const char* CNode_List::match(const char* start, const char* stop) {
-    deque<CNode*> *list = hashed;
-    if (lastCount != CSettings::ref().lists[name].size())
+    deque<CNode*> *h = hashed;
+    if (lastCount != list.size())
         refreshList();
     if (start < stop) {
         // Check the hashed list corresponding to the first char
-        list += hashBucket(start);
+        h += hashBucket(start[0]);
     }
 
-    for (deque<CNode*>::iterator it = list->begin(); it != list->end(); it++) {
+    for (deque<CNode*>::iterator it = h->begin(); it != h->end(); it++) {
         const char* ptr = (*it)->match(start, stop);
         if (ptr) {
             start = ptr;
@@ -955,7 +954,7 @@ bool CNode_List::mayMatch(bool* tab) {
             // If there are no entries in hashed[i] (including unhashable
             // entries, which are duplicated in every list) then the char
             // cannot possibly match.
-            tab[i] = !hashed[tolower((char)i)].empty();
+            tab[i] = !hashed[hashBucket((char)i)].empty();
     return !nextNode || nextNode->mayMatch(NULL);
 }
 

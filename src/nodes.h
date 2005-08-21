@@ -398,7 +398,7 @@ class CNode_List : public CNode {
 
 private:
     CMatcher& matcher;                  // matcher that will build nodes
-    string name;                        // patterns list name
+    deque<string>& list;                // patterns list
     map<string, CNode*> nodes;          // bank of built nodes
     bool isEnd;
 
@@ -408,8 +408,8 @@ private:
     size_t lastCount;
     bool *lastTab;
     void refreshList();
-    static inline int hashBucket(const char *s)
-        { return (int)tolower(s[0]) & 0xff; }
+    static inline int hashBucket(char c)
+        { return (int)tolower(c) & 0xff; }
 
 public:
     CNode_List(const char*& reached, string name, CMatcher& matcher);
