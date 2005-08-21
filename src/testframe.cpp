@@ -86,12 +86,12 @@ CTestFrame::CTestFrame(CFilterDescriptor* desc)
     SetSizer(mainSizer);
 
     testMemo =  new pmTextCtrl(this, ID_TESTTEXT, CLog::ref().testString.c_str(),
-        wxPoint(5,5),wxSize(350,90)  ,
+        wxPoint(5,5),wxSize(400,120)  ,
         wxTE_MULTILINE);
     mainSizer->Add(testMemo,1,wxGROW | wxALL,5);
 
     resultMemo =  new pmTextCtrl(this, wxID_ANY, "" ,
-        wxPoint(12,75),wxSize(350,90)  ,
+        wxPoint(12,75),wxSize(400,120)  ,
         wxTE_MULTILINE | wxTE_READONLY);
     mainSizer->Add(resultMemo,1,wxGROW | wxALL,5);
 
