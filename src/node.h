@@ -97,11 +97,11 @@ public:
     type id;
 
 protected:
-    const char* reached;
+    const char*& reached;
     CNode*      nextNode;
 
     // Protected construtor
-    CNode(const char* reached, type id) : id(id), reached(reached), nextNode(NULL) { }
+    CNode(const char*& reached, type id) : id(id), reached(reached), nextNode(NULL) { }
 };
 
 
