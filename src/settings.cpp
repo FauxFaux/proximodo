@@ -28,6 +28,7 @@
 #include "util.h"
 #include "const.h"
 #include "matcher.h"
+#include "nodes.h"
 #include <wx/file.h>
 #include <wx/msgdlg.h>
 #include <wx/mimetype.h>
@@ -37,9 +38,10 @@
 using namespace std;
 
 
-/* The address of the instance
+/* Static members
  */
 CSettings* CSettings::instance = NULL;
+wxMutex CSettings::listsMutex;
 
 
 /* Method to obtain the instance address
@@ -465,6 +467,7 @@ string CSettings::getMessage(string name, int number) {
  */
 void CSettings::loadLists() {
 
+    wxMutexLocker lock(listsMutex);
     lists.clear();
     for (map<string,string>::iterator it = listNames.begin();
                 it != listNames.end(); it++) {
@@ -516,7 +519,10 @@ void CSettings::loadList(string name) {
 void CSettings::addListLine(string name, string line) {
 
     // We do nothing if the line is empty
-    if (CUtil::trim(line).empty()) return;
+    if (CUtil::trim(line).empty() || line == "~") return;
+    
+    // we must lock access to 'lists'
+    wxMutexLocker lock(listsMutex);
 
     // We add the line to the file if the list exists
     if (listNames.find(name) != listNames.end()) {
@@ -534,17 +540,23 @@ void CSettings::addListLine(string name, string line) {
         f.Close();
 
         // If line is a valid pattern, keep it in memory
-        if (line[0] != '#' && CMatcher::testPattern(line))
+        if (line[0] != '#' && CMatcher::testPattern(line)) {
             lists[name].push_back(line);
+            CNode_List::notifyPatternPushBack(name, line);
+        }
 
     } else {
 
         // This is a virtual list, always add the line
-        lists[name].push_back(line);
+        deque<string>& list = lists[name];
+        list.push_back(line);
+        CNode_List::notifyPatternPushBack(name, line);
         
         // we will limit its size
-        if (lists[name].size() > VIRTUAL_LIST_MAXSIZE)
-            lists[name].pop_front();
+        if (list.size() > VIRTUAL_LIST_MAXSIZE) {
+            CNode_List::notifyPatternPopFront(name, list.front());
+            list.pop_front();
+        }
     }
 }
 
@@ -611,4 +623,3 @@ void CSettings::loadFilters() {
 
     cleanConfigs();
 }
-// vi:ts=4:sw=4:et

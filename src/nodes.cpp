@@ -883,84 +883,140 @@ bool CNode_Url::mayMatch(bool* tab) {
  * Try and match nodes one after another, in CSettings::lists order.
  * Corresponds to $LST() command.
  */
-CNode_List::CNode_List(const char*& reached, string name, CMatcher& matcher) :
-            CNode(reached, LIST), matcher(matcher),
-            list(CSettings::ref().lists[name]), lastCount(0), lastTab(NULL) {
-    refreshList();
+CNode_List::CNode_List(const char*& reached, const string& name, CMatcher& matcher) :
+            CNode(reached, LIST), name(name), matcher(matcher) {
+
+    // we don't want the list to change while we read it
+    wxMutexLocker lock1(CSettings::ref().listsMutex);
+    wxMutexLocker lock2(objectsMutex);
+    // parse all the patterns from the list
+    deque<string>& list = CSettings::ref().lists[name];
+    for (deque<string>::iterator it = list.begin(); it != list.end(); it++) {
+        pushPattern(*it);
+    }
+    // register this object for incremental list parsing
+    objects.insert(this);
 }
 
 CNode_List::~CNode_List() {
-    CUtil::deleteMap<string,CNode>(nodes);
-}
 
-void CNode_List::refreshList() {
-    CUtil::deleteMap<string,CNode>(nodes);
-    for (size_t i = 0; i < sizeof(hashed) / sizeof(hashed[0]); i++)
-        hashed[i].clear();
-    for (deque<string>::iterator it = list.begin(); it != list.end(); it++) {
-        CNode* node;
-        if (nodes.find(*it) == nodes.end()) { // we have to build this node
-            int cur = 0;
-            node = nodes[*it] = matcher.expr(*it, cur, it->size());
-            node->setNextNode(NULL);
-
-            switch ((*it)[0]) {
-            case '\\':  case '[':  case '$':  case '(':  case ')':
-            case '|':   case '&':  case '?':  case ' ':  case '\t':
-            case '=':   case '*':  case '\'': case '\"': case '^':
-                // Expressions that start with a special char cannot be hashed
-                // Push them on the every hashed list and test on every match
-                for (size_t i = 0; i < sizeof(hashed) / sizeof(hashed[0]); i++)
-                    if (!isupper((char)i))
-                        hashed[i].push_back(node);
-                break;
-            default:
-                // All other expressions go into a bin based on their first char
-                hashed[hashBucket((*it)[0])].push_back(node);
-                break;
+    wxMutexLocker lock1(objectsMutex);
+    wxMutexLocker lock2(hashedMutex);
+    // unregister this object
+    objects.erase(this);
+    // delete built nodes. They are pointed to by the hashed lists.
+    for (int i=0; i<256; i++) {
+        deque<SListItem>& h = hashed[i];
+        for (deque<SListItem>::iterator it = h.begin(); it != h.end(); it++) {
+            // unhashed nodes must be deleted only once (for i=0)
+            if ((it->flags & 0x2) || i==0) {
+                delete it->node;
             }
         }
     }
-    lastCount = list.size();
-    mayMatch(lastTab);  // mayMatch must be refreshed too
+}
+
+wxMutex CNode_List::objectsMutex;
+
+set<CNode_List*> CNode_List::objects;
+
+bool CNode_List::isHashable(char c) {
+    return (c != '\\' && c != '[' && c != '$'  && c != '('  && c != ')'  &&
+            c != '|'  && c != '&' && c != '?'  && c != ' '  && c != '\t' &&
+            c != '='  && c != '*' && c != '\'' && c != '\"' );
+}
+
+void CNode_List::pushPattern(const string& pattern) {
+
+    wxMutexLocker lock(hashedMutex);
+    // we'll record the built node and its flags in a structure
+    SListItem item = { NULL, 0 };
+    if (pattern[0] == '~') item.flags |= 0x1;
+    int start = (item.flags & 0x1 ? 1 : 0);
+    char c = pattern[start];
+    if (isHashable(c)) item.flags |= 0x2;
+    // parse the pattern
+    item.node = matcher.expr(pattern, start, pattern.size());
+    item.node->setNextNode(NULL);
+    
+    if (item.flags & 0x2) {
+        // hashable pattern goes in a single hashed bucket (lowercase)
+        hashed[hashBucket(c)].push_back(item);
+    } else {
+        // Expressions that start with a special char cannot be hashed
+        // Push them on every hashed list
+        for (size_t i = 0; i < sizeof(hashed) / sizeof(hashed[0]); i++)
+            if (!isupper((char)i))
+                hashed[i].push_back(item);
+    }
+}
+
+void CNode_List::popPattern(const string& pattern) {
+
+    wxMutexLocker lock(hashedMutex);
+    // since the first pattern in the list is also on the front of relevant
+    // hashed buckets, we can remove it by popping nodes from the buckets.
+    char c = (pattern[0] == '~' ? pattern[1] : pattern[0]);
+    if (isHashable(c)) {
+        delete hashed[hashBucket(c)].front().node;  // delete the node first!
+        hashed[hashBucket(c)].pop_front();
+    } else {
+        delete hashed[0].front().node;              // delete the node first!
+        for (size_t i = 0; i < sizeof(hashed) / sizeof(hashed[0]); i++)
+            if (!isupper((char)i))
+                hashed[i].pop_front();
+    }
+}
+
+void CNode_List::notifyPatternPushBack(const string& listname, const string& pattern) {
+
+    wxMutexLocker lock(objectsMutex);
+    // push pattern on all objects registered on this list
+    for (set<CNode_List*>::iterator it = objects.begin(); it != objects.end(); it++) {
+        if (listname == (*it)->name) (*it)->pushPattern(pattern);
+    }
+}
+
+void CNode_List::notifyPatternPopFront(const string& listname, const string& pattern) {
+
+    wxMutexLocker lock(objectsMutex);
+    // pop pattern from all objects registered on this list
+    for (set<CNode_List*>::iterator it = objects.begin(); it != objects.end(); it++) {
+        if (listname == (*it)->name) (*it)->popPattern(pattern);
+    }
 }
 
 const char* CNode_List::match(const char* start, const char* stop) {
-    deque<CNode*> *h = hashed;
-    if (lastCount != list.size())
-        refreshList();
+
     if (start < stop) {
         // Check the hashed list corresponding to the first char
-        h += hashBucket(start[0]);
-    }
-
-    for (deque<CNode*>::iterator it = h->begin(); it != h->end(); it++) {
-        const char* ptr = (*it)->match(start, stop);
-        if (ptr) {
-            start = ptr;
-            const char* ret = nextNode ? nextNode->match(start, stop) : start;
-            consumed = start;
-            return ret;
+        wxMutexLocker lock(hashedMutex);
+        deque<SListItem>& h = hashed[hashBucket(*start)];
+        for (deque<SListItem>::iterator it = h.begin(); it != h.end(); it++) {
+            const char* ptr = it->node->match(start, stop);
+            if (ptr) {
+                if (it->flags & 0x1) return NULL;   // the pattern is a ~...
+                start = ptr;
+                const char* ret = nextNode ? nextNode->match(start, stop) : start;
+                consumed = start;
+                return ret;
+            }
         }
     }
-
     return NULL;
 }
 
 bool CNode_List::mayMatch(bool* tab) {
-    lastTab = tab;
-    if (tab)
-        for (int i = 0; i < 256; i++)
-            // If there are no entries in hashed[i] (including unhashable
-            // entries, which are duplicated in every list) then the char
-            // cannot possibly match.
-            tab[i] = !hashed[hashBucket((char)i)].empty();
+    if (tab) {
+        // We cannot do incremental updates of tab (because it sometimes is
+        // a temporary array) so we must allow all characters to get through.
+        for (int i=0; i<256; i++) tab[i] = true; 
+    }
     return !nextNode || nextNode->mayMatch(NULL);
 }
 
 void CNode_List::setNextNode(CNode* node) {
     nextNode = node;
-    isEnd = !node;
 }
 
 

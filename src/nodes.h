@@ -29,9 +29,10 @@
 
 #include "node.h"
 #include "memory.h"
+#include <wx/thread.h>
 #include <string>
 #include <vector>
-#include <map>
+#include <set>
 #include <deque>
 class CUrl;
 class CMatcher;
@@ -391,32 +392,45 @@ public:
 
 /* class CNode_List
  * Try and match nodes one after another. Nodes are looked for in the
- * order they appear in CSettings::lists . They are constructed when
- * first needed, and only destroyed when CNode_List is destroyed.
+ * order they appear in CSettings::lists . They are built in the
+ * constructor, to reflect the list of patterns. New nodes can be built
+ * and added to the object by other threads, running the $ADDLST command.
  */
 class CNode_List : public CNode {
 
 private:
-    CMatcher& matcher;                  // matcher that will build nodes
-    deque<string>& list;                // patterns list
-    map<string, CNode*> nodes;          // bank of built nodes
-    bool isEnd;
+    string name;            // name of the list
+    CMatcher& matcher;      // matcher that will build nodes
 
-    deque<CNode*> hashed[256];          // sublist of nodes that start with a
-                                        // constant char; indexed by first char
-                                        // unhashable entries go on every list
-    size_t lastCount;
-    bool *lastTab;
-    void refreshList();
+    typedef struct {
+        CNode* node;        // points to the built node tree
+        int    flags;       // 0x1: is a tilde pattern,  0x2: is hashable
+    } SListItem;
+    
+    wxMutex hashedMutex;            // to secure access to 'hashed' and 'lastTab'
+    deque<SListItem> hashed[256];           // sublist of nodes that start with a
+                                            // constant char; indexed by first char
+                                            // unhashable entries go on every list
+
+    static wxMutex objectsMutex;            // to secure access to 'objects'
+    static set<CNode_List*> objects;        // all CNode_List instances.
+
+    void pushPattern(const string& pattern);// add a pattern to 'hashed'
+    void popPattern(const string& pattern); // removes a pattern from 'hashed'
+
+    static bool isHashable(char c);
+
     static inline int hashBucket(char c)
-        { return (int)tolower(c) & 0xff; }
+        { return tolower(c) & 0xff; }
 
 public:
-    CNode_List(const char*& reached, string name, CMatcher& matcher);
+    CNode_List(const char*& reached, const string& name, CMatcher& matcher);
     ~CNode_List();
     bool mayMatch(bool* tab);
     void setNextNode(CNode* node);
     NODE_MATCH()
+    static void notifyPatternPushBack(const string& listname, const string& pattern);
+    static void notifyPatternPopFront(const string& listname, const string& pattern);
 };
 
 

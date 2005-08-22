@@ -28,6 +28,7 @@
 #define __settings__
 
 #include "descriptor.h"
+#include <wx/thread.h>
 #include <set>
 #include <map>
 #include <string>
@@ -99,6 +100,9 @@ public:
     map<string, set<int> >       configs;    // config name, set of filter titles
     map<string, string>          listNames;  // list name, file path
     map<string, deque<string> >  lists;      // list name, content
+
+    // Locks 'lists' for read/write operations
+    static wxMutex listsMutex;
     
     // Remove inexistant filter ids from config
     void cleanConfigs();
