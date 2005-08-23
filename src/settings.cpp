@@ -41,7 +41,7 @@ using namespace std;
 /* Static members
  */
 CSettings* CSettings::instance = NULL;
-wxMutex CSettings::listsMutex;
+wxMutex CSettings::listsMutex(wxMUTEX_RECURSIVE);
 
 
 /* Method to obtain the instance address
@@ -623,3 +623,4 @@ void CSettings::loadFilters() {
 
     cleanConfigs();
 }
+// vi:ts=4:sw=4:et

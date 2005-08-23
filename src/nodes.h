@@ -408,9 +408,9 @@ private:
     } SListItem;
     
     wxMutex hashedMutex;            // to secure access to 'hashed' and 'lastTab'
-    deque<SListItem> hashed[256];           // sublist of nodes that start with a
-                                            // constant char; indexed by first char
-                                            // unhashable entries go on every list
+    deque<SListItem> hashed[256];   // sublist of nodes that start with a
+                                    // constant char; indexed by first char
+                                    // unhashable entries go on every list
 
     static wxMutex objectsMutex;            // to secure access to 'objects'
     static set<CNode_List*> objects;        // all CNode_List instances.

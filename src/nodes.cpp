@@ -916,7 +916,7 @@ CNode_List::~CNode_List() {
     }
 }
 
-wxMutex CNode_List::objectsMutex;
+wxMutex CNode_List::objectsMutex(wxMUTEX_RECURSIVE);
 
 set<CNode_List*> CNode_List::objects;
 
