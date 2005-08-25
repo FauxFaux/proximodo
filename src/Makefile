@@ -1,25 +1,23 @@
 CC = g++
 WXCFG = wx-config
 
-WXINC_REL = $(shell $(WXCFG) --cxxflags)
-WXLIB_REL = $(shell $(WXCFG) --libs)
-CFLAGS_REL = -Wall -g -O2
-LDFLAGS_REL =
-
-WXINC_DBG = $(shell $(WXCFG) --cxxflags --debug)
-WXLIB_DBG = $(shell $(WXCFG) --libs --debug)
-CFLAGS_DBG = -Wall -g -O0
-LDFLAGS_DBG =
+# Change to 1 for debug build with no optimization
+DEBUG = 0
+ifeq ($(DEBUG),0)
+WXINC = $(shell $(WXCFG) --cxxflags)
+WXLIB = $(shell $(WXCFG) --libs)
+CFLAGS = -Wall -g -O2
+LDFLAGS =
+else
+WXINC = $(shell $(WXCFG) --cxxflags --debug)
+WXLIB = $(shell $(WXCFG) --libs --debug)
+CFLAGS = -Wall -g -O0
+LDFLAGS =
+endif
 
 # Uncomment these for profiling with gprof
-#CFLAGS_DBG += -pg
-#LDFLAGS_DBG += -pg
-
-# Use *_REL for release, *_DBG for debug builds
-WXINC = $(WXINC_REL)
-WXLIB = $(WXLIB_REL)
-CFLAGS = $(CFLAGS_REL)
-LDFLAGS = $(LDFLAGS_REL)
+#CFLAGS += -pg
+#LDFLAGS += -pg
 
 SRC = configscreen.cpp controls.cpp descriptor.cpp editscreen.cpp events.cpp \
 			expander.cpp filter.cpp filterowner.cpp giffilter.cpp headerfilter.cpp \
