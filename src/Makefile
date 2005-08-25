@@ -104,7 +104,8 @@ requestmanager.o: requestmanager.h receptor.h filterowner.h url.h util.h
 requestmanager.o: settings.h descriptor.h log.h events.h const.h matcher.h
 requestmanager.o: giffilter.h headerfilter.h filter.h memory.h textbuffer.h
 requestmanager.o: zlibbuffer.h
-settings.o: settings.h descriptor.h util.h const.h matcher.h
+settings.o: settings.h descriptor.h util.h const.h matcher.h nodes.h node.h
+settings.o: memory.h
 settingsscreen.o: settingsscreen.h windowcontent.h mainframe.h settings.h
 settingsscreen.o: descriptor.h util.h const.h proxy.h controls.h matcher.h
 settingsscreen.o: images/btn_add20.xpm images/btn_view20.xpm
