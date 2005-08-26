@@ -2,7 +2,7 @@
 //
 //this file is part of Proximodo
 //Copyright (C) 2004-2005 Antony BOUCHER ( kuruden@users.sourceforge.net )
-//                        Paul Rupe      ( prupe@users.sourceforgen.net )
+//                        Paul Rupe      ( prupe@users.sourceforge.net )
 //
 //This program is free software; you can redistribute it and/or
 //modify it under the terms of the GNU General Public License
@@ -318,6 +318,7 @@ void CProxy::OnServerEvent(wxSocketEvent& event) {
     vector<CManagerThread*>::iterator itt = threads.begin();
     while (itt != threads.end()) {
         if (!(*itt)->IsRunning()) {
+            (*itt)->Wait();
             (*itt)->Delete();
             delete *itt;
             threads.erase(itt);
@@ -350,4 +351,4 @@ void CProxy::OnServerEvent(wxSocketEvent& event) {
         delete thread;
     }
 }
-
+// vi:ts=4:sw=4:et
