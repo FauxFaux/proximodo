@@ -13,6 +13,7 @@ Engine
 - Hashing of blocklist entries that start with a constant string (e.g. foo*,
   but not *foo, or even [fg]oo).  Unhashed entries are checked sequentially as
   before.  Proxomitron's 'NoHash' hint has no effect.
+- Added recognition of ~ patterns in lists
 
 
 --------------------------------------------------------------------------------
