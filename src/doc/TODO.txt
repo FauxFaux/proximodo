@@ -70,3 +70,4 @@ Distributing:
 - Write help pages for non-english languages
 - Design a nice website
 - Rethink SF.net forums and trackers
+- Build a 64-bit version for Windows
