@@ -2,7 +2,7 @@
 //
 //this file is part of Proximodo
 //Copyright (C) 2004-2005 Antony BOUCHER ( kuruden@users.sourceforge.net )
-//                        Paul Rupe      ( prupe@users.sourceforgen.net )
+//                        Paul Rupe      ( prupe@users.sourceforge.net )
 //
 //This program is free software; you can redistribute it and/or
 //modify it under the terms of the GNU General Public License
@@ -48,3 +48,4 @@ public:
 #endif
 
 #endif
+// vi:ts=4:sw=4:et
