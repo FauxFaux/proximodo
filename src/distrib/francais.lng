@@ -132,6 +132,8 @@ LB_SETTINGS_GUI               =Interface
 LB_SETTINGS_LANGUAGE          =Langue
 LB_SETTINGS_PROXY             =Proxy
 LB_SETTINGS_PORT              =Port
+LB_SETTINGS_URLCMD            =Activer commandes URL
+LB_SETTINGS_URLCMD_PREFIX     =Préfixe
 LB_SETTINGS_USEPROXY          =Utiliser un proxy distant
 LB_SETTINGS_NEXTPROXY         =Proxy
 LB_SETTINGS_REMOVE            =Supprimer
@@ -190,9 +192,15 @@ EDIT_WINDOW_TITLE             =Proximodo - Fenêtre d'édition
 Test Window
 
 TEST_WINDOW_TEST_BUTTON       =Tester
+TEST_WINDOW_PROF_BUTTON       =Profiler
 TEST_WINDOW_CLOSE_BUTTON      =Fermer
 TEST_WINDOW_TITLE             =Proximodo - Fenêtre de Test
 TEST_NO_MATCH                 =(Pas de correspondance trouvée)
+TEST_PROFILE_RESULTS          =Résultats du profilage...
+_  Taille échantillon:  %1 bytes
+_  Occurrences trouvées:  %2
+_  Durée moyenne:  %3 microseconds
+_  Débit:  %4 KB/s
 
 Configuration Window
 
@@ -219,6 +227,7 @@ LOG_CKB_PROXY                 =Evénements Proxy
 LOG_CKB_FILTER                =Evénements Filtres
 LOG_CKB_LOG                   =Messages $LOG()
 LOG_CKB_BROWSER               =Dialogue côté navigateur
+LOG_CKB_HEADERS               =Afficher les en-têtes
 EVT_FILTER_HMATCH             =>>> Req #%1: Le filtre d'en-tête "%2" a trouvé "%3"
 EVT_FILTER_HREPLACE           =>>> Req #%1: Le filtre d'en-tête "%2" a remplacé par "%3"
 EVT_FILTER_LOG                =>>> Req #%1: Le filtre "%2" a envoyé:
@@ -233,6 +242,8 @@ _%3
 EVT_HTTP_SENDIN               =>>> Req #%1 (port %2): Réponse envoyée au navigateur
 _%3
 EVT_HTTP_SENDOUT              =>>> Req #%1 (port %2): Requête envoyée au site web
+_%3
+EVT_HTTP_GENERIC              =>>> Req #%1 (port %2):
 _%3
 EVT_PROXY_ACCEPT              =>>> Connexion acceptée sur le port %1
 EVT_PROXY_ENDREQ              =>>> Requête terminée sur le port %1
@@ -347,6 +358,8 @@ SETTINGS_BYPASS_TIP           =Les URLs qui satisfont ce motif ne seront pas fil
 SETTINGS_LANGUAGE_TIP         =Langue de l'interface graphique. Pris en compte au redémarrage de Proximodo
 SETTINGS_STARTUP_TIP          =Afficher cette fenêtre au démarrage de Proximodo
 SETTINGS_PORT_TIP             =Port d'écoute de Proximodo (8080 par défaut). Copiez-le dans les paramètres de votre navigateur
+SETTINGS_URLCMD_TIP           =Autoriser le passage de commandes par URL (dbug, bypass, etc.)
+SETTINGS_URLCMD_PREFIX_TIP    =Si défini, Proximodo exécutera seulement les commandes précédées par ce code
 SETTINGS_USEPROXY_TIP         =Si coché, Proximodo passera par un autre proxy pour atteindre le réseau internet
 SETTINGS_NEXTPROXY_TIP        =Proxy que Proximodo utilisera pour accéder au net. Les proxys listés sont disponibles pour les commandes $SETPROXY
 SETTINGS_REMOVEPROXY_TIP      =Retirer de la liste le proxy affiché

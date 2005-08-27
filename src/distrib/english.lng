@@ -227,6 +227,7 @@ LOG_CKB_PROXY                 =View Proxy Events
 LOG_CKB_FILTER                =View Filter Events
 LOG_CKB_LOG                   =View $LOG() Events
 LOG_CKB_BROWSER               =Browser-side dialog
+LOG_CKB_HEADERS               =Show Headers
 EVT_FILTER_HMATCH             =>>> Req #%1: The header filter "%2" matched "%3"
 EVT_FILTER_HREPLACE           =>>> Req #%1: The header filter "%2" replaced "%3"
 EVT_FILTER_LOG                =>>> Req #%1: The filter "%2" logged this:
@@ -241,6 +242,8 @@ _%3
 EVT_HTTP_SENDIN               =>>> Req #%1 (port %2): Response sent to browser
 _%3
 EVT_HTTP_SENDOUT              =>>> Req #%1 (port %2): Request sent to website
+_%3
+EVT_HTTP_GENERIC              =>>> Req #%1 (port %2):
 _%3
 EVT_PROXY_ACCEPT              =>>> Connection accepted on port %1
 EVT_PROXY_ENDREQ              =>>> Request ended on port %1

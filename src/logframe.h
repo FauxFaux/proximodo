@@ -59,6 +59,7 @@ private:
 	pmCheckBox *proxyCheckbox;
 	pmCheckBox *logCheckbox;
 	pmCheckBox *browserCheckbox;
+	pmCheckBox *headersCheckbox;
     pmTextCtrl *logText;
 
     // Saved window position

@@ -127,6 +127,10 @@ CLogFrame::CLogFrame()
         settings.getMessage("LOG_CKB_BROWSER").c_str() );
     ckbxSizer1->Add(browserCheckbox,0,wxALIGN_LEFT | wxALL,2);
 
+    headersCheckbox =  new pmCheckBox(this, wxID_ANY,
+        settings.getMessage("LOG_CKB_HEADERS").c_str() );
+    ckbxSizer1->Add(headersCheckbox,0,wxALIGN_LEFT | wxALL,2);
+
     wxBoxSizer* ckbxSizer2 = new wxBoxSizer(wxVERTICAL);
     lowerSizer->Add(ckbxSizer2,0,wxALIGN_CENTER_VERTICAL | wxALL,5);
 
@@ -145,6 +149,7 @@ CLogFrame::CLogFrame()
     active = true;
     httpCheckbox->SetValue(true);
     browserCheckbox->SetValue(true);
+    headersCheckbox->SetValue(true);
     logCheckbox->SetValue(true);
     filterCheckbox->SetValue(true);
     
@@ -157,6 +162,7 @@ CLogFrame::CLogFrame()
     } else {
         Move(savedX, savedY);
         SetSize(savedW, savedH);
+        headersCheckbox->SetValue((savedOpt & 64) != 0);
         logCheckbox->SetValue((savedOpt & 32) != 0);
         httpCheckbox->SetValue((savedOpt & 16) != 0);
         postCheckbox->SetValue((savedOpt & 8) != 0);
@@ -179,6 +185,7 @@ CLogFrame::~CLogFrame() {
     GetPosition(&savedX, &savedY);
     GetSize(&savedW, &savedH);
     savedOpt =
+        (headersCheckbox->GetValue() ? 64 : 0) +
         (logCheckbox->GetValue() ? 32 : 0) +
         (httpCheckbox->GetValue() ? 16 : 0) +
         (postCheckbox->GetValue() ? 8 : 0) +
@@ -310,9 +317,22 @@ void CLogFrame::OnHttpEvent(CHttpEvent& evt) {
         return;
     }
 
-    logText->AppendText(settings.getMessage(mess, req.str(), port.str(),
-                                            evt.text).c_str());
-    logText->AppendText("\n");
+    if (!headersCheckbox->GetValue()) {
+        if (postCheckbox->GetValue() || proxyCheckbox->GetValue() ||
+                filterCheckbox->GetValue() || logCheckbox->GetValue()) {
+            logText->AppendText(settings.getMessage(
+                "EVT_HTTP_GENERIC", req.str(), port.str(),
+                evt.text.substr(0,evt.text.find('\n'))).c_str());
+        } else {
+            logText->AppendText(
+                string("#" + req.str() + ": " +
+                evt.text.substr(0,evt.text.find('\n'))).c_str());
+        }
+    } else {
+        logText->AppendText(settings.getMessage(
+            mess, req.str(), port.str(), evt.text).c_str());
+        logText->AppendText("\n");
+    }
     logText->ShowPosition(logText->GetInsertionPoint());
 }
 
