@@ -319,7 +319,6 @@ void CProxy::OnServerEvent(wxSocketEvent& event) {
     while (itt != threads.end()) {
         if (!(*itt)->IsRunning()) {
             (*itt)->Wait();
-            (*itt)->Delete();
             delete *itt;
             threads.erase(itt);
             itt = threads.begin();
