@@ -1,8 +1,8 @@
 ---------------------------------------------------------------------
 Language: 日本語
-Author: Shimazaki Ryo  (2005/07/07)
+Author: Shimazaki Ryo  (2005-08-28)
 Contributions by: 
-Version: 0.2.3
+Version: 0.2.4
 ---------------------------------------------------------------------
 
 
@@ -214,12 +214,13 @@ LOG_WINDOW_TITLE              =ログウィンドウ - Proximodo
 LOG_BUTTON_START              =開始(&S)
 LOG_BUTTON_STOP               =停止(&S)
 LOG_BUTTON_CLEAR              =消去(&R)
-LOG_CKB_HTTP                  =HTTPイベント(&H)
+LOG_CKB_HTTP                  =HTTPイベント(&T)
 LOG_CKB_POST                  =POSTデータ(&D)
 LOG_CKB_PROXY                 =プロクシイベント(&P)
 LOG_CKB_FILTER                =フィルタイベント(&F)
 LOG_CKB_LOG                   =$LOG()イベント(&L)
 LOG_CKB_BROWSER               =ブラウザ対話モード(&B)
+LOG_CKB_HEADERS               =ヘッダ(&H)
 EVT_FILTER_HMATCH             =>>> Req #%1: ヘッダフィルタ "%2" が "%3" にマッチ
 EVT_FILTER_HREPLACE           =>>> Req #%1: ヘッダフィルタ "%2" が "%3" に置換
 EVT_FILTER_LOG                =>>> Req #%1: フィルタ "%2" のログ:
@@ -234,6 +235,8 @@ _%3
 EVT_HTTP_SENDIN               =>>> Req #%1 (ポート %2): ブラウザへレスポンスを送信
 _%3
 EVT_HTTP_SENDOUT              =>>> Req #%1 (ポート %2): ウェブサイトへリクエストを送信
+_%3
+EVT_HTTP_GENERIC              =>>> Req #%1 (ポート %2):
 _%3
 EVT_PROXY_ACCEPT              =>>> ポート %1 で接続しました
 EVT_PROXY_ENDREQ              =>>> ポート %1 のリクエストが完了しました
