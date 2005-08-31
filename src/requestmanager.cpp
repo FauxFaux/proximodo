@@ -248,24 +248,29 @@ void CRequestManager::destroy() {
 }
 
 
-/* Receive outgoing data from browser
+/* Receive outgoing data from browser.
+ * Fixed: using the wxSOCKET_NONE flag in combination with WaitForRead()
+ * fixes a severe bug when loading pages from certain websites, the pages
+ * of which were truncated in the middle.
  */
 bool CRequestManager::receiveOut() {
 
     // Read socket by blocks
     char buf[CRM_READSIZE];
-    int ret = 0;
-    int count;
-    browser->SetFlags(wxSOCKET_NOWAIT);
-    while (browser->IsConnected() && !browser->WaitForLost(0, 0)) {
+    bool dataReceived = false;
+    // Loop as long as we can read something from the socket
+    browser->SetFlags(wxSOCKET_BLOCK | wxSOCKET_NONE);
+    while (browser->WaitForRead(0,0)) {
+        // Read the socket
         browser->Read(buf, CRM_READSIZE);
-        count = browser->LastCount();
-        if (!count)
-            break;
-        ret += count;
+        // if we read 0 byte, stop for now
+        int count = browser->LastCount();
+        if (count == 0) break;
+        // put the data into the buffer
         recvOutBuf += string(buf, count);
+        dataReceived = true;
     }
-    return ret > 0;
+    return dataReceived;
 }
 
 
@@ -290,23 +295,28 @@ bool CRequestManager::sendOut() {
 
 
 /* Receive incoming data from website
+ * Fixed: using the wxSOCKET_NONE flag in combination with WaitForRead()
+ * fixes a severe bug when loading pages from certain websites, the pages
+ * of which were truncated in the middle.
  */
 bool CRequestManager::receiveIn() {
 
     // Read socket by blocks
     char buf[CRM_READSIZE];
-    int ret = 0;
-    int count;
-    website->SetFlags(wxSOCKET_NOWAIT);
-    while (website->IsConnected() && !website->WaitForLost(0, 0)) {
+    bool dataReceived = false;
+    // Loop as long as we can read something from the socket
+    website->SetFlags(wxSOCKET_BLOCK | wxSOCKET_NONE);
+    while (website->WaitForRead(0,0)) {
+        // Read the socket
         website->Read(buf, CRM_READSIZE);
-        count = website->LastCount();
-        if (!count)
-            break;
-        ret += count;
+        // if we read 0 byte, stop for now
+        int count = website->LastCount();
+        if (count == 0) break;
+        // put the data into the buffer
         recvInBuf += string(buf, count);
+        dataReceived = true;
     }
-    return ret > 0;
+    return dataReceived;
 }
 
 
