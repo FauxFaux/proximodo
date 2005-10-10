@@ -80,6 +80,28 @@ along with the 'localhost' host (or your computer's IP address for
 distant connections to Proximodo). You may have to configure your
 firewall for letting Proximodo through.</p>
 
+<p class="option">Enable URL commands</p>
+
+<p class="explain">When you check this option, you can ask Proximodo
+to do additional processing to a page by prefixing the domain with
+a "URL command". Known URL commands are:
+<ul>
+<li><code>bin.. </code>: bypass incoming header filters for this page</li>
+<li><code>bout.. </code>: bypass outgoing header filters for this page</li>
+<li><code>bweb.. </code>: bypass text filters for this page</li>
+<li><code>bypass.. </code>: bypass all filters for this page</li>
+<li><code>dbug.. </code>: insert debug markers where filters are triggered</li>
+<li><code>src.. </code>: display web page source code</li>
+</ul>
+</p>
+
+<p class="option">Prefix</p>
+
+<p class="explain">In order to prevent websites from using URL commands
+to disable filters on their pages, you can customize the URL commands
+with an additional prefix. For example, with the prefix <code>foo</code>
+the URL command to bypass filters will become <code>foobypass..</code></p>
+
 <p class="option">Use a remote Proxy</p>
 
 <p class="explain">When this box is checked, Proximodo will access

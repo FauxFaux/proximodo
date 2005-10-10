@@ -32,7 +32,7 @@
 #define APP_NAME "Proximodo"
 
 // Proximodo version
-#define APP_VERSION "0.2.4"
+#define APP_VERSION "0.2.5"
 
 // Constant used for "+infinity"
 #define BIG_NUMBER 0x7FFFFFFF
