@@ -2,7 +2,7 @@
 FileName=Proximodo.dev
 Name=Proximodo
 UnitCount=66
-Type=1
+Type=0
 Ver=1
 ObjFiles=
 Includes=
@@ -62,19 +62,19 @@ BuildCmd=
 [VersionInfo]
 Major=0
 Minor=2
-Release=3
+Release=5
 Build=0
 LanguageID=1033
 CharsetID=1252
 CompanyName=(c) Antony Boucher
-FileVersion=0.2.4
+FileVersion=0.2.5
 FileDescription=Proximodo Project
 InternalName=
 LegalCopyright=Distributed under GNU GPL
 LegalTrademarks=
 OriginalFilename=
 ProductName=Proximodo
-ProductVersion=0.2.4
+ProductVersion=0.2.5
 AutoIncBuildNr=0
 
 [Unit4]
