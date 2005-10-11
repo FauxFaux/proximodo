@@ -1,4 +1,4 @@
-Version 0.2.x
+Version 0.2.5
 -------------
 
 Proxy
