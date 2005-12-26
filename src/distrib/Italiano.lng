@@ -135,6 +135,8 @@ LB_SETTINGS_GUI               =Interfaccia utente
 LB_SETTINGS_LANGUAGE          =Localizzazione
 LB_SETTINGS_PROXY             =Proxy
 LB_SETTINGS_PORT              =Porta
+LB_SETTINGS_URLCMD            =Abilita Comandi URL	
+LB_SETTINGS_URLCMD_PREFIX     =Prefisso
 LB_SETTINGS_USEPROXY          =Usa un proxy remoto
 LB_SETTINGS_NEXTPROXY         =Proxy
 LB_SETTINGS_REMOVE            =Rimuovi
@@ -193,9 +195,15 @@ EDIT_WINDOW_TITLE             =Proximodo - Modifica Filtro
 Test Window
 
 TEST_WINDOW_TEST_BUTTON       =Prova
+TEST_WINDOW_PROF_BUTTON       =Profilo
 TEST_WINDOW_CLOSE_BUTTON      =Chiudi
 TEST_WINDOW_TITLE             =Proximodo - Prova Filtro
 TEST_NO_MATCH                 =(Nessun riscontro rilevato)
+TEST_PROFILE_RESULTS          =Risultati Profilo...	
+ _  Testo campione:  %1 byte	
+ _  Riscontri positivi:  %2	
+ _  Tempo medio:  %3 microsecondi	
+ _  Banda:  %4 KB/s
 
 Configuration Window
 
@@ -222,6 +230,7 @@ LOG_CKB_PROXY                 =Eventi Proxy
 LOG_CKB_FILTER                =Eventi Filtri
 LOG_CKB_LOG                   =Eventi $LOG()
 LOG_CKB_BROWSER               =Comunicazione con il Browser 
+LOG_CKB_HEADERS               =Mostra Intestazioni
 EVT_FILTER_HMATCH             =>>> Req #%1: Il filtro per l'intestazione HTTP "%2" ha riscontrato "%3"
 EVT_FILTER_HREPLACE           =>>> Req #%1: Il filtro per l'intestazione HTTP "%2" ha sostituito "%3"
 EVT_FILTER_LOG                =>>> Req #%1: Il filtro "%2" annota questo:
@@ -236,6 +245,8 @@ _%3
 EVT_HTTP_SENDIN               =>>> Req #%1 (porta %2): Risposta inviata al browser
 _%3
 EVT_HTTP_SENDOUT              =>>> Req #%1 (porta %2): Richiesta inviata al sito web
+_%3
+EVT_HTTP_GENERIC              =>>> Req #%1 (porta %2):	
 _%3
 EVT_PROXY_ACCEPT              =>>> Connessione accettata sulla porta %1
 EVT_PROXY_ENDREQ              =>>> Richiesta terminata sulla porta %1
@@ -327,6 +338,7 @@ BUTTON_FILTERS_TIP            =Mostra il pannello di modifica dei filtri
 BUTTON_CONFIG_TIP             =Mostra il pannello di modifica delle configurazioni
 BUTTON_HELP_TIP               =Apre le pagine della guida nel browser
 BUTTON_QUIT_TIP               =Ferma il proxy e chiudi Proximodo
+MENU_TOOLSMONITOR_TIP         =Mostra il pannello di controllo
 MENU_TOOLSSETTINGS_TIP        =Mostra il pannello delle impostazioni
 MENU_TOOLSCONFIG_TIP          =Mostra il pannello di modifica delle configurazioni
 MENU_TOOLSFILTERS_TIP         =Mostra il pannello di modifica dei filtri
@@ -350,6 +362,8 @@ SETTINGS_LANGUAGE_TIP         =Localizzazione dell'interfaccia. Sarà effettiva u
 SETTINGS_STARTUP_TIP          =Mostra la finestra principale di Proximodo quando viene eseguito
 SETTINGS_STARTUPGUI_TIP       =Selezionate cosa Proximodo dovrà mostrare all'avvio
 SETTINGS_PORT_TIP             =Porta di ascolto di Proximodo. Da inserire nelle impostazioni Proxy del browser
+SETTINGS_URLCMD_TIP           =Abilita gli speciali comandi URL (dbug, bypass, ecc.)	
+SETTINGS_URLCMD_PREFIX_TIP    =Se impostata, Proximodo richiederà questa stringa prima di qualsiasi comando URL
 SETTINGS_USEPROXY_TIP         =Se attivato, lo stesso Proximodo userà un altro proxy per accedere ad internet
 SETTINGS_NEXTPROXY_TIP        =Proxy che Proximodo userà. I proxy elencati saranno disponibili per i comandi $SETPROXY
 SETTINGS_REMOVEPROXY_TIP      =Rimuove il proxy selezionato dalla lista
