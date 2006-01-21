@@ -527,17 +527,19 @@ void CSettings::addListLine(string name, string line) {
     // We add the line to the file if the list exists
     if (listNames.find(name) != listNames.end()) {
 
+        /* do we really want this?
         // multiline patterns are converted to single line, to avoid
         // the danger of having the 2nd+ line not beginning by a space
         line = CUtil::replaceAll(line, "\r", "");
         line = CUtil::replaceAll(line, "\n", "");
+        */
 
         // Append line to file
-        wxTextFile f(listNames[name].c_str());
-        if (!f.Open()) f.Create();
-        f.AddLine(line.c_str());
-        f.Write();
-        f.Close();
+        wxFile f(listNames[name].c_str(), wxFile::write_append);
+        if (f.IsOpened()) {
+            f.Write((line+"\r\n").c_str());
+            f.Close();
+        }
 
         // If line is a valid pattern, keep it in memory
         if (line[0] != '#' && CMatcher::testPattern(line)) {

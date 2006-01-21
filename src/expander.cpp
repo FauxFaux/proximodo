@@ -450,7 +450,7 @@ string CExpander::expand(const string& pattern, CFilter& filter) {
                         char c = content[i];
                         switch (c) {
                         case 'Y' : ss << now.GetYear(); break;
-                        case 'M' : ss << CUtil::pad(now.GetMonth(),2); break;
+                        case 'M' : ss << CUtil::pad(now.GetMonth()+1,2); break;
                         case 'D' : ss << CUtil::pad(now.GetDay(),2); break;
                         case 'H' : ss << CUtil::pad(now.GetHour(),2); break;
                         case 'm' : ss << CUtil::pad(now.GetMinute(),2); break;

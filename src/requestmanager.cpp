@@ -953,8 +953,13 @@ void CRequestManager::processIn() {
                     string name = (*itf)->headerName;
 
                     // If header is absent, temporarily create one
-                    if (getHeader(inHeadersFiltered, name).empty())
-                        setHeader(inHeadersFiltered, name, "");
+                    if (getHeader(inHeadersFiltered, name).empty()) {
+                        if (CUtil::noCaseBeginsWith("url", name)) {
+                            setHeader(inHeadersFiltered, name, url.getUrl());
+                        } else {
+                            setHeader(inHeadersFiltered, name, "");
+                        }
+                    }
                     // Test headers one by one
                     for (vector<SHeader>::iterator ith =
                             inHeadersFiltered.begin();
