@@ -32,11 +32,12 @@ GUI:
 - A way for the filter designer to specify filter dependencies within their packs:
   dependent filters are automatically (de)activated when the end-user checks filters.
 - Store all filters, settings and lists in a database (SQLite), exposed via the GUI
+- Be able to get proxy configuration from "proxy.pac" (i.e. include SpiderMonkey engine to run Javascript from C++)
 
 Engine:
 
 - $LOG(%...) to write to log file
-- Command for inserting application-defined variables in replace pattern 
+- Command for inserting application-defined variables in replace pattern
   (ex: filter name, last matched $LST pattern, time in seconds, time of last config change)
 - Estimate and improve performance and stability
 - Global variables accessed with $GSET and $GGET (beware multithreaded access!)
