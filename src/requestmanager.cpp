@@ -552,7 +552,6 @@ void CRequestManager::processOut() {
             if (url.getBypassText())  bypassBody = true;
             useSettingsProxy = CSettings::ref().useNextProxy;
             contactHost = url.getHostPort();
-            setHeader(outHeaders, "Host", url.getHost());
 
             // Test URL with bypass-URL matcher, if matches we'll bypass all
             if (urlMatcher) {
