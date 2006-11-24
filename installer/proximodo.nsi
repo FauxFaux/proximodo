@@ -2,7 +2,7 @@
 
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "Proximodo"
-!define PRODUCT_VERSION "0.2.5"
+!define PRODUCT_VERSION "0.2.7"
 !define PRODUCT_PUBLISHER "Antony Boucher"
 !define PRODUCT_WEB_SITE "http://proximodo.sourceforge.net/"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\Proximodo.exe"
@@ -61,6 +61,7 @@ FunctionEnd
 !insertmacro MUI_LANGUAGE "French"
 !insertmacro MUI_LANGUAGE "Japanese"
 !insertmacro MUI_LANGUAGE "Italian"
+!insertmacro MUI_LANGUAGE "Russian"
 
 ; Reserve files
 !insertmacro MUI_RESERVEFILE_INSTALLOPTIONS
@@ -98,6 +99,12 @@ Function .onInit
     !insertmacro MUI_INSTALLOPTIONS_EXTRACT_AS "it\donotsetproxy.ini" "donotsetproxy.ini"
     Goto done
   notItalian:
+  IntCmp $LANGUAGE ${LANG_RUSSIAN} isRussian notRussian notRussian
+  isRussian:
+    !insertmacro MUI_INSTALLOPTIONS_EXTRACT_AS "ru\setproxy.ini"      "setproxy.ini"
+    !insertmacro MUI_INSTALLOPTIONS_EXTRACT_AS "ru\donotsetproxy.ini" "donotsetproxy.ini"
+    Goto done
+  notRussian:
     ; Give up and use English
     !insertmacro MUI_INSTALLOPTIONS_EXTRACT_AS "en\setproxy.ini"      "setproxy.ini"
     !insertmacro MUI_INSTALLOPTIONS_EXTRACT_AS "en\donotsetproxy.ini" "donotsetproxy.ini"
@@ -114,6 +121,8 @@ LangString PROXY_TITLE    ${LANG_JAPANESE} "ГuГЙГEГUРЁТи"
 LangString PROXY_SUBTITLE ${LANG_JAPANESE} "ГuГЙГEГUВ©ВзProximodoВрОgВ§ВљВяВћРЁТиВрНsВ§ХыЦ@ВрСIСрВµВƒВ≠ВЊВ≥ВҐБB"
 LangString PROXY_TITLE    ${LANG_ITALIAN}  "Configurazione del Browser"
 LangString PROXY_SUBTITLE ${LANG_ITALIAN}  "Configura il vostro browser in modo da usare Proximodo"
+LangString PROXY_TITLE    ${LANG_RUSSIAN}  "Ќастройка »нтернет-броузера"
+LangString PROXY_SUBTITLE ${LANG_RUSSIAN}  "”кажите, требуетс€ ли настроить использование Proximodo в вашем »нтернет-браузере"
 
 Function proxyPage
   ; Set header
@@ -196,7 +205,33 @@ Section -ProximodoFiles
   File "..\bin\help\ja\settings.png"
   File "..\bin\help\ja\syntax.html"
   File "..\bin\help\ja\welcome.html"
-  SetOutPath "$INSTDIR\html"
+  SetOutPath "$INSTDIR\help\ru"
+  File "..\bin\help\ru\config.html"
+  File "..\bin\help\ru\config.png"
+  File "..\bin\help\ru\content.html"
+  File "..\bin\help\ru\filters.html"
+  File "..\bin\help\ru\filters.png"
+  File "..\bin\help\ru\f_config.html"
+  File "..\bin\help\ru\f_content.html"
+  File "..\bin\help\ru\f_filters.html"
+  File "..\bin\help\ru\f_license.html"
+  File "..\bin\help\ru\f_log.html"
+  File "..\bin\help\ru\f_monitor.html"
+  File "..\bin\help\ru\f_settings.html"
+  File "..\bin\help\ru\f_syntax.html"
+  File "..\bin\help\ru\f_welcome.html"
+  File "..\bin\help\ru\header.html"
+  File "..\bin\help\ru\help.css"
+  File "..\bin\help\ru\license.html"
+  File "..\bin\help\ru\log.html"
+  File "..\bin\help\ru\log.png"
+  File "..\bin\help\ru\monitor.html"
+  File "..\bin\help\ru\monitor.png"
+  File "..\bin\help\ru\settings.html"
+  File "..\bin\help\ru\settings.png"
+  File "..\bin\help\ru\syntax.html"
+  File "..\bin\help\ru\welcome.html"
+   SetOutPath "$INSTDIR\html"
   File "..\bin\html\DomConKiller.js"
   File "..\bin\html\DomConKiller.txt"
   File "..\bin\html\error.html"
@@ -221,6 +256,7 @@ Section -ProximodoFiles
   File "..\bin\francais.lng"
   File "..\bin\japanese.lng"
   File "..\bin\Italiano.lng"
+  File "..\bin\Russian.lng"
 
 ; Shortcuts
   !insertmacro MUI_STARTMENU_WRITE_BEGIN Application
@@ -270,6 +306,8 @@ LangString UNINST_SUCCESS ${LANG_JAPANESE} "$(^Name)ВћГCГУГXГgБ[ГЛВ™КЃЧєВµВ№ВµВљ
 LangString UNINST_CONFIRM ${LANG_JAPANESE} "$(^Name)ВрГAГУГCГУГXГgБ[ГЛВµВƒБAГtГ@ГCГЛВрНнПЬВµВƒВаВжВлВµВҐВ≈ВЈВ©БH"
 LangString UNINST_SUCCESS ${LANG_ITALIAN}  "$(^Name) was successfully removed from your computer."
 LangString UNINST_CONFIRM ${LANG_ITALIAN}  "Are you sure you want to completely remove $(^Name) and all of its components?"
+LangString UNINST_SUCCESS ${LANG_RUSSIAN}  "ѕрограмма $(^Name) была успешно удалена с вашего компьютера."
+LangString UNINST_CONFIRM ${LANG_RUSSIAN}  "¬ы действительно желаете удалить программу $(^Name) и все еЄ компоненты?"
 
 Function un.onUninstSuccess
   HideWindow
@@ -308,6 +346,31 @@ Section Uninstall
   Delete "$INSTDIR\html\error.html"
   Delete "$INSTDIR\html\DomConKiller.txt"
   Delete "$INSTDIR\html\DomConKiller.js"
+  Delete "$INSTDIR\help\ru\welcome.html"
+  Delete "$INSTDIR\help\ru\syntax.html"
+  Delete "$INSTDIR\help\ru\settings.png"
+  Delete "$INSTDIR\help\ru\settings.html"
+  Delete "$INSTDIR\help\ru\monitor.png"
+  Delete "$INSTDIR\help\ru\monitor.html"
+  Delete "$INSTDIR\help\ru\log.png"
+  Delete "$INSTDIR\help\ru\log.html"
+  Delete "$INSTDIR\help\ru\license.html"
+  Delete "$INSTDIR\help\ru\help.css"
+  Delete "$INSTDIR\help\ru\header.html"
+  Delete "$INSTDIR\help\ru\f_welcome.html"
+  Delete "$INSTDIR\help\ru\f_syntax.html"
+  Delete "$INSTDIR\help\ru\f_settings.html"
+  Delete "$INSTDIR\help\ru\f_monitor.html"
+  Delete "$INSTDIR\help\ru\f_log.html"
+  Delete "$INSTDIR\help\ru\f_license.html"
+  Delete "$INSTDIR\help\ru\f_filters.html"
+  Delete "$INSTDIR\help\ru\f_content.html"
+  Delete "$INSTDIR\help\ru\f_config.html"
+  Delete "$INSTDIR\help\ru\filters.png"
+  Delete "$INSTDIR\help\ru\filters.html"
+  Delete "$INSTDIR\help\ru\content.html"
+  Delete "$INSTDIR\help\ru\config.png"
+  Delete "$INSTDIR\help\ru\config.html"
   Delete "$INSTDIR\help\ja\welcome.html"
   Delete "$INSTDIR\help\ja\syntax.html"
   Delete "$INSTDIR\help\ja\settings.png"
@@ -382,6 +445,7 @@ Section Uninstall
   RMDir "$INSTDIR\html"
   RMDir "$INSTDIR\help\ja"
   RMDir "$INSTDIR\help\en"
+  RMDir "$INSTDIR\help\ru"
   RMDir "$INSTDIR\help"
   RMDir "$INSTDIR"
   
