@@ -12,106 +12,104 @@ Data: 2005 ноябрь 27
 
 Pattern Parsing Errors
 
-MISSING_CURLY                 =Пропущена закрывающая скобка в позиции %1
-PARSING_INCOMPLETE            =Шаблон не может быть обработан до конца
+MISSING_CURLY                 =Отсутствует закрывающая фигурная скобка в позиции %1
+PARSING_INCOMPLETE            =Незавершенный шаблон
 ESCAPE_AT_END                 =Управляющий код в конце шаблона
-MISSING_CROCHET               =Пропущена закрывающая связка в позиции %1
-MISSING_PARENTHESE            =Пропущено закрывающее слово в позиции %1
-NOT_A_NUMBER                  =Ожидается число в позиции %1
+MISSING_CROCHET               =Отсутствует закрывающая связка в позиции %1
+MISSING_PARENTHESE            =Отсутствует закрывающая скобка в позиции %1
+NOT_A_NUMBER                  =Ожидается числовое выражение в позиции %1
 UNKNOWN_COMMAND               =Неизвестная команда в позиции %1
-MISSING_EQUAL                 =Нет знака равенства в содержании %1
-NEED_TRUE_FALSE               =Только логические переменные (ложь или истина) разрешены в позиции %1
-NEED_TEXT                     =Определенный текст необходим в позиции %1
-TWO_THREE_INTEGERS            =Здесь должно быть 2 или 3 положительных целых числа разделенных запятой в позиции %1
-MISSING_COLON                 =Пропущено двоеточие в позиции %1
+MISSING_EQUAL                 =Отсутствует знак равенства в выражении %1
+NEED_TRUE_FALSE               =Допускается только логическое значение (TRUE или FALSE) в позиции %1
+NEED_TEXT                     =Ожидается текстовое выражение в позиции %1
+TWO_THREE_INTEGERS            =Ожидается строго 2 или 3 целых положительных числа разделенных запятыми в позиции %1
+MISSING_COLON                 =Отсутствует двоеточие в позиции %1
 CROCHET_AT_END                =Открытая связка в конце шаблона
-MISSING_COMMA                 =Пропущена запятая в позиции %1
+MISSING_COMMA                 =Отсутствует запятая в позиции %1
 ERROR_MARKER                  =•
 
 Web Error Messages
 
-404_NOT_FOUND                 =Запрошенный файл не найден на сервере.
-502_BAD_GATEWAY               =Неудача при поиске DNS.
-503_UNAVAILABLE               =Неудача при соединении к этому хосту. Возможно сервер занят, попробуйте позже.
+404_NOT_FOUND                 =Файл не найден. Запрошенная страница удалена, переименована или временно недоступна. Убедитесь, что URL-адрес страницы введен без ошибок. 
+502_BAD_GATEWAY               =Сервер не найден. Убедитесь, что URL-адрес сервера введен без ошибок.
+503_UNAVAILABLE               =Сервис недоступен. Возможно сервер занят или перегружен, попробуйте повторить запрос позже.
 
 Filter Messages
 
-ADDLSTBOX_MESSAGE             =Следующий элемент будет добавлен в %1 (разрешены шаблоны)
-INVALID_FILTER_TITLE          =Необходимо задать заглавие.
-INVALID_FILTER_MATCHEMPTY     =Шаблон не может быть пустым.
-INVALID_FILTER_WIDTH          =Неправильный предельный размер.
-INVALID_FILTER_HEADEREMPTY    =Необходимо задать имя.
+ADDLSTBOX_MESSAGE             =Следующий элемент будет добавлен в %1 (допустимо использование маски) 
+INVALID_FILTER_TITLE          =Не задано или недопустимое название фильтра.
+INVALID_FILTER_MATCHEMPTY     =Не задан шаблон соответствия.
+INVALID_FILTER_WIDTH          =Некорректный размер.
+INVALID_FILTER_HEADEREMPTY    =Не задан HTTP-заголовок.
 
 Main Window
 
 BUTTON_MONITOR                =Монитор
-BUTTON_SETTINGS               =Настройки
-BUTTON_LOG                    =Отчет
+BUTTON_SETTINGS               =Параметры
+BUTTON_LOG                    =Журнал
 BUTTON_FILTERS                =Фильтры
 BUTTON_CONFIG                 =Конфигурация
-BUTTON_HELP                   =Помощь
+BUTTON_HELP                   =Справка
 BUTTON_QUIT                   =Выход
 STAT_ACTIVE_REQS              =%1 активных запросов
-STAT_ACTIVE_REQ               =%1 активных запросов
+STAT_ACTIVE_REQ               =%1 активный запрос
 HELP_PAGE_CONTENT             =./help/ru/f_content.html
 HELP_PAGE_SYNTAX              =./help/ru/f_syntax.html
 HELP_PAGE_WELCOME             =./help/ru/f_welcome.html
 HELP_PAGE_LICENSE             =./help/ru/f_license.html
 HELP_PAGE_FILTERS             =./help/ru/f_filters.html
-HELP_ABOUT_TEXT               =Proximodo версии %1
+HELP_ABOUT_TEXT               =Proximodo %1
 _2004 (c) Antony Boucher
 _
-_Настраиваемый фильтрующий прокси использующий 
-_идею Proxomitron от Scott R. Lemmon 
+_Универсальный web-фильтр, 
+_основанный на идеях Proxomitron от Scott R. Lemmon 
 _
-_Открытый проект распространяемый по GNU GPL
+_Open-Source проект, распространяемый под лицензией GNU GPL
 _
-_Proximodo использует следующие библиотеки:
-_* ZLib (C) 1995-2004 Jean-loup Gailly and Mark Adler
+_Использованы библиотеки:
+_* ZLib (с) 1995-2004 Jean-loup Gailly И Mark Adler
 _* wxWidgets (c) 1992-2002 Julian Smart, Robert Roebling,
-_   Vadim Zeitlin и другие члены команды wxWidgets
-_   Portions (c) 1996 Artificial Intelligence Applications
+_   Vadim Zeitlin и другие 
+_* Portions (c) 1996 Artificial Intelligence Applications
 _   Institute
 _
-_
-_Перевод от NAGRIS
 
 Menu Bar
 
 MENU_TOOLS                    =Инструменты
 MENU_FILTERS                  =Фильтры
 MENU_CONFIG                   =Конфигурация
-MENU_HELP                     =Помощь
+MENU_HELP                     =Справка
 MENU_TOOLSMONITOR             =Монитор	Alt+M
-MENU_TOOLSSETTINGS            =Настройки	Alt+S
+MENU_TOOLSSETTINGS            =Параметры	Alt+S
 MENU_TOOLSCONFIG              =Конфигурация	Alt+G
 MENU_TOOLSFILTERS             =Фильтры	Alt+F
-MENU_TOOLSLOG                 =Окно отчета	Alt+L
+MENU_TOOLSLOG                 =Журнал событий...	Alt+L
 MENU_TOOLSSAVE                =Сохранить	Ctrl+S
 MENU_TOOLSRELOAD              =Перезагрузить	Ctrl+Y
 MENU_TOOLSQUIT                =Выход	Ctrl+Q
 MENU_TOOLSICONIZE             =Свернуть	F4
-MENU_HELPABOUT                =О программе
+MENU_HELPABOUT                =О Proximodo...
 MENU_HELPCONTENT              =Содержание	F1
-MENU_HELPSYNTAX               =Коды и команды
+MENU_HELPSYNTAX               =Cинтаксис языка
 MENU_HELPLICENSE              =Лицензия
 MENU_HELPFILTERS              =Редактор фильтров
 MENU_FILTERSEDIT              =Редактировать фильтр 	Enter
-MENU_FILTERSCHECK             =Включить	Alt+Space
-MENU_FOLDERSNEW               =Новая папка	Alt+F
+MENU_FILTERSCHECK             =Включить/выключить	Alt+Space
+MENU_FOLDERSNEW               =Новая группа фильтров	Alt+F
 MENU_FILTERSAPPLY             =Применить	F8
-MENU_FILTERSREVERT            =Вернуть	F9
-MENU_FILTERSDELETE            =Выключить	Alt+X
-MENU_FILTERSEXPORT            =Экспорт	Alt+C
-MENU_FILTERSIMPORT            =Импорт	Alt+V
-MENU_FILTERSPROXOMITRON       =Импорт из Proxomitron
-MENU_FILTERSDUPLICATE         =Дубликаты	Alt+D
+MENU_FILTERSREVERT            =Отменить	F9
+MENU_FILTERSDELETE            =Вырезать	Alt+X
+MENU_FILTERSEXPORT            =Копировать	Alt+C
+MENU_FILTERSIMPORT            =Вставить	Alt+V
+MENU_FILTERSPROXOMITRON       =Вставить из Proxomitron
+MENU_FILTERSDUPLICATE         =Дублировать фильтр	Alt+D
 MENU_FILTERSNEW               =Новый фильтр	Alt+N
-MENU_FILTERSTEST              =Тест	Alt+T
+MENU_FILTERSTEST              =Проверка...	Alt+T
 MENU_FILTERSENCODE            =Кодировать в Base64
 MENU_FILTERSDECODE            =Декодировать из Base64
 MENU_CONFIGAPPLY              =Применить	F8
-MENU_CONFIGREVERT             =Вернуть	F9
+MENU_CONFIGREVERT             =Откатить	F9
 MENU_CONFIGDELETE             =Удалить конфигурацию
 MENU_CONFIGDUPLICATE          =Дублировать конфигурацию
 MENU_CONFIGNEW                =Новая конфигурация
@@ -122,31 +120,31 @@ MENU_CONFIGMOVEDOWN           =Вниз	Alt+Down
 
 Settings Window
 
-SETTINGS_NOT_SAVED            =Настройки изменены. Вы хотите сохранить их?
-REVERT_SETTINGS               =Вы потеряете свою конфигурацию. Вы все еще хотите вернуть настройки?
-APPLY_SETTINGS                =Настройки изменены. Вы хотите применить их?
-BAD_PATTERN                   =Этот шаблон неправильный.
-PORT_UNAVAILABLE              =Этот порт сейчас не доступен. Возможно его использует другая программа. Измените настройки в Proximodo или в файле settings.txt.
-BAD_REMOTE_PROXY              =Этот адрес кажется не работает.
+SETTINGS_NOT_SAVED            =Параметры программы были изменены. Cохранить изменения?
+REVERT_SETTINGS               =Все изменения будут потеряны! Действительно вернуться к исходным настройкам?
+APPLY_SETTINGS                =Применить изменения в текущих настройках?
+BAD_PATTERN                   =Некорректный шаблон фильтрации URL.
+PORT_UNAVAILABLE              =Указанный порт зарезервирован или используется другой программой. Необходимо выбрать другой порт для программы Proximodo.
+BAD_REMOTE_PROXY              =Невозможно установить соединение с указанным внешним прокси-сервером.
 LB_SETTINGS_FILTERING         =Фильтрация
 LB_SETTINGS_OUTGOING          =Фильтровать исходящие заголовки
 LB_SETTINGS_INCOMING          =Фильтровать входящие заголовки
-LB_SETTINGS_TEXT              =Фильтровать текст
-LB_SETTINGS_GIF               =Остановить GIF изображения
+LB_SETTINGS_TEXT              =Фильтровать Web-страницы
+LB_SETTINGS_GIF               =Отключить GIF-анимацию
 LB_SETTINGS_ACTIVE            =Активная конфигурация
-LB_SETTINGS_BYPASS            =Пропускать URL по шаблону
-LB_SETTINGS_GUI               =Интерфейс пользователя
+LB_SETTINGS_BYPASS            =Не фильровать URL
+LB_SETTINGS_GUI               =Параметры интерфейса
 LB_SETTINGS_LANGUAGE          =Язык
-LB_SETTINGS_PROXY             =Прокси
-LB_SETTINGS_PORT              =Порт
+LB_SETTINGS_PROXY             =Параметры локальной сети
+LB_SETTINGS_PORT              =Порт Proximodo 
 LB_SETTINGS_URLCMD            =Разрешить URL команды
 LB_SETTINGS_URLCMD_PREFIX     =Префикс
-LB_SETTINGS_USEPROXY          =Использовать удаленный прокси
-LB_SETTINGS_NEXTPROXY         =Прокси
-LB_SETTINGS_REMOVE            =Удаленный
-LB_SETTINGS_ALLOWIP           =Разрешить IP диапазон
-LB_SETTINGS_MINRANGE          =Начало диапазона
-LB_SETTINGS_MAXRANGE          =Конец диапазона
+LB_SETTINGS_USEPROXY          =Использовать внешний прокси-сервер
+LB_SETTINGS_NEXTPROXY         =Адрес
+LB_SETTINGS_REMOVE            =Удалить
+LB_SETTINGS_ALLOWIP           =Разрешить доступ для IP адресов
+LB_SETTINGS_MINRANGE          =От
+LB_SETTINGS_MAXRANGE          =До
 LB_SETTINGS_APPLY             =Применить
 LB_SETTINGS_SAVE              =Сохранить
 LB_SETTINGS_REVERT            =Отменить
@@ -162,9 +160,9 @@ LB_SETTINGS_NEWLIST           =Новый
 LB_SETTINGS_OPENLIST          =Открыть
 LB_SETTINGS_LISTFILE          =Файл
 LB_SETTINGS_CHOOSEFILE        =Выбрать
-LB_SETTINGS_SHOWGUI           =Показывать GUI при запуске
-LB_SETTINGS_STARTBROWSER      =Запустить при запуске Proximodo:
-ASK_CREATE_NEWLIST            =Этот файл не существует. Создать его?
+LB_SETTINGS_SHOWGUI           =Выводить главное окно при запуске
+LB_SETTINGS_STARTBROWSER      =Выполнять при запуске
+ASK_CREATE_NEWLIST            =Указанный файл не существует. Создать его?
 OPEN_LISTFILE_QUESTION        =Выберите текстовый файл
 OPEN_BROWSER_QUESTION         =Выберите исполняемый файл
 
@@ -175,35 +173,35 @@ LB_EDIT_COL2                  =Категория
 LB_EDIT_AUTHOR                =Автор
 LB_EDIT_COMMENT               =Комментарий
 LB_EDIT_HEADERNAME            =Заголовок
-LB_EDIT_MULTIMATCH            =Разрешить многократное использование
-LB_EDIT_TITLE                 =Заголовок
+LB_EDIT_MULTIMATCH            =Множественное совпадение
+LB_EDIT_TITLE                 =Название
 LB_EDIT_CATEGORY              =Категория
 LB_EDIT_TYPE                  =Тип фильтра
-LB_EDIT_TYPEIN                =Входящие заголовки
-LB_EDIT_TYPEOUT               =Исходящие заголовки
-LB_EDIT_TYPETEXT              =Фильтр текста
+LB_EDIT_TYPEIN                =Входящих заголовков
+LB_EDIT_TYPEOUT               =Исходящих заголовков
+LB_EDIT_TYPETEXT              =Web-страниц
 LB_EDIT_VERSION               =Версия
 LB_EDIT_WIDTH                 =Предельный размер
 LB_EDIT_PRIORITY              =Приоритет
-LB_EDIT_URL                   =URL шаблон:
-LB_EDIT_BOUNDS                =Границы шаблона:
-LB_EDIT_MATCH                 =Совпадение шаблона:
+LB_EDIT_URL                   =URL:
+LB_EDIT_BOUNDS                =Границы совпадения:
+LB_EDIT_MATCH                 =Шаблон совпадения:
 LB_EDIT_REPLACE               =Замещающий текст:
-REVERT_EDITFILTERS            =Вы потеряете свою конфигурацию. Вы все еще хотите вернуть список фильтров?
-APPLY_EDITFILTERS             =Фильтр изменен. Вы хотите применить изменения?
+REVERT_EDITFILTERS            =Все изменения будут потеряны! Действительно вернуться к исходной конфигурации?
+APPLY_EDITFILTERS             =Конфигурация фильтров была изменена. Применить изменения?
 DEFAULT_FILTER_NAME           =Новый фильтр
 DEFAULT_FOLDER_NAME           =Новая папка
 PROXOMITRON_CATEGORY          =Proxomitron
-EDIT_WINDOW_TITLE             =Proximodo - окно редактирования
+EDIT_WINDOW_TITLE             =Proximodo - Редактирование фильтра
 
 Test Window
 
-TEST_WINDOW_TEST_BUTTON       =Тест
-TEST_WINDOW_PROF_BUTTON       =Профиль
+TEST_WINDOW_TEST_BUTTON       =Проверка
+TEST_WINDOW_PROF_BUTTON       =Статистика
 TEST_WINDOW_CLOSE_BUTTON      =Закрыть
-TEST_WINDOW_TITLE             =Proximodo - тестовое окно
+TEST_WINDOW_TITLE             =Proximodo - Проверка фильтра
 TEST_NO_MATCH                 =(Соответствий не найдено)
-TEST_PROFILE_RESULTS          =Результат профиля...
+TEST_PROFILE_RESULTS          =Статистика бработки:
 _  Текст:  %1 байт
 _  Совпадений:  %2
 _  Среднее время:  %3 микросекунд
@@ -215,8 +213,8 @@ LB_CONFIG_NAME                =Имя
 LB_CONFIG_COL1                =Заголовок
 LB_CONFIG_COL2                =Категория
 LB_CONFIG_COL3                =Тип
-APPLY_CONFIG                  =Конфигурация изменена. Вы хотите применить изменения?
-REVERT_CONFIG                 =Вы потеряете свои модификации. Вы все еще хотите вернуть конфигурацию?
+APPLY_CONFIG                  =Конфигурация фильтров была изменена. Применить изменения?
+REVERT_CONFIG                 =Все изменения будут потеряны! Действительно вернуться к исходной конфигурации?
 CONFIG_TYPE_OUT               =Из
 CONFIG_TYPE_IN                =В
 CONFIG_TYPE_TEXT              =Текст
@@ -224,68 +222,68 @@ CONFIG_NEW_NAME               =Новая конфигурация
 
 Log Window
 
-LOG_WINDOW_TITLE              =Proximodo - окно отчета
+LOG_WINDOW_TITLE              =Proximodo - Журнал событий
 LOG_BUTTON_START              =Старт
 LOG_BUTTON_STOP               =Стоп
 LOG_BUTTON_CLEAR              =Очистить
-LOG_CKB_HTTP                  =Показывать HTTP события
-LOG_CKB_POST                  =Показывать POST данные
-LOG_CKB_PROXY                 =Показывать события прокси
-LOG_CKB_FILTER                =Показывать события фильтров
-LOG_CKB_LOG                   =Показывать $LOG() события
-LOG_CKB_BROWSER               =Побочные диалоги браузера
+LOG_CKB_HTTP                  =Протокол HTTP обмена 
+LOG_CKB_POST                  =Данные запросов POST
+LOG_CKB_PROXY                 =Cобытия прокси-сервера
+LOG_CKB_FILTER                =Cобытия фильтров
+LOG_CKB_LOG                   =Сообщения $LOG()
+LOG_CKB_BROWSER               =Протокол браузера/web-сайта
 LOG_CKB_HEADERS               =Показывать заголовки
-EVT_FILTER_HMATCH             =>>> Запрос #%1: Фильтр заголовков "%2" обнаружил "%3"
-EVT_FILTER_HREPLACE           =>>> Запрос #%1: Фильтр заголовков "%2" заменил "%3"
-EVT_FILTER_LOG                =>>> Запрос #%1: Фильтр "%2" зарегистрировал:
-EVT_FILTER_TMATCH             =>>> Запрос #%1: Фильтр текста "%2" обнаружил "%3"
-EVT_FILTER_TREPLACE           =>>> Запрос #%1: Фильтр текста "%2" заменил "%3"
-EVT_HTTP_POSTOUT              =>>> Запрос #%1 (порт %2): POST данные посланы
+EVT_FILTER_HMATCH             =>>> Запрос #%1: Фильтр заголовков "%2" соответствует строке "%3"
+EVT_FILTER_HREPLACE           =>>> Запрос #%1: Фильтр заголовков "%2" произвел замену "%3"
+EVT_FILTER_LOG                =>>> Запрос #%1: Фильтр "%2":
+EVT_FILTER_TMATCH             =>>> Запрос #%1: Фильтр текста "%2" соответствует выражению "%3"
+EVT_FILTER_TREPLACE           =>>> Запрос #%1: Фильтр текста "%2" произвел замену "%3"
+EVT_HTTP_POSTOUT              =>>> Запрос #%1 (порт %2): POST данные запроса:
 _%3
-EVT_HTTP_RECVIN               =>>> Запрос #%1 (порт %2): Запрос получен от сайта
+EVT_HTTP_RECVIN               =>>> Запрос #%1 (порт %2): HTTP-ответ web-сайта:
 _%3
-EVT_HTTP_RECVOUT              =>>> Запрос #%1 (порт %2): Запрос посланный браузером
+EVT_HTTP_RECVOUT              =>>> Запрос #%1 (порт %2): HTTP-запрос браузера:
 _%3
-EVT_HTTP_SENDIN               =>>> Запрос #%1 (порт %2): Ответ посланный браузеру
+EVT_HTTP_SENDIN               =>>> Запрос #%1 (порт %2): HTTP-ответ, отправленный браузеру:
 _%3
-EVT_HTTP_SENDOUT              =>>> Запрос #%1 (порт %2): Запрос послан сайту
+EVT_HTTP_SENDOUT              =>>> Запрос #%1 (порт %2): HTTP-запрос, отправленный web-сайту:
 _%3
 EVT_HTTP_GENERIC              =>>> Запрос #%1 (порт %2):
 _%3
-EVT_PROXY_ACCEPT              =>>> Соединение к порту %1 принято
-EVT_PROXY_ENDREQ              =>>> Запрос к порту %1 завершен
-EVT_PROXY_ENDSOCK             =>>> Сокет закрыл порт %1
-EVT_PROXY_NEWREQ              =>>> Новый запрос получен из порта %1
-EVT_PROXY_NEWSOCK             =>>> Новый сокет создан для порта %1
-EVT_PROXY_REFUSE              =>>> Соединение к порту %1 отвергнуто
-EVT_PROXY_START               =>>> Прокси запущен на порте %1
-EVT_PROXY_STOP                =>>> Прокси остановлен
+EVT_PROXY_ACCEPT              =>>> Соединение на порт %1 принято
+EVT_PROXY_ENDREQ              =>>> Завершен запрос по порту %1
+EVT_PROXY_ENDSOCK             =>>> Закрыт сокет для порта %1
+EVT_PROXY_NEWREQ              =>>> Получен новый запрос на порт %1
+EVT_PROXY_NEWSOCK             =>>> Создан новый сокет для порта %1
+EVT_PROXY_REFUSE              =>>> Соединение на порт %1 отклонено
+EVT_PROXY_START               =>>> Прокси-сервер запущен, используется порт %1
+EVT_PROXY_STOP                =>>> Прокси-сервер остановлен.
 
 Monitoring Window
 
 LB_MONITOR_STATISTICS         =Статистика
-LB_MONITOR_OPENCNX            =Открыто соединений:
-LB_MONITOR_OPENREQ            =Выполняется запросов:
+LB_MONITOR_OPENCNX            =Открытых соединений:
+LB_MONITOR_OPENREQ            =Обрабатываемых запросов:
 LB_MONITOR_ABORT              =Прервать
 
 Tray Icon Menu
 
 TRAY_CONFIG                   =Конфигурация
-TRAY_FILTER                   =Фильтр
-TRAY_FILTERALL                =Все
-TRAY_FILTERIN                 =Входящее
-TRAY_FILTERNONE               =Нет
-TRAY_FILTEROUT                =Исходящее
-TRAY_FILTERTEXT               =Текст
-TRAY_FILTERGIF                =GIF
-TRAY_LOG                      =Окно отчета
+TRAY_FILTER                   =Фильтрация
+TRAY_FILTERALL                =Все типы
+TRAY_FILTERIN                 =Входящих заголовков
+TRAY_FILTERNONE               =Отключена
+TRAY_FILTEROUT                =Исходящих заголовков
+TRAY_FILTERTEXT               =Web-страниц
+TRAY_FILTERGIF                =GIF-анимации
+TRAY_LOG                      =Журнал событий
 TRAY_OPEN                     =Открыть
 TRAY_EXIT                     =Выход
-TRAY_USEPROXY                 =Использовать прокси
+TRAY_USEPROXY                 =Внешний прокси-сервер
 
 Other Messages
 
-UTIL_OPEN_FILE                =Не могу найти программу %1
+UTIL_OPEN_FILE                =Не найдена программа для файла %1
 
 Tool Tips
 
@@ -301,11 +299,11 @@ MENU_CONFIGADD_TIP            =Добавить выбранные фильтры в конфигурацию
 MENU_CONFIGREMOVE_TIP         =Удалить выбранные фильтры из конфигурации
 MENU_CONFIGMOVEUP_TIP         =Переместить выбранные Фильтры на 1 строку вверх
 MENU_CONFIGMOVEDOWN_TIP       =Переместить выбранные фильтры на 1 строку вниз
-MENU_CONFIGNEW_TIP            =Создать новую пустую конфигурацию
-MENU_CONFIGDUPLICATE_TIP      =Создать новую конфигурацию скопировав текущую
-MENU_CONFIGDELETE_TIP         =Удалить отредактированную конфигурацию
-MENU_CONFIGAPPLY_TIP          =Применить все изменения в конфигурации
-MENU_CONFIGREVERT_TIP         =Отменить все изменения конфигурации со времени последнего сохранения
+MENU_CONFIGNEW_TIP            =Создать новую конфигурацию
+MENU_CONFIGDUPLICATE_TIP      =Создать новую конфигурацию, скопировав текущую
+MENU_CONFIGDELETE_TIP         =Удалить текущую конфигурацию
+MENU_CONFIGAPPLY_TIP          =Применить изменения в конфигурации фильтров.
+MENU_CONFIGREVERT_TIP         =Отменить все внесенные изменения и вернуться к последней сохраненной конфигурации фильтров.
 EDIT_FILTERLIST_TIP           =Нажмите на фильтре для редактирования. Нажмите на заглавии колонки для сортировки
 EDIT_TITLE_TIP                =Заголовок фильтра. Должен быть уникальным
 EDIT_CATEGORY_TIP             =Категория фильтра (для легкой классификации)
@@ -321,70 +319,70 @@ EDIT_BOUNDS_TIP               =Фильтр будет искать совпадения шаблона только в у
 EDIT_URL_TIP                  =Фильтр будет активным только при совпадении URL (если задано). Используйте там где возможно (скорость)
 EDIT_MATCH_TIP                =Шаблон найден. Смотрите помощь
 EDIT_REPLACE_TIP              =Заменяющий текст для найденных совпадений (может содержать коды или команды)
-MENU_FOLDERSNEW_TIP           =Создать папку в выбранной позиции
+MENU_FOLDERSNEW_TIP           =Создать новую группу фильтров.
 MENU_FILTERSEDIT_TIP          =Открыть окно редактирования фильтра
-MENU_FILTERSCHECK_TIP         =Выделить/Снять выделение с выбранных элементов
-MENU_FILTERSNEW_TIP           =Создать новый пустой фильтр
-MENU_FILTERSDUPLICATE_TIP     =Дублировать текущий фильтр
-MENU_FILTERSDELETE_TIP        =Удалить текущий фильтр
+MENU_FILTERSCHECK_TIP         =Задействовать/Отключить выбранный фильтр в редактируемой конфигурации.
+MENU_FILTERSNEW_TIP           =Создать новый фильтр
+MENU_FILTERSDUPLICATE_TIP     =Дублировать выбранный фильтр
+MENU_FILTERSDELETE_TIP        =Вырезать выбранный фильтр в буфер обмена.
 MENU_FILTERSTEST_TIP          =Открыть тестовое окно. Вы можете держать его открытым пока редактируете фильтр
 MENU_FILTERSENCODE_TIP        =Кодировать в BASE64 (MIME) содержимое буфера (только текст)
 MENU_FILTERSDECODE_TIP        =Декодировать из BASE64 (MIME) содержимое буфера (только текст)
-MENU_FILTERSIMPORT_TIP        =Импорт фильтров Proximodo из буфера. Дублирующиеся заголовки будут выделены
-MENU_FILTERSPROXOMITRON_TIP   =Импорт фильтров Proxomitron из буфера. Дублирующиеся заголовки будут выделены
-MENU_FILTERSEXPORT_TIP        =Экспорт выбранных фильтров в буфер
-MENU_FILTERSAPPLY_TIP         =Принять все изменения в фильтре
-MENU_FILTERSREVERT_TIP        =Отменить все изменения в фильтре со времени последнего сохранения
-BUTTON_MONITOR_TIP            =Показать окно монитора
-BUTTON_SETTINGS_TIP           =Показать окно настроек
-BUTTON_LOG_TIP                =Открыть окно отчета
+MENU_FILTERSIMPORT_TIP        =Вставка фильтров из буфера обмена. Дублирующиеся заголовки будут выделены
+MENU_FILTERSPROXOMITRON_TIP   =Вставка фильтров Proxomitron из буфера обмена. Дублирующиеся заголовки будут выделены
+MENU_FILTERSEXPORT_TIP        =Копировать выбранный фильтр в буфер обмена.
+MENU_FILTERSAPPLY_TIP         =Принять все изменения в фильтре.
+MENU_FILTERSREVERT_TIP        =Отменить все внесенные изменения и вернуться к последней сохраненной конфигурации программы.
+BUTTON_MONITOR_TIP            =Переключиться на окно монитора.
+BUTTON_SETTINGS_TIP           =Переключиться на окно параметров.
+BUTTON_LOG_TIP                =Открыть журнал событий.
 BUTTON_FILTERS_TIP            =показать окно редактирования фильтра
-BUTTON_CONFIG_TIP             =Показать окно конфигурации
-BUTTON_HELP_TIP               =Открыть помощь в браузере
-BUTTON_QUIT_TIP               =Остановить прокси и закрыть Proximodo
-MENU_TOOLSMONITOR_TIP         =Показать окно монитора
-MENU_TOOLSSETTINGS_TIP        =Показать окно настроек
-MENU_TOOLSCONFIG_TIP          =Показать окно конфигурации
+BUTTON_CONFIG_TIP             =Переключиться на окно конфигурации.
+BUTTON_HELP_TIP               =Открыть в web-браузере страницу справки.
+BUTTON_QUIT_TIP               =Завершить работу Proximodo.
+MENU_TOOLSMONITOR_TIP         =Переключиться на окно монитора.
+MENU_TOOLSSETTINGS_TIP        =Переключиться на окно параметров.
+MENU_TOOLSCONFIG_TIP          =Переключиться на окно конфигурации.
 MENU_TOOLSFILTERS_TIP         =показать окно редактирования фильтра
-MENU_TOOLSLOG_TIP             =Открыть окно отчета
-MENU_TOOLSSAVE_TIP            =Применить текущие изменения и сохранить все на диск
-MENU_TOOLSRELOAD_TIP          =Перезагрузить все с диска
+MENU_TOOLSLOG_TIP             =Открыть журнал событий.
+MENU_TOOLSSAVE_TIP            =Применить изменения конфигурации и параметров программы и сохранить их в качестве настроек по умолчанию.
+MENU_TOOLSRELOAD_TIP          =Отменить все внесенные изменения и вернуться к последней сохраненной конфигурации программы
 MENU_TOOLSICONIZE_TIP         =Свернуть Proximodo в системный трэй
-MENU_TOOLSQUIT_TIP            =Остановить прокси и закрыть Proximodo
-MENU_HELPABOUT_TIP            =Показать информацию о Proximodo
-MENU_HELPCONTENT_TIP          =Открыть помощь в браузере
-MENU_HELPSYNTAX_TIP           =Открыть помощь по командам и кодам в браузере
-MENU_HELPLICENSE_TIP          =Показать лицензию
-MENU_HELPFILTERS_TIP          =Открыть окно помощи о модификации фильтров в браузере
-SETTINGS_OUTGOING_TIP         =Активировать фильтрацию исходящих заголовков
-SETTINGS_INCOMING_TIP         =Активировать фильтрацию входящих заголовков
-SETTINGS_TEXT_TIP             =Активировать фильтрацию веб страниц
-SETTINGS_GIF_TIP              =Активировать заморозку GIF изображений
-SETTINGS_CONFIG_TIP           =Использующаяся сейчас конфигурация
-SETTINGS_BYPASS_TIP           =URL сопоставленные этому шаблону не будут фильтроваться
-SETTINGS_LANGUAGE_TIP         =Язык интерфейса. Необходима перезагрузка программы
+MENU_TOOLSQUIT_TIP            =Завершить работу Proximodo.
+MENU_HELPABOUT_TIP            =Показать информацию о Proximodo.
+MENU_HELPCONTENT_TIP          =Открыть в web-браузере страницу справки.
+MENU_HELPSYNTAX_TIP           =Открыть в web-браузере страницу справки по синтаксису языка сравнения текста, используемому фильтрами.
+MENU_HELPLICENSE_TIP          =Открыть в web-браузере лицензию GNU GPL
+MENU_HELPFILTERS_TIP          =Открыть в web-браузере справку по редактированию конфигурации программы
+SETTINGS_OUTGOING_TIP         =Активировать фильтры исходящих заголовков, заданные в текущей конфигурации
+SETTINGS_INCOMING_TIP         =Активировать фильтры входящих заголовков, заданные в текущей конфигурации
+SETTINGS_TEXT_TIP             =Активировать фильтры содержимого web-страниц, заданные в текущей конфигурации
+SETTINGS_GIF_TIP              =Активировать функцию отключения GIF-анимации
+SETTINGS_CONFIG_TIP           =Выбор текущей конфигурации фильтров
+SETTINGS_BYPASS_TIP           =URL, соответствующие этому шаблону, не будут фильтроваться.
+SETTINGS_LANGUAGE_TIP         =Выбор языка интерфейса программы. Необходима перезагрузка программы
 SETTINGS_STARTUPGUI_TIP       =Выберите, что тип запуска Proximodo
-SETTINGS_PORT_TIP             =Порт прослушиваемый Proximodo. Такой же должен быть в настройках прокси браузера
-SETTINGS_URLCMD_TIP           =Разрешить специальные команды (dbug, bypass и т.п.)
+SETTINGS_PORT_TIP             =Порт TCP/IP используемый Proximodo. Этот порт должен порт должен быть указан в настройках прокси-сервера в вашем web-браузере.
+SETTINGS_URLCMD_TIP           =Разрешить использование URL-команд (dbug, bypass и т.п.)
 SETTINGS_URLCMD_PREFIX_TIP    =Если установлено, то Proximodo будет требовать эту строку перед любой URL командой
-SETTINGS_USEPROXY_TIP         =Если активно, то сам Proximodo будет использовать другой прокси для доступа в интернет
-SETTINGS_NEXTPROXY_TIP        =Прокси которые может использовать Proximodo. Указанные прокси доступны через команду $SETPROXY 
-SETTINGS_REMOVEPROXY_TIP      =Удалить выбранный прокси из списка
-SETTINGS_ALLOWIP_TIP          =Позволяет соединения от других компьютеров. Используйте с осторожностью
-SETTINGS_MINRANGE_TIP         =Если разрешено, то соединения с этих IP будут приняты
-SETTINGS_MAXRANGE_TIP         =Если разрешено, то соединения с этих IP будут приняты
-SETTINGS_LISTNAME_TIP         =Доступные списки. Очистить для удаления этого списка (файл не будет удален)
-SETTINGS_NEWLIST_TIP          =Добавить новый список. Установить имя и путь к файлу
-SETTINGS_OPENLIST_TIP         =Открыть файл в текстовом редакторе
-SETTINGS_LISTFILE_TIP         =Путь к файлу списка. Если файл не существует, то будет спрошено о его создании
+SETTINGS_USEPROXY_TIP         =Если активно, то сам Proximodo будет использовать другой прокси-сервер для доступа в интернет.
+SETTINGS_NEXTPROXY_TIP        =Адрес внешнего прокси-сервера, используемого Proximodo.
+SETTINGS_REMOVEPROXY_TIP      =Удалить выбранный адрес из списка прокси-серверов.
+SETTINGS_ALLOWIP_TIP          =Разрешает соединения от других компьютеров. Используйте с осторожностью
+SETTINGS_MINRANGE_TIP         =Диапазон IP-адресов компьютеро , с которых разрешено соединение
+SETTINGS_MAXRANGE_TIP         =Диапазон IP-адресов компьютеро , с которых разрешено соединение
+SETTINGS_LISTNAME_TIP         =Доступные списки. Для удаления списка очистить его строку (файл при этом удален не будет).
+SETTINGS_NEWLIST_TIP          =Добавить новый список. Установить его имя и путь к файлу
+SETTINGS_OPENLIST_TIP         =Открыть файл списка в текстовом редакторе
+SETTINGS_LISTFILE_TIP         =Путь к файлу списка. Если файл не существует, программа предложит сождать его.
 SETTINGS_FILECHOOSE_TIP       =Выбрать файл
-SETTINGS_APPLY_TIP            =Принять изменения настроек
-SETTINGS_REVERT_TIP           =Отменить изменения настроек
-SETTINGS_SHOWGUI_TIP          =Показывать это окно при запуске Proximodo (в противном случае, иконка в трэе)
+SETTINGS_APPLY_TIP            =Принять изменения параметров
+SETTINGS_REVERT_TIP           =Вернуться к последним сохраненным значениям настроек.
+SETTINGS_SHOWGUI_TIP          =Показывать это окно при запуске Proximodo (в противном случае при запуске появится только иконка в трэе)
 SETTINGS_STARTBROWSER_TIP     =Запускать внешнюю программу при запуске Proximodo
 SETTINGS_BROWSERPATH_TIP      =Программа запускаемая при запуске Proximodo (например, браузер)
 SETTINGS_BROWSERCHOOSE_TIP    =Выбрать программу на диске
-MONITOR_ABORT_TIP             =Закрыть соединения (прервать текущие загрузки)
+MONITOR_ABORT_TIP             =Прервать все текущие соединения.
 
 Default Filter Titles
 
@@ -409,7 +407,7 @@ FILTER_106_COMMENT  =Страницы могут иметь срок хранения, после которого браузер 
 FILTER_107_TITLE    =Всегда перезагружать страницы
 FILTER_107_COMMENT  =Когда браузер запросит уже кешированную страницу, он может сообщить сайту, чтобы он не посылал страницу, если она не изменилась со времени последней загрузки. При использовании этого фильтра запрошенная страница будет загружаться всегда,  даже если она не изменилась.
 
-FILTER_108_TITLE    =Остановить автообновление
+FILTER_108_TITLE    =Запретить автообновление
 FILTER_108_COMMENT  =Некоторые страницы обновляются автоматически, но в большинстве случаев эти страницы загружают новую рекламу в фреймы. Этот фильтр так же создает ссылку позволяющую вам обновить страницу вручную, если это необходимо.
 
 FILTER_109_TITLE    =Разрушитель рекламы
@@ -685,7 +683,7 @@ FOLDER_101_NAME     =Удобные инструменты
 FOLDER_102_NAME     =Слои
 FOLDER_103_NAME     =Навигация
 FOLDER_104_NAME     =Управление соединением
-FOLDER_105_NAME     =Кэш контроль
+FOLDER_105_NAME     =Кеширование
 FOLDER_106_NAME     =Удаление рекламы
 FOLDER_107_NAME     =Стили
 FOLDER_108_NAME     =JavaScript
