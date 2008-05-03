@@ -24,11 +24,14 @@
 
 
 #include "welcomescreen.h"
+#include "mainframe.h"
 #include "proxy.h"
 #include "log.h"
+#include "util.h"
 #include "settings.h"
 #include "controls.h"
 #include <wx/sizer.h>
+#include <wx/msgdlg.h>
 #include <wx/event.h>
 #include <sstream>
 
@@ -68,20 +71,20 @@ CWelcomeScreen::CWelcomeScreen(wxFrame* frame) : CWindowContent(frame, wxVERTICA
     Add(configBox, 0, wxGROW | wxALL, 0);
 
     pmStaticText* configLabel =  new pmStaticText(frame, wxID_ANY,
-        settings.getMessage("LB_SETTINGS_ACTIVE").c_str());
+        S2W(settings.getMessage("LB_SETTINGS_ACTIVE")));
     configBox->Add(configLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
     wxArrayString choices;
     configDropdown =  new pmComboBox(frame, ID_CONFIGDROPDOWN,
-        "", wxDefaultPosition, wxDefaultSize, choices,
+        wxT(""), wxDefaultPosition, wxDefaultSize, choices,
         wxCB_DROPDOWN | wxCB_READONLY | wxCB_SORT);
-    configDropdown->SetHelpText(settings.getMessage("SETTINGS_CONFIG_TIP").c_str());
+    configDropdown->SetHelpText(S2W(settings.getMessage("SETTINGS_CONFIG_TIP")));
     configBox->Add(configDropdown, 1, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
     // Filtering settings
 
     wxStaticBox* filterStaticBox_StaticBoxObj = new wxStaticBox(frame, wxID_ANY,
-        settings.getMessage("LB_SETTINGS_FILTERING").c_str());
+        S2W(settings.getMessage("LB_SETTINGS_FILTERING")));
     pmStaticBoxSizer* filterStaticBox = new pmStaticBoxSizer(
         filterStaticBox_StaticBoxObj, wxHORIZONTAL);
     leftBox->Add(filterStaticBox, 1, wxGROW | wxALL, 5);
@@ -90,29 +93,29 @@ CWelcomeScreen::CWelcomeScreen(wxFrame* frame) : CWindowContent(frame, wxVERTICA
     filterStaticBox->Add(filterBox, 1, wxALIGN_TOP | wxALL, 0);
 
     filterOutCheckbox =  new pmCheckBox(frame, ID_FILTEROUTCHECKBOX,
-        settings.getMessage("LB_SETTINGS_OUTGOING").c_str());
-    filterOutCheckbox->SetHelpText(settings.getMessage("SETTINGS_OUTGOING_TIP").c_str());
+        S2W(settings.getMessage("LB_SETTINGS_OUTGOING")));
+    filterOutCheckbox->SetHelpText(S2W(settings.getMessage("SETTINGS_OUTGOING_TIP")));
     filterBox->Add(filterOutCheckbox, 0, wxALIGN_LEFT | wxALL, 5);
 
     filterInCheckbox =  new pmCheckBox(frame, ID_FILTERINCHECKBOX,
-        settings.getMessage("LB_SETTINGS_INCOMING").c_str());
-    filterInCheckbox->SetHelpText(settings.getMessage("SETTINGS_INCOMING_TIP").c_str());
+        S2W(settings.getMessage("LB_SETTINGS_INCOMING")));
+    filterInCheckbox->SetHelpText(S2W(settings.getMessage("SETTINGS_INCOMING_TIP")));
     filterBox->Add(filterInCheckbox, 0, wxALIGN_LEFT | wxALL, 5);
 
     filterTextCheckbox =  new pmCheckBox(frame, ID_FILTERTEXTCHECKBOX,
-        settings.getMessage("LB_SETTINGS_TEXT").c_str());
-    filterTextCheckbox->SetHelpText(settings.getMessage("SETTINGS_TEXT_TIP").c_str());
+        S2W(settings.getMessage("LB_SETTINGS_TEXT")));
+    filterTextCheckbox->SetHelpText(S2W(settings.getMessage("SETTINGS_TEXT_TIP")));
     filterBox->Add(filterTextCheckbox, 0, wxALIGN_LEFT | wxALL, 5);
 
     filterGifCheckbox =  new pmCheckBox(frame, ID_FILTERGIFCHECKBOX,
-        settings.getMessage("LB_SETTINGS_GIF").c_str());
-    filterGifCheckbox->SetHelpText(settings.getMessage("SETTINGS_GIF_TIP").c_str());
+        S2W(settings.getMessage("LB_SETTINGS_GIF")));
+    filterGifCheckbox->SetHelpText(S2W(settings.getMessage("SETTINGS_GIF_TIP")));
     filterBox->Add(filterGifCheckbox, 0, wxALIGN_LEFT | wxALL, 5);
 
     // Statistics
 
     wxStaticBox* statsStaticBox_StaticBoxObj = new wxStaticBox(frame, wxID_ANY,
-        settings.getMessage("LB_MONITOR_STATISTICS").c_str());
+        S2W(settings.getMessage("LB_MONITOR_STATISTICS")));
     pmStaticBoxSizer* statsStaticBox = new pmStaticBoxSizer(
         statsStaticBox_StaticBoxObj, wxHORIZONTAL);
     rightBox->Add(statsStaticBox, 1, wxGROW | wxALL, 5);
@@ -124,27 +127,27 @@ CWelcomeScreen::CWelcomeScreen(wxFrame* frame) : CWindowContent(frame, wxVERTICA
     statsBox->Add(statsGrid, 0, wxALIGN_LEFT | wxALL, 5);
 
     pmStaticText* openReqLabel =  new pmStaticText(frame, wxID_ANY,
-        settings.getMessage("LB_MONITOR_OPENREQ").c_str());
+        S2W(settings.getMessage("LB_MONITOR_OPENREQ")));
     statsGrid->Add(openReqLabel, 0, wxALIGN_LEFT |
         wxALIGN_CENTER_VERTICAL| wxALL, 0);
 
-    openReqValue =  new pmStaticText(frame, wxID_ANY, "");
+    openReqValue =  new pmStaticText(frame, wxID_ANY, wxT(""));
     statsGrid->Add(openReqValue, 0, wxALIGN_LEFT |
         wxALIGN_CENTER_VERTICAL| wxALL, 0);
 
     pmStaticText* openCnxLabel =  new pmStaticText(frame, wxID_ANY,
-        settings.getMessage("LB_MONITOR_OPENCNX").c_str());
+        S2W(settings.getMessage("LB_MONITOR_OPENCNX")));
     statsGrid->Add(openCnxLabel, 0, wxALIGN_LEFT |
         wxALIGN_CENTER_VERTICAL| wxALL, 0);
 
-    openCnxValue =  new pmStaticText(frame, wxID_ANY, "");
+    openCnxValue =  new pmStaticText(frame, wxID_ANY, wxT(""));
     statsGrid->Add(openCnxValue, 0, wxALIGN_LEFT |
         wxALIGN_CENTER_VERTICAL| wxALL, 0);
     updateStatus();
 
     pmButton* abortButton =  new pmButton(frame, ID_ABORTBUTTON,
-        settings.getMessage("LB_MONITOR_ABORT").c_str());
-    abortButton->SetHelpText(settings.getMessage("MONITOR_ABORT_TIP").c_str());
+        S2W(settings.getMessage("LB_MONITOR_ABORT")));
+    abortButton->SetHelpText(S2W(settings.getMessage("MONITOR_ABORT_TIP")));
     statsBox->Add(abortButton, 0, wxALIGN_LEFT | wxALL, 5);
 
     // Ready
@@ -176,9 +179,9 @@ void CWelcomeScreen::revert(bool confirm) {
     configDropdown->Clear();
     for (map<string, set<int> >::iterator it = settings.configs.begin();
              it != settings.configs.end(); it++) {
-        configDropdown->Append(it->first.c_str());
+        configDropdown->Append(S2W(it->first));
     }
-    configDropdown->SetValue(settings.currentConfig.c_str());
+    configDropdown->SetValue(S2W(settings.currentConfig));
 }
 
 
@@ -204,7 +207,7 @@ void CWelcomeScreen::OnCommand(wxCommandEvent& event) {
         settings.filterGif = filterGifCheckbox->GetValue(); break;
 
     case ID_CONFIGDROPDOWN:
-        settings.currentConfig = configDropdown->GetValue();
+        settings.currentConfig = W2S(configDropdown->GetValue());
         CProxy::ref().refreshManagers();
         break;
 
@@ -216,11 +219,11 @@ void CWelcomeScreen::OnCommand(wxCommandEvent& event) {
 
 void CWelcomeScreen::updateStatus() {
 
-    stringstream s1, s2;
+    wxString s1, s2;
     s1 << CLog::ref().numOpenSockets;
     s2 << CLog::ref().numActiveRequests;
-    openCnxValue->SetLabel(s1.str().c_str());
-    openReqValue->SetLabel(s2.str().c_str());
+    openCnxValue->SetLabel(s1);
+    openReqValue->SetLabel(s2);
 }
 
 /* Proxy event listener

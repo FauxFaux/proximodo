@@ -79,7 +79,7 @@ int CEditScreen::savedX = BIG_NUMBER,
  */
 CEditScreen::CEditScreen(CFilterDescriptor* desc) :
         wxFrame((wxFrame *)NULL, wxID_ANY,
-                CSettings::ref().getMessage("EDIT_WINDOW_TITLE").c_str(),
+                S2W(CSettings::ref().getMessage("EDIT_WINDOW_TITLE")),
                 wxDefaultPosition, wxDefaultSize,
                 wxDEFAULT_FRAME_STYLE | wxTAB_TRAVERSAL |
                 wxCLIP_CHILDREN) {
@@ -97,96 +97,96 @@ CEditScreen::CEditScreen(CFilterDescriptor* desc) :
     editSizer->Add(descSizer,0,wxGROW | wxALL,5);
 
     pmStaticText* titleLabel =  new pmStaticText(this, wxID_ANY ,
-        settings.getMessage("LB_EDIT_TITLE").c_str()  );
+        S2W(settings.getMessage("LB_EDIT_TITLE"))  );
     descSizer->Add(titleLabel,0,wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxALL,0);
 
-    titleEdit =  new pmTextCtrl(this, ID_TITLEEDIT, "" ,
+    titleEdit =  new pmTextCtrl(this, ID_TITLEEDIT, wxT("") ,
         wxDefaultPosition, wxDefaultSize);
-    titleEdit->SetHelpText(settings.getMessage("EDIT_TITLE_TIP").c_str());
+    titleEdit->SetHelpText(S2W(settings.getMessage("EDIT_TITLE_TIP")));
     descSizer->Add(titleEdit,1,wxGROW | wxALIGN_CENTER_VERTICAL | wxALL,0);
 
     pmStaticText* authorLabel =  new pmStaticText(this, wxID_ANY ,
-        settings.getMessage("LB_EDIT_AUTHOR").c_str()  );
+        S2W(settings.getMessage("LB_EDIT_AUTHOR"))  );
     descSizer->Add(authorLabel,0,wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxALL,0);
 
     wxBoxSizer* authorSizer = new wxBoxSizer(wxHORIZONTAL);
     descSizer->Add(authorSizer,0,wxGROW | wxALL,0);
 
-    authorEdit =  new pmTextCtrl(this, ID_AUTHOREDIT, "" ,
+    authorEdit =  new pmTextCtrl(this, ID_AUTHOREDIT, wxT("") ,
         wxDefaultPosition, wxDefaultSize );
-    authorEdit->SetHelpText(settings.getMessage("EDIT_AUTHOR_TIP").c_str());
+    authorEdit->SetHelpText(S2W(settings.getMessage("EDIT_AUTHOR_TIP")));
     authorSizer->Add(authorEdit,1,wxGROW | wxALIGN_CENTER_VERTICAL | wxALL,0);
 
     pmStaticText* versionLabel =  new pmStaticText(this, wxID_ANY ,
-        settings.getMessage("LB_EDIT_VERSION").c_str()  );
+        S2W(settings.getMessage("LB_EDIT_VERSION"))  );
     authorSizer->Add(versionLabel,0,wxALIGN_CENTER_VERTICAL | wxLEFT,10);
 
-    versionEdit =  new pmTextCtrl(this, ID_VERSIONEDIT, "" ,
+    versionEdit =  new pmTextCtrl(this, ID_VERSIONEDIT, wxT("") ,
         wxDefaultPosition, wxSize(60,21) );
-    versionEdit->SetHelpText(settings.getMessage("EDIT_VERSION_TIP").c_str());
+    versionEdit->SetHelpText(S2W(settings.getMessage("EDIT_VERSION_TIP")));
     authorSizer->Add(versionEdit,0,wxALIGN_CENTER_VERTICAL | wxLEFT,5);
 
     pmStaticText* commentLabel =  new pmStaticText(this, wxID_ANY ,
-        settings.getMessage("LB_EDIT_COMMENT").c_str()  );
+        S2W(settings.getMessage("LB_EDIT_COMMENT"))  );
     descSizer->Add(commentLabel,0,wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxALL,0);
 
-    commentEdit =  new pmTextCtrl(this, ID_COMMENTEDIT, "" ,
+    commentEdit =  new pmTextCtrl(this, ID_COMMENTEDIT, wxT("") ,
         wxDefaultPosition, wxSize(50,45), wxTE_MULTILINE );
-    commentEdit->SetHelpText(settings.getMessage("EDIT_COMMENT_TIP").c_str());
+    commentEdit->SetHelpText(S2W(settings.getMessage("EDIT_COMMENT_TIP")));
     descSizer->Add(commentEdit,1,wxGROW | wxALIGN_CENTER_VERTICAL | wxALL,0);
 
     pmStaticText* priorityLabel =  new pmStaticText(this, wxID_ANY ,
-        settings.getMessage("LB_EDIT_PRIORITY").c_str()  );
+        S2W(settings.getMessage("LB_EDIT_PRIORITY"))  );
     descSizer->Add(priorityLabel,0,wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxALL,0);
 
     wxBoxSizer* prioritySizer = new wxBoxSizer(wxHORIZONTAL);
     descSizer->Add(prioritySizer,0,wxGROW | wxALL,0);
 
-    priorityEdit =  new pmTextCtrl(this, ID_PRIORITYEDIT, "" ,
+    priorityEdit =  new pmTextCtrl(this, ID_PRIORITYEDIT, wxT("") ,
         wxDefaultPosition, wxSize(40,21) );
-    priorityEdit->SetHelpText(settings.getMessage("EDIT_PRIORITY_TIP").c_str());
+    priorityEdit->SetHelpText(S2W(settings.getMessage("EDIT_PRIORITY_TIP")));
     prioritySizer->Add(priorityEdit,0,wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxALL,0);
 
     widthLabel =  new pmStaticText(this, wxID_ANY ,
-        settings.getMessage("LB_EDIT_WIDTH").c_str()  );
+        S2W(settings.getMessage("LB_EDIT_WIDTH"))  );
     prioritySizer->Add(widthLabel,0,wxALIGN_CENTER_VERTICAL | wxLEFT,10);
 
-    widthEdit =  new pmTextCtrl(this, ID_WIDTHEDIT, "" ,
+    widthEdit =  new pmTextCtrl(this, ID_WIDTHEDIT, wxT("") ,
         wxDefaultPosition, wxSize(40,21) );
-    widthEdit->SetHelpText(settings.getMessage("EDIT_WIDTH_TIP").c_str());
+    widthEdit->SetHelpText(S2W(settings.getMessage("EDIT_WIDTH_TIP")));
     prioritySizer->Add(widthEdit,0,wxALIGN_CENTER_VERTICAL | wxLEFT,5);
 
     multiCheckBox =  new pmCheckBox(this, ID_MULTICHECKBOX,
-        settings.getMessage("LB_EDIT_MULTIMATCH").c_str(),
+        S2W(settings.getMessage("LB_EDIT_MULTIMATCH")),
         wxDefaultPosition, wxDefaultSize, wxALIGN_RIGHT  );
-    multiCheckBox->SetHelpText(settings.getMessage("EDIT_MULTIMATCH_TIP").c_str());
+    multiCheckBox->SetHelpText(S2W(settings.getMessage("EDIT_MULTIMATCH_TIP")));
     prioritySizer->Add(multiCheckBox,0,wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxLEFT,10);
 
     pmStaticText* typeLabel =  new pmStaticText(this, wxID_ANY ,
-        settings.getMessage("LB_EDIT_TYPE").c_str()  );
+        S2W(settings.getMessage("LB_EDIT_TYPE"))  );
     descSizer->Add(typeLabel,0,wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxALL,0);
 
     wxBoxSizer* typeSizer = new wxBoxSizer(wxHORIZONTAL);
     descSizer->Add(typeSizer,0,wxGROW | wxALL,0);
 
     wxArrayString choices;
-    typeComboBox =  new pmComboBox(this, ID_TYPECOMBOBOX , "" ,
+    typeComboBox =  new pmComboBox(this, ID_TYPECOMBOBOX , wxT("") ,
         wxDefaultPosition, wxSize(120,21),
         choices, wxCB_DROPDOWN | wxCB_READONLY );
-    typeComboBox->SetHelpText(settings.getMessage("EDIT_TYPE_TIP").c_str());
-    typeComboBox->Append(settings.getMessage("LB_EDIT_TYPEOUT").c_str());
-    typeComboBox->Append(settings.getMessage("LB_EDIT_TYPEIN").c_str());
-    typeComboBox->Append(settings.getMessage("LB_EDIT_TYPETEXT").c_str());
+    typeComboBox->SetHelpText(S2W(settings.getMessage("EDIT_TYPE_TIP")));
+    typeComboBox->Append(S2W(settings.getMessage("LB_EDIT_TYPEOUT")));
+    typeComboBox->Append(S2W(settings.getMessage("LB_EDIT_TYPEIN")));
+    typeComboBox->Append(S2W(settings.getMessage("LB_EDIT_TYPETEXT")));
     typeSizer->Add(typeComboBox,0,wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxALL,0);
 
     headerLabel =  new pmStaticText(this, wxID_ANY ,
-        settings.getMessage("LB_EDIT_HEADERNAME").c_str()  );
+        S2W(settings.getMessage("LB_EDIT_HEADERNAME"))  );
     typeSizer->Add(headerLabel,0,wxALIGN_CENTER_VERTICAL | wxLEFT, 10);
 
-    headerEdit =  new pmTextCtrl(this, ID_HEADEREDIT, "" ,
+    headerEdit =  new pmTextCtrl(this, ID_HEADEREDIT, wxT("") ,
         wxDefaultPosition, wxSize(150,21) );
-    headerEdit->SetHelpText(settings.getMessage("EDIT_HEADERNAME_TIP").c_str());
-    headerEdit->SetFont(wxFont(10, wxSWISS ,wxNORMAL,wxNORMAL,FALSE,_T("Courier")));
+    headerEdit->SetHelpText(S2W(settings.getMessage("EDIT_HEADERNAME_TIP")));
+    headerEdit->SetFont(wxFont(10, wxSWISS ,wxNORMAL,wxNORMAL,FALSE,wxT("Courier")));
     typeSizer->Add(headerEdit,0,wxALIGN_CENTER_VERTICAL | wxLEFT, 5);
 
     wxFlexGridSizer* boundsSizer = new wxFlexGridSizer(2,2,5,5);
@@ -194,70 +194,70 @@ CEditScreen::CEditScreen(CFilterDescriptor* desc) :
     editSizer->Add(boundsSizer,0,wxGROW | wxALL,5);
 
     boundsLabel =  new pmStaticText(this, wxID_ANY ,
-        settings.getMessage("LB_EDIT_BOUNDS").c_str()  );
+        S2W(settings.getMessage("LB_EDIT_BOUNDS"))  );
     boundsSizer->Add(boundsLabel,0,wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxALL,0);
 
-    boundsEdit =  new pmTextCtrl(this, ID_BOUNDSEDIT, "" ,
+    boundsEdit =  new pmTextCtrl(this, ID_BOUNDSEDIT, wxT("") ,
         wxDefaultPosition, wxDefaultSize );
-    boundsEdit->SetHelpText(settings.getMessage("EDIT_BOUNDS_TIP").c_str());
-    boundsEdit->SetFont(wxFont(10, wxSWISS ,wxNORMAL,wxNORMAL,FALSE,_T("Courier")));
+    boundsEdit->SetHelpText(S2W(settings.getMessage("EDIT_BOUNDS_TIP")));
+    boundsEdit->SetFont(wxFont(10, wxSWISS ,wxNORMAL,wxNORMAL,FALSE,wxT("Courier")));
     boundsSizer->Add(boundsEdit,1, wxALIGN_CENTER_VERTICAL | wxGROW | wxALL,0);
 
     pmStaticText* urlLabel =  new pmStaticText(this, wxID_ANY ,
-        settings.getMessage("LB_EDIT_URL").c_str()  );
+        S2W(settings.getMessage("LB_EDIT_URL"))  );
     boundsSizer->Add(urlLabel,0,wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxALL,0);
 
-    urlEdit =  new pmTextCtrl(this, ID_URLEDIT, "" ,
+    urlEdit =  new pmTextCtrl(this, ID_URLEDIT, wxT("") ,
         wxDefaultPosition, wxDefaultSize );
-    urlEdit->SetHelpText(settings.getMessage("EDIT_URL_TIP").c_str());
-    urlEdit->SetFont(wxFont(10, wxSWISS ,wxNORMAL,wxNORMAL,FALSE,_T("Courier")));
+    urlEdit->SetHelpText(S2W(settings.getMessage("EDIT_URL_TIP")));
+    urlEdit->SetFont(wxFont(10, wxSWISS ,wxNORMAL,wxNORMAL,FALSE,wxT("Courier")));
     boundsSizer->Add(urlEdit,1, wxALIGN_CENTER_VERTICAL | wxGROW | wxALL,0);
 
     pmStaticText* matchLabel =  new pmStaticText(this, wxID_ANY ,
-        settings.getMessage("LB_EDIT_MATCH").c_str()  );
+        S2W(settings.getMessage("LB_EDIT_MATCH"))  );
     editSizer->Add(matchLabel,0,wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxLEFT,5);
 
-    matchMemo =  new pmTextCtrl(this, ID_MATCHMEMO, "" ,
+    matchMemo =  new pmTextCtrl(this, ID_MATCHMEMO, wxT("") ,
         wxDefaultPosition, wxSize(200,55)  ,
         wxTE_MULTILINE | wxTE_DONTWRAP | wxTE_PROCESS_TAB);
-    matchMemo->SetHelpText(settings.getMessage("EDIT_MATCH_TIP").c_str());
-    matchMemo->SetFont(wxFont(10, wxSWISS ,wxNORMAL,wxNORMAL,FALSE,_T("Courier")));
+    matchMemo->SetHelpText(S2W(settings.getMessage("EDIT_MATCH_TIP")));
+    matchMemo->SetFont(wxFont(10, wxSWISS ,wxNORMAL,wxNORMAL,FALSE,wxT("Courier")));
     editSizer->Add(matchMemo,3,wxGROW | wxALL,5);
 
     pmStaticText* replaceLabel =  new pmStaticText(this, wxID_ANY ,
-        settings.getMessage("LB_EDIT_REPLACE").c_str()  );
+        S2W(settings.getMessage("LB_EDIT_REPLACE"))  );
     editSizer->Add(replaceLabel,0,wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxLEFT,5);
 
-    replaceMemo =  new pmTextCtrl(this, ID_REPLACEMEMO, "" ,
+    replaceMemo =  new pmTextCtrl(this, ID_REPLACEMEMO, wxT("") ,
         wxDefaultPosition, wxSize(200,55)  ,
         wxTE_MULTILINE | wxTE_DONTWRAP | wxTE_PROCESS_TAB);
-    replaceMemo->SetHelpText(settings.getMessage("EDIT_REPLACE_TIP").c_str());
-    replaceMemo->SetFont(wxFont(10, wxSWISS ,wxNORMAL,wxNORMAL,FALSE,_T("Courier")));
+    replaceMemo->SetHelpText(S2W(settings.getMessage("EDIT_REPLACE_TIP")));
+    replaceMemo->SetFont(wxFont(10, wxSWISS ,wxNORMAL,wxNORMAL,FALSE,wxT("Courier")));
     editSizer->Add(replaceMemo,2,wxGROW | wxALL,5);
 
     // Menu creation
     wxMenuBar* menubar = new wxMenuBar();
     wxMenu* menu = new wxMenu();
     menu->Append(ID_FILTERSTEST,
-        settings.getMessage("MENU_FILTERSTEST").c_str(),
-        settings.getMessage("MENU_FILTERSTEST_TIP").c_str());
+        S2W(settings.getMessage("MENU_FILTERSTEST")),
+        S2W(settings.getMessage("MENU_FILTERSTEST_TIP")));
     menu->Append(ID_FILTERSENCODE,
-        settings.getMessage("MENU_FILTERSENCODE").c_str(),
-        settings.getMessage("MENU_FILTERSENCODE_TIP").c_str());
+        S2W(settings.getMessage("MENU_FILTERSENCODE")),
+        S2W(settings.getMessage("MENU_FILTERSENCODE_TIP")));
     menu->Append(ID_FILTERSDECODE,
-        settings.getMessage("MENU_FILTERSDECODE").c_str(),
-        settings.getMessage("MENU_FILTERSDECODE_TIP").c_str());
+        S2W(settings.getMessage("MENU_FILTERSDECODE")),
+        S2W(settings.getMessage("MENU_FILTERSDECODE_TIP")));
     menubar->Append(menu,
-        settings.getMessage("MENU_FILTERS").c_str());
+        S2W(settings.getMessage("MENU_FILTERS")));
     menu = new wxMenu();
     menu->Append(ID_HELPFILTERS,
-        settings.getMessage("MENU_HELPFILTERS").c_str(),
-        settings.getMessage("MENU_HELPFILTERS_TIP").c_str());
+        S2W(settings.getMessage("MENU_HELPFILTERS")),
+        S2W(settings.getMessage("MENU_HELPFILTERS_TIP")));
     menu->Append(ID_HELPSYNTAX,
-        settings.getMessage("MENU_HELPSYNTAX").c_str(),
-        settings.getMessage("MENU_HELPSYNTAX_TIP").c_str());
+        S2W(settings.getMessage("MENU_HELPSYNTAX")),
+        S2W(settings.getMessage("MENU_HELPSYNTAX_TIP")));
     menubar->Append(menu,
-        settings.getMessage("MENU_HELP").c_str());
+        S2W(settings.getMessage("MENU_HELP")));
     SetMenuBar(menubar);
 
     GetSizer()->Fit(this);
@@ -306,21 +306,21 @@ void CEditScreen::setCurrent(CFilterDescriptor* desc) {
     
     stringstream ss;
     ss << current->windowWidth;
-    widthEdit->SetValue(ss.str().c_str());
+    widthEdit->SetValue(SS2W(ss));
     ss.str("");
     ss << current->priority;
-    priorityEdit->SetValue(ss.str().c_str());
+    priorityEdit->SetValue(SS2W(ss));
     
     multiCheckBox->SetValue(current->multipleMatches);
-    authorEdit   ->SetValue(current->author        .c_str());
-    boundsEdit   ->SetValue(current->boundsPattern .c_str());
-    commentEdit  ->SetValue(current->comment       .c_str());
-    headerEdit   ->SetValue(current->headerName    .c_str());
-    titleEdit    ->SetValue(current->title         .c_str());
-    urlEdit      ->SetValue(current->urlPattern    .c_str());
-    versionEdit  ->SetValue(current->version       .c_str());
-    matchMemo    ->SetValue(current->matchPattern  .c_str());
-    replaceMemo  ->SetValue(current->replacePattern.c_str());
+    authorEdit   ->SetValue(S2W(current->author));
+    boundsEdit   ->SetValue(S2W(current->boundsPattern));
+    commentEdit  ->SetValue(S2W(current->comment));
+    headerEdit   ->SetValue(S2W(current->headerName));
+    titleEdit    ->SetValue(S2W(current->title));
+    urlEdit      ->SetValue(S2W(current->urlPattern));
+    versionEdit  ->SetValue(S2W(current->version));
+    matchMemo    ->SetValue(S2W(current->matchPattern));
+    replaceMemo  ->SetValue(S2W(current->replacePattern));
     
     if (current->filterType == CFilterDescriptor::HEADOUT) {
         typeComboBox->SetValue(typeComboBox->GetString(0));
@@ -359,7 +359,7 @@ void CEditScreen::enableFields() {
 void CEditScreen::OnCommand(wxCommandEvent& event) {
 
     if (event.GetEventType() == wxEVT_PM_RAISE_EVENT) {
-        // at some point in the config screen, we want to "post" a raise event.
+        // at some point in the config screen, we want to wxT("post") a raise event.
         // wxWidgets does not have such event, so we use a custom event type.
         Raise();
         event.Skip();
@@ -374,26 +374,26 @@ void CEditScreen::OnCommand(wxCommandEvent& event) {
         }
     case ID_AUTHOREDIT:
         {
-            string value = authorEdit->GetValue().c_str();
+            string value = W2S(authorEdit->GetValue());
             current->author = CUtil::trim(value);
             break;
         }
     case ID_VERSIONEDIT:
         {
-            string value = versionEdit->GetValue().c_str();
+            string value = W2S(versionEdit->GetValue());
             current->version = CUtil::trim(value);
             break;
         }
     case ID_HEADEREDIT:
         {
-            string value = headerEdit->GetValue().c_str();
+            string value = W2S(headerEdit->GetValue());
             current->headerName = CUtil::trim(value);
             current->testValidity();
             break;
         }
     case ID_COMMENTEDIT:
         {
-            string value = commentEdit->GetValue().c_str();
+            string value = W2S(commentEdit->GetValue());
             CUtil::trim(value);
             if (value != current->comment)
                 current->defaultFilter = 0;
@@ -402,7 +402,7 @@ void CEditScreen::OnCommand(wxCommandEvent& event) {
         }
     case ID_TITLEEDIT:
         {
-            string value = titleEdit->GetValue().c_str();
+            string value = W2S(titleEdit->GetValue());
             CUtil::trim(value);
             if (value != current->title)
                 current->defaultFilter = 0;
@@ -412,12 +412,12 @@ void CEditScreen::OnCommand(wxCommandEvent& event) {
         }
     case ID_WIDTHEDIT:
         {
-            stringstream ss(widthEdit->GetValue().c_str());
+            stringstream ss(W2S(widthEdit->GetValue()));
             int n = 0;
             ss >> n;
             if (n < 1) {
                 n = 256;
-                widthEdit->SetValue("256");
+                widthEdit->SetValue(wxT("256"));
             }
             current->windowWidth = n;
             current->testValidity();
@@ -425,20 +425,19 @@ void CEditScreen::OnCommand(wxCommandEvent& event) {
         }
     case ID_PRIORITYEDIT:
         {
-            stringstream ss(priorityEdit->GetValue().c_str());
+            stringstream ss(W2S(priorityEdit->GetValue()));
             int n = 0;
             ss >> n;
             if (n < 1) {
                 n = 256;
-                priorityEdit->SetValue("256");
+                priorityEdit->SetValue(wxT("256"));
             }
             current->priority = n;
             break;
         }
     case ID_TYPECOMBOBOX:
         {
-            string value = typeComboBox->GetValue().c_str();
-            int row = typeComboBox->FindString(value.c_str());
+            int row = typeComboBox->FindString(typeComboBox->GetValue());
             if (row == 0) {
                 current->filterType = CFilterDescriptor::HEADOUT;
             } else if (row == 1) {
@@ -451,43 +450,43 @@ void CEditScreen::OnCommand(wxCommandEvent& event) {
         }
     case ID_URLEDIT:
         {
-            string value = urlEdit->GetValue().c_str();
+            string value = W2S(urlEdit->GetValue());
             if (value != current->urlPattern) {
                 current->urlPattern = value;
                 string errmsg;
                 if (!CMatcher::testPattern(current->urlPattern, errmsg))
-                    wxMessageBox(errmsg.c_str(), APP_NAME);
+                    wxMessageBox(S2W(errmsg), wxT(APP_NAME));
             }
             current->testValidity();
             break;
         }
     case ID_BOUNDSEDIT:
         {
-            string value = boundsEdit->GetValue().c_str();
+            string value = W2S(boundsEdit->GetValue());
             if (value != current->boundsPattern) {
                 current->boundsPattern = value;
                 string errmsg;
                 if (!CMatcher::testPattern(current->boundsPattern, errmsg))
-                    wxMessageBox(errmsg.c_str(), APP_NAME);
+                    wxMessageBox(S2W(errmsg), wxT(APP_NAME));
             }
             current->testValidity();
             break;
         }
     case ID_MATCHMEMO:
         {
-            string value = matchMemo->GetValue().c_str();
+            string value = W2S(matchMemo->GetValue());
             if (value != current->matchPattern) {
                 current->matchPattern = value;
                 string errmsg;
                 if (!CMatcher::testPattern(current->matchPattern, errmsg))
-                    wxMessageBox(errmsg.c_str(), APP_NAME);
+                    wxMessageBox(S2W(errmsg), wxT(APP_NAME));
             }
             current->testValidity();
             break;
         }
     case ID_REPLACEMEMO:
         {
-            string value = replaceMemo->GetValue().c_str();
+            string value = W2S(replaceMemo->GetValue());
             current->replacePattern = value;
             break;
         }

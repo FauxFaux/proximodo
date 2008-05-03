@@ -90,7 +90,7 @@ void CMainFrame::OnMoveEvent(wxMoveEvent& event) {
 /* Constructor
  */
 CMainFrame::CMainFrame(const wxPoint& position)
-       : wxFrame((wxFrame *)NULL, wxID_ANY, APP_NAME,
+       : wxFrame((wxFrame *)NULL, wxID_ANY, wxT(APP_NAME),
                  position, wxDefaultSize,
                  wxDEFAULT_FRAME_STYLE |
                  wxTAB_TRAVERSAL |
@@ -103,29 +103,29 @@ CMainFrame::CMainFrame(const wxPoint& position)
     // Toolbar
     wxToolBar* toolbar = CreateToolBar(wxTB_TEXT | wxTB_FLAT);
     toolbar->AddTool(ID_MONITOR,
-        settings.getMessage("BUTTON_MONITOR").c_str(), btn_monitor_xpm);
+        S2W(settings.getMessage("BUTTON_MONITOR")), btn_monitor_xpm);
     toolbar->SetToolLongHelp(ID_MONITOR,
-        settings.getMessage("BUTTON_MONITOR_TIP").c_str());
+        S2W(settings.getMessage("BUTTON_MONITOR_TIP")));
     toolbar->AddTool(ID_LOG,
-        settings.getMessage("BUTTON_LOG").c_str(), btn_log_xpm);
+        S2W(settings.getMessage("BUTTON_LOG")), btn_log_xpm);
     toolbar->SetToolLongHelp(ID_LOG,
-        settings.getMessage("BUTTON_LOG_TIP").c_str());
+        S2W(settings.getMessage("BUTTON_LOG_TIP")));
     toolbar->AddTool(ID_CONFIG,
-        settings.getMessage("BUTTON_CONFIG").c_str(), btn_config_xpm);
+        S2W(settings.getMessage("BUTTON_CONFIG")), btn_config_xpm);
     toolbar->SetToolLongHelp(ID_CONFIG,
-        settings.getMessage("BUTTON_CONFIG_TIP").c_str());
+        S2W(settings.getMessage("BUTTON_CONFIG_TIP")));
     toolbar->AddTool(ID_SETTINGS,
-        settings.getMessage("BUTTON_SETTINGS").c_str(), btn_settings_xpm);
+        S2W(settings.getMessage("BUTTON_SETTINGS")), btn_settings_xpm);
     toolbar->SetToolLongHelp(ID_SETTINGS,
-        settings.getMessage("BUTTON_SETTINGS_TIP").c_str());
+        S2W(settings.getMessage("BUTTON_SETTINGS_TIP")));
     toolbar->AddTool(ID_HELP,
-        settings.getMessage("BUTTON_HELP").c_str(), btn_help_xpm);
+        S2W(settings.getMessage("BUTTON_HELP")), btn_help_xpm);
     toolbar->SetToolLongHelp(ID_HELP,
-        settings.getMessage("BUTTON_HELP_TIP").c_str());
+        S2W(settings.getMessage("BUTTON_HELP_TIP")));
     toolbar->AddTool(ID_QUIT,
-        settings.getMessage("BUTTON_QUIT").c_str(), btn_quit_xpm);
+        S2W(settings.getMessage("BUTTON_QUIT")), btn_quit_xpm);
     toolbar->SetToolLongHelp(ID_QUIT,
-        settings.getMessage("BUTTON_QUIT_TIP").c_str());
+        S2W(settings.getMessage("BUTTON_QUIT_TIP")));
     toolbar->SetToolBitmapSize(wxSize(48, 40));
     toolbar->Realize();
 
@@ -140,49 +140,49 @@ CMainFrame::CMainFrame(const wxPoint& position)
     wxMenuBar* menubar = new wxMenuBar();
     wxMenu* menuTools = new wxMenu();
     menuTools->Append(ID_TOOLSMONITOR,
-        settings.getMessage("MENU_TOOLSMONITOR").c_str(),
-        settings.getMessage("MENU_TOOLSMONITOR_TIP").c_str());
+        S2W(settings.getMessage("MENU_TOOLSMONITOR")),
+        S2W(settings.getMessage("MENU_TOOLSMONITOR_TIP")));
     menuTools->Append(ID_TOOLSSETTINGS,
-        settings.getMessage("MENU_TOOLSSETTINGS").c_str(),
-        settings.getMessage("MENU_TOOLSSETTINGS_TIP").c_str());
+        S2W(settings.getMessage("MENU_TOOLSSETTINGS")),
+        S2W(settings.getMessage("MENU_TOOLSSETTINGS_TIP")));
     menuTools->Append(ID_TOOLSCONFIG,
-        settings.getMessage("MENU_TOOLSCONFIG").c_str(),
-        settings.getMessage("MENU_TOOLSCONFIG_TIP").c_str());
+        S2W(settings.getMessage("MENU_TOOLSCONFIG")),
+        S2W(settings.getMessage("MENU_TOOLSCONFIG_TIP")));
     menuTools->Append(ID_TOOLSLOG,
-        settings.getMessage("MENU_TOOLSLOG").c_str(),
-        settings.getMessage("MENU_TOOLSLOG_TIP").c_str());
+        S2W(settings.getMessage("MENU_TOOLSLOG")),
+        S2W(settings.getMessage("MENU_TOOLSLOG_TIP")));
     menuTools->AppendSeparator();
     menuTools->Append(ID_TOOLSSAVE,
-        settings.getMessage("MENU_TOOLSSAVE").c_str(),
-        settings.getMessage("MENU_TOOLSSAVE_TIP").c_str());
+        S2W(settings.getMessage("MENU_TOOLSSAVE")),
+        S2W(settings.getMessage("MENU_TOOLSSAVE_TIP")));
     menuTools->Append(ID_TOOLSRELOAD,
-        settings.getMessage("MENU_TOOLSRELOAD").c_str(),
-        settings.getMessage("MENU_TOOLSRELOAD_TIP").c_str());
+        S2W(settings.getMessage("MENU_TOOLSRELOAD")),
+        S2W(settings.getMessage("MENU_TOOLSRELOAD_TIP")));
     menuTools->AppendSeparator();
     menuTools->Append(ID_TOOLSICONIZE,
-        settings.getMessage("MENU_TOOLSICONIZE").c_str(),
-        settings.getMessage("MENU_TOOLSICONIZE_TIP").c_str());
+        S2W(settings.getMessage("MENU_TOOLSICONIZE")),
+        S2W(settings.getMessage("MENU_TOOLSICONIZE_TIP")));
     menuTools->Append(ID_TOOLSQUIT,
-        settings.getMessage("MENU_TOOLSQUIT").c_str(),
-        settings.getMessage("MENU_TOOLSQUIT_TIP").c_str());
+        S2W(settings.getMessage("MENU_TOOLSQUIT")),
+        S2W(settings.getMessage("MENU_TOOLSQUIT_TIP")));
     menubar->Append(menuTools,
-        settings.getMessage("MENU_TOOLS").c_str());
+        S2W(settings.getMessage("MENU_TOOLS")));
     wxMenu* menuHelp = new wxMenu();
     menuHelp->Append(ID_HELPCONTENT,
-        settings.getMessage("MENU_HELPCONTENT").c_str(),
-        settings.getMessage("MENU_HELPCONTENT_TIP").c_str());
+        S2W(settings.getMessage("MENU_HELPCONTENT")),
+        S2W(settings.getMessage("MENU_HELPCONTENT_TIP")));
     menuHelp->Append(ID_HELPSYNTAX,
-        settings.getMessage("MENU_HELPSYNTAX").c_str(),
-        settings.getMessage("MENU_HELPSYNTAX_TIP").c_str());
+        S2W(settings.getMessage("MENU_HELPSYNTAX")),
+        S2W(settings.getMessage("MENU_HELPSYNTAX_TIP")));
     menuHelp->AppendSeparator();
     menuHelp->Append(ID_HELPABOUT,
-        settings.getMessage("MENU_HELPABOUT").c_str(),
-        settings.getMessage("MENU_HELPABOUT_TIP").c_str());
+        S2W(settings.getMessage("MENU_HELPABOUT")),
+        S2W(settings.getMessage("MENU_HELPABOUT_TIP")));
     menuHelp->Append(ID_HELPLICENSE,
-        settings.getMessage("MENU_HELPLICENSE").c_str(),
-        settings.getMessage("MENU_HELPLICENSE_TIP").c_str());
+        S2W(settings.getMessage("MENU_HELPLICENSE")),
+        S2W(settings.getMessage("MENU_HELPLICENSE_TIP")));
     menubar->Append(menuHelp,
-        settings.getMessage("MENU_HELP").c_str());
+        S2W(settings.getMessage("MENU_HELP")));
     SetMenuBar(menubar);
 
     // Display welcome screen
@@ -225,8 +225,8 @@ void CMainFrame::OnIconize(wxIconizeEvent& event) {
 void CMainFrame::OnStatusEvent(CStatusEvent& event) {
 
     if (event.field < 0 && event.field > 2) return;
-    if (event.text == statusbar->GetStatusText(event.field).c_str()) return;
-    statusbar->SetStatusText(event.text.c_str(), event.field);
+    if (S2W(event.text) == statusbar->GetStatusText(event.field)) return;
+    statusbar->SetStatusText(S2W(event.text), event.field);
 }
 
 
@@ -246,7 +246,7 @@ void CMainFrame::updateStatusBar() {
     string text = (num>1 ? "STAT_ACTIVE_REQS" : "STAT_ACTIVE_REQ");
     stringstream ss; ss << num << "/" << CLog::ref().numOpenSockets;
     text = CSettings::ref().getMessage(text, ss.str());
-    statusbar->SetStatusText(text.c_str(), 2);
+    statusbar->SetStatusText(S2W(text), 2);
 }
 
 
@@ -320,8 +320,8 @@ void CMainFrame::OnCommand(wxCommandEvent& event) {
         break;
 
     case ID_HELPABOUT:
-        wxMessageBox(settings.getMessage("HELP_ABOUT_TEXT", APP_VERSION).c_str(),
-                     APP_NAME);
+        wxMessageBox(S2W(settings.getMessage("HELP_ABOUT_TEXT", APP_VERSION)),
+                     wxT(APP_NAME));
         break;
 
     default:

@@ -119,7 +119,7 @@ bool CProxy::testPort(const string& port) {
 
     // Construct the address
     wxIPV4address addr;
-    addr.Service(port.c_str());
+    addr.Service(S2W(port));
     if (server) {
         wxIPV4address local;
         server->GetLocal(local);
@@ -151,8 +151,8 @@ bool CProxy::testRemoteProxy(string hostport) {
     if (colon == string::npos) return false;
 
     wxIPV4address addr;
-    addr.Hostname(hostport.substr(0, colon).c_str());
-    addr.Service(hostport.substr(colon + 1).c_str());
+    addr.Hostname(S2W(hostport.substr(0, colon)));
+    addr.Service(S2W(hostport.substr(colon + 1)));
     if (addr.IsLocalHost() && server) {
         wxIPV4address local;
         server->GetLocal(local);
@@ -186,7 +186,7 @@ bool CProxy::openProxyPort() {
 
         // Create the address (default host is localhost)
         wxIPV4address addr;
-        addr.Service(CSettings::ref().proxyPort.c_str());
+        addr.Service(S2W(CSettings::ref().proxyPort));
 
         // Create the socket
         server = new wxSocketServer(addr, PLATFORM_SERVERFLAGS);
@@ -282,7 +282,7 @@ void CProxy::OnServerEvent(wxSocketEvent& event) {
     wxIPV4address local, peer;
     sock->GetLocal(local);
     sock->GetPeer(peer);
-    unsigned long peerIP = CUtil::fromDotted(local.IPAddress().c_str());
+    unsigned long peerIP = CUtil::fromDotted(W2S(local.IPAddress()));
 
     // Check if connection satisfies all conditions
     if (  !accepting

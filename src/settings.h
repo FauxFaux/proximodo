@@ -29,6 +29,8 @@
 
 #include "descriptor.h"
 #include <wx/thread.h>
+#include <iostream>
+#include <fstream>
 #include <set>
 #include <map>
 #include <string>
@@ -144,8 +146,8 @@ private:
     void loadMessages(string language);
 
     // Configuration file I/O
-    void addLine(wxTextFile& f, string s);
-    bool readSetting(wxTextFile& f, string& title, string& label,
+    void addLine(ofstream& f, string s);
+    bool readSetting(ifstream& f, string& title, string& label,
                         string& value, bool trimValue);
 
     // Messages

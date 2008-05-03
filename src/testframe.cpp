@@ -32,6 +32,7 @@
 #include "filter.h"
 #include "const.h"
 #include "log.h"
+#include "util.h"
 #include "controls.h"
 #include "images/icon32.xpm"
 #include <wx/sysopt.h>
@@ -71,7 +72,7 @@ static const int profileRuns = 1000;
  */
 CTestFrame::CTestFrame(CFilterDescriptor* desc)
        : wxFrame((wxFrame *)NULL, wxID_ANY,
-                 CSettings::ref().getMessage("TEST_WINDOW_TITLE").c_str(),
+                 S2W(CSettings::ref().getMessage("TEST_WINDOW_TITLE")),
                  wxDefaultPosition, wxDefaultSize,
                  wxDEFAULT_FRAME_STYLE |
                  wxTAB_TRAVERSAL |
@@ -85,12 +86,12 @@ CTestFrame::CTestFrame(CFilterDescriptor* desc)
     wxBoxSizer* mainSizer = new wxBoxSizer(wxVERTICAL);
     SetSizer(mainSizer);
 
-    testMemo =  new pmTextCtrl(this, ID_TESTTEXT, CLog::ref().testString.c_str(),
+    testMemo =  new pmTextCtrl(this, ID_TESTTEXT, S2W(CLog::ref().testString),
         wxPoint(5,5),wxSize(400,120)  ,
         wxTE_MULTILINE);
     mainSizer->Add(testMemo,1,wxGROW | wxALL,5);
 
-    resultMemo =  new pmTextCtrl(this, wxID_ANY, "" ,
+    resultMemo =  new pmTextCtrl(this, wxID_ANY, wxT(""),
         wxPoint(12,75),wxSize(400,120)  ,
         wxTE_MULTILINE | wxTE_READONLY);
     mainSizer->Add(resultMemo,1,wxGROW | wxALL,5);
@@ -99,12 +100,12 @@ CTestFrame::CTestFrame(CFilterDescriptor* desc)
     mainSizer->Add(buttonSizer,0,wxALIGN_CENTER_HORIZONTAL | wxALL,0);
 
     pmButton* testButton =  new pmButton(this, ID_TEST,
-        settings.getMessage("TEST_WINDOW_TEST_BUTTON").c_str(),
+        S2W(settings.getMessage("TEST_WINDOW_TEST_BUTTON")),
         wxPoint(0,0),wxSize(75,25) );
     buttonSizer->Add(testButton,0,wxALIGN_CENTER_VERTICAL | wxALL,5);
 
     pmButton* profButton =  new pmButton(this, ID_PROFILE,
-        settings.getMessage("TEST_WINDOW_PROF_BUTTON").c_str(),
+        S2W(settings.getMessage("TEST_WINDOW_PROF_BUTTON")),
         wxPoint(0,0),wxSize(75,25) );
     buttonSizer->Add(profButton,0,wxALIGN_CENTER_VERTICAL | wxALL,5);
 
@@ -153,7 +154,7 @@ void CTestFrame::OnCommand(wxCommandEvent& event) {
     switch (event.GetId()) {
 
         case ID_TESTTEXT: {
-            CLog::ref().testString = testMemo->GetValue().c_str();
+            CLog::ref().testString = W2S(testMemo->GetValue());
             break;
         }
 
@@ -162,7 +163,7 @@ void CTestFrame::OnCommand(wxCommandEvent& event) {
 
             // ensure there is no parsing error in this filter
             if (!current->errorMsg.empty()) {
-                wxMessageBox(current->errorMsg.c_str(), APP_NAME);
+                wxMessageBox(S2W(current->errorMsg), wxT(APP_NAME));
                 return;
             }
 
@@ -193,11 +194,11 @@ void CTestFrame::OnCommand(wxCommandEvent& event) {
                 string str = CExpander::expand(current->replacePattern, filter);
                 filter.unlock();
                 if (current->matchPattern == "<start>") {
-                    str += testMemo->GetValue().c_str();
+                    str += W2S(testMemo->GetValue());
                 } else {
-                    str = testMemo->GetValue().c_str() + str;
+                    str = W2S(testMemo->GetValue()) + str;
                 }
-                resultMemo->SetValue(str.c_str());
+                resultMemo->SetValue(S2W(str));
                 return;
             }
 
@@ -209,7 +210,7 @@ void CTestFrame::OnCommand(wxCommandEvent& event) {
             wxStopWatch timer;
             
             do {
-                text = testMemo->GetValue().c_str();
+                text = W2S(testMemo->GetValue());
                 size = text.size();
                 result.str("");
                 owner.killed = false;
@@ -291,14 +292,14 @@ void CTestFrame::OnCommand(wxCommandEvent& event) {
                 if (time)
                     ss[3] << (1000.0 * len * run / (1024.0 * time));
                 else
-                    ss[3] << "--";
+                    ss[3] << wxT("--");
                 string text =
                     CSettings::ref().getMessage("TEST_PROFILE_RESULTS",
                                                 ss[0].str(), ss[1].str(),
                                                 ss[2].str(), ss[3].str());
-                resultMemo->SetValue(text.c_str());
+                resultMemo->SetValue(S2W(text));
             } else {
-                resultMemo->SetValue(result.str().c_str());
+                resultMemo->SetValue(SS2W(result));
             }
             break;
         }

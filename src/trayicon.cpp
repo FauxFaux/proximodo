@@ -51,7 +51,7 @@ END_EVENT_TABLE()
  */
 CTrayIcon::CTrayIcon() : wxTaskBarIcon() {
 
-    SetIcon(wxIcon(icon32_xpm), APP_NAME);
+    SetIcon(wxIcon(icon32_xpm), wxT(APP_NAME));
 }
 
 
@@ -149,30 +149,30 @@ wxMenu* CTrayIcon::CreatePopupMenu() {
     CSettings& settings = CSettings::ref();
 
     wxMenu* menuConfig = new wxMenu();
-    menuConfig->Append(wxID_ANY, settings.currentConfig.c_str());
+    menuConfig->Append(wxID_ANY, S2W(settings.currentConfig));
     menuConfig->AppendSeparator();
     int num = ID_CONFIG;
     for (map<string,set<int> >::iterator it = settings.configs.begin();
                 it != settings.configs.end(); it++) {
         if (it->first != settings.currentConfig)
-            menuConfig->Append(num, it->first.c_str());
+            menuConfig->Append(num, S2W(it->first));
         num++;
     }
 
     wxMenu* menuFilter = new wxMenu();
     menuFilter->Append(ID_FILTERALL,
-        settings.getMessage("TRAY_FILTERALL").c_str());
+        S2W(settings.getMessage("TRAY_FILTERALL")));
     menuFilter->Append(ID_FILTERNONE,
-        settings.getMessage("TRAY_FILTERNONE").c_str());
+        S2W(settings.getMessage("TRAY_FILTERNONE")));
     menuFilter->AppendSeparator();
     menuFilter->AppendCheckItem(ID_FILTERIN,
-        settings.getMessage("TRAY_FILTERIN").c_str());
+        S2W(settings.getMessage("TRAY_FILTERIN")));
     menuFilter->AppendCheckItem(ID_FILTEROUT,
-        settings.getMessage("TRAY_FILTEROUT").c_str());
+        S2W(settings.getMessage("TRAY_FILTEROUT")));
     menuFilter->AppendCheckItem(ID_FILTERTEXT,
-        settings.getMessage("TRAY_FILTERTEXT").c_str());
+        S2W(settings.getMessage("TRAY_FILTERTEXT")));
     menuFilter->AppendCheckItem(ID_FILTERGIF,
-        settings.getMessage("TRAY_FILTERGIF").c_str());
+        S2W(settings.getMessage("TRAY_FILTERGIF")));
     if (settings.filterIn)   menuFilter->Check(ID_FILTERIN, true);
     if (settings.filterOut)  menuFilter->Check(ID_FILTEROUT, true);
     if (settings.filterText) menuFilter->Check(ID_FILTERTEXT, true);
@@ -180,19 +180,19 @@ wxMenu* CTrayIcon::CreatePopupMenu() {
 
     wxMenu* menu = new wxMenu();
     menu->Append(wxID_ANY,
-        settings.getMessage("TRAY_FILTER").c_str(), menuFilter);
+        S2W(settings.getMessage("TRAY_FILTER")), menuFilter);
     menu->Append(wxID_ANY,
-        settings.getMessage("TRAY_CONFIG").c_str(), menuConfig);
+        S2W(settings.getMessage("TRAY_CONFIG")), menuConfig);
     if (settings.useNextProxy || !settings.nextProxy.empty()) {
         menu->AppendCheckItem(ID_USEPROXY,
-            settings.getMessage("TRAY_USEPROXY").c_str());
+            S2W(settings.getMessage("TRAY_USEPROXY")));
         if (settings.useNextProxy) menu->Check(ID_USEPROXY, true);
     }
     menu->Append(ID_LOG,
-        settings.getMessage("TRAY_LOG").c_str());
+        S2W(settings.getMessage("TRAY_LOG")));
     menu->AppendSeparator();
     menu->Append(ID_EXIT,
-        settings.getMessage("TRAY_EXIT").c_str());
+        S2W(settings.getMessage("TRAY_EXIT")));
     return menu;
 }
 

@@ -53,14 +53,14 @@ bool ProximodoApp::OnInit() {
     wxSocketBase::Initialize();
 
     // Check that there is no other Proximodo running
-    const wxString name = APP_NAME;
+    const wxString name = wxT(APP_NAME);
     sic = new wxSingleInstanceChecker(name);
     if (sic->IsAnotherRunning()) // Verifies this user is not running Proximodo
     {
         // If configured, still open the browser
         if (CSettings::ref().startBrowser
                 && !CSettings::ref().browserPath.empty()) {
-            wxExecute(CSettings::ref().browserPath.c_str(), wxEXEC_ASYNC);
+            wxExecute(S2W(CSettings::ref().browserPath), wxEXEC_ASYNC);
         }
         return false;
     }
@@ -82,7 +82,7 @@ bool ProximodoApp::OnInit() {
     } else if (CSettings::ref().startBrowser
                 && !CSettings::ref().browserPath.empty()) {
         // Open browser
-        wxExecute(CSettings::ref().browserPath.c_str(), wxEXEC_ASYNC);
+        wxExecute(S2W(CSettings::ref().browserPath), wxEXEC_ASYNC);
     }
 
     // Create tray icon

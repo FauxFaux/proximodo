@@ -35,6 +35,13 @@ class wxTopLevelWindow;
 
 using namespace std;
 
+/* string -> wxString */
+#define S2W(s)   (wxString::From8BitData((s).c_str()))
+/* stringstream -> wxString */
+#define SS2W(ss) S2W((ss).str())
+/* wxString -> string */
+#define W2S(w)   ((string)(w).To8BitData())
+
 /* This static class contains generic functions
  */
 class CUtil {

@@ -98,15 +98,15 @@ CConfigScreen::CConfigScreen(wxFrame* frame) :
     Add(nameSizer,0,wxGROW | wxALL,0);
 
     pmStaticText* nameLabel =  new pmStaticText(frame, wxID_ANY ,
-        settings.getMessage("LB_CONFIG_NAME").c_str(),
+        S2W(settings.getMessage("LB_CONFIG_NAME")),
         wxDefaultPosition, wxDefaultSize  );
     nameSizer->Add(nameLabel,0,wxALIGN_CENTER_VERTICAL | wxALL,5);
 
     wxArrayString choices;
-    nameEdit =  new pmComboBox(frame, ID_NAMEEDIT , "",
+    nameEdit =  new pmComboBox(frame, ID_NAMEEDIT , wxT(""),
         wxDefaultPosition, wxDefaultSize, choices,
         wxCB_DROPDOWN | wxCB_SORT );
-    nameEdit->SetHelpText(settings.getMessage("CONFIG_NAME_TIP").c_str());
+    nameEdit->SetHelpText(S2W(settings.getMessage("CONFIG_NAME_TIP")));
     nameSizer->Add(nameEdit,1,wxALIGN_CENTER_VERTICAL | wxALL,5);
 
     wxBoxSizer* centerBox = new wxBoxSizer(wxHORIZONTAL);
@@ -117,32 +117,32 @@ CConfigScreen::CConfigScreen(wxFrame* frame) :
 
     pmBitmapButton* addfoldButton =  new pmBitmapButton(frame, ID_ADDFOLDBUTTON,
         wxBitmap(btn_addfold32_xpm) );
-    addfoldButton->SetHelpText(settings.getMessage("MENU_FOLDERSNEW_TIP").c_str());
+    addfoldButton->SetHelpText(S2W(settings.getMessage("MENU_FOLDERSNEW_TIP")));
     buttonBox->Add(addfoldButton,0,wxALIGN_CENTER_HORIZONTAL | wxBOTTOM, 5);
 
     pmBitmapButton* addfiltButton =  new pmBitmapButton(frame, ID_ADDFILTBUTTON,
         wxBitmap(btn_addfilt32_xpm) );
-    addfiltButton->SetHelpText(settings.getMessage("MENU_FILTERSNEW_TIP").c_str());
+    addfiltButton->SetHelpText(S2W(settings.getMessage("MENU_FILTERSNEW_TIP")));
     buttonBox->Add(addfiltButton,0,wxALIGN_CENTER_HORIZONTAL | wxBOTTOM, 5);
 
     pmBitmapButton* editButton =  new pmBitmapButton(frame, ID_EDITBUTTON,
         wxBitmap(btn_edit32_xpm) );
-    editButton->SetHelpText(settings.getMessage("MENU_FILTERSEDIT_TIP").c_str());
+    editButton->SetHelpText(S2W(settings.getMessage("MENU_FILTERSEDIT_TIP")));
     buttonBox->Add(editButton,0,wxALIGN_CENTER_HORIZONTAL | wxBOTTOM, 5);
 
     pmBitmapButton* trashButton =  new pmBitmapButton(frame, ID_TRASHBUTTON,
         wxBitmap(btn_trash32_xpm) );
-    trashButton->SetHelpText(settings.getMessage("MENU_FILTERSDELETE_TIP").c_str());
+    trashButton->SetHelpText(S2W(settings.getMessage("MENU_FILTERSDELETE_TIP")));
     buttonBox->Add(trashButton,0,wxALIGN_CENTER_HORIZONTAL | wxBOTTOM, 5);
 
     pmBitmapButton* applyButton =  new pmBitmapButton(frame, ID_APPLYBUTTON,
         wxBitmap(btn_ok32_xpm) );
-    applyButton->SetHelpText(settings.getMessage("MENU_CONFIGAPPLY_TIP").c_str());
+    applyButton->SetHelpText(S2W(settings.getMessage("MENU_CONFIGAPPLY_TIP")));
     buttonBox->Add(applyButton,0,wxALIGN_CENTER_HORIZONTAL | wxBOTTOM, 5);
 
     pmBitmapButton* revertButton =  new pmBitmapButton(frame, ID_REVERTBUTTON,
         wxBitmap(btn_undo32_xpm) );
-    revertButton->SetHelpText(settings.getMessage("MENU_CONFIGREVERT_TIP").c_str());
+    revertButton->SetHelpText(S2W(settings.getMessage("MENU_CONFIGREVERT_TIP")));
     buttonBox->Add(revertButton,0,wxALIGN_CENTER_HORIZONTAL | wxBOTTOM, 0);
 
     tree = new pmTreeCtrl(frame, ID_TREE, wxDefaultPosition, wxSize(350, 250),
@@ -150,58 +150,58 @@ CConfigScreen::CConfigScreen(wxFrame* frame) :
         wxTR_MULTIPLE | wxTR_EXTENDED | wxTR_LINES_AT_ROOT );
     centerBox->Add(tree,1,wxGROW | wxLEFT,5);
 
-    commentText =  new pmTextCtrl(frame, ID_COMMENTTEXT, "" ,
+    commentText =  new pmTextCtrl(frame, ID_COMMENTTEXT, wxT("") ,
         wxDefaultPosition, wxSize(100,60), wxTE_MULTILINE | wxTE_READONLY );
-    commentText->SetHelpText(settings.getMessage("CONFIG_COMMENT_TIP").c_str());
+    commentText->SetHelpText(S2W(settings.getMessage("CONFIG_COMMENT_TIP")));
     Add(commentText, 0,wxGROW | wxALIGN_CENTER_VERTICAL | wxALL,5);
 
     // Menu
     menuConfig = new wxMenu();
     menuConfig->Append(ID_FOLDERSNEW,
-        settings.getMessage("MENU_FOLDERSNEW").c_str(),
-        settings.getMessage("MENU_FOLDERSNEW_TIP").c_str());
+        S2W(settings.getMessage("MENU_FOLDERSNEW")),
+        S2W(settings.getMessage("MENU_FOLDERSNEW_TIP")));
     menuConfig->Append(ID_FILTERSNEW,
-        settings.getMessage("MENU_FILTERSNEW").c_str(),
-        settings.getMessage("MENU_FILTERSNEW_TIP").c_str());
+        S2W(settings.getMessage("MENU_FILTERSNEW")),
+        S2W(settings.getMessage("MENU_FILTERSNEW_TIP")));
     menuConfig->Append(ID_FILTERSEDIT,
-        settings.getMessage("MENU_FILTERSEDIT").c_str(),
-        settings.getMessage("MENU_FILTERSEDIT_TIP").c_str());
+        S2W(settings.getMessage("MENU_FILTERSEDIT")),
+        S2W(settings.getMessage("MENU_FILTERSEDIT_TIP")));
     menuConfig->AppendSeparator();
     menuConfig->Append(ID_FILTERSCHECK,
-        settings.getMessage("MENU_FILTERSCHECK").c_str(),
-        settings.getMessage("MENU_FILTERSCHECK_TIP").c_str());
+        S2W(settings.getMessage("MENU_FILTERSCHECK")),
+        S2W(settings.getMessage("MENU_FILTERSCHECK_TIP")));
     menuConfig->Append(ID_FILTERSDELETE,
-        settings.getMessage("MENU_FILTERSDELETE").c_str(),
-        settings.getMessage("MENU_FILTERSDELETE_TIP").c_str());
+        S2W(settings.getMessage("MENU_FILTERSDELETE")),
+        S2W(settings.getMessage("MENU_FILTERSDELETE_TIP")));
     menuConfig->AppendSeparator();
     menuConfig->Append(ID_FILTERSEXPORT,
-        settings.getMessage("MENU_FILTERSEXPORT").c_str(),
-        settings.getMessage("MENU_FILTERSEXPORT_TIP").c_str());
+        S2W(settings.getMessage("MENU_FILTERSEXPORT")),
+        S2W(settings.getMessage("MENU_FILTERSEXPORT_TIP")));
     menuConfig->Append(ID_FILTERSIMPORT,
-        settings.getMessage("MENU_FILTERSIMPORT").c_str(),
-        settings.getMessage("MENU_FILTERSIMPORT_TIP").c_str());
+        S2W(settings.getMessage("MENU_FILTERSIMPORT")),
+        S2W(settings.getMessage("MENU_FILTERSIMPORT_TIP")));
     menuConfig->Append(ID_FILTERSPROXOMITRON,
-        settings.getMessage("MENU_FILTERSPROXOMITRON").c_str(),
-        settings.getMessage("MENU_FILTERSPROXOMITRON_TIP").c_str());
+        S2W(settings.getMessage("MENU_FILTERSPROXOMITRON")),
+        S2W(settings.getMessage("MENU_FILTERSPROXOMITRON_TIP")));
     menuConfig->AppendSeparator();
     menuConfig->Append(ID_CONFIGNEW,
-        settings.getMessage("MENU_CONFIGNEW").c_str(),
-        settings.getMessage("MENU_CONFIGNEW_TIP").c_str());
+        S2W(settings.getMessage("MENU_CONFIGNEW")),
+        S2W(settings.getMessage("MENU_CONFIGNEW_TIP")));
     menuConfig->Append(ID_CONFIGDUPLICATE,
-        settings.getMessage("MENU_CONFIGDUPLICATE").c_str(),
-        settings.getMessage("MENU_CONFIGDUPLICATE_TIP").c_str());
+        S2W(settings.getMessage("MENU_CONFIGDUPLICATE")),
+        S2W(settings.getMessage("MENU_CONFIGDUPLICATE_TIP")));
     menuConfig->Append(ID_CONFIGDELETE,
-        settings.getMessage("MENU_CONFIGDELETE").c_str(),
-        settings.getMessage("MENU_CONFIGDELETE_TIP").c_str());
+        S2W(settings.getMessage("MENU_CONFIGDELETE")),
+        S2W(settings.getMessage("MENU_CONFIGDELETE_TIP")));
     menuConfig->AppendSeparator();
     menuConfig->Append(ID_CONFIGAPPLY,
-        settings.getMessage("MENU_CONFIGAPPLY").c_str(),
-        settings.getMessage("MENU_CONFIGAPPLY_TIP").c_str());
+        S2W(settings.getMessage("MENU_CONFIGAPPLY")),
+        S2W(settings.getMessage("MENU_CONFIGAPPLY_TIP")));
     menuConfig->Append(ID_CONFIGREVERT,
-        settings.getMessage("MENU_CONFIGREVERT").c_str(),
-        settings.getMessage("MENU_CONFIGREVERT_TIP").c_str());
+        S2W(settings.getMessage("MENU_CONFIGREVERT")),
+        S2W(settings.getMessage("MENU_CONFIGREVERT_TIP")));
     frame->GetMenuBar()->Insert(1, menuConfig,
-        settings.getMessage("MENU_CONFIG").c_str());
+        S2W(settings.getMessage("MENU_CONFIG")));
 
     // Initialize tree
     wxImageList* images = new wxImageList(16,16,true);
@@ -209,7 +209,7 @@ CConfigScreen::CConfigScreen(wxFrame* frame) :
     images->Add(wxBitmap(box_on_xpm));
     images->Add(wxBitmap(box_half_xpm));
     tree->AssignImageList(images);
-    rootId = tree->AddRoot("Root", -1, -1, new CItemData(0, true));
+    rootId = tree->AddRoot(wxT("Root"), -1, -1, new CItemData(0, true));
 
     makeSizer();
 }
@@ -245,8 +245,8 @@ void CConfigScreen::apply(bool confirm) {
     if (!hasChanged()) return;
     // Ask user before proceeding
     if (confirm) {
-        int ret = wxMessageBox(settings.getMessage("APPLY_CONFIG").c_str(),
-                               APP_NAME, wxYES_NO);
+        int ret = wxMessageBox(S2W(settings.getMessage("APPLY_CONFIG")),
+                               wxT(APP_NAME), wxYES_NO);
         if (ret == wxNO) return;
     }
     // Stop proxy
@@ -269,8 +269,8 @@ void CConfigScreen::revert(bool confirm) {
 
     // Ask user before proceeding
     if (confirm && hasChanged()) {
-        int ret = wxMessageBox(settings.getMessage("REVERT_CONFIG").c_str(),
-                               APP_NAME, wxYES_NO);
+        int ret = wxMessageBox(S2W(settings.getMessage("REVERT_CONFIG")),
+                               wxT(APP_NAME), wxYES_NO);
         if (ret == wxNO) return;
     }
 
@@ -284,8 +284,8 @@ void CConfigScreen::revert(bool confirm) {
     nameEdit->Clear();
     for (map<string,set<int> >::iterator it = configs.begin();
                 it != configs.end(); it++)
-        nameEdit->Append(it->first.c_str());
-    nameEdit->SetValue(editedConfigName.c_str());
+        nameEdit->Append(S2W(it->first));
+    nameEdit->SetValue(S2W(editedConfigName));
     nameEdit->SetFocus();
 
     // Populate tree
@@ -305,7 +305,7 @@ int CConfigScreen::populate(wxTreeItemId id) {
     for (set<int>::iterator it = folder.children.begin();
                 it != folder.children.end(); it++) {
         CItemData* data2 = new CItemData(*it, true);
-        wxTreeItemId id2 = tree->AppendItem(id, folders[*it].name.c_str(), 1, -1, data2);
+        wxTreeItemId id2 = tree->AppendItem(id, S2W(folders[*it].name), 1, -1, data2);
         int state = populate(id2);
         states[state] = true;
     }
@@ -316,7 +316,7 @@ int CConfigScreen::populate(wxTreeItemId id) {
         int state = (config.find(it->first) != config.end() ? 1 : 0);
         states[state] = true;
         CItemData* data2 = new CItemData(it->first, false, state);
-        wxTreeItemId id2 = tree->AppendItem(id, it->second.title.c_str(), state, -1, data2);
+        wxTreeItemId id2 = tree->AppendItem(id, S2W(it->second.title), state, -1, data2);
         tree->SetItemBold(id2);
         if (!it->second.errorMsg.empty()) tree->SetItemTextColour(id2, *wxRED);
     }
@@ -434,7 +434,7 @@ void CConfigScreen::OnCommand(wxCommandEvent& event) {
         {
             if (event.GetEventType() == wxEVT_COMMAND_TEXT_ENTER) {
 
-                string newName = nameEdit->GetValue().c_str();
+                string newName = W2S(nameEdit->GetValue());
                 CUtil::trim(newName);
                 if (newName.empty())
                     newName = settings.getMessage("CONFIG_NEW_NAME");
@@ -445,15 +445,15 @@ void CConfigScreen::OnCommand(wxCommandEvent& event) {
                         newActiveConfig = newName;
                     configs[newName] = configs[editedConfigName];
                     configs.erase(editedConfigName);
-                    nameEdit->SetValue(newName.c_str());
-                    nameEdit->Append(newName.c_str());
-                    nameEdit->Delete(nameEdit->FindString(editedConfigName.c_str()));
+                    nameEdit->SetValue(S2W(newName));
+                    nameEdit->Append(S2W(newName));
+                    nameEdit->Delete(nameEdit->FindString(S2W(editedConfigName)));
                     editedConfigName = newName;
                 }
             } else if (event.GetEventType() == wxEVT_COMMAND_COMBOBOX_SELECTED) {
 
                 // The user changed current configuration
-                editedConfigName = event.GetString();
+                editedConfigName = W2S(event.GetString());
                 showStates(rootId);
             }
             break;
@@ -463,8 +463,8 @@ void CConfigScreen::OnCommand(wxCommandEvent& event) {
             commitText();
             editedConfigName = makeNewName("", settings.getMessage("CONFIG_NEW_NAME"));
             configs[editedConfigName];
-            nameEdit->Append(editedConfigName.c_str());
-            nameEdit->SetValue(editedConfigName.c_str());
+            nameEdit->Append(S2W(editedConfigName));
+            nameEdit->SetValue(S2W(editedConfigName));
             showStates(rootId);
             break;
         }
@@ -473,8 +473,8 @@ void CConfigScreen::OnCommand(wxCommandEvent& event) {
             commitText();
             string newName = makeNewName("", editedConfigName);
             configs[newName] = configs[editedConfigName];
-            nameEdit->Append(newName.c_str());
-            nameEdit->SetValue(newName.c_str());
+            nameEdit->Append(S2W(newName));
+            nameEdit->SetValue(S2W(newName));
             editedConfigName = newName;
             break;
         }
@@ -482,16 +482,16 @@ void CConfigScreen::OnCommand(wxCommandEvent& event) {
         {
             commitText();
             configs.erase(editedConfigName);
-            nameEdit->Delete(nameEdit->FindString(editedConfigName.c_str()));
+            nameEdit->Delete(nameEdit->FindString(S2W(editedConfigName)));
             if (configs.empty()) {
                 string newName = settings.getMessage("CONFIG_NEW_NAME");
                 configs[newName];
-                nameEdit->Append(newName.c_str());
+                nameEdit->Append(S2W(newName));
             }
             if (editedConfigName == newActiveConfig)
                 newActiveConfig = configs.begin()->first;
             editedConfigName = configs.begin()->first;
-            nameEdit->SetValue(editedConfigName.c_str());
+            nameEdit->SetValue(S2W(editedConfigName));
             showStates(rootId);
             break;
         }
@@ -541,7 +541,7 @@ void CConfigScreen::OnCommand(wxCommandEvent& event) {
             folders[id] = newfolder;
             folders[data->id].children.insert(id);
             data = new CItemData(id, true, 0);
-            wxTreeItemId item = tree->PrependItem(folderId, name.c_str(), 0, -1, data);
+            wxTreeItemId item = tree->PrependItem(folderId, S2W(name), 0, -1, data);
             tree->UnselectAll();
             tree->EnsureVisible(item);
             tree->SelectItem(item);
@@ -565,7 +565,7 @@ void CConfigScreen::OnCommand(wxCommandEvent& event) {
             desc.title = settings.getMessage("DEFAULT_FILTER_NAME");
             filters[desc.id] = desc;
             data = new CItemData(desc.id, false, 0);
-            wxTreeItemId item = tree->AppendItem(folderId, desc.title.c_str(), 0, -1, data);
+            wxTreeItemId item = tree->AppendItem(folderId, S2W(desc.title), 0, -1, data);
             tree->SetItemBold(item);
             tree->SetItemTextColour(item, *wxRED);
             tree->UnselectAll();
@@ -634,7 +634,7 @@ void CConfigScreen::OnTreeEvent(wxTreeEvent& event) {
 
         // The user changed the folder name/filter title
         if (!event.IsEditCancelled()) {
-            string text = event.GetLabel().c_str();
+            string text = W2S(event.GetLabel());
             CUtil::trim(text);
             if (text.empty()) {
                 event.Veto();
@@ -835,7 +835,7 @@ void CConfigScreen::refreshEditWindow() {
         CItemData* data = (CItemData*)tree->GetItemData(currentId);
         if (data && !data->folder) {
             stillValid = true;
-            tree->SetItemText(currentId, filters[data->id].title.c_str());
+            tree->SetItemText(currentId, S2W(filters[data->id].title));
             if (!filters[data->id].errorMsg.empty()) {
                 tree->SetItemTextColour(currentId, *wxRED);
             } else {
@@ -851,13 +851,13 @@ void CConfigScreen::refreshEditWindow() {
         if (data && !data->folder) {
             currentId = id;
             editWindow->setCurrent(&filters[data->id]);
-            commentText->SetValue(filters[data->id].comment.c_str());
+            commentText->SetValue(S2W(filters[data->id].comment));
             return;
         }
     }
     
     // non-editable item or no selected: clear comment and edit window
-    commentText->SetValue("");
+    commentText->SetValue(wxT(""));
     if (!stillValid) editWindow->setCurrent(blank);
 }
 

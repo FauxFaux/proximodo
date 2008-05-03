@@ -11,7 +11,7 @@ LDFLAGS =
 else
 WXINC = $(shell $(WXCFG) --cxxflags --debug)
 WXLIB = $(shell $(WXCFG) --libs --debug)
-CFLAGS = -Wall -g -O0
+CFLAGS = -Wall -g -O0 -fno-default-inline
 LDFLAGS =
 endif
 
@@ -20,20 +20,20 @@ endif
 #LDFLAGS += -pg
 
 SRC = configscreen.cpp controls.cpp descriptor.cpp editscreen.cpp events.cpp \
-			expander.cpp filter.cpp filterowner.cpp giffilter.cpp headerfilter.cpp \
-			log.cpp logframe.cpp main.cpp mainframe.cpp managerthread.cpp \
-			matcher.cpp nodes.cpp platform.cpp proxy.cpp requestmanager.cpp \
-			settings.cpp settingsscreen.cpp testframe.cpp textbuffer.cpp \
-			textfilter.cpp trayicon.cpp url.cpp util.cpp welcomescreen.cpp \
-			windowcontent.cpp zlibbuffer.cpp
+	expander.cpp filter.cpp filterowner.cpp giffilter.cpp headerfilter.cpp \
+	log.cpp logframe.cpp main.cpp mainframe.cpp managerthread.cpp \
+	matcher.cpp nodes.cpp platform.cpp proxy.cpp requestmanager.cpp \
+	settings.cpp settingsscreen.cpp testframe.cpp textbuffer.cpp \
+	textfilter.cpp trayicon.cpp url.cpp util.cpp welcomescreen.cpp \
+	windowcontent.cpp zlibbuffer.cpp
 OBJ = $(SRC:.cpp=.o)
 HDR = configscreen.h const.h controls.h descriptor.h editscreen.h events.h \
-			expander.h filter.h filterowner.h giffilter.h headerfilter.h logframe.h \
-			log.h logviewer.h mainframe.h managerthread.h matcher.h memory.h node.h \
-			nodes.h platform.h Proximodo_private.h proxy.h receptor.h \
-			requestmanager.h settings.h settingsscreen.h testframe.h textbuffer.h \
-			textfilter.h trayicon.h url.h util.h welcomescreen.h windowcontent.h \
-			zlibbuffer.h
+	expander.h filter.h filterowner.h giffilter.h headerfilter.h \
+	logframe.h log.h logviewer.h mainframe.h managerthread.h matcher.h \
+	memory.h node.h nodes.h platform.h Proximodo_private.h proxy.h \
+	receptor.h requestmanager.h settings.h settingsscreen.h testframe.h \
+	textbuffer.h textfilter.h trayicon.h url.h util.h welcomescreen.h \
+	windowcontent.h zlibbuffer.h
 PROXIMODO = distrib/proximodo
 
 .phony: default all depend clean

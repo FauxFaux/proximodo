@@ -92,7 +92,7 @@ CSettingsScreen::CSettingsScreen(wxFrame* frame) : CWindowContent(frame) {
     // Filtering options
 
     wxStaticBox* filterStaticBox_StaticBoxObj = new wxStaticBox(frame,wxID_ANY,
-        settings.getMessage("LB_SETTINGS_FILTERING").c_str());
+        S2W(settings.getMessage("LB_SETTINGS_FILTERING")));
     pmStaticBoxSizer* filterStaticBox = new pmStaticBoxSizer(
         filterStaticBox_StaticBoxObj,wxHORIZONTAL);
     leftBox->Add(filterStaticBox,0,wxGROW | wxALL,5);
@@ -104,18 +104,18 @@ CSettingsScreen::CSettingsScreen(wxFrame* frame) : CWindowContent(frame) {
     filterBox->Add(bypassBox,0,wxGROW | wxALL,0);
 
     pmStaticText* bypassLabel =  new pmStaticText(frame, wxID_ANY ,
-        settings.getMessage("LB_SETTINGS_BYPASS").c_str());
+        S2W(settings.getMessage("LB_SETTINGS_BYPASS")));
     bypassBox->Add(bypassLabel,0,wxALIGN_CENTER_VERTICAL | wxALL,5);
 
     bypassText =  new pmTextCtrl(frame, ID_BYPASSTEXT,
-        "" , wxDefaultPosition, wxDefaultSize);
-    bypassText->SetHelpText(settings.getMessage("SETTINGS_BYPASS_TIP").c_str());
+        wxT("") , wxDefaultPosition, wxDefaultSize);
+    bypassText->SetHelpText(S2W(settings.getMessage("SETTINGS_BYPASS_TIP")));
     bypassBox->Add(bypassText,1,wxALIGN_CENTER_VERTICAL | wxALL,5);
 
     // GUI options
 
     wxStaticBox* guiStaticBox_StaticBoxObj = new wxStaticBox(frame,wxID_ANY,
-        settings.getMessage("LB_SETTINGS_GUI").c_str());
+        S2W(settings.getMessage("LB_SETTINGS_GUI")));
     pmStaticBoxSizer* guiStaticBox = new pmStaticBoxSizer(
         guiStaticBox_StaticBoxObj,wxHORIZONTAL);
     rightBox->Add(guiStaticBox,0,wxGROW | wxALL,5);
@@ -127,43 +127,43 @@ CSettingsScreen::CSettingsScreen(wxFrame* frame) : CWindowContent(frame) {
     guiBox->Add(languageBox,0,wxGROW | wxALL,0);
 
     pmStaticText* languageLabel =  new pmStaticText(frame, wxID_ANY ,
-        settings.getMessage("LB_SETTINGS_LANGUAGE").c_str());
+        S2W(settings.getMessage("LB_SETTINGS_LANGUAGE")));
     languageBox->Add(languageLabel,0,wxALIGN_CENTER_VERTICAL | wxALL,5);
 
     wxArrayString choices;
     languageDropDown =  new pmComboBox(frame, ID_LANGUAGEDROPDOWN ,
-        "" , wxDefaultPosition, wxDefaultSize, choices,
+        wxT("") , wxDefaultPosition, wxDefaultSize, choices,
         wxCB_DROPDOWN | wxCB_READONLY | wxCB_SORT );
-    languageDropDown->SetHelpText(settings.getMessage("SETTINGS_LANGUAGE_TIP").c_str());
+    languageDropDown->SetHelpText(S2W(settings.getMessage("SETTINGS_LANGUAGE_TIP")));
     languageBox->Add(languageDropDown,0,wxALIGN_CENTER_VERTICAL | wxALL,5);
 
     showGuiCheckbox =  new pmCheckBox(frame, ID_SHOWGUICHECKBOX,
-        settings.getMessage("LB_SETTINGS_SHOWGUI").c_str());
-    showGuiCheckbox->SetHelpText(settings.getMessage("SETTINGS_SHOWGUI_TIP").c_str());
+        S2W(settings.getMessage("LB_SETTINGS_SHOWGUI")));
+    showGuiCheckbox->SetHelpText(S2W(settings.getMessage("SETTINGS_SHOWGUI_TIP")));
     guiBox->Add(showGuiCheckbox,0,wxALIGN_LEFT | wxALL,5);
 
     startBrowserCheckbox =  new pmCheckBox(frame, ID_STARTBROWSERCHECKBOX,
-        settings.getMessage("LB_SETTINGS_STARTBROWSER").c_str());
-    startBrowserCheckbox->SetHelpText(settings.getMessage("SETTINGS_STARTBROWSER_TIP").c_str());
+        S2W(settings.getMessage("LB_SETTINGS_STARTBROWSER")));
+    startBrowserCheckbox->SetHelpText(S2W(settings.getMessage("SETTINGS_STARTBROWSER_TIP")));
     guiBox->Add(startBrowserCheckbox,0,wxALIGN_LEFT | wxALL,5);
 
     wxBoxSizer* browserPathBox = new wxBoxSizer(wxHORIZONTAL);
     guiBox->Add(browserPathBox,0,wxGROW | wxALL,0);
 
     browserPathText =  new pmTextCtrl(frame, ID_BROWSERPATHTEXT,
-        "" , wxDefaultPosition, wxDefaultSize);
-    browserPathText->SetHelpText(settings.getMessage("SETTINGS_BROWSERPATH_TIP").c_str());
+        wxT("") , wxDefaultPosition, wxDefaultSize);
+    browserPathText->SetHelpText(S2W(settings.getMessage("SETTINGS_BROWSERPATH_TIP")));
     browserPathBox->Add(browserPathText,1,wxALIGN_CENTER_VERTICAL | wxALL,5);
 
     pmBitmapButton* browserButton =  new pmBitmapButton(frame, ID_BROWSERPATHBUTTON,
         wxBitmap(btn_file20_xpm) );
-    browserButton->SetHelpText(settings.getMessage("SETTINGS_BROWSERCHOOSE_TIP").c_str());
+    browserButton->SetHelpText(S2W(settings.getMessage("SETTINGS_BROWSERCHOOSE_TIP")));
     browserPathBox->Add(browserButton,0,wxALIGN_CENTER_VERTICAL | wxALL,5);
 
     // Proxy options
 
     wxStaticBox* proxyStaticBox_StaticBoxObj = new wxStaticBox(frame,wxID_ANY,
-        settings.getMessage("LB_SETTINGS_PROXY").c_str());
+        S2W(settings.getMessage("LB_SETTINGS_PROXY")));
     pmStaticBoxSizer* proxyStaticBox = new pmStaticBoxSizer(
         proxyStaticBox_StaticBoxObj,wxHORIZONTAL);
     leftBox->Add(proxyStaticBox,1,wxGROW | wxALL,5);
@@ -175,88 +175,88 @@ CSettingsScreen::CSettingsScreen(wxFrame* frame) : CWindowContent(frame) {
     proxyBox->Add(portBox,0,wxALIGN_LEFT | wxALL,0);
 
     pmStaticText* portLabel =  new pmStaticText(frame, wxID_ANY ,
-        settings.getMessage("LB_SETTINGS_PORT").c_str());
+        S2W(settings.getMessage("LB_SETTINGS_PORT")));
     portBox->Add(portLabel,0,wxALIGN_CENTER_VERTICAL | wxALL,5);
 
     urlCmdCheckbox = new pmCheckBox(frame, ID_URLCMDCHECKBOX,
-        settings.getMessage("LB_SETTINGS_URLCMD").c_str());
-    urlCmdCheckbox->SetHelpText(settings.getMessage("SETTINGS_URLCMD_TIP").c_str());
+        S2W(settings.getMessage("LB_SETTINGS_URLCMD")));
+    urlCmdCheckbox->SetHelpText(S2W(settings.getMessage("SETTINGS_URLCMD_TIP")));
     proxyBox->Add(urlCmdCheckbox,0,wxALIGN_LEFT | wxALL,5);
 
     wxBoxSizer* urlCmdBox = new wxBoxSizer(wxHORIZONTAL);
     proxyBox->Add(urlCmdBox,0,wxALIGN_LEFT | wxALL,0);
 
     pmStaticText* urlCmdLabel =  new pmStaticText(frame, wxID_ANY ,
-        settings.getMessage("LB_SETTINGS_URLCMD_PREFIX").c_str());
+        S2W(settings.getMessage("LB_SETTINGS_URLCMD_PREFIX")));
     urlCmdBox->Add(urlCmdLabel,0,wxALIGN_CENTER_VERTICAL | wxALL,5);
 
     urlCmdPrefixText = new pmTextCtrl(frame, ID_URLCMDPREFIXTEXT,
-        "" , wxDefaultPosition, wxSize(100, 21));
-    urlCmdPrefixText->SetHelpText(settings.getMessage("SETTINGS_URLCMD_PREFIX_TIP").c_str());
+        wxT("") , wxDefaultPosition, wxSize(100, 21));
+    urlCmdPrefixText->SetHelpText(S2W(settings.getMessage("SETTINGS_URLCMD_PREFIX_TIP")));
     urlCmdBox->Add(urlCmdPrefixText,0,wxALIGN_CENTER_VERTICAL | wxALL,5);
 
     portText = new pmTextCtrl(frame, ID_PORTTEXT,
-        "" , wxDefaultPosition, wxSize(50, 21));
-    portText->SetHelpText(settings.getMessage("SETTINGS_PORT_TIP").c_str());
+        wxT("") , wxDefaultPosition, wxSize(50, 21));
+    portText->SetHelpText(S2W(settings.getMessage("SETTINGS_PORT_TIP")));
     portBox->Add(portText,0,wxALIGN_CENTER_VERTICAL | wxALL,5);
 
     useProxyCheckbox = new pmCheckBox(frame, ID_USEPROXYCHECKBOX,
-        settings.getMessage("LB_SETTINGS_USEPROXY").c_str());
-    useProxyCheckbox->SetHelpText(settings.getMessage("SETTINGS_USEPROXY_TIP").c_str());
+        S2W(settings.getMessage("LB_SETTINGS_USEPROXY")));
+    useProxyCheckbox->SetHelpText(S2W(settings.getMessage("SETTINGS_USEPROXY_TIP")));
     proxyBox->Add(useProxyCheckbox,0,wxALIGN_LEFT | wxALL,5);
 
     wxBoxSizer* nextProxyBox = new wxBoxSizer(wxHORIZONTAL);
     proxyBox->Add(nextProxyBox,0,wxGROW | wxALL,0);
 
     pmStaticText* proxyLabel =  new pmStaticText(frame, wxID_ANY ,
-        settings.getMessage("LB_SETTINGS_NEXTPROXY").c_str());
+        S2W(settings.getMessage("LB_SETTINGS_NEXTPROXY")));
     nextProxyBox->Add(proxyLabel,0,wxALIGN_CENTER_VERTICAL | wxALL,5);
 
     nextProxyDropdown =  new pmComboBox(frame, ID_NEXTPROXYDROPDOWN ,
-        "" , wxDefaultPosition, wxDefaultSize,
+        wxT("") , wxDefaultPosition, wxDefaultSize,
         choices, wxCB_DROPDOWN | wxCB_SORT  );
-    nextProxyDropdown->SetHelpText(settings.getMessage("SETTINGS_NEXTPROXY_TIP").c_str());
+    nextProxyDropdown->SetHelpText(S2W(settings.getMessage("SETTINGS_NEXTPROXY_TIP")));
     nextProxyBox->Add(nextProxyDropdown,1,wxALIGN_CENTER_VERTICAL | wxALL,5);
 
     pmBitmapButton* nextProxyButton =  new pmBitmapButton(frame, ID_NEXTPROXYBUTTON,
         wxBitmap(btn_trash20_xpm) );
-    nextProxyButton->SetHelpText(settings.getMessage("SETTINGS_REMOVEPROXY_TIP").c_str());
+    nextProxyButton->SetHelpText(S2W(settings.getMessage("SETTINGS_REMOVEPROXY_TIP")));
     nextProxyBox->Add(nextProxyButton,0,wxALIGN_CENTER_VERTICAL | wxALL,5);
 
     allowIPCheckbox =  new pmCheckBox(frame, ID_ALLOWIPCHECKBOX,
-        settings.getMessage("LB_SETTINGS_ALLOWIP").c_str());
-    allowIPCheckbox->SetHelpText(settings.getMessage("SETTINGS_ALLOWIP_TIP").c_str());
+        S2W(settings.getMessage("LB_SETTINGS_ALLOWIP")));
+    allowIPCheckbox->SetHelpText(S2W(settings.getMessage("SETTINGS_ALLOWIP_TIP")));
     proxyBox->Add(allowIPCheckbox,0,wxALIGN_LEFT | wxALL,5);
 
     wxFlexGridSizer* rangeBox = new wxFlexGridSizer(2,2,5,5);
     proxyBox->Add(rangeBox,0,wxALIGN_LEFT | wxALL,5);
 
     pmStaticText* minRangeLabel =  new pmStaticText(frame, wxID_ANY ,
-        settings.getMessage("LB_SETTINGS_MINRANGE").c_str());
+        S2W(settings.getMessage("LB_SETTINGS_MINRANGE")));
     rangeBox->Add(minRangeLabel,0,wxALIGN_LEFT |
         wxALIGN_CENTER_VERTICAL| wxALL,0);
 
     minRangeText =  new pmTextCtrl(frame, ID_MINRANGETEXT,
-        "" , wxDefaultPosition, wxDefaultSize);
-    minRangeText->SetHelpText(settings.getMessage("SETTINGS_MINRANGE_TIP").c_str());
+        wxT("") , wxDefaultPosition, wxDefaultSize);
+    minRangeText->SetHelpText(S2W(settings.getMessage("SETTINGS_MINRANGE_TIP")));
     rangeBox->Add(minRangeText,0,wxALIGN_CENTER_HORIZONTAL |
         wxALIGN_CENTER_VERTICAL | wxALL,0);
 
     pmStaticText* maxRangeLabel =  new pmStaticText(frame, wxID_ANY ,
-        settings.getMessage("LB_SETTINGS_MAXRANGE").c_str());
+        S2W(settings.getMessage("LB_SETTINGS_MAXRANGE")));
     rangeBox->Add(maxRangeLabel,0,wxALIGN_LEFT |
         wxALIGN_CENTER_VERTICAL| wxALL,0);
 
     maxRangeText =  new pmTextCtrl(frame, ID_MAXRANGETEXT,
-        "" , wxDefaultPosition, wxDefaultSize);
-    maxRangeText->SetHelpText(settings.getMessage("SETTINGS_MAXRANGE_TIP").c_str());
+        wxT("") , wxDefaultPosition, wxDefaultSize);
+    maxRangeText->SetHelpText(S2W(settings.getMessage("SETTINGS_MAXRANGE_TIP")));
     rangeBox->Add(maxRangeText,0,wxALIGN_CENTER_HORIZONTAL |
         wxALIGN_CENTER_VERTICAL | wxALL,0);
 
     // List options
 
     wxStaticBox* listStaticBox_StaticBoxObj = new wxStaticBox(frame,wxID_ANY,
-        settings.getMessage("LB_SETTINGS_LIST").c_str());
+        S2W(settings.getMessage("LB_SETTINGS_LIST")));
     pmStaticBoxSizer* listStaticBox = new pmStaticBoxSizer(
         listStaticBox_StaticBoxObj,wxHORIZONTAL);
     rightBox->Add(listStaticBox,1,wxGROW | wxALL,5);
@@ -268,40 +268,40 @@ CSettingsScreen::CSettingsScreen(wxFrame* frame) : CWindowContent(frame) {
     listBox->Add(listNameBox,0,wxGROW | wxALL,0);
 
     pmStaticText* listNameLabel =  new pmStaticText(frame, wxID_ANY ,
-        settings.getMessage("LB_SETTINGS_LISTNAME").c_str());
+        S2W(settings.getMessage("LB_SETTINGS_LISTNAME")));
     listNameBox->Add(listNameLabel,0,wxALIGN_CENTER_VERTICAL | wxALL,5);
 
     listDropDown =  new pmComboBox(frame, ID_LISTNAMEDROPDOWN ,
-        "" , wxDefaultPosition, wxSize(70, 21),
+        wxT("") , wxDefaultPosition, wxSize(70, 21),
         choices, wxCB_DROPDOWN | wxCB_SORT  );
-    listDropDown->SetHelpText(settings.getMessage("SETTINGS_LISTNAME_TIP").c_str());
+    listDropDown->SetHelpText(S2W(settings.getMessage("SETTINGS_LISTNAME_TIP")));
     listNameBox->Add(listDropDown,1,wxALIGN_CENTER_VERTICAL | wxALL,5);
 
     pmBitmapButton* newButton =  new pmBitmapButton(frame, ID_NEWBUTTON,
         wxBitmap(btn_add20_xpm) );
-    newButton->SetHelpText(settings.getMessage("SETTINGS_NEWLIST_TIP").c_str());
+    newButton->SetHelpText(S2W(settings.getMessage("SETTINGS_NEWLIST_TIP")));
     listNameBox->Add(newButton,0,wxALIGN_CENTER_VERTICAL | wxALL,5);
 
     pmBitmapButton* openButton =  new pmBitmapButton(frame, ID_OPENBUTTON,
         wxBitmap(btn_view20_xpm) );
-    openButton->SetHelpText(settings.getMessage("SETTINGS_OPENLIST_TIP").c_str());
+    openButton->SetHelpText(S2W(settings.getMessage("SETTINGS_OPENLIST_TIP")));
     listNameBox->Add(openButton,0,wxALIGN_CENTER_VERTICAL | wxALL,5);
 
     wxBoxSizer* listFileBox = new wxBoxSizer(wxHORIZONTAL);
     listBox->Add(listFileBox,0,wxGROW | wxALL,0);
 
     pmStaticText* listFileLabel =  new pmStaticText(frame, wxID_ANY ,
-        settings.getMessage("LB_SETTINGS_LISTFILE").c_str());
+        S2W(settings.getMessage("LB_SETTINGS_LISTFILE")));
     listFileBox->Add(listFileLabel,0,wxALIGN_CENTER_VERTICAL | wxALL,5);
 
     listFileText =  new pmTextCtrl(frame, ID_LISTFILETEXT,
-        "" , wxDefaultPosition, wxDefaultSize);
-    listFileText->SetHelpText(settings.getMessage("SETTINGS_LISTFILE_TIP").c_str());
+        wxT("") , wxDefaultPosition, wxDefaultSize);
+    listFileText->SetHelpText(S2W(settings.getMessage("SETTINGS_LISTFILE_TIP")));
     listFileBox->Add(listFileText,1,wxALIGN_CENTER_VERTICAL | wxALL,5);
 
     pmBitmapButton* chooseButton =  new pmBitmapButton(frame, ID_CHOOSEBUTTON,
         wxBitmap(btn_file20_xpm) );
-    chooseButton->SetHelpText(settings.getMessage("SETTINGS_FILECHOOSE_TIP").c_str());
+    chooseButton->SetHelpText(S2W(settings.getMessage("SETTINGS_FILECHOOSE_TIP")));
     listFileBox->Add(chooseButton,0,wxALIGN_CENTER_VERTICAL | wxALL,5);
 
     // More buttons
@@ -310,13 +310,13 @@ CSettingsScreen::CSettingsScreen(wxFrame* frame) : CWindowContent(frame) {
     rightBox->Add(buttonBox,0,wxALIGN_CENTER_HORIZONTAL | wxALL,0);
 
     pmButton* applyButton =  new pmButton(frame, ID_APPLYBUTTON,
-        settings.getMessage("LB_SETTINGS_APPLY").c_str());
-    applyButton->SetHelpText(settings.getMessage("SETTINGS_APPLY_TIP").c_str());
+        S2W(settings.getMessage("LB_SETTINGS_APPLY")));
+    applyButton->SetHelpText(S2W(settings.getMessage("SETTINGS_APPLY_TIP")));
     buttonBox->Add(applyButton,0,wxALIGN_CENTER_VERTICAL | wxALL,5);
 
     pmButton* revertButton =  new pmButton(frame, ID_REVERTBUTTON,
-        settings.getMessage("LB_SETTINGS_REVERT").c_str());
-    revertButton->SetHelpText(settings.getMessage("SETTINGS_REVERT_TIP").c_str());
+        S2W(settings.getMessage("LB_SETTINGS_REVERT")));
+    revertButton->SetHelpText(S2W(settings.getMessage("SETTINGS_REVERT_TIP")));
     buttonBox->Add(revertButton,0,wxALIGN_CENTER_VERTICAL | wxALL,5);
 
     // Ready
@@ -362,8 +362,8 @@ void CSettingsScreen::revert(bool confirm) {
 
     // Ask user before proceeding
     if (confirm && hasChanged()) {
-        int ret = wxMessageBox(settings.getMessage("REVERT_SETTINGS").c_str(),
-                                                APP_NAME, wxYES_NO);
+        int ret = wxMessageBox(S2W(settings.getMessage("REVERT_SETTINGS")),
+                                                wxT(APP_NAME), wxYES_NO);
         if (ret == wxNO) return;
     }
 
@@ -390,39 +390,39 @@ void CSettingsScreen::revert(bool confirm) {
     showGuiCheckbox->SetValue(showOnStartup);
     useProxyCheckbox->SetValue(useNextProxy);
     urlCmdCheckbox->SetValue(enableUrlCmd);
-    bypassText->SetValue(bypass.c_str());
-    browserPathText->SetValue(browserPath.c_str());
-    maxRangeText->SetValue(CUtil::toDotted(maxIPRange).c_str());
-    minRangeText->SetValue(CUtil::toDotted(minIPRange).c_str());
-    portText->SetValue(proxyPort.c_str());
-    urlCmdPrefixText->SetValue(urlCmdPrefix.c_str());
+    bypassText->SetValue(S2W(bypass));
+    browserPathText->SetValue(S2W(browserPath));
+    maxRangeText->SetValue(S2W(CUtil::toDotted(maxIPRange)));
+    minRangeText->SetValue(S2W(CUtil::toDotted(minIPRange)));
+    portText->SetValue(S2W(proxyPort));
+    urlCmdPrefixText->SetValue(S2W(urlCmdPrefix));
 
     // Populate proxy list
     nextProxyDropdown->Clear();
     for (set<string>::iterator it = proxies.begin();
             it != proxies.end(); it++) {
-        nextProxyDropdown->Append(it->c_str());
+        nextProxyDropdown->Append(S2W(*it));
     }
-    nextProxyDropdown->SetValue(nextProxy.c_str());
+    nextProxyDropdown->SetValue(S2W(nextProxy));
 
     // Populate language list
     languageDropDown->Clear();
-    wxString f = wxFindFirstFile("*.lng");
+    wxString f = wxFindFirstFile(wxT("*.lng"));
     while ( !f.IsEmpty() ) {
         languageDropDown->Append(f.SubString(2, f.Length() - 5));
         f = wxFindNextFile();
     }
-    languageDropDown->SetValue(language.c_str());
+    languageDropDown->SetValue(S2W(language));
     
     // Populate lists list
     listDropDown->Clear();
     for (map<string,string>::iterator it = listNames.begin();
             it != listNames.end(); it++) {
-        listDropDown->Append(it->first.c_str());
+        listDropDown->Append(S2W(it->first));
     }
     currentListName.clear();
-    listDropDown->SetValue("");
-    listFileText->SetValue("");
+    listDropDown->SetValue(wxT(""));
+    listFileText->SetValue(wxT(""));
 
     allowIPCheckbox->SetFocus();
 }
@@ -435,8 +435,8 @@ void CSettingsScreen::apply(bool confirm) {
     if (!hasChanged()) return;
     if (confirm) {
         // Ask user before proceeding
-        int ret = wxMessageBox(settings.getMessage("APPLY_SETTINGS").c_str(),
-                               APP_NAME, wxYES_NO);
+        int ret = wxMessageBox(S2W(settings.getMessage("APPLY_SETTINGS")),
+                               wxT(APP_NAME), wxYES_NO);
         if (ret == wxNO) return;
     }
     // Stop proxy
@@ -505,53 +505,53 @@ void CSettingsScreen::OnCommand(wxCommandEvent& event) {
         revert(true); break;
 
     case ID_LANGUAGEDROPDOWN:
-        language = languageDropDown->GetValue(); break;
+        language = W2S(languageDropDown->GetValue()); break;
         
     case ID_BROWSERPATHTEXT:
-        browserPath = browserPathText->GetValue().c_str(); break;
+        browserPath = W2S(browserPathText->GetValue()); break;
 
     case ID_BYPASSTEXT:
         {
-            string newValue = bypassText->GetValue().c_str();
+            string newValue = W2S(bypassText->GetValue());
             string errmsg;
             if (CMatcher::testPattern(newValue, errmsg)) {
                 bypass = newValue;
             } else {
-                wxMessageBox(errmsg.c_str(), APP_NAME);
+                wxMessageBox(S2W(errmsg), wxT(APP_NAME));
             }
             break;
         }
     case ID_MAXRANGETEXT:
         {
-            maxIPRange = CUtil::fromDotted(maxRangeText->GetValue().c_str());
-            maxRangeText->SetValue(CUtil::toDotted(maxIPRange).c_str());
+            maxIPRange = CUtil::fromDotted(W2S(maxRangeText->GetValue()));
+            maxRangeText->SetValue(S2W(CUtil::toDotted(maxIPRange)));
             break;
         }
     case ID_MINRANGETEXT:
         {
-            minIPRange = CUtil::fromDotted(minRangeText->GetValue().c_str());
-            minRangeText->SetValue(CUtil::toDotted(minIPRange).c_str());
+            minIPRange = CUtil::fromDotted(W2S(minRangeText->GetValue()));
+            minRangeText->SetValue(S2W(CUtil::toDotted(minIPRange)));
             break;
         }
     case ID_PORTTEXT: 
         {
-            string newValue = portText->GetValue().c_str();
+            string newValue = W2S(portText->GetValue());
             stringstream ss(newValue);
             unsigned short num = 0;
             ss >> num;
             if (num > 0) {
                 proxyPort = newValue;
                 if (!CProxy::ref().testPort(proxyPort)) {
-                    wxMessageBox(settings.getMessage("PORT_UNAVAILABLE").c_str(),
-                                 APP_NAME);
+                    wxMessageBox(S2W(settings.getMessage("PORT_UNAVAILABLE")),
+                                 wxT(APP_NAME));
                 }
             }
-            portText->SetValue(proxyPort.c_str());
+            portText->SetValue(S2W(proxyPort));
             break;
         }
     case ID_URLCMDPREFIXTEXT:
         {
-            urlCmdPrefix = urlCmdPrefixText->GetValue();
+            urlCmdPrefix = W2S(urlCmdPrefixText->GetValue());
             break;
         }
     case ID_NEXTPROXYBUTTON:
@@ -559,7 +559,7 @@ void CSettingsScreen::OnCommand(wxCommandEvent& event) {
             set<string>::iterator it = proxies.find(nextProxy);
             if (it != proxies.end())
                 proxies.erase(it);
-            int pos = nextProxyDropdown->FindString(nextProxy.c_str());
+            int pos = nextProxyDropdown->FindString(S2W(nextProxy));
             if (pos != wxNOT_FOUND)
                 nextProxyDropdown->Delete(pos);
             if (proxies.empty()) {
@@ -567,24 +567,24 @@ void CSettingsScreen::OnCommand(wxCommandEvent& event) {
             } else {
                 nextProxy = *(proxies.begin());
             }
-            nextProxyDropdown->SetValue(nextProxy.c_str());
+            nextProxyDropdown->SetValue(S2W(nextProxy));
             break;
         }
     case ID_NEXTPROXYDROPDOWN:
         {
-            nextProxy = nextProxyDropdown->GetValue();
+            nextProxy = W2S(nextProxyDropdown->GetValue());
             CUtil::trim(nextProxy);
             if (!nextProxy.empty()) {
                 if (nextProxy.find(':') == string::npos) {
                     nextProxy += ":8080";
-                    nextProxyDropdown->SetValue(nextProxy.c_str());
+                    nextProxyDropdown->SetValue(S2W(nextProxy));
                 }
                 proxies.insert(nextProxy);
-                if (nextProxyDropdown->FindString(nextProxy.c_str()) == wxNOT_FOUND) {
-                    nextProxyDropdown->Append(nextProxy.c_str());
+                if (nextProxyDropdown->FindString(S2W(nextProxy)) == wxNOT_FOUND) {
+                    nextProxyDropdown->Append(S2W(nextProxy));
                     if (!CProxy::ref().testRemoteProxy(nextProxy)) {
-                        wxMessageBox(settings.getMessage("BAD_REMOTE_PROXY").c_str(),
-                                     APP_NAME);
+                        wxMessageBox(S2W(settings.getMessage("BAD_REMOTE_PROXY")),
+                                     wxT(APP_NAME));
                     }
                 }
             } else {
@@ -595,8 +595,8 @@ void CSettingsScreen::OnCommand(wxCommandEvent& event) {
     case ID_NEWBUTTON:
         {
             currentListName.clear();
-            listDropDown->SetValue("");
-            listFileText->SetValue("");
+            listDropDown->SetValue(wxT(""));
+            listFileText->SetValue(wxT(""));
             listDropDown->SetFocus();
             break;
         }
@@ -610,42 +610,42 @@ void CSettingsScreen::OnCommand(wxCommandEvent& event) {
         {
             if (event.GetEventType() == wxEVT_COMMAND_TEXT_ENTER) {
 
-                string newListName = listDropDown->GetValue().c_str();
+                string newListName = W2S(listDropDown->GetValue());
                 CUtil::trim(newListName);
                 if (newListName != currentListName) {
                     if (!currentListName.empty()) {
                         // Delete/Rename list
                         listNames.erase(currentListName);
                         listDropDown->Delete(
-                            listDropDown->FindString(currentListName.c_str()));
+                            listDropDown->FindString(S2W(currentListName)));
                     }
                     if (!newListName.empty()) {
                         // Create/Rename list
                         if (!listFileText->GetValue().empty()) {
-                            listNames[newListName] = listFileText->GetValue();
+                            listNames[newListName] = W2S(listFileText->GetValue());
                             CUtil::trim(listNames[newListName]);
                         }
-                        listDropDown->Append(newListName.c_str());
+                        listDropDown->Append(S2W(newListName));
                     } else {
-                        listFileText->SetValue("");
+                        listFileText->SetValue(wxT(""));
                     }
                     currentListName = newListName;
-                    listDropDown->SetValue(currentListName.c_str());
+                    listDropDown->SetValue(S2W(currentListName));
                 }
             } else if (event.GetEventType() == wxEVT_COMMAND_COMBOBOX_SELECTED) {
 
-                currentListName = event.GetString();
+                currentListName = W2S(event.GetString());
                 if (!currentListName.empty())
-                    listFileText->SetValue(listNames[currentListName].c_str());
+                    listFileText->SetValue(S2W(listNames[currentListName]));
             }
             break;
         }
     case ID_CHOOSEBUTTON:
         {
             wxFileDialog fd(frame,
-                  settings.getMessage("OPEN_LISTFILE_QUESTION").c_str(),
-                  "Lists", // This is the directory name
-                  "", "Text files (*.txt)|*.txt|All files (*.*)|*.*", wxOPEN);
+                  S2W(settings.getMessage("OPEN_LISTFILE_QUESTION")),
+                  wxT("Lists"), // This is the directory name
+                  wxT(""), wxT("Text files (*.txt)|*.txt|All files (*.*)|*.*"), wxOPEN);
             if (fd.ShowModal() != wxID_OK) break;
             listFileText->SetValue(fd.GetPath());
             // No break here, we'll do following tests
@@ -655,23 +655,23 @@ void CSettingsScreen::OnCommand(wxCommandEvent& event) {
             wxFileName fn(listFileText->GetValue());
 
             fn.MakeAbsolute();
-            string fullpath = fn.GetFullPath().c_str();
+            string fullpath = W2S(fn.GetFullPath());
             
             fn.MakeRelativeTo(wxFileName::GetCwd());
             if (fullpath.size() < fn.GetFullPath().Length())
                 fn.MakeAbsolute();
-            string path = fn.GetFullPath().c_str();
+            string path = W2S(fn.GetFullPath());
 
             if (!currentListName.empty())
                 listNames[currentListName] = path;
-            listFileText->SetValue(path.c_str());
+            listFileText->SetValue(S2W(path));
             
             if (!path.empty() && !fn.FileExists()) {
                 int answer = wxMessageBox(
-                              settings.getMessage("ASK_CREATE_NEWLIST").c_str(),
-                              APP_NAME, wxYES_NO);
+                              S2W(settings.getMessage("ASK_CREATE_NEWLIST")),
+                              wxT(APP_NAME), wxYES_NO);
                 if (answer == wxYES) {
-                    wxTextFile f(path.c_str());
+                    wxTextFile f(S2W(path));
                     f.Create();
                     f.Close();
                 }
@@ -681,14 +681,15 @@ void CSettingsScreen::OnCommand(wxCommandEvent& event) {
     case ID_BROWSERPATHBUTTON:
         {
             wxFileDialog fd(frame,
-                  settings.getMessage("OPEN_BROWSER_QUESTION").c_str(),
-                  ".", // This is the directory name
-                  "", "All files (*.*)|*.*", wxOPEN);
+                  S2W(settings.getMessage("OPEN_BROWSER_QUESTION")),
+                  wxT("."), // This is the directory name
+                  wxT(""), wxT("All files (*.*)|*.*"), wxOPEN);
             if (fd.ShowModal() != wxID_OK) break;
             wxString path = fd.GetPath();
-            if (path.Find(' ') >= 0) path = "\"" + path + "\"";
+            if (path.Find(wxT(" ")) >= 0)
+                path = (wxString)wxT("\"") + path + wxT("\"");
             browserPathText->SetValue(path);
-            browserPath = path.c_str();
+            browserPath = W2S(path);
             break;
         }
     default:

@@ -53,7 +53,7 @@ void pmTextCtrl::OnMouseEvent(wxMouseEvent& event) {
 
     event.Skip();   // (let the base class receive the event too)
     if (helpText.empty()) return;
-    CStatusEvent ev( event.Entering() ? helpText : string("") );
+    CStatusEvent ev( event.Entering() ? W2S(helpText) : string("") );
     ProcessEvent(ev);
 }
 
@@ -83,7 +83,7 @@ void pmComboBox::OnMouseEvent(wxMouseEvent& event) {
 
     event.Skip();   // (let the base class receive the event too)
     if (helpText.empty()) return;
-    CStatusEvent ev( event.Entering() ? helpText : string("") );
+    CStatusEvent ev( event.Entering() ? W2S(helpText) : string("") );
     ProcessEvent(ev);
 }
 
@@ -119,7 +119,7 @@ void pmListCtrl::OnMouseEvent(wxMouseEvent& event) {
 
     event.Skip();   // (let the base class receive the event too)
     if (helpText.empty()) return;
-    CStatusEvent ev( event.Entering() ? helpText : string("") );
+    CStatusEvent ev( event.Entering() ? W2S(helpText) : string("") );
     ProcessEvent(ev);
 }
 
@@ -141,7 +141,7 @@ void pmCheckBox::OnMouseEvent(wxMouseEvent& event) {
 
     event.Skip();   // (let the base class receive the event too)
     if (helpText.empty()) return;
-    CStatusEvent ev( event.Entering() ? helpText : string("") );
+    CStatusEvent ev( event.Entering() ? W2S(helpText) : string("") );
     ProcessEvent(ev);
 }
 
@@ -162,7 +162,7 @@ void pmButton::OnMouseEvent(wxMouseEvent& event) {
 
     event.Skip();   // (let the base class receive the event too)
     if (helpText.empty()) return;
-    CStatusEvent ev( event.Entering() ? helpText : string("") );
+    CStatusEvent ev( event.Entering() ? W2S(helpText) : string("") );
     ProcessEvent(ev);
 }
 
@@ -185,7 +185,7 @@ void pmBitmapButton::OnMouseEvent(wxMouseEvent& event) {
 
     event.Skip();   // (let the base class receive the event too)
     if (helpText.empty()) return;
-    CStatusEvent ev( event.Entering() ? helpText : string("") );
+    CStatusEvent ev( event.Entering() ? W2S(helpText) : string("") );
     ProcessEvent(ev);
 }
 
@@ -229,7 +229,7 @@ void pmTreeCtrl::OnMouseEvent(wxMouseEvent& event) {
         }
     } else {
         if (helpText.empty()) return;
-        CStatusEvent ev( event.Entering() ? helpText : string("") );
+        CStatusEvent ev( event.Entering() ? W2S(helpText) : string("") );
         ProcessEvent(ev);
     }
 }

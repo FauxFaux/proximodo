@@ -129,8 +129,8 @@ string CExpander::expand(const string& pattern, CFilter& filter) {
             case 'p': output << filter.owner.url.getPath(); break;
             case 'q': output << filter.owner.url.getQuery(); break;
             case 'a': output << filter.owner.url.getAnchor(); break;
-            case 'd': output << "file:///";
-                      output << CUtil::replaceAll(wxGetCwd().c_str(), "\\", "/");
+            case 'd': output << wxT("file:///");
+                      output << CUtil::replaceAll(W2S(wxGetCwd()), "\\", "/");
                       break;
             default :
                 if (CUtil::digit(c)) {
@@ -178,7 +178,7 @@ string CExpander::expand(const string& pattern, CFilter& filter) {
                 index = end;
                 
                 // PENDING: Commands
-                // Each command is accessed in its "else if" block.
+                // Each command is accessed in its wxT("else if") block.
                 // For each command, the call and use of results can be slightly different.
                 // For example, the _result_ of $GET() is parsed before feeding the output.
                 // Note that commands that are not CGenerator-dependent (ex. $ESC) should
@@ -236,12 +236,12 @@ string CExpander::expand(const string& pattern, CFilter& filter) {
 
                 } else if (command == "ALERT") {
 
-                    wxMessageBox(expand(content, filter).c_str(), APP_NAME);
+                    wxMessageBox(S2W(expand(content, filter)), wxT(APP_NAME));
 
                 } else if (command == "CONFIRM") {
 
-                    int answer = wxMessageBox(expand(content, filter).c_str(),
-                                                APP_NAME, wxYES_NO);
+                    int answer = wxMessageBox(S2W(expand(content, filter)),
+                                                wxT(APP_NAME), wxYES_NO);
                     if (answer == wxNO) index = size;
 
                 } else if (command == "ESC") {
@@ -340,11 +340,10 @@ string CExpander::expand(const string& pattern, CFilter& filter) {
                         }
                         title = expand(title, filter);
                         value = expand(value, filter);
-                        string message = CSettings::ref().getMessage(
-                                                "ADDLSTBOX_MESSAGE", name);
-                        wxTextEntryDialog dlg(NULL, message.c_str(), title.c_str(), value.c_str());
+                        string message = CSettings::ref().getMessage("ADDLSTBOX_MESSAGE", name);
+                        wxTextEntryDialog dlg(NULL, S2W(message), S2W(title), S2W(value));
                         if (dlg.ShowModal() == wxID_OK)
-                            CSettings::ref().addListLine(name, dlg.GetValue().c_str());
+                            CSettings::ref().addListLine(name, W2S(dlg.GetValue()));
                     }
 
                 } else if (command == "URL") {
@@ -457,14 +456,14 @@ string CExpander::expand(const string& pattern, CFilter& filter) {
                         case 's' : ss << CUtil::pad(now.GetSecond(),2); break;
                         case 't' : ss << CUtil::pad(now.GetMillisecond(),3); break;
                         case 'h' : ss << CUtil::pad(((now.GetHour()+11)%12+1),2); break;
-                        case 'a' : ss << (now.GetDay()<12?"am":"pm"); break;
+                        case 'a' : ss << (now.GetDay()<12?wxT("am"):wxT("pm")); break;
                         case 'c' : ss << filter.owner.reqNumber; break;
                         case 'w' : ss << day[now.GetWeekDay()]; break;
                         case 'T' : content.replace(i, 1, "H:m:s"); continue;
                         case 'U' : content.replace(i, 1, "M/D/Y"); continue;
                         case 'E' : content.replace(i, 1, "D/M/Y"); continue;
                         case 'd' : content.replace(i, 1, "Y-M-D"); continue;
-                        case 'I' : ss << now.Format("%a, %d %b %Y %H:%M:%S GMT", wxDateTime::GMT0); break;
+                        case 'I' : ss << W2S(now.Format(wxT("%a, %d %b %Y %H:%M:%S GMT"), wxDateTime::GMT0)); break;
                         case '\\' : if (i+1 < content.size()) { ss << content[i+1]; i++; } break;
                         default  : ss << c;
                         }

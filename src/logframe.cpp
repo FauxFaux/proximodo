@@ -78,7 +78,7 @@ int CLogFrame::savedX = BIG_NUMBER,
  */
 CLogFrame::CLogFrame() 
        : wxFrame((wxFrame *)NULL, wxID_ANY,
-                 CSettings::ref().getMessage("LOG_WINDOW_TITLE").c_str(),
+                 S2W(CSettings::ref().getMessage("LOG_WINDOW_TITLE")),
                  wxDefaultPosition, wxDefaultSize,
                  wxDEFAULT_FRAME_STYLE |
                  wxTAB_TRAVERSAL |
@@ -92,7 +92,7 @@ CLogFrame::CLogFrame()
     wxBoxSizer* vertSizer = new wxBoxSizer(wxVERTICAL);
     this->SetSizer(vertSizer);
 
-    logText =  new pmTextCtrl(this, wxID_ANY, "" ,
+    logText =  new pmTextCtrl(this, wxID_ANY, wxT("") ,
         wxDefaultPosition, wxSize(500,250),
         wxTE_READONLY | wxTE_RICH |  wxTE_MULTILINE | wxTE_DONTWRAP );
     logText->SetBackgroundColour(wxColour(LOG_COLOR_BACKGROUND));
@@ -105,45 +105,45 @@ CLogFrame::CLogFrame()
     vertSizer->Add(lowerSizer,0,wxALIGN_LEFT | wxALL,0);
 
     startButton =  new pmButton(this, ID_STARTBUTTON,
-        settings.getMessage("LOG_BUTTON_STOP").c_str() );
+        S2W(settings.getMessage("LOG_BUTTON_STOP")) );
     lowerSizer->Add(startButton,0,wxALIGN_CENTER_VERTICAL | wxALL,5);
 
     pmButton* clearButton =  new pmButton(this, ID_CLEARBUTTON,
-        settings.getMessage("LOG_BUTTON_CLEAR").c_str() );
+        S2W(settings.getMessage("LOG_BUTTON_CLEAR")) );
     lowerSizer->Add(clearButton,0,wxALIGN_CENTER_VERTICAL | wxALL,5);
 
     wxBoxSizer* ckbxSizer1 = new wxBoxSizer(wxVERTICAL);
     lowerSizer->Add(ckbxSizer1,0,wxALIGN_CENTER_VERTICAL | wxALL,5);
 
     httpCheckbox =  new pmCheckBox(this, wxID_ANY,
-        settings.getMessage("LOG_CKB_HTTP").c_str() );
+        S2W(settings.getMessage("LOG_CKB_HTTP")) );
     ckbxSizer1->Add(httpCheckbox,0,wxALIGN_LEFT | wxALL,2);
 
     postCheckbox =  new pmCheckBox(this, wxID_ANY,
-        settings.getMessage("LOG_CKB_POST").c_str() );
+        S2W(settings.getMessage("LOG_CKB_POST")) );
     ckbxSizer1->Add(postCheckbox,0,wxALIGN_LEFT | wxALL,2);
 
     browserCheckbox =  new pmCheckBox(this, wxID_ANY,
-        settings.getMessage("LOG_CKB_BROWSER").c_str() );
+        S2W(settings.getMessage("LOG_CKB_BROWSER")) );
     ckbxSizer1->Add(browserCheckbox,0,wxALIGN_LEFT | wxALL,2);
 
     headersCheckbox =  new pmCheckBox(this, wxID_ANY,
-        settings.getMessage("LOG_CKB_HEADERS").c_str() );
+        S2W(settings.getMessage("LOG_CKB_HEADERS")) );
     ckbxSizer1->Add(headersCheckbox,0,wxALIGN_LEFT | wxALL,2);
 
     wxBoxSizer* ckbxSizer2 = new wxBoxSizer(wxVERTICAL);
     lowerSizer->Add(ckbxSizer2,0,wxALIGN_CENTER_VERTICAL | wxALL,5);
 
     proxyCheckbox =  new pmCheckBox(this, wxID_ANY,
-        settings.getMessage("LOG_CKB_PROXY").c_str() );
+        S2W(settings.getMessage("LOG_CKB_PROXY")) );
     ckbxSizer2->Add(proxyCheckbox,0,wxALIGN_LEFT | wxALL,2);
 
     filterCheckbox =  new pmCheckBox(this, wxID_ANY,
-        settings.getMessage("LOG_CKB_FILTER").c_str() );
+        S2W(settings.getMessage("LOG_CKB_FILTER")) );
     ckbxSizer2->Add(filterCheckbox,0,wxALIGN_LEFT | wxALL,2);
 
     logCheckbox =  new pmCheckBox(this, wxID_ANY,
-        settings.getMessage("LOG_CKB_LOG").c_str() );
+        S2W(settings.getMessage("LOG_CKB_LOG")) );
     ckbxSizer2->Add(logCheckbox,0,wxALIGN_LEFT | wxALL,2);
 
     active = true;
@@ -208,9 +208,9 @@ void CLogFrame::OnCommand(wxCommandEvent& event) {
     case ID_STARTBUTTON:
         {
             if (active)
-                startButton->SetLabel(settings.getMessage("LOG_BUTTON_START").c_str());
+                startButton->SetLabel(S2W(settings.getMessage("LOG_BUTTON_START")));
             else
-                startButton->SetLabel(settings.getMessage("LOG_BUTTON_STOP").c_str());
+                startButton->SetLabel(S2W(settings.getMessage("LOG_BUTTON_STOP")));
             active = !active;
             break;
         }
@@ -265,8 +265,8 @@ void CLogFrame::OnProxyEvent(CProxyEvent& evt) {
         return;
     }
 
-    logText->AppendText(settings.getMessage(mess, port.str()).c_str());
-    logText->AppendText("\n");
+    logText->AppendText(S2W(settings.getMessage(mess, port.str())));
+    logText->AppendText(wxT("\n"));
     logText->ShowPosition(logText->GetInsertionPoint());
 }
 
@@ -320,18 +320,13 @@ void CLogFrame::OnHttpEvent(CHttpEvent& evt) {
     if (!headersCheckbox->GetValue()) {
         if (postCheckbox->GetValue() || proxyCheckbox->GetValue() ||
                 filterCheckbox->GetValue() || logCheckbox->GetValue()) {
-            logText->AppendText(settings.getMessage(
-                "EVT_HTTP_GENERIC", req.str(), port.str(),
-                evt.text.substr(0,evt.text.find('\n'))).c_str());
+            logText->AppendText(S2W(settings.getMessage("EVT_HTTP_GENERIC", req.str(), port.str(), evt.text.substr(0,evt.text.find('\n')))));
         } else {
-            logText->AppendText(
-                string("#" + req.str() + ": " +
-                evt.text.substr(0,evt.text.find('\n'))).c_str());
+            logText->AppendText(S2W("#" + req.str() + ": " + evt.text.substr(0,evt.text.find('\n'))));
         }
     } else {
-        logText->AppendText(settings.getMessage(
-            mess, req.str(), port.str(), evt.text).c_str());
-        logText->AppendText("\n");
+        logText->AppendText(S2W(settings.getMessage(mess, req.str(), port.str(), evt.text)));
+        logText->AppendText(wxT("\n"));
     }
     logText->ShowPosition(logText->GetInsertionPoint());
 }
@@ -345,7 +340,7 @@ void CLogFrame::OnFilterEvent(CFilterEvent& evt) {
 
             evt.text.erase(0, 1);
             logCheckbox->SetValue(true);
-            startButton->SetLabel(settings.getMessage("LOG_BUTTON_STOP").c_str());
+            startButton->SetLabel(S2W(settings.getMessage("LOG_BUTTON_STOP")));
             active = true;
             CUtil::show(this);
         }
@@ -359,9 +354,8 @@ void CLogFrame::OnFilterEvent(CFilterEvent& evt) {
         // The first line is always the same color
         logText->SetDefaultStyle(wxTextAttr(wxColour(LOG_COLOR_FILTER)));
         
-        logText->AppendText(settings.getMessage("EVT_FILTER_LOG", req.str(),
-                                                evt.title).c_str());
-        logText->AppendText("\n");
+        logText->AppendText(S2W(settings.getMessage("EVT_FILTER_LOG", req.str(), evt.title)));
+        logText->AppendText(wxT("\n"));
         
         // The second line's color depends on the first character
         switch (evt.text[0]) {
@@ -374,8 +368,8 @@ void CLogFrame::OnFilterEvent(CFilterEvent& evt) {
         case 'Y': logText->SetDefaultStyle(wxTextAttr(wxColour(LOG_COLOR_Y))); break;
         case 'V': logText->SetDefaultStyle(wxTextAttr(wxColour(LOG_COLOR_V))); break;
         }
-        logText->AppendText(evt.text.substr(1).c_str());
-        logText->AppendText("\n");
+        logText->AppendText(S2W(evt.text.substr(1)));
+        logText->AppendText(wxT("\n"));
         logText->ShowPosition(logText->GetInsertionPoint());
     
     } else {
@@ -406,9 +400,8 @@ void CLogFrame::OnFilterEvent(CFilterEvent& evt) {
             return;
         }
 
-        logText->AppendText(settings.getMessage(mess, req.str(), evt.title,
-                                                evt.text).c_str());
-        logText->AppendText("\n");
+        logText->AppendText(S2W(settings.getMessage(mess, req.str(), evt.title, evt.text)));
+        logText->AppendText(wxT("\n"));
         logText->ShowPosition(logText->GetInsertionPoint());
     }
 }

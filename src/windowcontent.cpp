@@ -27,6 +27,7 @@
 #include "util.h"
 #include "settings.h"
 #include <wx/toolbar.h>
+#include <wx/frame.h>
 
 /* Constructor
  */

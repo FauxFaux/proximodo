@@ -36,6 +36,7 @@
 #include <wx/clipbrd.h>
 #include <wx/list.h>
 #include <wx/msgdlg.h>
+#include <wx/dataobj.h>
 #include <sstream>
 
 using namespace std;
@@ -296,13 +297,14 @@ string CUtil::replaceAll(const string& str, string s1, string s2) {
 
 // Get the content of a binary file
 string CUtil::getFile(string filename) {
+    wxString wfile = S2W(filename);
     trim(filename);
     replaceAll(filename, "\\\\", "/");  // for correctly decoding $FILE()
     filename = CUtil::makePath(filename);
     wxFile file;
     int size;
-    if (wxFile::Exists(filename.c_str())
-            && file.Open(filename.c_str())
+    if (wxFile::Exists(wfile)
+            && file.Open(wfile)
                 && (size = file.Length()) > 0) {
         char* buf = new char[size];
         size = file.Read(buf, size);
@@ -320,10 +322,10 @@ string CUtil::getMimeType(string filename) {
         return "application/octet-stream";
     string ext = filename.substr(dot+1);
     wxString mime;
-    wxFileType* type = wxTheMimeTypesManager->GetFileTypeFromExtension(ext.c_str());
+    wxFileType* type = wxTheMimeTypesManager->GetFileTypeFromExtension(S2W(ext));
     if (type == NULL || !type->GetMimeType(&mime))
         return "application/octet-stream";
-    return mime.c_str();
+    return W2S(mime);
 }
 
 
@@ -358,7 +360,7 @@ bool CUtil::isUInt(string s) {
 // Set content of clipboard
 void CUtil::setClipboard(const string& str) {
     if (wxTheClipboard->Open()) {
-        wxTheClipboard->SetData(new wxTextDataObject(str.c_str()));
+        wxTheClipboard->SetData(new wxTextDataObject(S2W(str)));
         wxTheClipboard->Close();
     }
 }
@@ -373,7 +375,7 @@ string CUtil::getClipboard() {
         }
         wxTheClipboard->Close();
     }
-    return data.GetText().c_str();
+    return W2S(data.GetText());
 }
 
 
@@ -424,25 +426,24 @@ void CUtil::openBrowser(const string& path) {
     // Get absolute path string
     wxString pathString;
     if (!path.empty()) {
-        wxFileName fn(CUtil::makePath(path).c_str());
+        wxFileName fn(S2W(CUtil::makePath(path)));
         fn.MakeAbsolute();
         pathString = fn.GetFullPath();
     }
 
     // Get command
     wxString command;
-    wxFileType* type = wxTheMimeTypesManager->GetFileTypeFromMimeType("text/html");
+    wxFileType* type = wxTheMimeTypesManager->GetFileTypeFromMimeType(wxT("text/html"));
     if (type) command = type->GetOpenCommand(pathString);
 
     // Remove parameters from command line if path was empty
     if (path.empty())
-        command = getExeName(command.c_str()).c_str();
+        command = S2W(getExeName(W2S(command)));
 
     // Make sure command was found
     if (command.IsEmpty()) {
         if (!pathString.IsEmpty()) {
-            wxMessageBox(CSettings::ref().getMessage("UTIL_OPEN_FILE",
-                    pathString.c_str()).c_str(), APP_NAME, wxICON_ERROR);
+            wxMessageBox(S2W(CSettings::ref().getMessage("UTIL_OPEN_FILE", W2S(pathString))), wxT(APP_NAME), wxICON_ERROR);
         }
         return;
     }
@@ -473,14 +474,13 @@ string CUtil::getExeName(const string& cmd) {
 // Launch default text editor (for a list file)
 void CUtil::openNotepad(const string& path) {
 
-    wxFileName fn(CUtil::makePath(path).c_str());
+    wxFileName fn(S2W(CUtil::makePath(path)));
     fn.MakeAbsolute();
     wxString command;
-    wxFileType* type = wxTheMimeTypesManager->GetFileTypeFromMimeType("text/plain");
+    wxFileType* type = wxTheMimeTypesManager->GetFileTypeFromMimeType(wxT("text/plain"));
     if (type) command = type->GetOpenCommand(fn.GetFullPath());
     if (command.IsEmpty()) {
-        wxMessageBox(CSettings::ref().getMessage("UTIL_OPEN_FILE",
-                fn.GetFullPath().c_str()).c_str(), APP_NAME, wxICON_ERROR);
+        wxMessageBox(S2W(CSettings::ref().getMessage("UTIL_OPEN_FILE", W2S(fn.GetFullPath()))), wxT(APP_NAME), wxICON_ERROR);
         return;
     }
     wxExecute(command, wxEXEC_ASYNC);

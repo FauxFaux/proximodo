@@ -1218,7 +1218,7 @@ void CRequestManager::connectWebsite() {
     if (CUtil::noCaseBeginsWith("http://file//", rdirToHost)) {
 
         string filename = CUtil::makePath(rdirToHost.substr(13));
-        if (wxFile::Exists(filename.c_str())) {
+        if (wxFile::Exists(S2W(filename))) {
             fakeResponse("200 OK", filename);
         } else {
             fakeResponse("404 Not Found", "./html/error.html", true,
@@ -1286,8 +1286,8 @@ void CRequestManager::connectWebsite() {
 
         // Check the host (Hostname() asks the DNS)
         wxIPV4address host;
-        host.Service(port.c_str());
-        if (name.empty() || !host.Hostname(name.c_str())) {
+        host.Service(S2W(port));
+        if (name.empty() || !host.Hostname(S2W(name))) {
             // The host address is invalid (or unknown by DNS)
             // so we won't try a connection.
             fakeResponse("502 Bad Gateway", "./html/error.html", true,

@@ -1156,19 +1156,19 @@ const char* CNode_Command::match(const char* start, const char* stop) {
             value = CExpander::expand(value, filter);
             string message = CSettings::ref().getMessage(
                                     "ADDLSTBOX_MESSAGE", name);
-            wxTextEntryDialog dlg(NULL, message.c_str(), title.c_str(), value.c_str());
+            wxTextEntryDialog dlg(NULL, S2W(message), S2W(title), S2W(value));
             if (dlg.ShowModal() == wxID_OK)
-                CSettings::ref().addListLine(name, dlg.GetValue().c_str());
+                CSettings::ref().addListLine(name, W2S(dlg.GetValue()));
         }
         break;
     
     case CMD_ALERT:
-        wxMessageBox(CExpander::expand(content, filter).c_str(), APP_NAME);
+        wxMessageBox(S2W(CExpander::expand(content, filter)), wxT(APP_NAME));
         break;
 
     case CMD_CONFIRM:
-        tmp = wxMessageBox(CExpander::expand(content, filter).c_str(),
-                            APP_NAME, wxYES_NO);
+        tmp = wxMessageBox(S2W(CExpander::expand(content, filter)),
+                           wxT(APP_NAME), wxYES_NO);
         if (tmp != wxYES) return NULL;
         break;
 
@@ -1433,8 +1433,8 @@ const char* CNode_Ask::match(const char* start, const char* stop) {
     // (to continue filtering)
     if (!denyMatcher->match(tStart, tStop, tEnd, tReached)) {
         // Now we'll ask the user what they want to do with it
-        int tmp = wxMessageBox(CExpander::expand(question, filter).c_str(),
-                               APP_NAME, wxYES_NO);
+        int tmp = wxMessageBox(S2W(CExpander::expand(question, filter)),
+                               wxT(APP_NAME), wxYES_NO);
         // Then add the item to one list.
         if (tmp == wxYES) {
             CSettings::ref().addListLine(allowName, CExpander::expand(item, filter));

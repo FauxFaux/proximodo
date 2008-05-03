@@ -44,29 +44,30 @@ using namespace std;
  * dismissal, while we want the user to know immediately if something is wrong.
  * Default wxTextCtrl can detect a new value when the user pressed Enter,
  * but not when they change field.
- * This controls also implements event generation for displaying a help string
+ * This controls also implements event generation for displaying a help wxString
  * in parent's statusbar.
  */
 class pmTextCtrl : public wxTextCtrl {
 
 public:
-    pmTextCtrl( wxWindow* parent, wxWindowID id, const wxString& value = "",
+    pmTextCtrl( wxWindow* parent, wxWindowID id,
+                const wxString& value = wxT(""),
                 const wxPoint& pos = wxDefaultPosition,
                 const wxSize& size = wxDefaultSize, long style = 0 );
     virtual ~pmTextCtrl() { }
     void OnKillFocus(wxFocusEvent& event);
     void OnMouseEvent(wxMouseEvent& event);
-    virtual void SetHelpText(const wxString& text) { helpText = text.c_str(); }
-    virtual wxString GetHelpText() const { return helpText.c_str(); }
+    virtual void SetHelpText(const wxString& text) { helpText = text; }
+    virtual wxString GetHelpText() const { return helpText; }
 
 private:
-    string helpText;
+    wxString helpText;
     DECLARE_EVENT_TABLE()
 };
 
 
 /* This class adds the Kill Focus event catching functionality to combo boxes,
- * and statusbar help string.
+ * and statusbar help wxString.
  */
 class pmComboBox : public wxComboBox {
 
@@ -78,11 +79,11 @@ public:
     void OnKillFocus(wxFocusEvent& event);
     void OnMouseEvent(wxMouseEvent& event);
     void OnEraseEvent(wxEraseEvent& event) { }
-    virtual void SetHelpText(const wxString& text) { helpText = text.c_str(); }
-    virtual wxString GetHelpText() const { return helpText.c_str(); }
+    virtual void SetHelpText(const wxString& text) { helpText = text; }
+    virtual wxString GetHelpText() const { return helpText; }
 
 private:
-    string helpText;
+    wxString helpText;
     DECLARE_EVENT_TABLE()
 };
 
@@ -98,7 +99,7 @@ public:
 };
 
 
-/* This class adds the status help string capability to the list control.
+/* This class adds the status help wxString capability to the list control.
  */
 class pmListCtrl : public wxListCtrl {
 
@@ -108,16 +109,16 @@ public:
                 const wxSize& size = wxDefaultSize, long style = wxLC_ICON );
     virtual ~pmListCtrl() { }
     void OnMouseEvent(wxMouseEvent& event);
-    virtual void SetHelpText(const wxString& text) { helpText = text.c_str(); }
-    virtual wxString GetHelpText() const { return helpText.c_str(); }
+    virtual void SetHelpText(const wxString& text) { helpText = text; }
+    virtual wxString GetHelpText() const { return helpText; }
 
 private:
-    string helpText;
+    wxString helpText;
     DECLARE_EVENT_TABLE()
 };
 
 
-/* This class adds the status help string capability to the checkbox control.
+/* This class adds the status help wxString capability to the checkbox control.
  */
 class pmCheckBox : public wxCheckBox {
 
@@ -127,17 +128,17 @@ public:
                 const wxSize& size = wxDefaultSize, long style = 0 );
     virtual ~pmCheckBox() { }
     void OnMouseEvent(wxMouseEvent& event);
-    virtual void SetHelpText(const wxString& text) { helpText = text.c_str(); }
-    virtual wxString GetHelpText() const { return helpText.c_str(); }
+    virtual void SetHelpText(const wxString& text) { helpText = text; }
+    virtual wxString GetHelpText() const { return helpText; }
     void OnEraseEvent(wxEraseEvent& event) { }
 
 private:
-    string helpText;
+    wxString helpText;
     DECLARE_EVENT_TABLE()
 };
 
 
-/* This class adds the status help string capability to the button control.
+/* This class adds the status help wxString capability to the button control.
  */
 class pmButton : public wxButton {
 
@@ -148,16 +149,16 @@ public:
               const wxSize& size = wxDefaultSize, long style = 0 );
     virtual ~pmButton() { }
     void OnMouseEvent(wxMouseEvent& event);
-    virtual void SetHelpText(const wxString& text) { helpText = text.c_str(); }
-    virtual wxString GetHelpText() const { return helpText.c_str(); }
+    virtual void SetHelpText(const wxString& text) { helpText = text; }
+    virtual wxString GetHelpText() const { return helpText; }
 
 private:
-    string helpText;
+    wxString helpText;
     DECLARE_EVENT_TABLE()
 };
 
 
-/* This class adds the status help string capability to the bitmap button control.
+/* This class adds the status help wxString capability to the bitmap button control.
  */
 class pmBitmapButton : public wxBitmapButton {
 
@@ -168,12 +169,12 @@ public:
                     long style = wxBU_AUTODRAW );
     virtual ~pmBitmapButton() { }
     void OnMouseEvent(wxMouseEvent& event);
-    virtual void SetHelpText(const wxString& text) { helpText = text.c_str(); }
-    virtual wxString GetHelpText() const { return helpText.c_str(); }
+    virtual void SetHelpText(const wxString& text) { helpText = text; }
+    virtual wxString GetHelpText() const { return helpText; }
     void OnEraseEvent(wxEraseEvent& event) { }
 
 private:
-    string helpText;
+    wxString helpText;
     DECLARE_EVENT_TABLE()
 };
 
@@ -205,11 +206,11 @@ public:
                 long style = wxTR_HAS_BUTTONS );
     virtual ~pmTreeCtrl() { }
     void OnMouseEvent(wxMouseEvent& event);
-    virtual void SetHelpText(const wxString& text) { helpText = text.c_str(); }
-    virtual wxString GetHelpText() const { return helpText.c_str(); }
+    virtual void SetHelpText(const wxString& text) { helpText = text; }
+    virtual wxString GetHelpText() const { return helpText; }
 
 private:
-    string helpText;
+    wxString helpText;
     DECLARE_EVENT_TABLE()
 };
 
