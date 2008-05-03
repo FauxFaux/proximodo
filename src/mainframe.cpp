@@ -31,6 +31,7 @@
 #include "log.h"
 #include "util.h"
 #include "const.h"
+#include "platform.h"
 
 #include "welcomescreen.h"
 #include "settingsscreen.h"
@@ -216,7 +217,9 @@ CMainFrame::~CMainFrame() {
  */
 void CMainFrame::OnIconize(wxIconizeEvent& event) {
 
+#ifdef PLATFORM_CLOSE_ON_MINIMIZE
     if (event.Iconized()) Close();
+#endif
 }
 
 

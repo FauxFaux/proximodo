@@ -84,10 +84,11 @@ logframe.o: settings.h descriptor.h controls.h
 main.o: proxy.h const.h settings.h descriptor.h mainframe.h util.h log.h
 main.o: events.h trayicon.h
 mainframe.o: mainframe.h settings.h descriptor.h proxy.h log.h events.h
-mainframe.o: util.h const.h welcomescreen.h windowcontent.h settingsscreen.h
-mainframe.o: configscreen.h logframe.h trayicon.h images/btn_settings.xpm
-mainframe.o: images/btn_log.xpm images/btn_config.xpm images/btn_help.xpm
-mainframe.o: images/btn_monitor.xpm images/btn_quit.xpm images/icon32.xpm
+mainframe.o: util.h const.h platform.h welcomescreen.h windowcontent.h
+mainframe.o: settingsscreen.h configscreen.h logframe.h trayicon.h
+mainframe.o: images/btn_settings.xpm images/btn_log.xpm images/btn_config.xpm
+mainframe.o: images/btn_help.xpm images/btn_monitor.xpm images/btn_quit.xpm
+mainframe.o: images/icon32.xpm
 managerthread.o: managerthread.h log.h events.h requestmanager.h receptor.h
 managerthread.o: filterowner.h url.h
 matcher.o: matcher.h settings.h descriptor.h nodes.h node.h memory.h const.h

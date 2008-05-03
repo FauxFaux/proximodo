@@ -43,6 +43,7 @@ public:
 
 #if defined(__WINDOWS__) || defined(__WIN32__)
 #define   PLATFORM_SERVERFLAGS   (wxSOCKET_NONE)
+#define   PLATFORM_CLOSE_ON_MINIMIZE
 #else
 #define   PLATFORM_SERVERFLAGS   (wxSOCKET_REUSEADDR)
 #endif
