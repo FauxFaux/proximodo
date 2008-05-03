@@ -110,7 +110,7 @@ settingsscreen.o: images/btn_add20.xpm images/btn_view20.xpm
 settingsscreen.o: images/btn_file20.xpm images/btn_trash20.xpm
 testframe.o: testframe.h settings.h descriptor.h filterowner.h url.h
 testframe.o: matcher.h expander.h filter.h memory.h const.h log.h events.h
-testframe.o: controls.h images/icon32.xpm
+testframe.o: util.h controls.h images/icon32.xpm
 textbuffer.o: textbuffer.h receptor.h textfilter.h filter.h memory.h
 textbuffer.o: matcher.h filterowner.h url.h util.h settings.h descriptor.h
 textbuffer.o: log.h events.h
@@ -120,7 +120,7 @@ trayicon.o: trayicon.h images/icon32.xpm settings.h descriptor.h log.h
 trayicon.o: events.h proxy.h mainframe.h util.h const.h logframe.h
 url.o: settings.h descriptor.h url.h
 util.o: util.h platform.h const.h settings.h descriptor.h
-welcomescreen.o: welcomescreen.h windowcontent.h proxy.h log.h events.h
-welcomescreen.o: settings.h descriptor.h controls.h
+welcomescreen.o: welcomescreen.h windowcontent.h mainframe.h proxy.h log.h
+welcomescreen.o: events.h util.h settings.h descriptor.h controls.h
 windowcontent.o: windowcontent.h util.h settings.h descriptor.h
 zlibbuffer.o: zlibbuffer.h const.h
