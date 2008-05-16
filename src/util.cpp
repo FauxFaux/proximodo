@@ -507,8 +507,9 @@ string CUtil::makePath(const string& str) {
 
     unsigned int len = str.length();
     if (!len) return str;
+    wxString pathSep = wxFileName::GetPathSeparator();
     stringstream sep;
-    sep << wxFileName::GetPathSeparator();
+    sep << W2S(pathSep);
     return replaceAll(str, "/", sep.str());
 }
 
@@ -518,8 +519,9 @@ string CUtil::unmakePath(const string& str) {
 
     unsigned int len = str.length();
     if (!len) return str;
+    wxString pathSep = wxFileName::GetPathSeparator();
     stringstream sep;
-    sep << wxFileName::GetPathSeparator();
+    sep << W2S(pathSep);
     return replaceAll(str, sep.str(), "/");
 }
 
