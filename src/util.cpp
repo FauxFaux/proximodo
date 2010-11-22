@@ -323,9 +323,19 @@ string CUtil::getMimeType(string filename) {
     string ext = filename.substr(dot+1);
     wxString mime;
     wxFileType* type = wxTheMimeTypesManager->GetFileTypeFromExtension(S2W(ext));
-    if (type == NULL || !type->GetMimeType(&mime))
-        return "application/octet-stream";
-    return W2S(mime);
+    if (type != NULL && type->GetMimeType(&mime))
+        return W2S(mime);
+    else if (ext == "css" || ext == "html" || ext == "xml")
+        return "text/" + ext;
+    else if (ext == "js")
+        return "text/javascript";
+    else if (ext == "htm")
+        return "text/html";
+    else if (ext == "png" || ext == "jpeg" || ext == "gif")
+        return "image/" + ext;
+    else if (ext == "jpg")
+        return "image/jpeg";
+    return "application/octet-stream";
 }
 
 
