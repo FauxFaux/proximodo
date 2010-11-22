@@ -41,10 +41,10 @@ using namespace std;
 
 /* Searches a comma outside parentheses, within a command
  */
-unsigned int findParamEnd(const string& str, char c) {
+size_t findParamEnd(const string& str, char c) {
     int level = 0;
-    unsigned int size = str.size();
-    for (unsigned int pos = 0; pos < size; pos++) {
+    size_t size = str.size();
+    for (size_t pos = 0; pos < size; pos++) {
         switch (str[pos]) {
             case '\\': pos++;   break;
             case  '(': level++; break;
@@ -80,7 +80,7 @@ CMatcher::CMatcher(const string& pattern, CFilter& filter) :
 
     // another reason to throw : the pattern was not completely
     // consumed, i.e there was an unpaired )
-    if ((unsigned int)pos != pattern.size()) {
+    if ((size_t)pos != pattern.size()) {
         throw parsing_exception("PARSING_INCOMPLETE", pos);
     }
 }
@@ -609,7 +609,7 @@ CNode* CMatcher::code(const string& pattern, int& pos, int stop) {
             } else if (command == "SET") {
 
                 // Command to set a variable
-                unsigned int eq = content.find('=');
+                size_t eq = content.find('=');
                 if (eq == string::npos)
                     throw parsing_exception("MISSING_EQUAL", 0);
                 string name = content.substr(0, eq);
@@ -672,7 +672,7 @@ CNode* CMatcher::code(const string& pattern, int& pos, int stop) {
             } else if (command == "ADDLST") {
 
                 // Command to add a line to a list
-                unsigned int comma = content.find(',');
+                size_t comma = content.find(',');
                 if (comma == string::npos)
                     throw parsing_exception("MISSING_COMMA", 0);
                 string name = content.substr(0, comma);
@@ -684,7 +684,7 @@ CNode* CMatcher::code(const string& pattern, int& pos, int stop) {
             } else if (command == "ADDLSTBOX") {
 
                 // Command to add a line to a list after user confirm & edit
-                unsigned int comma = content.find(',');
+                size_t comma = content.find(',');
                 if (comma == string::npos)
                     throw parsing_exception("MISSING_COMMA", 0);
                 string value = content.substr(comma + 1);
@@ -710,7 +710,7 @@ CNode* CMatcher::code(const string& pattern, int& pos, int stop) {
             } else if (command == "IHDR") {
 
                 // Command to try and match an incoming header
-                unsigned int colon = content.find(':');
+                size_t colon = content.find(':');
                 if (colon == string::npos)
                     throw parsing_exception("MISSING_COLON", 0);
                 string name = content.substr(0, colon);
@@ -723,7 +723,7 @@ CNode* CMatcher::code(const string& pattern, int& pos, int stop) {
             } else if (command == "OHDR") {
 
                 // Command to try and match an outgoing header
-                unsigned int colon = content.find(':');
+                size_t colon = content.find(':');
                 if (colon == string::npos)
                     throw parsing_exception("MISSING_COLON", 0);
                 string name = content.substr(0, colon);
@@ -784,7 +784,7 @@ CNode* CMatcher::code(const string& pattern, int& pos, int stop) {
                 int x, y, z;
                 try {
                     x = y = z = 0;
-                    unsigned int comma = content.find(',');
+                    size_t comma = content.find(',');
                     if (comma == string::npos) throw (int)1;
                     stringstream ss;
                     ss << content.substr(0,comma);
@@ -864,7 +864,7 @@ CNode* CMatcher::code(const string& pattern, int& pos, int stop) {
                        command == "INEST") {
 
                 // Command to match nested tags (with optional content)
-                unsigned int colon = findParamEnd(content, ',');
+                size_t colon = findParamEnd(content, ',');
                 if (colon == string::npos)
                     throw parsing_exception("MISSING_COMMA", 0);
                 bool hasMiddle = false;
@@ -895,7 +895,7 @@ CNode* CMatcher::code(const string& pattern, int& pos, int stop) {
             } else if (command == "ASK") {
 
                 // Command to automate the insertion of an item in one of 2 lists
-                unsigned int colon = content.find(',');
+                size_t colon = content.find(',');
                 if (colon == string::npos)
                     throw parsing_exception("MISSING_COMMA", 0);
                 string allowName = content.substr(0, colon);

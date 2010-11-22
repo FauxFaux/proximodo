@@ -346,7 +346,7 @@ void CRequestManager::dataFeed(const string& data) {
 
     if (dumped) return;
 
-    unsigned int size = data.size();
+    size_t size = data.size();
     if (size && sendContentCoding
         && (useChain || recvContentCoding != sendContentCoding)) {
 
@@ -379,7 +379,7 @@ void CRequestManager::dataDump() {
         string tmp;
         compressor->dump();
         compressor->read(tmp);
-        unsigned int size = tmp.size();
+        size_t size = tmp.size();
         if (size)
             sendInBuf += CUtil::makeHex(size) + CRLF + tmp + CRLF;
     }
@@ -403,11 +403,11 @@ void CRequestManager::dataReset() {
  * accordingly.
  */
 bool CRequestManager::verifyContentType(string& ctype) {
-    unsigned int end = ctype.find(';');
+    size_t end = ctype.find(';');
     if (end == string::npos)  end = ctype.size();
 
     // Remove top-level type, e.g., text/html -> html
-    unsigned int slash = ctype.find('/');
+    size_t slash = ctype.find('/');
     if (slash == string::npos || slash >= end) {
       fileType = "oth";
       return false;
@@ -478,12 +478,12 @@ void CRequestManager::processOut() {
         else if (outStep == STEP_FIRSTLINE) {
 
             // Do we have the full first line yet?
-            unsigned int pos, len;
+            size_t pos, len;
             if (!CUtil::endOfLine(recvOutBuf, 0, pos, len)) return;
 
             // Get it and record it
-            unsigned int p1 = recvOutBuf.find_first_of(" ");
-            unsigned int p2 = recvOutBuf.find_first_of(" ", p1+1);
+            size_t p1 = recvOutBuf.find_first_of(" ");
+            size_t p2 = recvOutBuf.find_first_of(" ", p1+1);
             requestLine.method = recvOutBuf.substr(0,    p1);
             requestLine.url    = recvOutBuf.substr(p1+1, p2 -p1-1);
             requestLine.ver    = recvOutBuf.substr(p2+1, pos-p2-1);
@@ -508,7 +508,7 @@ void CRequestManager::processOut() {
 
             while (true) {
                 // Look for end of line
-                unsigned int pos, len;
+                size_t pos, len;
                 if (!CUtil::endOfLine(recvOutBuf, 0, pos, len)) return;
 
                 // Check if we reached the empty line
@@ -526,7 +526,7 @@ void CRequestManager::processOut() {
                 }
 
                 // Record header
-                unsigned int colon = recvOutBuf.find(':');
+                size_t colon = recvOutBuf.find(':');
                 if (colon != string::npos) {
                     string name = recvOutBuf.substr(0, colon);
                     string value = recvOutBuf.substr(colon+1, pos-colon-1);
@@ -687,7 +687,7 @@ void CRequestManager::processOut() {
         // or CRLF zero * CRLF CRLF
         else if (outStep == STEP_CHUNK) {
 
-            unsigned int pos, len;
+            size_t pos, len;
             while (CUtil::endOfLine(recvOutBuf, 0, pos, len) && pos == 0) {
                 sendOutBuf += CRLF;
                 recvOutBuf.erase(0,len);
@@ -804,12 +804,12 @@ void CRequestManager::processIn() {
         else if (inStep == STEP_FIRSTLINE) {
 
             // Do we have the full first line yet?
-            unsigned int pos, len;
+            size_t pos, len;
             if (!CUtil::endOfLine(recvInBuf, 0, pos, len)) return;
 
             // Parse it
-            unsigned int p1 = recvInBuf.find_first_of(" ");
-            unsigned int p2 = recvInBuf.find_first_of(" ", p1+1);
+            size_t p1 = recvInBuf.find_first_of(" ");
+            size_t p2 = recvInBuf.find_first_of(" ", p1+1);
             responseLine.ver  = recvInBuf.substr(0,p1);
             responseLine.code = recvInBuf.substr(p1+1, p2-p1-1);
             responseLine.msg  = recvInBuf.substr(p2+1, pos-p2-1);
@@ -840,7 +840,7 @@ void CRequestManager::processIn() {
 
             while (true) {
                 // Look for end of line
-                unsigned int pos, len;
+                size_t pos, len;
                 if (!CUtil::endOfLine(recvInBuf, 0, pos, len)) return;
 
                 // Check if we reached the empty line
@@ -867,7 +867,7 @@ void CRequestManager::processIn() {
                 }
 
                 // Record header
-                unsigned int colon = recvInBuf.find(':');
+                size_t colon = recvInBuf.find(':');
                 if (colon != string::npos) {
                     string name = recvInBuf.substr(0, colon);
                     string value = recvInBuf.substr(colon+1, pos-colon-1);
@@ -1089,7 +1089,7 @@ void CRequestManager::processIn() {
         // or    zero * CRLF CRLF
         else if (inStep == STEP_CHUNK) {
 
-            unsigned int pos, len;
+            size_t pos, len;
             while (CUtil::endOfLine(recvInBuf, 0, pos, len) && pos == 0)
                 recvInBuf.erase(0,len);
 
@@ -1277,7 +1277,7 @@ void CRequestManager::connectWebsite() {
 
         // The host string is composed of host and port
         string name = contactHost, port;
-        unsigned int colon = name.find(':');
+        size_t colon = name.find(':');
         if (colon != string::npos) {    // (this should always happen)
             port = name.substr(colon+1);
             name = name.substr(0,colon);

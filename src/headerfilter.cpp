@@ -112,7 +112,7 @@ bool CHeaderFilter::filter(string& content) {
 
     // Ensure the header is still standard compliant
     // PENDING: I only do the minimum amount of tests here...
-    unsigned int index = 0;
+    size_t index = 0;
     while ((index = content.find_first_of("\r\n", index)) != string::npos) {
         // Multiligne must be formatted as CR LF SPACE
         int pos = index+1;

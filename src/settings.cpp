@@ -191,14 +191,14 @@ bool CSettings::readSetting(wxTextFile& f, string& title,
     f.GoToLine(f.GetCurrentLine() + 1);
     // Check for title
     if (line[0] == '[') {
-        unsigned int end = line.find(']', 1);
+        size_t end = line.find(']', 1);
         if (end == string::npos) return false;
         title = line.substr(1, end-1);
         CUtil::trim(title, " \t");
         return true;
     }
     // Check for label
-    unsigned int eq = line.find('=');
+    size_t eq = line.find('=');
     if (eq == string::npos) return false;
     label = line.substr(0, eq);
     CUtil::trim(label, " \t");
@@ -221,7 +221,7 @@ bool CSettings::readSetting(wxTextFile& f, string& title,
  */
 void CSettings::addLine(wxTextFile& f, string s) {
 
-    unsigned int pos1 = 0, pos2;
+    size_t pos1 = 0, pos2;
     while ((pos2 = s.find("\n", pos1)) != string::npos) {
         f.AddLine(wxString(((pos1?"_":"")+s.substr(pos1, pos2-pos1)).c_str(), wxConvUTF8));
         pos1 = pos2+1;
@@ -443,7 +443,7 @@ string CSettings::getMessage(string name,
 
     if (messages.find(name) == messages.end()) return name;
     string mess = messages[name];
-    unsigned int pos = 0;
+    size_t pos = 0;
     while ((pos = mess.find('%', pos)) != string::npos && pos+1 < mess.size()) {
         switch (mess[pos+1]) {
             case '1': mess.replace(pos, 2, param1); pos += param1.size(); break;
@@ -584,7 +584,7 @@ void CSettings::loadFilters() {
     if (f.IsOpened()) {
         while (!f.Eof()) {
             char buf[1024];
-            unsigned int n = f.Read(buf, 1024);
+            size_t n = f.Read(buf, 1024);
             text << string(buf, n);
         }
     }

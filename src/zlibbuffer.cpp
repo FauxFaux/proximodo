@@ -91,13 +91,13 @@ void CZlibBuffer::feed(string data) {
 
     if (err != Z_OK || freed) return;
     buffer += data;
-    unsigned int size = buffer.size();
-    unsigned int remaining = size;
+    size_t size = buffer.size();
+    size_t remaining = size;
     char buf1[ZLIB_BLOCK], buf2[ZLIB_BLOCK];
     while (err == Z_OK && remaining > 0) {
         stream.next_in = (Byte*)buf1;
         stream.avail_in = (remaining > ZLIB_BLOCK ? ZLIB_BLOCK : remaining);
-        for (unsigned int i=0; i<stream.avail_in; i++) {
+        for (size_t i=0; i<stream.avail_in; i++) {
             buf1[i] = buffer[size - remaining + i];
         }
         do {
@@ -123,12 +123,12 @@ void CZlibBuffer::feed(string data) {
 void CZlibBuffer::dump() {
 
     if (shrink) {
-        unsigned int size = buffer.size();
+        size_t size = buffer.size();
         char* buf1 = new char[size];
         char buf2[ZLIB_BLOCK];
         stream.next_in = (Byte*)buf1;
         stream.avail_in = size;
-        for (unsigned int i=0; i<size; i++) buf1[i] = buffer[i];
+        for (size_t i=0; i<size; i++) buf1[i] = buffer[i];
         do {
             stream.next_out = (Byte*)buf2;
             stream.avail_out = (uInt)ZLIB_BLOCK;

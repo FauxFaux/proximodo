@@ -64,14 +64,14 @@ void CGifFilter::dataFeed(const string& data) {
     stringstream out;
     
     while (true) {
-        unsigned int size = buffer.size();
+        size_t size = buffer.size();
         
         // Header
         if (size >= 6 && ( buffer.substr(0, 6) == "GIF87a" ||
                            buffer.substr(0, 6) == "GIF89a" ) ) {
 
             if (size < 13) break;
-            unsigned int blocksize = ((unsigned char)(buffer[10]) & 0x01 ? 781 : 13);
+            size_t blocksize = ((unsigned char)(buffer[10]) & 0x01 ? 781 : 13);
             if (size < blocksize) break;
             out << buffer.substr(0, blocksize);
             buffer.erase(0, blocksize);
@@ -98,7 +98,7 @@ void CGifFilter::dataFeed(const string& data) {
                                   (unsigned char)buffer[1] == 0x01 ||
                                   (unsigned char)buffer[1] == 0xFF ) ) {
 
-            unsigned int pos = 2;
+            size_t pos = 2;
             if ((unsigned char)buffer[1] == 0x01) pos = 15;
             if ((unsigned char)buffer[1] == 0xFF) pos = 14;
             while (pos < size && buffer[pos])
@@ -112,7 +112,7 @@ void CGifFilter::dataFeed(const string& data) {
         } else if (size >= 1 && (unsigned char)buffer[0] == 0x2C) {
 
             if (size < 10) break;
-            unsigned int pos = ((unsigned char)(buffer[10]) & 0x01 ? 779 : 11);
+            size_t pos = ((unsigned char)(buffer[10]) & 0x01 ? 779 : 11);
             while (pos < size && buffer[pos])
                 pos += (unsigned char)buffer[pos] + 1;
             if (pos >= size) break;

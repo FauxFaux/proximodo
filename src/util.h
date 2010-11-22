@@ -48,8 +48,8 @@ class CUtil {
 
 public:
     // Locates the next end-of-line
-    static bool endOfLine(const string& str, unsigned int start,
-                          unsigned int& pos, unsigned int& len, int nbr=1);
+    static bool endOfLine(const string& str, size_t start,
+                          size_t& pos, size_t& len, int nbr=1);
     
     // Small function replacing C function isdigit()
     static inline bool digit(char c) { return (c<='9' && c>='0'); }
@@ -125,7 +125,7 @@ public:
     static bool keyCheck(const string& keys);
 
     // Finds the first unescaped occurence of a character in a string
-    static unsigned int findUnescaped(const string& str, char c);
+    static size_t findUnescaped(const string& str, char c);
 
     // Replace all occurences of a string by another
     static string replaceAll(const string& str, string s1, string s2);

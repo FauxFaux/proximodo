@@ -1147,7 +1147,7 @@ const char* CNode_Command::match(const char* start, const char* stop) {
         {
             string title = APP_NAME;
             string value = content;
-            unsigned int comma = CUtil::findUnescaped(value, ',');
+            size_t comma = CUtil::findUnescaped(value, ',');
             if (comma != string::npos) {
                 title = value.substr(0, comma);
                 value = value.substr(comma + 1);

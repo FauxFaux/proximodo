@@ -61,14 +61,14 @@ string CExpander::expand(const string& pattern, CFilter& filter) {
     // Iterator to stacked memories
     vector<CMemory>::iterator stackedMem = filter.memoryStack.begin();
 
-    unsigned int size = pattern.size();
-    unsigned int index = 0;
+    size_t size = pattern.size();
+    size_t index = 0;
     
     while (index<size) {
 
         // We can drop the pattern directly to the
         // output up to a special character
-        unsigned int pos = pattern.find_first_of( "$\\" , index);
+        size_t pos = pattern.find_first_of( "$\\" , index);
 
         if (pos == string::npos) {
             // No more special chars, drop the pattern to the end
@@ -161,7 +161,7 @@ string CExpander::expand(const string& pattern, CFilter& filter) {
                 // Decode content
                 content.clear();
                 int level = 1;
-                unsigned int end = pos + 1;
+                size_t end = pos + 1;
                 while (   end<size
                        && (   level>1
                            || pattern[end]!=')'
@@ -195,7 +195,7 @@ string CExpander::expand(const string& pattern, CFilter& filter) {
 
                 } else if (command == "SET") {
 
-                    unsigned int eq = content.find('=');
+                    size_t eq = content.find('=');
                     if (eq == string::npos) continue;
                     string name = content.substr(0, eq);
                     string value = content.substr(eq+1);
@@ -213,7 +213,7 @@ string CExpander::expand(const string& pattern, CFilter& filter) {
                 } else if (command == "SETPROXY") {
 
                     CUtil::trim(content);
-                    unsigned int len = content.length();
+                    size_t len = content.length();
                     set<string>& proxies = CSettings::ref().proxies;
                     for (set<string>::iterator it = proxies.begin();
                                 it != proxies.end(); it++) {
@@ -317,7 +317,7 @@ string CExpander::expand(const string& pattern, CFilter& filter) {
 
                 } else if (command == "ADDLST") {
 
-                    unsigned int comma = content.find(',');
+                    size_t comma = content.find(',');
                     if (comma != string::npos) {
                         string name = content.substr(0, comma);
                         string value = content.substr(comma + 1);
@@ -327,7 +327,7 @@ string CExpander::expand(const string& pattern, CFilter& filter) {
 
                 } else if (command == "ADDLSTBOX") {
 
-                    unsigned int comma = content.find(',');
+                    size_t comma = content.find(',');
                     if (comma != string::npos) {
                         string name = content.substr(0, comma);
                         CUtil::trim(name);
@@ -370,7 +370,7 @@ string CExpander::expand(const string& pattern, CFilter& filter) {
                 } else if (command == "TST") {
 
                     const char *tStart, *tStop, *tEnd, *tReached;
-                    unsigned int eq, lev;
+                    size_t eq, lev;
                     for (eq = 0, lev = 0; eq < size; eq++) {
                         // Left parameter can be some text containing ()
                         if (content[eq] == '(' && (!eq || content[eq-1]!='\\'))
@@ -410,7 +410,7 @@ string CExpander::expand(const string& pattern, CFilter& filter) {
                 } else if (command == "IHDR") {
 
                     const char *tStart, *tStop, *tEnd, *tReached;
-                    unsigned int colon = content.find(':');
+                    size_t colon = content.find(':');
                     if (colon == string::npos) { pos=0; content = ":"; }
                     string pattern = content.substr(colon + 1);
                     string name = content.substr(0, colon);
@@ -426,7 +426,7 @@ string CExpander::expand(const string& pattern, CFilter& filter) {
                 } else if (command == "OHDR") {
 
                     const char *tStart, *tStop, *tEnd, *tReached;
-                    unsigned int colon = content.find(':');
+                    size_t colon = content.find(':');
                     if (colon == string::npos) { pos=0; content = ":"; }
                     string pattern = content.substr(colon + 1);
                     string name = content.substr(0, colon);
@@ -444,7 +444,7 @@ string CExpander::expand(const string& pattern, CFilter& filter) {
                     string day[7] = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
                     stringstream ss;
                     wxDateTime now = wxDateTime::UNow();
-                    unsigned int i = 0;
+                    size_t i = 0;
                     while (i < content.size()) {
                         char c = content[i];
                         switch (c) {

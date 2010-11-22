@@ -39,7 +39,7 @@ CUrl::CUrl(const string& str) {
  */
 void CUrl::parseUrl(const string& str) {
 
-    unsigned int pos1 = str.find("://");
+    size_t pos1 = str.find("://");
     if (pos1 == string::npos) pos1 = 0; else pos1 += 3;
     url       = str;
     protocol  = (pos1 ? str.substr(0, pos1-3) : string("http"));
@@ -80,11 +80,11 @@ void CUrl::parseUrl(const string& str) {
             pos1 -= CSettings::ref().urlCmdPrefix.length();
     }
 
-    unsigned int pos2 = str.find_first_of("/?#", pos1);
+    size_t pos2 = str.find_first_of("/?#", pos1);
     if (pos2 == string::npos) pos2 = str.length();
-    unsigned int pos3 = str.find_first_of("?#", pos2);
+    size_t pos3 = str.find_first_of("?#", pos2);
     if (pos3 == string::npos) pos3 = str.length();
-    unsigned int pos4 = str.find_first_of("#", pos3);
+    size_t pos4 = str.find_first_of("#", pos3);
     if (pos4 == string::npos) pos4 = str.length();
 
     fromhost  = str.substr(pos1);

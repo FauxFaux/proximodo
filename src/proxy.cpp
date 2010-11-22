@@ -147,7 +147,7 @@ bool CProxy::testPort(const string& port) {
  */
 bool CProxy::testRemoteProxy(string hostport) {
 
-    unsigned int colon = hostport.find(':');
+    size_t colon = hostport.find(':');
     if (colon == string::npos) return false;
 
     wxIPV4address addr;

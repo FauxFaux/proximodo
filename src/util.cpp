@@ -62,9 +62,9 @@ bool CUtil::noCaseContains(const string& s1, const string& s2) {
 
 // Trim string
 string& CUtil::trim(string& s, string list) {
-    unsigned int p1 = s.find_first_not_of(list);
+    size_t p1 = s.find_first_not_of(list);
     if (p1 == string::npos) return s = "";
-    unsigned int p2 = s.find_last_not_of(list);
+    size_t p2 = s.find_last_not_of(list);
     return s = s.substr(p1, p2+1-p1);
 }
 
@@ -247,8 +247,8 @@ string CUtil::pad(int n, int size) {
 
 // Check if keys are pressed (keys must be in uppercase)
 bool CUtil::keyCheck(const string& keys) {
-    unsigned int size = keys.size();
-    for (unsigned int i = 0; i<size; i++) {
+    size_t size = keys.size();
+    for (size_t i = 0; i<size; i++) {
         int key = (int)keys[i];
         int num = 0;
         if (key == '^' && i+1 < size) {
@@ -277,8 +277,8 @@ bool CUtil::keyCheck(const string& keys) {
 }
 
 // Finds the first unescaped occurence of a character in a string
-unsigned int CUtil::findUnescaped(const string& str, char c) {
-    unsigned int pos = str.find(c);
+size_t CUtil::findUnescaped(const string& str, char c) {
+    size_t pos = str.find(c);
     while (pos != string::npos && pos > 0 && str[pos-1] == '\\')
         pos = str.find(c, pos+1);
     return pos;
@@ -287,7 +287,7 @@ unsigned int CUtil::findUnescaped(const string& str, char c) {
 // Replace all occurences of a string by another
 string CUtil::replaceAll(const string& str, string s1, string s2) {
     string ret = str;
-    unsigned int pos = ret.find(s1);
+    size_t pos = ret.find(s1);
     while (pos != string::npos) {
         ret.replace(pos, s1.length(), s2);
         pos = ret.find(s1, pos + s2.length());
@@ -317,7 +317,7 @@ string CUtil::getFile(string filename) {
 
 // Get MIME type of a file
 string CUtil::getMimeType(string filename) {
-    unsigned int dot = filename.rfind('.');
+    size_t dot = filename.rfind('.');
     if (dot == string::npos)
         return "application/octet-stream";
     string ext = filename.substr(dot+1);
@@ -331,7 +331,7 @@ string CUtil::getMimeType(string filename) {
 
 // Increment a string
 string& CUtil::increment(string& str) {
-    unsigned int i, j;
+    size_t i, j;
     i = str.rfind('(');
     j = str.rfind(')');
     if (i < j && j == str.size()-1 && isUInt(str.substr(i+1, j-i-1))) {
@@ -505,7 +505,7 @@ void CUtil::show(wxTopLevelWindow* window) {
 // Converts / to the platform's path separator
 string CUtil::makePath(const string& str) {
 
-    unsigned int len = str.length();
+    size_t len = str.length();
     if (!len) return str;
     wxString pathSep = wxFileName::GetPathSeparator();
     stringstream sep;
@@ -517,7 +517,7 @@ string CUtil::makePath(const string& str) {
 // Converts platform's path separators to /
 string CUtil::unmakePath(const string& str) {
 
-    unsigned int len = str.length();
+    size_t len = str.length();
     if (!len) return str;
     wxString pathSep = wxFileName::GetPathSeparator();
     stringstream sep;
@@ -542,7 +542,7 @@ string CUtil::quote(string str, string codes) {
 string CUtil::unquote(string str) {
 
     trim(str);
-    unsigned int size = str.length();
+    size_t size = str.length();
     if (size < 2 || str[0] != '\"' || str[size-1] != '\"') return str;
     str = replaceAll(str.substr(1, size-2), "\"\"", "\"");
     return trim(str);
@@ -558,10 +558,10 @@ int CUtil::getQuoted(const string& str, string& out, int start, char token) {
         return start;
     }
     start++;
-    unsigned int quote = str.find('\"', start);
-    unsigned int stop = str.find(token, start);
+    size_t quote = str.find('\"', start);
+    size_t stop = str.find(token, start);
     if (quote < stop) {
-        unsigned int size = str.length();
+        size_t size = str.length();
         stop = str.find('\"', quote+1);
         while (stop != string::npos && stop+1 < size && str[stop+1] == '\"')
             stop = str.find('\"', stop+2);
@@ -575,11 +575,11 @@ int CUtil::getQuoted(const string& str, string& out, int start, char token) {
 
 
 // Locates the next end-of-line (can be CRLF or LF)
-bool CUtil::endOfLine(const string& str, unsigned int start,
-                      unsigned int& pos, unsigned int& len, int nbr) {
+bool CUtil::endOfLine(const string& str, size_t start,
+                      size_t& pos, size_t& len, int nbr) {
 
     while (true) {
-        unsigned int index = str.find(LF, start);
+        size_t index = str.find(LF, start);
         if (index == string::npos) return false;
         if (start < index && str[index-1] == CR) {
             len = 2; pos = index - 1;

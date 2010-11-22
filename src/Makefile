@@ -49,7 +49,7 @@ clean:
 	rm -f $(OBJ) $(PROXIMODO) tags
 
 $(PROXIMODO): $(OBJ)
-	$(CC) -o $@ $(LDFLAGS) $(OBJ) $(WXLIB)
+	$(CC) -o $@ $(LDFLAGS) $(OBJ) $(WXLIB) -lz
 
 .cpp.o:
 	$(CC) $(CFLAGS) $(WXINC) -c -o $@ $<

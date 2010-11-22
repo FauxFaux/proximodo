@@ -163,11 +163,11 @@ int CFilterDescriptor::importFilters(const string& text,
     
     CFilterDescriptor d;
     d.folder = root;
-    unsigned int i = 0, max = str.size(), count = 0;
+    size_t i = 0, max = str.size(), count = 0;
     while (i < max) {
-        unsigned int j = str.find("\n", i);
+        size_t j = str.find("\n", i);
         string line = str.substr(i, j - i);
-        unsigned int eq = line.find('=');
+        size_t eq = line.find('=');
         if (!line.empty() && line[0] == '[') {
             d.testValidity();
             if (!d.title.empty()) {
@@ -267,11 +267,11 @@ int CFilterDescriptor::importProxomitron(const string& text,
     CFilterDescriptor d;
     bool isActive = false;
     d.folder = root;
-    unsigned int i = 0, max = str.size(), count = 0;
+    size_t i = 0, max = str.size(), count = 0;
     while (i < max) {
-        unsigned int j = str.find("\n", i);
+        size_t j = str.find("\n", i);
         string line = str.substr(i, j - i);
-        unsigned int eq = line.find('=');
+        size_t eq = line.find('=');
         if (line.empty()) {
             d.testValidity();
             if (!d.title.empty()) {
@@ -311,7 +311,7 @@ int CFilterDescriptor::importProxomitron(const string& text,
                 }
             }
             else if (label == "KEY") {
-                unsigned int colon = value.find(':');
+                size_t colon = value.find(':');
                 if (colon != string::npos) {
                     d.headerName = value.substr(0, colon);
                     d.title = value.substr(colon + 1);
@@ -319,7 +319,7 @@ int CFilterDescriptor::importProxomitron(const string& text,
                     CUtil::trim(d.title);
                     if (d.filterType == TEXT) {
                         CUtil::lower(value);
-                        unsigned int i = value.find('(');
+                        size_t i = value.find('(');
                         d.filterType = ((i != string::npos &&
                             value.find("out", i) != string::npos)
                             ? HEADOUT : HEADIN);
