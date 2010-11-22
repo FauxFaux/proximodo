@@ -187,7 +187,7 @@ bool CSettings::readSetting(wxTextFile& f, string& title,
                             string& label, string& value, bool trimValue) {
 
     title = label = value = "";
-    string line = f.GetLine(f.GetCurrentLine()).c_str();
+    string line = string(f.GetLine(f.GetCurrentLine()).mb_str());
     f.GoToLine(f.GetCurrentLine() + 1);
     // Check for title
     if (line[0] == '[') {
@@ -207,7 +207,7 @@ bool CSettings::readSetting(wxTextFile& f, string& title,
     value = line.substr(eq+1);
     // Add next _lines
     while (f.GetCurrentLine() < f.GetLineCount()) {
-        line = f.GetLine(f.GetCurrentLine());
+        line = string(f.GetLine(f.GetCurrentLine()).mb_str());
         if (line[0] != '_') break;
         value += "\n" + line.substr(1);
         f.GoToLine(f.GetCurrentLine() + 1);
@@ -223,10 +223,10 @@ void CSettings::addLine(wxTextFile& f, string s) {
 
     unsigned int pos1 = 0, pos2;
     while ((pos2 = s.find("\n", pos1)) != string::npos) {
-        f.AddLine(((pos1?"_":"")+s.substr(pos1, pos2-pos1)).c_str());
+        f.AddLine(wxString(((pos1?"_":"")+s.substr(pos1, pos2-pos1)).c_str(), wxConvUTF8));
         pos1 = pos2+1;
     }
-    f.AddLine(((pos1?"_":"")+s.substr(pos1)).c_str());
+    f.AddLine(wxString(((pos1?"_":"")+s.substr(pos1)).c_str(), wxConvUTF8));
 }
 
 
@@ -234,7 +234,7 @@ void CSettings::addLine(wxTextFile& f, string s) {
  */
 void CSettings::saveSettings() {
 
-    wxTextFile f(FILE_SETTINGS);
+    wxTextFile f(wxT(FILE_SETTINGS));
     if (!f.Create()) {
         f.Open();
         f.Clear();
@@ -308,7 +308,7 @@ void CSettings::loadSettings() {
     proxies.clear();
     listNames.clear();
 
-    wxTextFile f(FILE_SETTINGS);
+    wxTextFile f(wxT(FILE_SETTINGS));
     if (!f.Open()) return;
     while (f.GetCurrentLine() < f.GetLineCount()) {
         string title, label, value;
@@ -406,10 +406,10 @@ void CSettings::loadSettings() {
     
     // Define browser executable path on first run
     if (firstRun && browserPath.empty()) {
-        wxFileType* type = wxTheMimeTypesManager->GetFileTypeFromMimeType("text/html");
+        wxFileType* type = wxTheMimeTypesManager->GetFileTypeFromMimeType(wxT("text/html"));
         if (type) {
-            wxString command = type->GetOpenCommand(wxString(""));
-            browserPath = CUtil::getExeName(command.c_str());
+            wxString command = type->GetOpenCommand(wxString(wxT("")));
+            browserPath = CUtil::getExeName(string(command.mb_str()));
         }
     }
 }
@@ -488,10 +488,10 @@ void CSettings::loadList(string name) {
     wxTextFile f(S2W(fn));
     deque<string> patterns;
     if (f.Open()) {
-        f.AddLine("");  // (so that we don't need post-loop processing)
+        f.AddLine(wxT(""));  // (so that we don't need post-loop processing)
         string pattern;
         while (f.GetCurrentLine() < f.GetLineCount()) {
-            string line = f.GetLine(f.GetCurrentLine()).c_str();
+            string line = string(f.GetLine(f.GetCurrentLine()).mb_str());
             f.GoToLine(f.GetCurrentLine() + 1);
 
             if (!line.empty() && (line[0] == ' ' || line[0] == '\t')) {
@@ -537,7 +537,7 @@ void CSettings::addListLine(string name, string line) {
         // Append line to file
         wxFile f(S2W(listNames[name]), wxFile::write_append);
         if (f.IsOpened()) {
-            f.Write((line+"\r\n").c_str());
+            f.Write(wxString(line.c_str(), wxConvUTF8)+wxT("\r\n"));
             f.Close();
         }
 
