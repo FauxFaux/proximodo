@@ -275,14 +275,14 @@ void CLogFrame::OnHttpEvent(CHttpEvent& evt) {
     // Exclude unwanted events
     if (   !active
         || !httpCheckbox->GetValue()
-        || !postCheckbox->GetValue()
-           && evt.type == pmEVT_HTTP_TYPE_POSTOUT
-        || browserCheckbox->GetValue()
-           && (   evt.type == pmEVT_HTTP_TYPE_SENDOUT
-               || evt.type == pmEVT_HTTP_TYPE_RECVIN)
-        || !browserCheckbox->GetValue()
-           && (   evt.type == pmEVT_HTTP_TYPE_RECVOUT
-               || evt.type == pmEVT_HTTP_TYPE_SENDIN)   )
+        || (!postCheckbox->GetValue()
+            && evt.type == pmEVT_HTTP_TYPE_POSTOUT)
+        || (browserCheckbox->GetValue()
+            && (   evt.type == pmEVT_HTTP_TYPE_SENDOUT
+                || evt.type == pmEVT_HTTP_TYPE_RECVIN))
+        || (!browserCheckbox->GetValue()
+            && (   evt.type == pmEVT_HTTP_TYPE_RECVOUT
+                || evt.type == pmEVT_HTTP_TYPE_SENDIN))   )
         return;
 
     // Colors depends on Outgoing or Incoming

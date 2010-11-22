@@ -72,7 +72,7 @@ CHeaderFilter::~CHeaderFilter() {
  */
 bool CHeaderFilter::filter(string& content) {
 
-    if (bypassed || content.empty() && textMatcher && textMatcher->isStar())
+    if (bypassed || (content.empty() && textMatcher && textMatcher->isStar()))
         return false;
 
     // clear memory

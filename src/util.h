@@ -55,8 +55,8 @@ public:
     static inline bool digit(char c) { return (c<='9' && c>='0'); }
     
     // Returns true if character is an hexadecimal digit
-    static inline bool hexa(char c) { return (c<='9' && c>='0' ||
-                                        toupper(c)<='F' && toupper(c)>='A'); }
+    static inline bool hexa(char c) { return ((c<='9' && c>='0') ||
+                                        (toupper(c)<='F' && toupper(c)>='A')); }
 
     // Case-insensitive compare
     static bool noCaseEqual(const string& s1, const string& s2);

@@ -130,8 +130,8 @@ void CTextBuffer::dataFeed(const string& data) {
         for (; currentFilter != TEXTfilters.end(); currentFilter++) {
 
             // don't need to test the filter if character is not a good candidate
-            if ((*currentFilter)->bypassed || index < bufEnd
-                    && !(*currentFilter)->okayChars[(unsigned char)(*index)])
+            if ((*currentFilter)->bypassed ||
+                (index < bufEnd && !(*currentFilter)->okayChars[(unsigned char)(*index)]))
                 continue;
 
             // try and match

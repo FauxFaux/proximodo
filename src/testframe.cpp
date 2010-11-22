@@ -246,7 +246,7 @@ void CTestFrame::OnCommand(wxCommandEvent& event) {
                         }
                         matched = matcher.match(index, stop, end, reached);
                         filter.unlock();
-                        if (!matched || boundsMatcher && end != stop) {
+                        if (!matched || (boundsMatcher && end != stop)) {
                             ++index;
                             continue;
                         }

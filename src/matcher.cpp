@@ -223,8 +223,8 @@ CNode* CMatcher::expr(const string& pattern, int& pos, int stop, int level) {
     CNode *node = expr(pattern, pos, stop, level + 1);
     
     while (pos < stop && pattern[pos] == '&' &&
-           (level == 0 && pos+1 < stop && pattern[pos+1] == '&' ||
-            level == 1 && (pos+1 == stop || pattern[pos+1] != '&') ) ) {
+           ((level == 0 && pos+1 < stop && pattern[pos+1] == '&') ||
+            (level == 1 && (pos+1 == stop || pattern[pos+1] != '&')) ) ) {
 
         // Rules: & &&
         // & is a binary operator, so we read the following run and

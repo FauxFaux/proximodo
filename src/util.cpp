@@ -198,9 +198,9 @@ string CUtil::ESC(const string& str) {
     static const string ok = "@*-_+./";
     static const string hex = "0123456789ABCDEF";
     for (string::const_iterator c = str.begin(); c != str.end(); c++) {
-        if (   *c >= 'A' && *c <= 'Z'
-            || *c >= 'a' && *c <= 'z'
-            || *c >= '0' && *c <= '9'
+        if (   (*c >= 'A' && *c <= 'Z')
+            || (*c >= 'a' && *c <= 'z')
+            || (*c >= '0' && *c <= '9')
             || ok.find_first_of(*c) != string::npos ) {
             out << *c;
         } else {

@@ -286,10 +286,10 @@ void CProxy::OnServerEvent(wxSocketEvent& event) {
 
     // Check if connection satisfies all conditions
     if (  !accepting
-        || peer.IPAddress() != local.IPAddress()
+        || (peer.IPAddress() != local.IPAddress()
         && (  !settings.allowIPRange
             || settings.minIPRange > peerIP
-            || settings.maxIPRange < peerIP ) ) {
+            || settings.maxIPRange < peerIP ) )) {
         // Log refused connection
         CLog::ref().logProxyEvent(pmEVT_PROXY_TYPE_REFUSE, peer);
         // Drop connection

@@ -364,7 +364,7 @@ void CConfigScreen::showParentStates(wxTreeItemId id) {
         for (wxTreeItemId item = tree->GetFirstChild(id,cookie);
                           item.IsOk(); item = tree->GetNextChild(id,cookie)) {
             states[tree->GetItemImage(item)] = true;
-            if (states[0] && states[1] || states[2]) break;
+            if ((states[0] && states[1]) || states[2]) break;
         }
         CItemData* data = (CItemData*)tree->GetItemData(id);
         data->state = (!states[1] && !states[2] ? 0 : !states[0] && !states[2] ? 1 : 2);

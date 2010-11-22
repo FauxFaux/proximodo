@@ -265,12 +265,12 @@ const char* CNode_Quote::match(const char* start, const char* stop) {
     matched = *start++;
     // Rule: "
     // Rule: '
-    if (!(   matched == '\'' && (   quote == '\"'
-                                 || !openingQuote
-                                 || openingQuote->matched == '\'' )
-          || matched == '\"' && (   quote == '\"'
-                                 || openingQuote
-                                 && openingQuote->matched == '\"' ) )) {
+    if (!((   matched == '\'' && (   quote == '\"'
+                                  || !openingQuote
+                                  || openingQuote->matched == '\'' ))
+          ||  (matched == '\"' && (   quote == '\"'
+                                  || (openingQuote
+                                      && openingQuote->matched == '\"'))) )) {
         return NULL;
     }
 
@@ -595,7 +595,7 @@ const char* CNode_And::match(const char* start, const char* stop) {
 
     // Ask right node for the first match
     const char* posR = nodeR->match(start, (force ? consumed : stop));
-    if (!posR || force && posR != consumed) return NULL;
+    if (!posR || (force && posR != consumed)) return NULL;
     if (consumed < nodeR->consumed) consumed = nodeR->consumed;
     return (posL > posR ? posL : posR);
 }
@@ -611,7 +611,7 @@ bool CNode_And::mayMatch(bool* tab) {
                 if (tabL[i] && tabR[i]) tab[i] = true;
         } else {
             for (int i=0; i<256; i++)
-                if (retR && tabL[i] || retL && tabR[i]) tab[i] = true;
+                if ((retR && tabL[i]) || (retL && tabR[i])) tab[i] = true;
         }
     }
     return retL && retR;

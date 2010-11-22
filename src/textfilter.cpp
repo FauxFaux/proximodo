@@ -143,7 +143,7 @@ int CTextFilter::match(const char* index, const char* bufTail) {
     // for special <start> and <end> filters
     if (isSpecial) {
         endOfMatched = index;
-        return (isForStart || isComplete && index == bufTail ? (bypassed = true, 1) : 0);
+        return (isForStart || (isComplete && index == bufTail ? (bypassed = true, 1) : 0));
     }
     
     // compute up to where we want to match
@@ -171,6 +171,6 @@ int CTextFilter::match(const char* index, const char* bufTail) {
     unlock();
 
     if (reached == bufTail && !isComplete) return -1;
-    if (!matched || boundsMatcher && endOfMatched != stop) return 0;
+    if (!matched || (boundsMatcher && endOfMatched != stop)) return 0;
     return 1;
 }
